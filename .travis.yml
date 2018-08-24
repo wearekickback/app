@@ -8,9 +8,12 @@ branches:
 script:
   - yarn build
 deploy:
+  skip_cleanup: true
   provider: surge
   project: ./build/
   domain: dev.noblockno.party
+  on:
+    branch: dev
 notifications:
   email:
     - dev-notifications@noblockno.party
