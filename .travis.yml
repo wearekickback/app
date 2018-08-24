@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "8.11.4"
+cache: yarn
+branches:
+  only:
+    - dev
+script:
+  - yarn build
+deploy:
+  provider: surge
+  project: ./build/
+  domain: dev.noblockno.party
+notifications:
+  email:
+    - dev-notifications@noblockno.party
