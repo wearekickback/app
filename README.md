@@ -5,11 +5,15 @@
 
 ## Dev guide
 
-Install Truffle and then run:
+Install deps:
 
 ```
-truffle develop
-truffle migrate --reset
+yarn
+```
+
+```
+yarn truffle develop
+yarn truffle migrate --reset
 ```
 
 Run the dev server:
