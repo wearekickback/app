@@ -5,14 +5,10 @@
 
 ## Dev guide
 
-**Deploy our contracts to a local testnet**
+**Deploy our contracts to a local et n**
 
-Clone the `contracts` repo and run the following commands within:
-
-```
-yarn truffle develop
-yarn truffle migrate --reset
-```
+Clone the `contracts` repo and follow the instructions to deploy the contracts
+to a test network.
 
 _Note: If you modify/update the contract source code you will need to rebuild
 and republish them to NPM and then update the dependency within this app repo
