@@ -18,7 +18,8 @@ const resolvers = {
       console.log('hello')
       console.log(getEthers())
       return getEthers()
-    }
+    },
+    attendees() {}
   },
 
   Mutation: {}

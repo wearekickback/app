@@ -1,35 +1,43 @@
-import React, { Component } from 'react'
-import logo from './logo.svg'
-import { Query } from 'react-apollo'
-import './App.css'
-import gql from 'graphql-tag'
+import React, { Component, Fragment } from 'react'
+import {
+  BrowserRouter as Router,
+  Route as DefaultRoute,
+  Switch
+} from 'react-router-dom'
+import DefaultLayout from './layout/Layouts'
+import { HomePageLayout } from './layout/Layouts'
 
-const EthersQuery = gql`
-  query ethers {
-    ethers @client {
-      ethers
-    }
-  }
-`
+import Home from './routes/Home'
+import Party from './routes/Party'
+
+import './App.css'
+
+const Route = ({
+  component: Component,
+  layout: Layout = DefaultLayout,
+  ...rest
+}) => {
+  return (
+    <DefaultRoute
+      {...rest}
+      render={props => (
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      )}
+    />
+  )
+}
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <Query query={EthersQuery}>
-          {({ data }) => {
-            console.log(data)
-            return <div>hello</div>
-          }}
-        </Query>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} layout={HomePageLayout} />
+          <Route path="/name/:name" component={Party} />
+        </Switch>
+      </Router>
     )
   }
 }
