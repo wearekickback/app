@@ -10,6 +10,8 @@ function getEthers() {
   }
 }
 
+export { provider }
+
 export function setupEthers(network) {
   provider = Ethers.providers.getDefaultProvider(network)
   return provider

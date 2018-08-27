@@ -7,7 +7,10 @@ class SingleParty extends Component {
   render() {
     return (
       <SinglePartyContainer>
-        <Query query={EthersQuery}>
+        <Query
+          query={EthersQuery}
+          variables={{ address: this.props.match.params.address }}
+        >
           {({ data }) => {
             console.log(data)
             return <div>hello</div>
@@ -21,9 +24,12 @@ class SingleParty extends Component {
 const SinglePartyContainer = styled('div')``
 
 const EthersQuery = gql`
-  query ethers {
+  query ethers($address: String) {
     ethers @client {
       ethers
+    }
+    party(address: $address) @client {
+      attendees
     }
   }
 `
