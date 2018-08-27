@@ -17,7 +17,7 @@ const resolvers = {
     },
     async attendees({ contract }) {
       const attendees = await contract.registered()
-      return attendees.toString()
+      return attendees.toNumber()
     },
     async deposit({ contract }) {
       const deposit = await contract.deposit()
@@ -26,15 +26,15 @@ const resolvers = {
     },
     async limitOfParticipants({ contract }) {
       const limitOfParticipants = await contract.limitOfParticipants()
-      return limitOfParticipants.toString()
+      return limitOfParticipants.toNumber()
     },
     async registered({ contract }) {
       const registered = await contract.registered()
-      return parseInt(registered.toString())
+      return registered.toNumber()
     },
     async attended({ contract }) {
       const attended = await contract.attended()
-      return parseInt(attended.toString())
+      return attended.toNumber()
     },
     async ended({ contract }) {
       const ended = await contract.ended()
@@ -60,6 +60,29 @@ const resolvers = {
     async encryption({ contract }) {
       const encryption = await contract.encryption()
       return encryption
+    },
+    async participants({ contract }) {
+      const registeredRaw = await contract.registered()
+      const registered = registeredRaw.toNumber()
+      const participantsRaw = Array.from({ length: registered }).map((_, i) =>
+        contract
+          .participantsIndex(i + 1)
+          .then(address => contract.participants(address))
+      )
+
+      const participants = await Promise.all(participantsRaw).then(
+        participantsRaw =>
+          participantsRaw.map(arr => ({
+            participantName: arr[0],
+            addr: arr[1],
+            attended: arr[2],
+            paid: arr[3],
+            __typename: 'Participant'
+          }))
+      )
+
+      console.log(participants)
+      return participants
     }
   },
   Query: {

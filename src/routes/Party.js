@@ -17,11 +17,20 @@ class SingleParty extends Component {
             if (loading) {
               return <Loader />
             }
+            console.log(party)
             return (
               <div>
-                {Object.entries(party).map(arr => (
-                  <div>{`${arr[0]} ${arr[1]}`}</div>
-                ))}
+                {Object.entries(party).map(arr => {
+                  if (arr[0] === 'participants') {
+                    return
+                  }
+                  return <div>{`${arr[0]} ${arr[1]}`}</div>
+                })}
+                {party.participants.map(
+                  ({ participantName, addr, attended, paid }) => (
+                    <div>{participantName}</div>
+                  )
+                )}
               </div>
             )
           }}
@@ -40,6 +49,7 @@ const EthersQuery = gql`
     }
     party(address: $address) @client {
       name
+      attendees
       deposit
       limitOfParticipants
       registered
@@ -50,7 +60,12 @@ const EthersQuery = gql`
       coolingPeriod
       payoutAmount
       encryption
-      #participants: [Participant]
+      participants {
+        participantName
+        addr
+        attended
+        paid
+      }
     }
   }
 `
