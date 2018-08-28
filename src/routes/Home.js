@@ -1,28 +1,31 @@
 import React, { Component } from 'react'
 import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { AllPartiesQuery } from '../graphql/queries'
+import { Link } from 'react-router-dom'
+
+import Loader from '../components/Loader'
 
 class Home extends Component {
   render() {
     return (
       <div className="App">
-        <Query query={EthersQuery}>
-          {({ data }) => {
-            console.log(data)
-            return <div>hello</div>
+        <Query query={AllPartiesQuery}>
+          {({ data, loading }) => {
+            if (loading) return <Loader />
+            return (
+              <div>
+                {data.parties.map(party => (
+                  <li>
+                    <Link to={`/party/${party.address}`}>{party.name}</Link>
+                  </li>
+                ))}
+              </div>
+            )
           }}
         </Query>
       </div>
     )
   }
 }
-
-const EthersQuery = gql`
-  query ethers {
-    ethers @client {
-      ethers
-    }
-  }
-`
 
 export default Home

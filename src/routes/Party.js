@@ -1,34 +1,37 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-
-const Loader = () => <div>Loading</div>
+import { PartyQuery } from '../graphql/queries'
+import Loader from '../components/Loader'
 
 class SingleParty extends Component {
   render() {
     return (
       <SinglePartyContainer>
         <Query
-          query={EthersQuery}
+          query={PartyQuery}
           variables={{ address: this.props.match.params.address }}
         >
           {({ data: { party }, loading }) => {
             if (loading) {
               return <Loader />
             }
-            console.log(party)
             return (
               <div>
                 {Object.entries(party).map(arr => {
                   if (arr[0] === 'participants') {
-                    return
+                    return ''
                   }
                   return <div>{`${arr[0]} ${arr[1]}`}</div>
                 })}
                 {party.participants.map(
-                  ({ participantName, addr, attended, paid }) => (
-                    <div>{participantName}</div>
+                  ({ participantName, address, attended, paid }) => (
+                    <Fragment>
+                      <div>{participantName}</div>
+                      <div>{address}</div>
+                      <div>{attended.toString()}</div>
+                      <div>{paid.toString()}</div>
+                    </Fragment>
                   )
                 )}
               </div>
@@ -41,33 +44,5 @@ class SingleParty extends Component {
 }
 
 const SinglePartyContainer = styled('div')``
-
-const EthersQuery = gql`
-  query ethers($address: String) {
-    ethers @client {
-      ethers
-    }
-    party(address: $address) @client {
-      name
-      attendees
-      deposit
-      limitOfParticipants
-      registered
-      attended
-      ended
-      cancelled
-      endedAt
-      coolingPeriod
-      payoutAmount
-      encryption
-      participants {
-        participantName
-        addr
-        attended
-        paid
-      }
-    }
-  }
-`
 
 export default SingleParty

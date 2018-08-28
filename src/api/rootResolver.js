@@ -1,6 +1,7 @@
 import merge from 'lodash/merge'
 import getEthers, { provider } from './ethers'
 import { abi } from './abi.json'
+import eventsList from '../fixtures/events.json'
 
 const rootDefaults = {
   ethers: {
@@ -58,8 +59,13 @@ const resolvers = {
       return utils.formatEther(payoutAmount.toString())
     },
     async encryption({ contract }) {
-      const encryption = await contract.encryption()
-      return encryption
+      try {
+        const encryption = await contract.encryption()
+        return encryption
+      } catch (e) {
+        console.log(e)
+        return null
+      }
     },
     async participants({ contract }) {
       const registeredRaw = await contract.registered()
@@ -74,14 +80,12 @@ const resolvers = {
         participantsRaw =>
           participantsRaw.map(arr => ({
             participantName: arr[0],
-            addr: arr[1],
+            address: arr[1],
             attended: arr[2],
             paid: arr[3],
             __typename: 'Participant'
           }))
       )
-
-      console.log(participants)
       return participants
     }
   },
@@ -100,6 +104,9 @@ const resolvers = {
         contract,
         __typename: 'Party'
       }
+    },
+    async parties(_, variables, context) {
+      return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
     }
   },
 
