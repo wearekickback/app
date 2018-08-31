@@ -14,11 +14,17 @@ function getEthers() {
 
 export function setupEthers(network = 'rinkeby') {
   if (typeof window.web3 !== undefined) {
+    if (network === 'rinkeby') {
+      console.log(ethers.providers.networks)
+      ethers.providers.networks.rinkeby.ensAddress =
+        '0xe7410170f87102df0055eb195163a03b7f2bff4a'
+    }
     // Use Mist/MetaMask's provider
     provider = new ethers.providers.Web3Provider(
       window.web3.currentProvider,
       network
     )
+
     signer = provider.getSigner()
   } else {
     console.log('No web3? You should consider trying MetaMask!')

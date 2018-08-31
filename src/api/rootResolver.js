@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import getEthers, { provider } from './ethers'
+import getEthers, { provider, signer } from './ethers'
 import { abi } from './abi.json'
 import eventsList from '../fixtures/events.json'
 
@@ -67,6 +67,15 @@ const resolvers = {
         return null
       }
     },
+    async rsvp({ contract }, {}) {
+      try {
+        const encryption = await contract.rsvp('_jefflau')
+        return encryption
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
     async participants({ contract }) {
       const registeredRaw = await contract.registered()
       const registered = registeredRaw.toNumber()
@@ -97,8 +106,9 @@ const resolvers = {
       }
     },
     async party(_, { address }) {
-      const Ethers = getEthers()
-      const contract = new Ethers.Contract(address, abi, provider)
+      const ethers = getEthers()
+      console.log(signer, provider)
+      const contract = new ethers.Contract(address, abi, signer || provider)
       return {
         address,
         contract,
@@ -110,7 +120,27 @@ const resolvers = {
     }
   },
 
-  Mutation: {}
+  Mutation: {
+    async rsvp(_, variables) {
+      console.log('in rsvp', variables)
+      const ethers = getEthers()
+      //console.log(address)
+      const contract = new ethers.Contract(variables.address, abi, signer)
+      console.log(contract)
+      try {
+        console.log('here1')
+        contract
+          .register('something')
+          .then(console.log)
+          .catch(e => console.log('error here', e))
+        console.log('here3')
+        return
+      } catch (e) {
+        console.log('here2')
+        console.log(e)
+      }
+    }
+  }
 }
 
 const defaults = merge(rootDefaults)

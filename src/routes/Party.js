@@ -3,21 +3,21 @@ import styled from 'react-emotion'
 import { Query } from 'react-apollo'
 import { PartyQuery } from '../graphql/queries'
 import Loader from '../components/Loader'
+import RSVP from '../components/Party/RSVP'
 
 class SingleParty extends Component {
   render() {
+    const { address } = this.props.match.params
     return (
       <SinglePartyContainer>
-        <Query
-          query={PartyQuery}
-          variables={{ address: this.props.match.params.address }}
-        >
+        <Query query={PartyQuery} variables={{ address }}>
           {({ data: { party }, loading }) => {
             if (loading) {
               return <Loader />
             }
             return (
               <div>
+                <RSVP address={address} />
                 {Object.entries(party).map(arr => {
                   if (arr[0] === 'participants') {
                     return ''
