@@ -11,6 +11,7 @@ import { withClientState } from 'apollo-link-state'
 import resolvers, { defaults } from './api/rootResolver'
 import typeDefs from './api/schema'
 import { ApolloProvider } from 'react-apollo'
+import { setupEthers } from './api/ethers'
 //import { GlobalStateProvider } from './globalState'
 import './globalStyles'
 
@@ -26,10 +27,14 @@ const graphqlClient = new ApolloClient({
   })
 })
 
-ReactDOM.render(
-  <ApolloProvider client={graphqlClient}>
-    <App />
-  </ApolloProvider>,
-  document.getElementById('root')
-)
+window.addEventListener('load', () => {
+  setupEthers()
+  ReactDOM.render(
+    <ApolloProvider client={graphqlClient}>
+      <App />
+    </ApolloProvider>,
+    document.getElementById('root')
+  )
+})
+
 registerServiceWorker()
