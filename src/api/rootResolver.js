@@ -130,7 +130,31 @@ const resolvers = {
       try {
         console.log('here1')
         contract
-          .register('something')
+          .register('_jefflau', {
+            nonce: 0,
+            value: ethers.utils.parseEther('0.02')
+          })
+          .then(console.log)
+          .catch(e => console.log('error here', e))
+        console.log('here3')
+        return
+      } catch (e) {
+        console.log('here2')
+        console.log(e)
+      }
+    },
+    async setLimitOfParticipants(_, { address, limit }) {
+      console.log('in limit', address)
+      const ethers = getEthers()
+      //console.log(address)
+      console.log('SET LIMT', address, signer)
+      const contract = new ethers.Contract(address, abi, signer)
+
+      console.log(contract)
+      try {
+        console.log('here1')
+        contract
+          .setLimitOfParticipants(1000)
           .then(console.log)
           .catch(e => console.log('error here', e))
         console.log('here3')

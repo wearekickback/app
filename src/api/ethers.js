@@ -12,7 +12,7 @@ function getEthers() {
   }
 }
 
-export function setupEthers(network = 'rinkeby') {
+export async function setupEthers(network = 'rinkeby') {
   if (typeof window.web3 !== undefined) {
     if (network === 'rinkeby') {
       console.log(ethers.providers.networks)
@@ -24,8 +24,10 @@ export function setupEthers(network = 'rinkeby') {
       window.web3.currentProvider,
       network
     )
-
-    signer = provider.getSigner()
+    console.log()
+    const accounts = await provider.listAccounts()
+    signer = provider.getSigner(accounts[0])
+    console.log(signer)
   } else {
     console.log('No web3? You should consider trying MetaMask!')
     // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet

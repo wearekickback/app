@@ -4,6 +4,7 @@ import { Query } from 'react-apollo'
 import { PartyQuery } from '../graphql/queries'
 import Loader from '../components/Loader'
 import RSVP from '../components/Party/RSVP'
+import SetLimit from '../components/Party/SetLimit'
 
 class SingleParty extends Component {
   render() {
@@ -18,6 +19,7 @@ class SingleParty extends Component {
             return (
               <div>
                 <RSVP address={address} />
+                <SetLimit address={address} />
                 {Object.entries(party).map(arr => {
                   if (arr[0] === 'participants') {
                     return ''
