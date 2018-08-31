@@ -1,0 +1,30 @@
+type Participant {
+  participantName: String
+  address: String
+  attended: Boolean
+  paid: Boolean
+}
+
+type Party {
+  name: String
+  attendees: Int #Big Number
+  deposit: Int #Big Number
+  limitOfParticipants: Int #Big Number
+  registered: Int #Big Number
+  attended: Int #Big Number
+  ended: Int #Date
+  cancelled: Boolean
+  endedAt: Int #Date
+  coolingPeriod: Int #Time in seconds
+  payoutAmount: Int #Big Number in wei
+  encryption: String
+  participants: [Participants] #Possibly want to paginate?
+  #On the server
+  name: String
+  address: String #Contract Address,
+  eventDate: Int #Date of the event
+  mapUrl: String #Google maps link
+  locationAddress: String #
+  description: String
+  etherPrice: Int
+}
