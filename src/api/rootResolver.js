@@ -107,7 +107,6 @@ const resolvers = {
     },
     async party(_, { address }) {
       const ethers = getEthers()
-      console.log(signer, provider)
       const contract = new ethers.Contract(address, abi, signer || provider)
       return {
         address,
@@ -115,31 +114,23 @@ const resolvers = {
         __typename: 'Party'
       }
     },
-    async parties(_, variables, context) {
+    async parties() {
       return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
     }
   },
 
   Mutation: {
-    async rsvp(_, variables) {
-      console.log('in rsvp', variables)
+    async rsvp(_, { twitter, address }) {
       const ethers = getEthers()
-      //console.log(address)
-      const contract = new ethers.Contract(variables.address, abi, signer)
-      console.log(contract)
+      const contract = new ethers.Contract(address, abi, signer)
+      const deposit = await contract.deposit()
       try {
-        console.log('here1')
-        contract
-          .register('_jefflau', {
-            nonce: 0,
-            value: ethers.utils.parseEther('0.02')
-          })
-          .then(console.log)
-          .catch(e => console.log('error here', e))
-        console.log('here3')
-        return
+        const txId = await contract.register(twitter, {
+          nonce: 0,
+          value: deposit
+        })
+        return txId
       } catch (e) {
-        console.log('here2')
         console.log(e)
       }
     },
