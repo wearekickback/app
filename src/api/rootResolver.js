@@ -145,14 +145,14 @@ const resolvers = {
       const deployer = deployerContractAddresses[networkId]
       const contract = new ethers.Contract(deployer.address, deployerAbi, signer)
 
-      /// They are just for events for debugging purpose.
+      // They are here for debugging purpose. TODO for creating events debugging endpoint
       const MyContract = window.web3.eth.contract(deployerAbi);
       const myContractInstance = MyContract.at(deployer.address);
       const events = myContractInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
       events.watch(function(error, result){
         console.log('result', result)
       });
-      ///
+      //
       try {
         const txId = await contract.deploy(
           name,
