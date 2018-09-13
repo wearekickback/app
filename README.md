@@ -5,14 +5,6 @@
 
 ## Dev guide
 
-**Deploy our contracts to a local et n**
-
-Clone the `contracts` repo and follow the instructions to deploy the contracts
-to a test network.
-
-_Note: If you modify/update the contract source code you will need to rebuild
-and republish them to NPM and then update the dependency within this app repo
-in order to get them working!_
 
 **Run the app**
 
@@ -27,3 +19,26 @@ Run the dev server:
 ```
 yarn start
 ```
+
+**Deploy our contracts to a local env n**
+
+Startup ganache in separate terminal
+
+```
+ganache-cli
+```
+
+Run the migration
+
+```
+yarn migrate
+```
+
+**Test creating event locally**
+
+- Go to http://localhost:3000/create
+- Open inspector on your browser
+- Fill in event detail and press "Submit"
+- Once transaction is complete, then get `deployedAddress` from the event.
+- Go to http://localhost:3000/party/$address to see if newly created event is shown.
+
