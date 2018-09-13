@@ -9,6 +9,7 @@ import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
 import Party from './routes/Party'
+import Create from './routes/Create'
 
 import './App.css'
 
@@ -36,6 +37,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} layout={HomePageLayout} />
           <Route path="/party/:address" component={Party} />
+          <Route path="/create" component={Create} />
         </Switch>
       </Router>
     )

@@ -4,6 +4,7 @@ import Conference from '@noblocknoparty/contracts/build/contracts/Conference.jso
 import PublicDeployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
 import PrivateDeployer from '../build/contracts/Deployer.json'
 import eventsList from '../fixtures/events.json'
+import {toHex, toWei} from 'web3-utils'
 
 const abi = Conference.abi
 const deployerAbi = PublicDeployer.abi
@@ -125,10 +126,6 @@ const resolvers = {
     },
     async party(_, { address }) {
       const ethers = getEthers()
-      const networkId = await getNetwork()
-      const deployer = deployerContractAddresses[networkId]
-      console.log('DeployerAddress', deployer.address, deployerContractAddresses);
-
       const contract = new ethers.Contract(address, abi, signer || provider)
       return {
         address,
@@ -142,6 +139,34 @@ const resolvers = {
   },
 
   Mutation: {
+    async create(_, { name}) {
+      const ethers = getEthers()
+      const networkId = await getNetwork()
+      const deployer = deployerContractAddresses[networkId]
+      const contract = new ethers.Contract(deployer.address, deployerAbi, signer)
+
+      /// They are just for events for debugging purpose.
+      const MyContract = window.web3.eth.contract(deployerAbi);
+      const myContractInstance = MyContract.at(deployer.address);
+      const events = myContractInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
+      events.watch(function(error, result){
+        console.log('result', result)
+      });
+      ///
+      try {
+        const txId = await contract.deploy(
+          name,
+          toHex(toWei('0.02')),
+          toHex(20),
+          toHex(60 * 60 * 24 * 7),
+          ''
+        )
+        console.log('txId', txId)
+        return txId
+      } catch (e) {
+        console.log('error', e)
+      }
+    },
     async rsvp(_, { twitter, address }) {
       const ethers = getEthers()
       const contract = new ethers.Contract(address, abi, signer)
