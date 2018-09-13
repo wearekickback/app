@@ -1,9 +1,25 @@
 import merge from 'lodash/merge'
 import getEthers, { provider, signer } from './ethers'
 import Conference from '@noblocknoparty/contracts/build/contracts/Conference.json'
+import PublicDeployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
+import PrivateDeployer from '../build/contracts/Deployer.json'
 import eventsList from '../fixtures/events.json'
 
 const abi = Conference.abi
+const deployerAbi = PublicDeployer.abi
+const deployerContractAddresses = Object.assign(
+  {},
+  PrivateDeployer.networks,
+  PublicDeployer.networks
+)
+
+function getNetwork(){
+  return new Promise(function(resolve,reject){
+    window.web3.version.getNetwork(function(err, result){
+      resolve(result);
+    });
+  });
+}
 
 const rootDefaults = {
   ethers: {
@@ -109,6 +125,10 @@ const resolvers = {
     },
     async party(_, { address }) {
       const ethers = getEthers()
+      const networkId = await getNetwork()
+      const deployer = deployerContractAddresses[networkId]
+      console.log('DeployerAddress', deployer.address, deployerContractAddresses);
+
       const contract = new ethers.Contract(address, abi, signer || provider)
       return {
         address,
