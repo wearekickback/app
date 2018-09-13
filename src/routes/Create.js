@@ -3,8 +3,8 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const CREATE = gql`
-  mutation create($name: String) {
-    create(name: $name) @client
+  mutation create($name: String, $deposit: String, $limitOfParticipants: String, ) {
+    create(name: $name, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client
   }
 `
 class Create extends Component {
@@ -43,7 +43,7 @@ class Create extends Component {
           /><br/>
         </div>
 
-        <Mutation mutation={CREATE} variables={{ name }}>
+        <Mutation mutation={CREATE} variables={{ name, deposit, limitOfParticipants }}>
           {postMutation => <button onClick={postMutation}>Submit</button>}
         </Mutation>
       </div>

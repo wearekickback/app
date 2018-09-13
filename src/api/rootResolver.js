@@ -139,7 +139,7 @@ const resolvers = {
   },
 
   Mutation: {
-    async create(_, { name}) {
+    async create(_, { name, deposit, limitOfParticipants}) {
       const ethers = getEthers()
       const networkId = await getNetwork()
       const deployer = deployerContractAddresses[networkId]
@@ -156,8 +156,8 @@ const resolvers = {
       try {
         const txId = await contract.deploy(
           name,
-          toHex(toWei('0.02')),
-          toHex(20),
+          toHex(toWei(deposit)),
+          toHex(limitOfParticipants),
           toHex(60 * 60 * 24 * 7),
           ''
         )
