@@ -15,16 +15,16 @@ const SingleEventContainer = styled('div')``
 class SingleEvent extends Component {
   state = {
     search: {
-      value: ""
+      value: ''
     }
   }
 
-  handleSearch = (event) => {
+  handleSearch = event => {
     this.setState({
       search: {
         value: event.target.value
       }
-    }
+    })
   }
 
   render() {
@@ -40,7 +40,7 @@ class SingleEvent extends Component {
               <div>
                 <EventInfo party={party} address={address} />
                 <EventCTA party={party} />
-                <EventFilters handleSearch={handleSearch} />
+                <EventFilters handleSearch={this.handleSearch} />
                 <EventParticipants party={party} />
                 <RSVP address={address} />
                 <SetLimit address={address} />
