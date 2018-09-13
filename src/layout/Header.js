@@ -4,6 +4,7 @@ import styled from 'react-emotion'
 const HeaderContainer = styled('header')``
 const Notifications = styled('div')``
 const Account = styled('div')``
+const AccountAddress = styled('div')``
 const Avatar = styled('img')``
 
 const Header = () => (

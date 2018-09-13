@@ -41,25 +41,18 @@ class SingleEvent extends Component {
                 <EventInfo party={party} address={address} />
                 <EventCTA party={party} />
                 <EventFilters handleSearch={this.handleSearch} />
-                <EventParticipants party={party} />
+                <EventParticipants
+                  party={party}
+                  participants={party.participants}
+                />
                 <RSVP address={address} />
                 <SetLimit address={address} />
-                {Object.entries(party).map(arr => {
+                {/* {Object.entries(party).map(arr => {
                   if (arr[0] === 'participants') {
                     return ''
                   }
                   return <div>{`${arr[0]} ${arr[1]}`}</div>
-                })}
-                {party.participants.map(
-                  ({ participantName, address, attended, paid }) => (
-                    <Fragment>
-                      <div>{participantName}</div>
-                      <div>{address}</div>
-                      <div>{attended.toString()}</div>
-                      <div>{paid.toString()}</div>
-                    </Fragment>
-                  )
-                )}
+                })} */}
               </div>
             )
           }}

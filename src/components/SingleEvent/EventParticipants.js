@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
+import Participant from './Participant'
+
 class EventParticipants extends Component {
   render() {
     const { participants } = this.props
     return (
       <EventParticipantsContainer>
-        {JSON.stringify(participants)}
+        {participants.map(participant => (
+          <Participant participant={participant} />
+        ))}
       </EventParticipantsContainer>
     )
   }
