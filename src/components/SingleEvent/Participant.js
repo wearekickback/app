@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-const TwitterAvatar = styled('img')``
+const TwitterAvatar = styled('img')`
+  border-radius: 50%;
+`
 
 class Participant extends Component {
   render() {
@@ -11,7 +13,7 @@ class Participant extends Component {
       <ParticipantContainer>
         <div>{participantName}</div>
         <TwitterAvatar
-          src={`https://avatars.io/twitter/${participantName}/48x48px`}
+          src={`https://avatars.io/twitter/${participantName}/medium`}
         />
         <div>{address}</div>
         <div>{attended.toString()}</div>
