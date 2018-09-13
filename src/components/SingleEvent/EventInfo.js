@@ -30,7 +30,7 @@ class EventInfo extends Component {
         <OrganiserName>{party.owner}</OrganiserName>
         <Location>{party.location}</Location>
         <TotalPot>
-          Total pot {parseFloat(party.deposit) * parseInt(party.attendees)}
+          Total pot {parseFloat(party.deposit) * parseInt(party.attendees, 10)}
         </TotalPot>
         <Tags>
           <Tag>Ethereum</Tag>

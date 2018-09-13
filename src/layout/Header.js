@@ -3,6 +3,6 @@ import styled from 'react-emotion'
 
 const HeaderContainer = styled('header')``
 
-const Header = ({}) => <HeaderContainer />
+const Header = () => <HeaderContainer />
 
 export default Header

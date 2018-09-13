@@ -14,7 +14,7 @@ class EventCTA extends Component {
         <CTA>Join the event.</CTA>
         <RemainingSpots>
           {attendees} going.{' '}
-          {parseInt(limitOfParticipants) - parseInt(attendees)} left
+          {parseInt(limitOfParticipants, 10) - parseInt(attendees, 10)} left
         </RemainingSpots>
         <RSVP />
       </EventCTAContainer>
