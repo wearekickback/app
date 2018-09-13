@@ -1,7 +1,9 @@
 import merge from 'lodash/merge'
 import getEthers, { provider, signer } from './ethers'
-import { abi } from './abi.json'
+import Conference from '@noblocknoparty/contracts/build/contracts/Conference.json'
 import eventsList from '../fixtures/events.json'
+
+const abi = Conference.abi
 
 const rootDefaults = {
   ethers: {
