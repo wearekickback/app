@@ -5,12 +5,19 @@ import Participant from './Participant'
 
 class EventParticipants extends Component {
   render() {
-    const { participants } = this.props
+    const { participants, search } = this.props
+    const searchTerm = search.toLowerCase()
     return (
       <EventParticipantsContainer>
-        {participants.map(participant => (
-          <Participant participant={participant} />
-        ))}
+        {participants
+          .filter(
+            participant =>
+              participant.participantName.toLowerCase().includes(searchTerm) ||
+              participant.address.toLowerCase().includes(searchTerm)
+          )
+          .map(participant => (
+            <Participant participant={participant} />
+          ))}
       </EventParticipantsContainer>
     )
   }
