@@ -34,7 +34,7 @@ Run the migration
 yarn migrate
 ```
 
-**Test creating event locally**
+**Test creating a event locally**
 
 - Go to http://localhost:3000/create
 - Open inspector on your browser

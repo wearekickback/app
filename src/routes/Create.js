@@ -10,7 +10,7 @@ const CREATE = gql`
 class Create extends Component {
   state = {
     name: '',
-    deposit: 0.02,
+    deposit: '0.02',
     limitOfParticipants: 20
   }
 
