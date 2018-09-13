@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Query } from 'react-apollo'
 import { PartyQuery } from '../graphql/queries'
