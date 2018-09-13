@@ -8,7 +8,7 @@ import DefaultLayout from './layout/Layouts'
 import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
-import Party from './routes/Party'
+import SingleEvent from './routes/SingleEvent'
 
 import './App.css'
 
@@ -35,7 +35,7 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" component={Home} layout={HomePageLayout} />
-          <Route path="/party/:address" component={Party} />
+          <Route path="/party/:address" component={SingleEvent} />
         </Switch>
       </Router>
     )

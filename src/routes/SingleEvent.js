@@ -3,14 +3,34 @@ import styled from 'react-emotion'
 import { Query } from 'react-apollo'
 import { PartyQuery } from '../graphql/queries'
 import Loader from '../components/Loader'
-import RSVP from '../components/Party/RSVP'
-import SetLimit from '../components/Party/SetLimit'
+import RSVP from '../components/SingleEvent/RSVP'
+import SetLimit from '../components/SingleEvent/SetLimit'
+import EventInfo from '../components/SingleEvent/EventInfo'
+import EventCTA from '../components/SingleEvent/EventCTA'
+import EventFilters from '../components/SingleEvent/EventFilters'
+import EventParticipants from '../components/SingleEvent/EventParticipants'
 
-class SingleParty extends Component {
+const SingleEventContainer = styled('div')``
+
+class SingleEvent extends Component {
+  state = {
+    search: {
+      value: ""
+    }
+  }
+
+  handleSearch = (event) => {
+    this.setState({
+      search: {
+        value: event.target.value
+      }
+    }
+  }
+
   render() {
     const { address } = this.props.match.params
     return (
-      <SinglePartyContainer>
+      <SingleEventContainer>
         <Query query={PartyQuery} variables={{ address }}>
           {({ data: { party }, loading }) => {
             if (loading) {
@@ -18,6 +38,10 @@ class SingleParty extends Component {
             }
             return (
               <div>
+                <EventInfo party={party} address={address} />
+                <EventCTA party={party} />
+                <EventFilters handleSearch={handleSearch} />
+                <EventParticipants party={party} />
                 <RSVP address={address} />
                 <SetLimit address={address} />
                 {Object.entries(party).map(arr => {
@@ -40,11 +64,9 @@ class SingleParty extends Component {
             )
           }}
         </Query>
-      </SinglePartyContainer>
+      </SingleEventContainer>
     )
   }
 }
 
-const SinglePartyContainer = styled('div')``
-
-export default SingleParty
+export default SingleEvent

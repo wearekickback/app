@@ -13,6 +13,9 @@ const rootDefaults = {
 
 const resolvers = {
   Party: {
+    async owner({ contract }) {
+      return contract.owner()
+    },
     async name({ contract }) {
       return contract.name()
     },
@@ -61,15 +64,6 @@ const resolvers = {
     async encryption({ contract }) {
       try {
         const encryption = await contract.encryption()
-        return encryption
-      } catch (e) {
-        console.log(e)
-        return null
-      }
-    },
-    async rsvp({ contract }, {}) {
-      try {
-        const encryption = await contract.rsvp('_jefflau')
         return encryption
       } catch (e) {
         console.log(e)

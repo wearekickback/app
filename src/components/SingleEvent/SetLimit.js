@@ -9,8 +9,8 @@ const SET_LIMIT = gql`
   }
 `
 
-const RSVP = ({ address }) => (
-  <RSVPContainer>
+const SetLimit = ({ address }) => (
+  <SetLimitContainer>
     <Mutation
       mutation={SET_LIMIT}
       variables={{
@@ -22,9 +22,9 @@ const RSVP = ({ address }) => (
         <button onClick={setLimitOfParticipants}>Set Limit</button>
       )}
     </Mutation>
-  </RSVPContainer>
+  </SetLimitContainer>
 )
 
-const RSVPContainer = styled('div')``
+const SetLimitContainer = styled('div')``
 
-export default RSVP
+export default SetLimit
