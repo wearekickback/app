@@ -12,7 +12,7 @@ import resolvers, { defaults } from './api/rootResolver'
 import typeDefs from './api/schema'
 import { ApolloProvider } from 'react-apollo'
 import { setupEthers } from './api/ethers'
-//import { GlobalStateProvider } from './globalState'
+import { GlobalProvider } from './GlobalState'
 import './globalStyles'
 
 const cache = new InMemoryCache(window.__APOLLO_STATE__)
@@ -30,9 +30,11 @@ const graphqlClient = new ApolloClient({
 window.addEventListener('load', () => {
   setupEthers()
   ReactDOM.render(
-    <ApolloProvider client={graphqlClient}>
-      <App />
-    </ApolloProvider>,
+    <GlobalProvider>
+      <ApolloProvider client={graphqlClient}>
+        <App />
+      </ApolloProvider>
+    </GlobalProvider>,
     document.getElementById('root')
   )
 })

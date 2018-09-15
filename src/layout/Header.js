@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import SignIn from '../components/Modal/ToggleModal'
 
 const HeaderContainer = styled('header')``
 const Notifications = styled('div')``
@@ -15,6 +16,7 @@ const Header = () => (
       <AccountAddress>vitalik.eth</AccountAddress>
       <Avatar />
     </Account>
+    <SignIn modalName="signIn">Sign in</SignIn>
   </HeaderContainer>
 )
 
