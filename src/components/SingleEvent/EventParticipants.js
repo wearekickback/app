@@ -5,7 +5,7 @@ import Participant from './Participant'
 
 class EventParticipants extends Component {
   render() {
-    const { participants, search } = this.props
+    const { participants, search, party } = this.props
     const searchTerm = search.toLowerCase()
     return (
       <EventParticipantsContainer>
@@ -16,7 +16,7 @@ class EventParticipants extends Component {
               participant.address.toLowerCase().includes(searchTerm)
           )
           .map(participant => (
-            <Participant participant={participant} />
+            <Participant participant={participant} party={party} />
           ))}
       </EventParticipantsContainer>
     )

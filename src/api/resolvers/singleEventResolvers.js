@@ -98,7 +98,6 @@ const resolvers = {
 
   Mutation: {
     async rsvp(_, { twitter, address }) {
-      console.log(twitter, address)
       const ethers = getEthers()
       const contract = new ethers.Contract(address, abi, signer)
       const deposit = await contract.deposit()
