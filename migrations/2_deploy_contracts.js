@@ -1,7 +1,7 @@
 const util = require('web3-utils');
 const Deployer  = artifacts.require("@noblocknoparty/contracts/Deployer.sol")
 
-const getEvents = async (result, eventName) => {
+const getEvents = (result, eventName) => {
   const events = result.logs.filter(({ event }) => event === eventName)
   return events
 }
@@ -17,6 +17,6 @@ module.exports = async function(deployer) {
     util.toHex(60 * 60 * 24 * 7),
     'encKey'
   )
-  const events = await getEvents(result, 'NewParty')
+  const events = getEvents(result, 'NewParty')
   console.log('party', events)
 }
