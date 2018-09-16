@@ -20,6 +20,10 @@ class ToggleModal extends Component {
   }
 }
 
-const ToggleModalContainer = styled('div')``
+const ToggleModalContainer = styled('div')`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 export default ToggleModal
