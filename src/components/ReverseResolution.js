@@ -13,7 +13,6 @@ const GET_REVERSE_RECORD = gql`
 
 class ReverseResolution extends Component {
   render() {
-    console.log(this.props)
     return (
       <Query
         query={GET_REVERSE_RECORD}

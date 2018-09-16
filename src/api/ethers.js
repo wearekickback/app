@@ -49,10 +49,6 @@ export async function setupEthers(network = 'rinkeby') {
     )
     const accounts = await provider.listAccounts()
     signer = provider.getSigner(accounts[0])
-    console.log(signer)
-    const message = 'something'
-    const signature = await signer.signMessage(message)
-    console.log(ethers.Wallet.verifyMessage('something', signature))
   } else {
     console.log('No web3? You should consider trying MetaMask!')
     // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet

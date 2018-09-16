@@ -1,6 +1,6 @@
 import merge from 'lodash/merge'
-import getEthers from './ethers'
 import eventsList from '../fixtures/events.json'
+import getEthers, { signer } from './ethers'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
@@ -29,12 +29,11 @@ const resolvers = {
 
   Mutation: {
     async signMessage(message) {
-      const accounts = await provider.listAccounts()
-      signer = provider.getSigner(accounts[0])
       const signature = await signer.signMessage(message)
       return signature
     },
     async verifyMessage(message, signature) {
+      const ethers = getEthers()
       return ethers.Wallet.verifyMessage(message, signature)
     }
   }
