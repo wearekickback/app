@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import ReverseResolution from '../ReverseResolution'
 
 const TwitterAvatar = styled('img')`
   border-radius: 50%;
@@ -16,7 +17,9 @@ class Participant extends Component {
         <TwitterAvatar
           src={`https://avatars.io/twitter/${participantName}/medium`}
         />
-        <div>{address}</div>
+        <div>
+          <ReverseResolution address={address} />
+        </div>
         <div>{attended.toString()}</div>
         <div>{paid.toString()}</div>
       </ParticipantContainer>

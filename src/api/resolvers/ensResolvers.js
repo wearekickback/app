@@ -4,14 +4,17 @@ export const defaults = {}
 
 const resolvers = {
   Query: {
-    getReverseRecord: async (_, { address }, { cache }) => {
+    getReverseRecord: async (_, { address }) => {
       const obj = {
         address,
         __typename: 'ReverseRecord'
       }
 
+      console.log('here')
+
       try {
-        const { name } = await provider.lookupAddress(address)
+        const name = await provider.lookupAddress(address)
+        console.log(name)
         return {
           ...obj,
           name
