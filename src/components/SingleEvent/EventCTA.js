@@ -8,7 +8,12 @@ const RemainingSpots = styled('div')``
 
 class EventCTA extends Component {
   render() {
-    const { attendees, limitOfParticipants } = this.props.party
+    const {
+      party: { attendees, limitOfParticipants },
+      address
+    } = this.props
+
+    console.log('EVENT CTA', address)
     return (
       <EventCTAContainer>
         <CTA>Join the event.</CTA>
@@ -16,7 +21,7 @@ class EventCTA extends Component {
           {attendees} going.{' '}
           {parseInt(limitOfParticipants, 10) - parseInt(attendees, 10)} left
         </RemainingSpots>
-        <RSVP />
+        <RSVP address={address} />
       </EventCTAContainer>
     )
   }

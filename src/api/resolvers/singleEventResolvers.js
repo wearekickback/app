@@ -97,7 +97,44 @@ const resolvers = {
     }
   },
 
-  Mutation: {}
+  Mutation: {
+    async rsvp(_, { twitter, address }) {
+      console.log(twitter, address)
+      const ethers = getEthers()
+      const contract = new ethers.Contract(address, abi, signer)
+      const deposit = await contract.deposit()
+      try {
+        const txId = await contract.register(twitter, {
+          nonce: 0,
+          value: deposit
+        })
+        return txId
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async setLimitOfParticipants(_, { address, limit }) {
+      console.log('in limit', address)
+      const ethers = getEthers()
+      //console.log(address)
+      console.log('SET LIMT', address, signer)
+      const contract = new ethers.Contract(address, abi, signer)
+
+      console.log(contract)
+      try {
+        console.log('here1')
+        contract
+          .setLimitOfParticipants(1000)
+          .then(console.log)
+          .catch(e => console.log('error here', e))
+        console.log('here3')
+        return
+      } catch (e) {
+        console.log('here2')
+        console.log(e)
+      }
+    }
+  }
 }
 
 export default resolvers

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import ReverseResolution from '../ReverseResolution'
 
 const Date = styled('div')``
 const EventName = styled('h2')``
 const ContractAddress = styled('h3')``
 const OrganiserImage = styled('img')``
-const OrganiserName = styled('dv')
+const OrganiserName = styled('div')``
 const Location = styled('div')``
 const TotalPot = styled('div')``
 const Tags = styled('section')``
@@ -27,7 +28,9 @@ class EventInfo extends Component {
         <EventName>{party.name}</EventName>
         <ContractAddress>{address}</ContractAddress>
         <OrganiserImage />
-        <OrganiserName>{party.owner}</OrganiserName>
+        <OrganiserName>
+          <ReverseResolution address={party.owner} />
+        </OrganiserName>
         <Location>{party.location}</Location>
         <TotalPot>
           Total pot {parseFloat(party.deposit) * parseInt(party.attendees, 10)}
