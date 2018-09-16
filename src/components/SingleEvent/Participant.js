@@ -15,8 +15,8 @@ const WinningShare = styled('div')``
 class Participant extends Component {
   render() {
     const { participant, party } = this.props
-    const { participantName, address, paid, attended, ended } = participant
-    const { registered, attended: attendedCount, deposit } = party
+    const { participantName, address, paid, attended } = participant
+    const { registered, attended: attendedCount, deposit, ended } = party
 
     return (
       <ParticipantContainer>
@@ -31,12 +31,14 @@ class Participant extends Component {
         {ended && (
           <WinningShare>
             {attended
-              ? `won ${winningShare(deposit, registered, attendedCount)}`
+              ? `won ${winningShare(
+                  deposit,
+                  registered,
+                  attendedCount
+                )} ${paid && 'and withdrawn'}`
               : `lost ${deposit}`}
           </WinningShare>
         )}
-
-        <div>{paid.toString()}</div>
       </ParticipantContainer>
     )
   }
