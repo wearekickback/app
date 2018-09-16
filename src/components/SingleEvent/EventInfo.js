@@ -22,7 +22,6 @@ const Comment = styled('div')``
 class EventInfo extends Component {
   render() {
     const { party, address } = this.props
-    console.log(party)
     return (
       <EventInfoContainer>
         <Date>{party.date}</Date>

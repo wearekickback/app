@@ -35,14 +35,13 @@ class SingleEvent extends Component {
             return (
               <div>
                 <EventInfo party={party} address={address} />
-                <EventCTA party={party} />
+                <EventCTA party={party} address={address} />
                 <EventFilters handleSearch={this.handleSearch} />
                 <EventParticipants
                   search={this.state.search}
                   party={party}
                   participants={party.participants}
                 />
-                <RSVP address={address} />
                 <SetLimit address={address} />
                 {/* {Object.entries(party).map(arr => {
                   if (arr[0] === 'participants') {
