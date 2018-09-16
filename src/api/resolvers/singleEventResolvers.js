@@ -105,7 +105,6 @@ const resolvers = {
       const deposit = await contract.deposit()
       try {
         const txId = await contract.register(twitter, {
-          nonce: 0,
           value: deposit
         })
         return txId
