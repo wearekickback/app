@@ -24,6 +24,22 @@ function getNetwork(){
   });
 }
 
+function getEvents(){
+  return new Promise(function(resolve,reject){
+    const ethers = getEthers()
+    getNetwork().then((networkId)=>{
+      const deployer = deployerContractAddresses[networkId]
+      const contract = new ethers.Contract(deployer.address, deployerAbi, signer)
+      const MyContract = window.web3.eth.contract(deployerAbi);
+      const myContractInstance = MyContract.at(deployer.address);
+      const events = myContractInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
+      events.get(function(error, result){
+        resolve(result);
+      });
+    })
+  });
+}
+
 const rootDefaults = {
   ethers: {
     accounts: [],
@@ -42,6 +58,18 @@ const resolvers = {
     },
     async parties() {
       return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
+    },
+    async events() {
+      console.log('events1')
+      return (await getEvents()).map((event)=>{
+        console.log('events2')
+        console.log('event', event)
+        return {
+          name: event.args.deployedAddress,
+          address: event.args.deployedAddress,
+          __typename: event.event
+        }
+      })
     }
   },
 
