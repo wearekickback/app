@@ -11,7 +11,7 @@ deploy:
   skip_cleanup: true
   provider: surge
   project: ./build/
-  domain: dev.noblockno.party
+  domain: dev.kickback.events
   on:
     branch: dev
 notifications:
