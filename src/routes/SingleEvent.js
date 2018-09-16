@@ -3,7 +3,6 @@ import styled from 'react-emotion'
 import { Query } from 'react-apollo'
 import { PartyQuery } from '../graphql/queries'
 import Loader from '../components/Loader'
-import RSVP from '../components/SingleEvent/RSVP'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'
@@ -32,6 +31,8 @@ class SingleEvent extends Component {
             if (loading) {
               return <Loader />
             }
+
+            console.log(address)
             return (
               <div>
                 <EventInfo party={party} address={address} />

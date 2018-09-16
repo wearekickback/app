@@ -10,11 +10,8 @@ const resolvers = {
         __typename: 'ReverseRecord'
       }
 
-      console.log('here')
-
       try {
         const name = await provider.lookupAddress(address)
-        console.log(name)
         return {
           ...obj,
           name
