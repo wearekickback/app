@@ -26,13 +26,11 @@ function getNetwork(){
 
 function getEvents(){
   return new Promise(function(resolve,reject){
-    const ethers = getEthers()
     getNetwork().then((networkId)=>{
       const deployer = deployerContractAddresses[networkId]
-      const contract = new ethers.Contract(deployer.address, deployerAbi, signer)
-      const MyContract = window.web3.eth.contract(deployerAbi);
-      const myContractInstance = MyContract.at(deployer.address);
-      const events = myContractInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
+      const DeployerContract = window.web3.eth.contract(deployerAbi);
+      const deployerInstance = DeployerContract.at(deployer.address);
+      const events = deployerInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
       events.get(function(error, result){
         resolve(result);
       });
@@ -60,9 +58,7 @@ const resolvers = {
       return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
     },
     async events() {
-      console.log('events1')
       return (await getEvents()).map((event)=>{
-        console.log('events2')
         console.log('event', event)
         return {
           name: event.args.deployedAddress,
@@ -80,14 +76,6 @@ const resolvers = {
       const deployer = deployerContractAddresses[networkId]
       const contract = new ethers.Contract(deployer.address, deployerAbi, signer)
 
-      // They are here for debugging purpose. TODO for creating events debugging endpoint
-      const MyContract = window.web3.eth.contract(deployerAbi);
-      const myContractInstance = MyContract.at(deployer.address);
-      const events = myContractInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
-      events.watch(function(error, result){
-        console.log('result', result)
-      });
-      //
       try {
         const txId = await contract.deploy(
           name,
@@ -96,7 +84,6 @@ const resolvers = {
           toHex(60 * 60 * 24 * 7),
           ''
         )
-        console.log('txId', txId)
         return txId
       } catch (e) {
         console.log('error', e)
