@@ -5,11 +5,12 @@ import {
   Switch
 } from 'react-router-dom'
 import DefaultLayout from './layout/Layouts'
-import { HomePageLayout } from './layout/Layouts'
+//import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
-import Party from './routes/Party'
 import Create from './routes/Create'
+import SingleEvent from './routes/SingleEvent'
+import Modal from './components/Modal/Modal'
 
 import './App.css'
 
@@ -33,13 +34,16 @@ const Route = ({
 class App extends Component {
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home} layout={HomePageLayout} />
-          <Route path="/party/:address" component={Party} />
-          <Route path="/create" component={Create} />
-        </Switch>
-      </Router>
+      <Fragment>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/party/:address" component={SingleEvent} />
+            <Route path="/create" component={Create} />
+          </Switch>
+        </Router>
+        <Modal name="signIn">Sign in</Modal>
+      </Fragment>
     )
   }
 }

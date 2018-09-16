@@ -1,7 +1,7 @@
-# Blockparty Dapp
+# Kickback Dapp
 
-* Dev version: https://dev.noblockno.party
-* Live version: https://noblockno.party
+- Dev version: https://dev.noblockno.party
+- Live version: https://noblockno.party
 
 ## Dev guide
 
