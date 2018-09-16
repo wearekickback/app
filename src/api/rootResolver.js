@@ -27,7 +27,17 @@ const resolvers = {
     }
   },
 
-  Mutation: {}
+  Mutation: {
+    async signMessage(message) {
+      const accounts = await provider.listAccounts()
+      signer = provider.getSigner(accounts[0])
+      const signature = await signer.signMessage(message)
+      return signature
+    },
+    async verifyMessage(message, signature) {
+      return ethers.Wallet.verifyMessage(message, signature)
+    }
+  }
 }
 
 const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults)
