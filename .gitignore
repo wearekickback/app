@@ -8,8 +8,8 @@
 
 # production
 /build
-/src/build/*.json
-!/src/build/Empty.json
+/src/build/contracts/*json
+!/src/build/contracts/Empty.json
 
 # misc
 .DS_Store
