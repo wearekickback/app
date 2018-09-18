@@ -3,7 +3,7 @@ import PublicDeployer from '@noblocknoparty/contracts/build/contracts/Deployer.j
 import PrivateDeployer from '../build/contracts/Deployer.json'
 import eventsList from '../fixtures/events.json'  
 import {toHex, toWei} from 'web3-utils'
-import getEthers, { signer } from './ethers'
+import getEthers, { signer, getEvents, getNetwork } from './ethers'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
@@ -15,28 +15,6 @@ const deployerContractAddresses = Object.assign(
   PrivateDeployer.networks,
   PublicDeployer.networks
 )
-
-function getNetwork(){
-  return new Promise(function(resolve,reject){
-    window.web3.version.getNetwork(function(err, result){
-      resolve(result);
-    });
-  });
-}
-
-function getEvents(){
-  return new Promise(function(resolve,reject){
-    getNetwork().then((networkId)=>{
-      const deployer = deployerContractAddresses[networkId]
-      const DeployerContract = window.web3.eth.contract(deployerAbi);
-      const deployerInstance = DeployerContract.at(deployer.address);
-      const events = deployerInstance.allEvents({fromBlock: 0, toBlock: 'latest'});
-      events.get(function(error, result){
-        resolve(result);
-      });
-    })
-  });
-}
 
 const rootDefaults = {
   ethers: {
@@ -58,7 +36,7 @@ const resolvers = {
       return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
     },
     async events() {
-      return (await getEvents()).map((event)=>{
+      return (await getEvents(deployerContractAddresses, deployerAbi)).map((event)=>{
         console.log('event', event)
         return {
           name: event.args.deployedAddress,
