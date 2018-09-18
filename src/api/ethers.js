@@ -2,8 +2,6 @@ import ethers from 'ethers'
 
 export let provider
 export let signer
-export let getNetwork
-export let getEvents
 
 function getEthers() {
   if (!provider) {
@@ -14,15 +12,16 @@ function getEthers() {
   }
 }
 
-function getNetwork(){
+export function getNetwork(){
   return new Promise(function(resolve,reject){
     window.web3.version.getNetwork(function(err, result){
+      if(err){console.log('getNetwork err', err)}
       resolve(result);
     });
   });
 }
 
-function getEvents(artifacts, abi){
+export function getEvents(artifacts, abi){
   return new Promise(function(resolve,reject){
     getNetwork().then((networkId)=>{
       const artifact = artifacts[networkId]
