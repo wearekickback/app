@@ -12,6 +12,7 @@ before_script:
   - ganache-cli >ganache.log 2>&1 &
   - sleep 5
 script:
+  - yarn
   - yarn build
 deploy:
   skip_cleanup: true
