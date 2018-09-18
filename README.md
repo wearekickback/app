@@ -25,7 +25,7 @@ yarn start
 Startup ganache in separate terminal
 
 ```
-ganache-cli
+npx ganache-cli
 ```
 
 Run the migration

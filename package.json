@@ -25,9 +25,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "migrate": "truffle migrate --network development --reset && ln -sf build src/build",
+    "build": "yarn migrate react-scripts build",
+    "migrate": "truffle migrate --network development --reset", 
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "ganache-cli": "^6.1.8"
   }
 }
