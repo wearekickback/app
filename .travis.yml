@@ -5,6 +5,11 @@ cache: yarn
 branches:
   only:
     - dev
+install:
+  - yarn global add ganache-cli
+before_script:
+  - ganache-cli >ganache.log 2>&1 &
+  - sleep 5
 script:
   - yarn build
 deploy:
