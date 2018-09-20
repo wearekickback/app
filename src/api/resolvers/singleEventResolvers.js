@@ -104,33 +104,62 @@ const resolvers = {
       const contract = new ethers.Contract(address, abi, signer)
       const deposit = await contract.deposit()
       try {
-        const txId = await contract.register(twitter, {
+        return contract.register(twitter, {
           value: deposit
         })
-        return txId
       } catch (e) {
         console.log(e)
+        return null
       }
     },
     async setLimitOfParticipants(_, { address, limit }) {
-      console.log('in limit', address)
       const ethers = getEthers()
-      //console.log(address)
-      console.log('SET LIMT', address, signer)
       const contract = new ethers.Contract(address, abi, signer)
-
-      console.log(contract)
       try {
-        console.log('here1')
-        contract
-          .setLimitOfParticipants(1000)
-          .then(console.log)
-          .catch(e => console.log('error here', e))
-        console.log('here3')
-        return
+        return contract.setLimitOfParticipants(1000)
       } catch (e) {
-        console.log('here2')
         console.log(e)
+        return null
+      }
+    },
+    async payback(_, { address }) {
+      const ethers = getEthers()
+      const contract = new ethers.Contract(address, abi, signer)
+      try {
+        return contract.payback()
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
+    async clear(_, { address }) {
+      const ethers = getEthers()
+      const contract = new ethers.Contract(address, abi, signer)
+      try {
+        return contract.clear()
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
+    async changeName(_, { address, name }) {
+      const ethers = getEthers()
+      const contract = new ethers.Contract(address, abi, signer)
+      try {
+        return contract.changeName(name)
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
+    async attend(_, { address, participantAddresses }) {
+      const ethers = getEthers()
+      const contract = new ethers.Contract(address, abi, signer)
+      try {
+        return contract.attend(participantAddresses)
+      } catch (e) {
+        console.log(e)
+        return null
       }
     }
   }
