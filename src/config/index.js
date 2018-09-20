@@ -1,4 +1,4 @@
-let config
+let config = {}
 try {
   config = require('./env.json')
 } catch (err) {
