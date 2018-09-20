@@ -27,8 +27,8 @@ const graphqlClient = new ApolloClient({
   })
 })
 
-window.addEventListener('load', () => {
-  setupEthers()
+window.addEventListener('load', async () => {
+  await setupEthers()
   ReactDOM.render(
     <GlobalProvider>
       <ApolloProvider client={graphqlClient}>

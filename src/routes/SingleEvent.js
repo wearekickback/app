@@ -31,8 +31,6 @@ class SingleEvent extends Component {
             if (loading) {
               return <Loader />
             }
-
-            console.log(address)
             return (
               <div>
                 <EventInfo party={party} address={address} />
