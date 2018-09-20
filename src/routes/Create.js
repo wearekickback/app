@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import { Link } from 'react-router-dom'
 
 const CREATE = gql`
   mutation create($name: String, $deposit: String, $limitOfParticipants: String, ) {
@@ -44,7 +45,14 @@ class Create extends Component {
         </div>
 
         <Mutation mutation={CREATE} variables={{ name, deposit, limitOfParticipants }}>
-          {postMutation => <button onClick={postMutation}>Submit</button>}
+          {(postMutation, { data }) => (
+            <div>
+              <button onClick={postMutation}>Submit</button>
+              {data ? (
+                <Link to={`/party/${data.create}`}>View party {data.create}</Link>
+              ) : null}
+            </div>
+          )}
         </Mutation>
       </div>
     )

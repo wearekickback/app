@@ -1,9 +1,11 @@
 import merge from 'lodash/merge'
 import {toHex, toWei} from 'web3-utils'
 import Deployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
+import { events } from '@noblocknoparty/contracts'
+import { parseLog } from 'ethereum-event-logs'
 
 import eventsList from '../fixtures/events.json'
-import getEthers, { signer, getEvents, getDeployerAddress } from './ethers'
+import getEthers, { signer, getEvents, getTransactionLogs, getDeployerAddress } from './ethers'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
@@ -55,14 +57,22 @@ const resolvers = {
       const contract = new ethers.Contract(deployerAddress, deployerAbi, signer)
 
       try {
-        const txId = await contract.deploy(
+        const tx = await contract.deploy(
           name,
           toHex(toWei(deposit)),
           toHex(limitOfParticipants),
           toHex(60 * 60 * 24 * 7),
-          ''
+          '',
+          {
+            gasLimit: 4000000
+          }
         )
-        return txId
+
+        const logs = await getTransactionLogs(tx.hash)
+
+        const [ event ] = parseLog(logs, [ events.NewParty ])
+
+        return event.args.deployedAddress
       } catch (e) {
         console.log('error', e)
       }

@@ -28,6 +28,12 @@ export async function getDeployerAddress() {
   )
 }
 
+export async function getTransactionLogs(txHash) {
+  const { logs } = await provider.getTransactionReceipt(txHash)
+
+  return logs
+}
+
 export function getNetwork() {
   return new Promise(function(resolve, reject) {
     window.web3.version.getNetwork(function(err, result) {

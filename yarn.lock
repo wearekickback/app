@@ -2899,6 +2899,12 @@ eth-lib@0.2.7:
     elliptic "^6.4.0"
     xhr-request-promise "^0.1.2"
 
+ethereum-event-logs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ethereum-event-logs/-/ethereum-event-logs-1.0.2.tgz#28a0ef7b3762528c835d8b33d07ec92f6aec2b6e"
+  dependencies:
+    web3-eth-abi "^1.0.0-beta.36"
+
 ethers@4.0.0-beta.1:
   version "4.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.0-beta.1.tgz#0648268b83e0e91a961b1af971c662cdf8cbab6d"
@@ -8159,7 +8165,7 @@ web3-core@1.0.0-beta.36:
     web3-core-requestmanager "1.0.0-beta.36"
     web3-utils "1.0.0-beta.36"
 
-web3-eth-abi@1.0.0-beta.36:
+web3-eth-abi@1.0.0-beta.36, web3-eth-abi@^1.0.0-beta.36:
   version "1.0.0-beta.36"
   resolved "https://registry.yarnpkg.com/web3-eth-abi/-/web3-eth-abi-1.0.0-beta.36.tgz#21c0f222701db827a8a269accb9cd18bbd8f70f9"
   dependencies:
