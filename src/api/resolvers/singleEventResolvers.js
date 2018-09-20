@@ -105,7 +105,8 @@ const resolvers = {
       const deposit = await contract.deposit()
       try {
         return contract.register(twitter, {
-          value: deposit
+          value: deposit,
+          gasLimit: 1000000
         })
       } catch (e) {
         console.log(e)
