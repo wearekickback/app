@@ -1,6 +1,6 @@
 import merge from 'lodash/merge'
-import { Deployer } from '@noblocknoparty/contracts'
 import {toHex, toWei} from 'web3-utils'
+import Deployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
 
 import eventsList from '../fixtures/events.json'
 import getEthers, { signer, getEvents, getDeployerAddress } from './ethers'
@@ -8,6 +8,7 @@ import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
+
 
 const deployerAbi = Deployer.abi
 

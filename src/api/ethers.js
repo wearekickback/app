@@ -1,7 +1,8 @@
 import ethers from 'ethers'
-import { Deployer } from '@noblocknoparty/contracts'
+import Deployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
 
 import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
+
 
 export let provider
 export let signer
