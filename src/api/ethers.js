@@ -3,8 +3,7 @@ import Deployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
 
 import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
 
-
-export let provider
+export let provider = null
 export let signer
 
 const networks = {
@@ -24,31 +23,35 @@ function getEthers() {
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
-  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[await getNetwork()].address
+  return (
+    DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[await getNetwork()].address
+  )
 }
 
-export function getNetwork(){
-  return new Promise(function(resolve,reject){
-    window.web3.version.getNetwork(function(err, result){
-      if(err){console.log('getNetwork err', err)}
-      resolve(result);
-    });
-  });
+export function getNetwork() {
+  return new Promise(function(resolve, reject) {
+    window.web3.version.getNetwork(function(err, result) {
+      if (err) {
+        console.log('getNetwork err', err)
+      }
+      resolve(result)
+    })
+  })
 }
 
-export async function getEvents(address, abi){
-  return new Promise(function(resolve,reject){
-    const Contract = window.web3.eth.contract(abi);
-    const instance = Contract.at(address);
-    const events = instance.allEvents({fromBlock: 0, toBlock: 'latest'});
-    events.get(function(error, result){
+export async function getEvents(address, abi) {
+  return new Promise(function(resolve, reject) {
+    const Contract = window.web3.eth.contract(abi)
+    const instance = Contract.at(address)
+    const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
+    events.get(function(error, result) {
       if (error) {
         reject(error)
       }
 
-      resolve(result);
-    });
-  });
+      resolve(result)
+    })
+  })
 }
 
 // export async function setupEthers(network = 'rinkeby') {
@@ -75,6 +78,32 @@ export async function getEvents(address, abi){
 // }
 
 export async function setupEthers(network = 'rinkeby') {
+  //Localnode
+  let url = 'http://localhost:8545'
+
+  await fetch(url)
+    .then(async () => {
+      provider = new ethers.providers.JsonRpcProvider()
+      const accounts = await provider.listAccounts()
+      console.log(accounts)
+      signer = provider.getSigner(accounts[0])
+    })
+    .catch(error => {
+      if (
+        error.readyState === 4 &&
+        (error.status === 400 || error.status === 200)
+      ) {
+        // the endpoint is active
+        console.log('Success')
+      } else {
+        console.log('No local node detected')
+      }
+    })
+
+  if (provider) {
+    return provider
+  }
+
   if (typeof window.web3 !== undefined) {
     const id = await getNetwork(window.web3)
 
@@ -82,10 +111,6 @@ export async function setupEthers(network = 'rinkeby') {
       ethers.providers.networks.rinkeby.ensAddress =
         '0xe7410170f87102df0055eb195163a03b7f2bff4a'
     }
-
-    console.log(typeof id)
-
-    console.log(id[networks])
 
     // Use Mist/MetaMask's provider
     provider = new ethers.providers.Web3Provider(

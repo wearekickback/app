@@ -19,7 +19,6 @@ class ReverseResolution extends Component {
         variables={{ address: this.props.address }}
       >
         {({ data, loading, error }) => {
-          console.log(data)
           const { getReverseRecord } = data
           if (loading)
             return this.props.children({

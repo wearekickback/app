@@ -32,7 +32,7 @@ directory structure is as follows:
 
 **Deploy our Deployer contract to local test network**
 
-Clone the [contracts repo](https://githbu.com/noblocknoparty/contracts) into a sibling folder called `contracts` such that
+Clone the [contracts repo](https://github.com/noblocknoparty/contracts) into a sibling folder called `contracts` such that
 directory structure is as follows:
 
 ```shell
