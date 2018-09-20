@@ -8,6 +8,7 @@ import DefaultLayout from './layout/Layouts'
 //import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
+import Create from './routes/Create'
 import SingleEvent from './routes/SingleEvent'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/SignIn/SignIn'
@@ -39,6 +40,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/party/:address" component={SingleEvent} />
+            <Route path="/create" component={Create} />
           </Switch>
         </Router>
         <Modal name="signIn" component={SignIn} />

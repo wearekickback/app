@@ -42,3 +42,11 @@ export const AllPartiesQuery = gql`
     }
   }
 `
+export const AllEventsQuery = gql`
+  query getEvents {
+    events @client {
+      name
+      address
+    }
+  }
+`

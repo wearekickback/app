@@ -1,5 +1,7 @@
 import getEthers, { provider, signer } from '../ethers'
-import { abi } from '../abi.json'
+import Conference from '@noblocknoparty/contracts/build/contracts/Conference.json'
+
+const abi = Conference.abi
 
 export const defaults = {}
 
@@ -103,7 +105,6 @@ const resolvers = {
       const deposit = await contract.deposit()
       try {
         const txId = await contract.register(twitter, {
-          nonce: 0,
           value: deposit
         })
         return txId
