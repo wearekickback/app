@@ -5,7 +5,7 @@ import { Transition } from 'react-spring'
 
 class Modal extends Component {
   render() {
-    const { name, children } = this.props
+    const { name, children, component: Component } = this.props
     return (
       <GlobalConsumer>
         {({ state, handleModalToggle }) => (
@@ -26,6 +26,7 @@ class Modal extends Component {
                   }}
                 >
                   <ModalContent onClick={event => event.stopPropagation()}>
+                    <Component name={name} />
                     {children}
                   </ModalContent>
                 </ModalContainer>

@@ -10,6 +10,7 @@ import DefaultLayout from './layout/Layouts'
 import Home from './routes/Home'
 import SingleEvent from './routes/SingleEvent'
 import Modal from './components/Modal/Modal'
+import SignIn from './components/SignIn/SignIn'
 
 import './App.css'
 
@@ -40,7 +41,7 @@ class App extends Component {
             <Route path="/party/:address" component={SingleEvent} />
           </Switch>
         </Router>
-        <Modal name="signIn">Sign in</Modal>
+        <Modal name="signIn" component={SignIn} />
       </Fragment>
     )
   }
