@@ -1,20 +1,15 @@
 import merge from 'lodash/merge'
-import PublicDeployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
-import PrivateDeployer from '../build/contracts/Deployer.json'
-import eventsList from '../fixtures/events.json'  
+import { Deployer } from '@noblocknoparty/contracts'
 import {toHex, toWei} from 'web3-utils'
-import getEthers, { signer, getEvents, getNetwork } from './ethers'
+
+import eventsList from '../fixtures/events.json'
+import getEthers, { signer, getEvents, getDeployerAddress } from './ethers'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 
-const deployerAbi = PublicDeployer.abi
-const deployerContractAddresses = Object.assign(
-  {},
-  PrivateDeployer.networks,
-  PublicDeployer.networks
-)
+const deployerAbi = Deployer.abi
 
 const rootDefaults = {
   ethers: {
@@ -36,7 +31,9 @@ const resolvers = {
       return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
     },
     async events() {
-      return (await getEvents(deployerContractAddresses, deployerAbi)).map((event)=>{
+      const deployerAddress = await getDeployerAddress()
+
+      return (await getEvents(deployerAddress, deployerAbi)).map((event)=>{
         console.log('event', event)
         return {
           name: event.args.deployedAddress,
@@ -50,9 +47,10 @@ const resolvers = {
   Mutation: {
     async create(_, { name, deposit, limitOfParticipants}) {
       const ethers = getEthers()
-      const networkId = await getNetwork()
-      const deployer = deployerContractAddresses[networkId]
-      const contract = new ethers.Contract(deployer.address, deployerAbi, signer)
+
+      const deployerAddress = await getDeployerAddress()
+
+      const contract = new ethers.Contract(deployerAddress, deployerAbi, signer)
 
       try {
         const txId = await contract.deploy(

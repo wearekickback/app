@@ -1,4 +1,7 @@
 import ethers from 'ethers'
+import { Deployer } from '@noblocknoparty/contracts'
+
+import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
 
 export let provider
 export let signer
@@ -12,6 +15,11 @@ function getEthers() {
   }
 }
 
+export async function getDeployerAddress() {
+  // if local env doesn't specify address then assume we're on a public net
+  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[await getNetwork()].address
+}
+
 export function getNetwork(){
   return new Promise(function(resolve,reject){
     window.web3.version.getNetwork(function(err, result){
@@ -21,17 +29,18 @@ export function getNetwork(){
   });
 }
 
-export function getEvents(artifacts, abi){
+export async function getEvents(address, abi){
   return new Promise(function(resolve,reject){
-    getNetwork().then((networkId)=>{
-      const artifact = artifacts[networkId]
-      const Contract = window.web3.eth.contract(abi);
-      const instance = Contract.at(artifact.address);
-      const events = instance.allEvents({fromBlock: 0, toBlock: 'latest'});
-      events.get(function(error, result){
-        resolve(result);
-      });
-    })
+    const Contract = window.web3.eth.contract(abi);
+    const instance = Contract.at(address);
+    const events = instance.allEvents({fromBlock: 0, toBlock: 'latest'});
+    events.get(function(error, result){
+      if (error) {
+        reject(error)
+      }
+
+      resolve(result);
+    });
   });
 }
 

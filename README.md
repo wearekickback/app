@@ -5,33 +5,35 @@
 
 ## Dev guide
 
+**Install dep**
 
-**Run the app**
-
-Install deps:
-
-```
+```shell
 yarn
 ```
+
+**Start a local test network**
+
+In a new terminal:
+
+```shell
+npx ganache-cli
+```
+
+**Deploy our Deployer contract**
+
+```shell
+scripts/deployDeployerToLocalNetwork.js
+```
+
+_Note: This will create the file `src/config/env.json` containing the deployer
+address_.
+
+**Run the app**
 
 Run the dev server:
 
 ```
 yarn start
-```
-
-**Deploy our contracts to a local env n**
-
-Startup ganache in separate terminal
-
-```
-npx ganache-cli
-```
-
-Run the migration
-
-```
-yarn migrate
 ```
 
 **Test creating a event locally**
@@ -41,4 +43,3 @@ yarn migrate
 - Fill in event detail and press "Submit"
 - Once transaction is complete, then get `deployedAddress` from the event.
 - Go to http://localhost:3000/party/$address to see if newly created event is shown.
-

@@ -73,9 +73,9 @@
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.1.tgz#f3a81587ad8d0ef33cdad6f3b4310774fcc1053e"
 
-"@noblocknoparty/contracts@^0.11.6":
-  version "0.11.6"
-  resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-0.11.6.tgz#2b512ceb5ca718c44e8780b1932761c6573c9c08"
+"@noblocknoparty/contracts@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-0.12.0.tgz#da029c0a39c8189f9d9b7120a23f2cae78c420cd"
 
 "@types/async@2.0.49":
   version "2.0.49"
