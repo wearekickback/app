@@ -7,6 +7,12 @@ import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
 export let provider
 export let signer
 
+const networks = {
+  '1': 'homestead',
+  '3': 'ropsten',
+  '4': 'rinkeby'
+}
+
 function getEthers() {
   if (!provider) {
     setupEthers()
@@ -70,15 +76,21 @@ export async function getEvents(address, abi){
 
 export async function setupEthers(network = 'rinkeby') {
   if (typeof window.web3 !== undefined) {
-    if (network === 'rinkeby') {
-      console.log(ethers.providers.networks)
+    const id = await getNetwork(window.web3)
+
+    if (networks[id] === 'rinkeby') {
       ethers.providers.networks.rinkeby.ensAddress =
         '0xe7410170f87102df0055eb195163a03b7f2bff4a'
     }
+
+    console.log(typeof id)
+
+    console.log(id[networks])
+
     // Use Mist/MetaMask's provider
     provider = new ethers.providers.Web3Provider(
       window.web3.currentProvider,
-      network
+      networks[id]
     )
     const accounts = await provider.listAccounts()
     signer = provider.getSigner(accounts[0])

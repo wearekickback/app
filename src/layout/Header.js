@@ -6,7 +6,7 @@ const HeaderContainer = styled('header')`
   width: 100%;
   height: 50px;
   display: flex;
-  background: #ccc;
+  background: #6e76ff;
   justify-content: space-between;
 `
 

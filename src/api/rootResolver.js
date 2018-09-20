@@ -22,6 +22,7 @@ const rootDefaults = {
 
 const resolvers = {
   Query: {
+    async accounts() {},
     async ethers() {
       return {
         ...getEthers(),

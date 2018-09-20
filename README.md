@@ -19,14 +19,41 @@ In a new terminal:
 npx ganache-cli
 ```
 
-**Deploy our Deployer contract**
+**Clone our backend repo**
+
+Clone the [backend repo](https://githbu.com/noblocknoparty/server) into a sibling folder called `server` such that
+directory structure is as follows:
 
 ```shell
-scripts/deployDeployerToLocalNetwork.js
+/my/path
+  /my/path/server    <- backend repo
+  /my/path/app    <- app repo (this project)
 ```
 
-_Note: This will create the file `src/config/env.json` containing the deployer
-address_.
+**Deploy our Deployer contract to local test network**
+
+Clone the [contracts repo](https://githbu.com/noblocknoparty/contracts) into a sibling folder called `contracts` such that
+directory structure is as follows:
+
+```shell
+/my/path
+  /my/path/contracts    <- contracts repo
+  /my/path/server    <- backend repo
+  /my/path/app    <- app repo (this project)
+```
+
+Now go into the `contracts` repo folder and run:
+
+```shell
+yarn deploy:local
+```
+
+_Note: This will update both this project and the backend repo project to have
+the right deployer address_.
+
+**Run the backend server**
+
+
 
 **Run the app**
 
