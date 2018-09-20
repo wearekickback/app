@@ -2,7 +2,13 @@ import React, { Fragment } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolutionRP'
 
-const InputAddressContainer = styled('div')``
+const InputAddressContainer = styled('div')`
+  border: 1px solid #ccc;
+`
+const Name = styled('div')``
+const Address = styled('div')`
+  color: ${({ faded }) => (faded ? '#ccc' : '#2b2b2b')};
+`
 
 const InputAddress = ({ address }) => {
   return (
@@ -12,14 +18,14 @@ const InputAddress = ({ address }) => {
           if (name) {
             return (
               <Fragment>
-                <span>name: {name}</span>
-                <span>address: {address}</span>
+                <Name>{name}</Name>
+                <Address faded>{address}</Address>
               </Fragment>
             )
           } else {
             return (
               <Fragment>
-                <span>address: {address}</span>
+                <Address>{address}</Address>
               </Fragment>
             )
           }
