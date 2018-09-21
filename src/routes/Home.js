@@ -11,31 +11,35 @@ class Home extends Component {
       <div className="App">
         <h2>All parties</h2>
         <Query query={AllPartiesQuery}>
-          {({ data, loading }) => {
+          {({ data: { parties } = {}, loading }) => {
             if (loading) return <Loader />
-            return (
+            return parties ? (
               <div>
-                {data.parties.map(party => (
+                {parties.map(party => (
                   <li>
                     <Link to={`/party/${party.address}`}>{party.name}</Link>
                   </li>
                 ))}
               </div>
+            ) : (
+              <div>No parties to show!</div>
             )
           }}
         </Query>
         <h2>All events</h2>
         <Query query={AllEventsQuery}>
-          {({ data, loading }) => {
+          {({ data: { events } = {}, loading }) => {
             if (loading) return <Loader />
-            return (
+            return events ? (
               <div>
-                {data.events.map(party => (
+                {events.map(party => (
                   <li>
                     <Link to={`/party/${party.address}`}>{party.name}</Link>
                   </li>
                 ))}
               </div>
+            ) : (
+              <div>No events to show!</div>
             )
           }}
         </Query>
