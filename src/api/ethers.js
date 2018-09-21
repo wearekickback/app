@@ -62,33 +62,42 @@ export async function setupEthers() {
 
   // try and connect via web3
   if (window.web3 && window.web3.currentProvider) {
-    const id = await promisify(window.web3.version.getNetwork.bind(window.web3.version))()
+    try {
+      const id = await promisify(window.web3.version.getNetwork.bind(window.web3.version))()
 
-    if (expectedNetwork && NETWORKS[id] !== expectedNetwork) {
-      networkError = `Not on expected network: ${expectedNetwork}`
+      if (expectedNetwork && NETWORKS[id] !== expectedNetwork) {
+        networkError = `Not on expected network: ${expectedNetwork}`
 
-      return console.error(networkError)
+        return console.error(networkError)
+      }
+
+      // Use Mist/MetaMask's provider
+      provider = new ethers.providers.Web3Provider(
+        window.web3.currentProvider,
+        expectedNetwork
+      )
+
+      const [ account ] = await provider.listAccounts()
+
+      console.log(`Signer account: ${account}`)
+
+      signer = provider.getSigner(account)
+    } catch (err) {
+      console.warn(`Unable to connect via Web3 provider`, err)
     }
-
-    // Use Mist/MetaMask's provider
-    provider = new ethers.providers.Web3Provider(
-      window.web3.currentProvider,
-      expectedNetwork
-    )
-
-    const [ account ] = await provider.listAccounts()
-
-    console.log(`Signer account: ${account}`)
-
-    signer = provider.getSigner(account)
   } else {
     console.log('No web3? You should consider trying MetaMask!')
+  }
 
+  if (!provider) {
     try {
       // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet
       provider = ethers.providers.getDefaultProvider(expectedNetwork)
+
+      // check that it works!
+      await provider.getBlockNumber()
     } catch (err) {
-      networkError = `Error connecting to network: ${expectedNetwork}`
+      networkError = `We were unable to connect to the Ethereum network: ${expectedNetwork || 'local'}`
 
       return console.error(networkError)
     }
