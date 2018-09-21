@@ -1,4 +1,4 @@
-import { provider } from '../ethers'
+import getWeb3 from '../web3'
 
 export const defaults = {}
 
@@ -11,10 +11,12 @@ const resolvers = {
       }
 
       try {
-        const name = await provider.lookupAddress(address)
+        const web3 = getWeb3()
+        const resolver = await web3.eth.resolver(address.slice(0, 2))
+        console.log(resolver)
         return {
           ...obj,
-          name
+          name: 'hardcoded.eth'
         }
       } catch (e) {
         return {

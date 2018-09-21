@@ -1,21 +1,24 @@
 import merge from 'lodash/merge'
-import {toHex, toWei} from 'web3-utils'
+import { toHex, toWei } from 'web3-utils'
 import { Deployer } from '@noblocknoparty/contracts'
 import { events } from '@noblocknoparty/contracts'
 import { parseLog } from 'ethereum-event-logs'
 
 import eventsList from '../fixtures/events.json'
-import getEthers, { signer, getEvents, getTransactionLogs, getDeployerAddress } from './ethers'
+import getWeb3, {
+  getEvents,
+  getTransactionLogs,
+  getDeployerAddress
+} from './web3'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 
-
 const deployerAbi = Deployer.abi
 
 const rootDefaults = {
-  ethers: {
+  web3: {
     accounts: [],
     networkId: 0,
     __typename: 'Web3'
@@ -25,10 +28,10 @@ const rootDefaults = {
 const resolvers = {
   Query: {
     async accounts() {},
-    async ethers() {
+    async web3() {
       return {
-        ...getEthers(),
-        __typename: 'Ethers'
+        ...getWeb3(),
+        __typename: 'Web3'
       }
     },
     async parties() {
@@ -47,12 +50,12 @@ const resolvers = {
   },
 
   Mutation: {
-    async create(_, { name, deposit, limitOfParticipants}) {
-      const ethers = getEthers()
+    async create(_, { name, deposit, limitOfParticipants }) {
+      const web3 = getWeb3()
 
       const deployerAddress = await getDeployerAddress()
 
-      const contract = new ethers.Contract(deployerAddress, deployerAbi, signer)
+      const contract = new web3.eth.Contract(deployerAddress, deployerAbi)
 
       try {
         const tx = await contract.deploy(
@@ -68,7 +71,7 @@ const resolvers = {
 
         const logs = await getTransactionLogs(tx.hash)
 
-        const [ event ] = parseLog(logs, [ events.NewParty ])
+        const [event] = parseLog(logs, [events.NewParty])
 
         return event.args.deployedAddress
       } catch (e) {
@@ -76,15 +79,15 @@ const resolvers = {
 
         throw new Error(`Failed to deploy party: ${e}`)
       }
-    },
-    async signMessage(message) {
-      const signature = await signer.signMessage(message)
-      return signature
-    },
-    async verifyMessage(message, signature) {
-      const ethers = getEthers()
-      return ethers.Wallet.verifyMessage(message, signature)
     }
+    // async signMessage(message) {
+    //   const signature = await signer.signMessage(message)
+    //   return signature
+    // },
+    // async verifyMessage(message, signature) {
+    //   const ethers = getEthers()
+    //   return ethers.Wallet.verifyMessage(message, signature)
+    // }
   }
 }
 
