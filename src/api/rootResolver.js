@@ -36,15 +36,13 @@ const resolvers = {
     },
     async events() {
       const deployerAddress = await getDeployerAddress()
+      const events = await getEvents(deployerAddress, deployerAbi)
 
-      return (await getEvents(deployerAddress, deployerAbi)).map((event)=>{
-        console.log('event', event)
-        return {
-          name: event.args.deployedAddress,
-          address: event.args.deployedAddress,
-          __typename: event.event
-        }
-      })
+      return events.map(event => ({
+        name: event.args.deployedAddress,
+        address: event.args.deployedAddress,
+        __typename: event.event
+      }))
     }
   },
 
