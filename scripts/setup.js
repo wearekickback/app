@@ -13,10 +13,17 @@ try {
   /* do nothing */
 }
 
+const _set = (k, v) => {
+  if (undefined === appConfig[k]) {
+    appConfig[k] = v
+  }
+}
+
 if (argv.dev) {
-  appConfig.API_URL = 'https://dev.kickback.events'
+  _set('NETWORK', 'ropsten')
+  _set('API_URL', 'https://dev.kickback.events')
 } else {
-  appConfig.API_URL = 'http://localhost:3001'
+  _set('API_URL', 'http://localhost:3001')
 }
 
 const str = JSON.stringify(appConfig, null, 2)

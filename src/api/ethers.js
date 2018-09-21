@@ -1,12 +1,15 @@
 import ethers from 'ethers'
 import { Deployer } from '@noblocknoparty/contracts'
+import { promisify } from 'es6-promisify'
 
-import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
+import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
 
 export let provider = null
 export let signer
+export let networkError
+let networkId
 
-const networks = {
+const NETWORKS = {
   '1': 'homestead',
   '3': 'ropsten',
   '4': 'rinkeby'
@@ -24,7 +27,7 @@ function getEthers() {
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
   return (
-    DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[await getNetwork()].address
+    DEPLOYER_CONTRACT_ADDRESS || Deployer.NETWORKS[networkId].address
   )
 }
 
@@ -32,17 +35,6 @@ export async function getTransactionLogs(txHash) {
   const { logs } = await provider.getTransactionReceipt(txHash)
 
   return logs
-}
-
-export function getNetwork() {
-  return new Promise(function(resolve, reject) {
-    window.web3.version.getNetwork(function(err, result) {
-      if (err) {
-        console.log('getNetwork err', err)
-      }
-      resolve(result)
-    })
-  })
 }
 
 export async function getEvents(address, abi) {
@@ -60,77 +52,49 @@ export async function getEvents(address, abi) {
   })
 }
 
-// export async function setupEthers(network = 'rinkeby') {
-//   if (typeof window.web3 !== undefined) {
-//     if (network === 'rinkeby') {
-//       console.log(ethers.providers.networks)
-//       ethers.providers.networks.rinkeby.ensAddress =
-//         '0xe7410170f87102df0055eb195163a03b7f2bff4a'
-//     }
-//     // Use Mist/MetaMask's provider
-//     provider = new ethers.providers.Web3Provider(
-//       window.web3.currentProvider,
-//       network
-//     )
-//     const accounts = await provider.listAccounts()
-//     signer = provider.getSigner(accounts[0])
-//     console.log(signer)
-//   } else {
-//     console.log('No web3? You should consider trying MetaMask!')
-//     // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet
-//     provider = ethers.providers.getDefaultProvider(network)
-//   }
-//   return provider
-// }
+export async function setupEthers() {
+  const expectedNetwork = NETWORK
 
-export async function setupEthers(network = 'rinkeby') {
-  //Localnode
-  let url = 'http://localhost:8545'
-
-  await fetch(url)
-    .then(async () => {
-      provider = new ethers.providers.JsonRpcProvider()
-      const accounts = await provider.listAccounts()
-      console.log(accounts)
-      signer = provider.getSigner(accounts[0])
-    })
-    .catch(error => {
-      if (
-        error.readyState === 4 &&
-        (error.status === 400 || error.status === 200)
-      ) {
-        // the endpoint is active
-        console.log('Success')
-      } else {
-        console.log('No local node detected')
-      }
-    })
-
-  if (provider) {
-    return provider
+  if (expectedNetwork === 'rinkeby') {
+    ethers.providers.NETWORKS.rinkeby.ensAddress =
+      '0xe7410170f87102df0055eb195163a03b7f2bff4a'
   }
 
-  if (typeof window.web3 !== undefined) {
-    const id = await getNetwork(window.web3)
+  // try and connect via web3
+  if (window.web3 && window.web3.currentProvider) {
+    const id = await promisify(window.web3.version.getNetwork.bind(window.web3.version))()
 
-    if (networks[id] === 'rinkeby') {
-      ethers.providers.networks.rinkeby.ensAddress =
-        '0xe7410170f87102df0055eb195163a03b7f2bff4a'
+    if (expectedNetwork && NETWORKS[id] !== expectedNetwork) {
+      networkError = `Not on expected network: ${expectedNetwork}`
+
+      return console.error(networkError)
     }
 
     // Use Mist/MetaMask's provider
     provider = new ethers.providers.Web3Provider(
       window.web3.currentProvider,
-      networks[id]
+      expectedNetwork
     )
-    const accounts = await provider.listAccounts()
-    signer = provider.getSigner(accounts[0])
+
+    const [ account ] = await provider.listAccounts()
+
+    console.log(`Signer account: ${account}`)
+
+    signer = provider.getSigner(account)
   } else {
     console.log('No web3? You should consider trying MetaMask!')
-    // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet
-    provider = ethers.providers.getDefaultProvider(network)
+
+    try {
+      // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet
+      provider = ethers.providers.getDefaultProvider(expectedNetwork)
+    } catch (err) {
+      networkError = `Error connecting to network: ${expectedNetwork}`
+
+      return console.error(networkError)
+    }
   }
-  return provider
+
+  networkId = provider.chainId
 }
 
 export default getEthers

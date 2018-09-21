@@ -8,6 +8,7 @@
     "apollo-client": "^2.4.0",
     "apollo-link-state": "^0.4.1",
     "emotion": "^9.2.6",
+    "es6-promisify": "^6.0.0",
     "ethereum-event-logs": "^1.0.2",
     "ethers": "^3.0.26",
     "graphql": "^0.13.2",
