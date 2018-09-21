@@ -8,10 +8,10 @@ export let networkError
 
 function getWeb3() {
   if (!web3) {
-    return setupWeb3()
-  } else {
-    return web3
+    setupWeb3()
   }
+
+  return web3
 }
 
 export async function getDeployerAddress() {
@@ -22,10 +22,7 @@ export async function getDeployerAddress() {
 
 export async function getTransactionLogs(txHash) {
   const web3 = getWeb3()
-
-  const logs = await web3.eth.getTransactionReceipt(txHash)
-
-  return logs
+  return web3.eth.getTransactionReceipt(txHash)
 }
 
 export async function getEvents(address, abi) {
@@ -50,33 +47,15 @@ export async function getAccount() {
 }
 
 export async function setupWeb3() {
-  //Localnode
-  let url = 'http://localhost:8545'
-
-  fetch(url)
-    .then(() => {
-      console.log('local node active')
-      web3 = new Web3(url)
-    })
-    .catch(error => {
-      if (
-        error.readyState === 4 &&
-        (error.status === 400 || error.status === 200)
-      ) {
-        // the endpoint is active
-        console.log('Success')
-      }
-    })
-
-  if (web3) {
-    return web3
-  }
-
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
   if (window.web3 && window.web3.currentProvider) {
     web3 = new Web3(window.web3.currentProvider)
-    console.log(web3)
-    return web3
+    try {
+      await web3.eth.net.getId()
+    } catch (e) {
+      networkError = `We were unable to connect to the Ethereum network`
+      console.error(networkError)
+    }
   } else {
     console.log('No web3 instance injected.')
   }

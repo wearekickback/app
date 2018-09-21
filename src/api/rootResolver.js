@@ -28,7 +28,7 @@ const rootDefaults = {
 const resolvers = {
   Query: {
     async accounts() {},
-    async ethers() {
+    async web3() {
       return {
         ...getWeb3(),
         __typename: 'Web3'
