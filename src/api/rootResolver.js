@@ -6,6 +6,7 @@ import { parseLog } from 'ethereum-event-logs'
 
 import eventsList from '../fixtures/events.json'
 import getWeb3, {
+  getAccount,
   getEvents,
   getTransactionLogs,
   getDeployerAddress
@@ -52,22 +53,25 @@ const resolvers = {
   Mutation: {
     async create(_, { name, deposit, limitOfParticipants }) {
       const web3 = getWeb3()
+      const account = await getAccount()
 
       const deployerAddress = await getDeployerAddress()
 
-      const contract = new web3.eth.Contract(deployerAddress, deployerAbi)
+      const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
 
       try {
-        const tx = await contract.deploy(
-          name,
-          toHex(toWei(deposit)),
-          toHex(limitOfParticipants),
-          toHex(60 * 60 * 24 * 7),
-          '',
-          {
-            gasLimit: 4000000
-          }
-        )
+        const tx = await contract.methods
+          .deploy(
+            name,
+            toHex(toWei(deposit)),
+            toHex(limitOfParticipants),
+            toHex(60 * 60 * 24 * 7),
+            ''
+          )
+          .send({
+            gas: 4000000,
+            from: account
+          })
 
         const logs = await getTransactionLogs(tx.hash)
 
