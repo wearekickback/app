@@ -113,10 +113,11 @@ const resolvers = {
       }
     },
     async setLimitOfParticipants(_, { address, limit }) {
+      console.log(limit)
       const ethers = getEthers()
       const contract = new ethers.Contract(address, abi, signer)
       try {
-        return contract.setLimitOfParticipants(1000)
+        return contract.setLimitOfParticipants(limit)
       } catch (e) {
         console.log(e)
         return null

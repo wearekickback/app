@@ -10,6 +10,7 @@ import DefaultLayout from './layout/Layouts'
 import Home from './routes/Home'
 import Create from './routes/Create'
 import SingleEvent from './routes/SingleEvent'
+import SingleEventAdmin from './routes/SingleEventAdmin'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/SignIn/SignIn'
 
@@ -39,7 +40,8 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/party/:address" component={SingleEvent} />
+            <Route exact path="/party/:address" component={SingleEvent} />
+            <Route path="/party/:address/admin" component={SingleEventAdmin} />
             <Route path="/create" component={Create} />
           </Switch>
         </Router>
