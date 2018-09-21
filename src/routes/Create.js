@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Link } from 'react-router-dom'
+
+import SafeMutation from '../components/SafeMutation'
 
 const CREATE = gql`
   mutation create($name: String, $deposit: String, $limitOfParticipants: String, ) {
@@ -44,16 +45,16 @@ class Create extends Component {
           /><br/>
         </div>
 
-        <Mutation mutation={CREATE} variables={{ name, deposit, limitOfParticipants }}>
-          {(postMutation, { data }) => (
+        <SafeMutation mutation={CREATE} variables={{ name, deposit, limitOfParticipants }}>
+          {(postMutation, { create: address }) => (
             <div>
               <button onClick={postMutation}>Submit</button>
-              {data ? (
-                <Link to={`/party/${data.create}`}>View party {data.create}</Link>
+              {address ? (
+                <Link to={`/party/${address}`}>View party {address}</Link>
               ) : null}
             </div>
           )}
-        </Mutation>
+        </SafeMutation>
       </div>
     )
   }
