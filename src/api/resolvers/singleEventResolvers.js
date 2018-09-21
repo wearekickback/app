@@ -1,5 +1,5 @@
 import getEthers, { provider, signer } from '../ethers'
-import Conference from '@noblocknoparty/contracts/build/contracts/Conference.json'
+import { Conference } from '@noblocknoparty/contracts'
 
 const abi = Conference.abi
 
@@ -105,7 +105,8 @@ const resolvers = {
       const deposit = await contract.deposit()
       try {
         return contract.register(twitter, {
-          value: deposit
+          value: deposit,
+          gasLimit: 1000000
         })
       } catch (e) {
         console.log(e)

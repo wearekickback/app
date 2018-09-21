@@ -6,7 +6,8 @@ branches:
   only:
     - dev
 script:
-  - yarn build
+  - yarn build:dev
+  - yarn predeploy
 deploy:
   skip_cleanup: true
   provider: surge

@@ -8,6 +8,8 @@
     "apollo-client": "^2.4.0",
     "apollo-link-state": "^0.4.1",
     "emotion": "^9.2.6",
+    "es6-promisify": "^6.0.0",
+    "ethereum-event-logs": "^1.0.2",
     "ethers": "^3.0.26",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
@@ -18,8 +20,7 @@
     "react-emotion": "^9.2.6",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
-    "react-spring": "^5.7.2",
+    "react-scripts": "2.0.0-next.a671462c",
     "truffle": "^5.0.0-beta.0",
     "web3": "^1.0.0-beta.36"
   },
@@ -27,10 +28,25 @@
     "setup": "scripts/setup.js",
     "start": "yarn setup && react-scripts start",
     "build": "yarn setup && react-scripts build",
+    "build:dev": "yarn setup --dev && react-scripts build",
+    "predeploy": "cp build/index.html build/200.html",
     "test": "yarn setup && react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "ganache-cli": "^6.1.8"
+    "ganache-cli": "^6.1.8",
+    "yargs": "^12.0.2"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
   }
 }

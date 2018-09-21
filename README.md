@@ -19,25 +19,58 @@ In a new terminal:
 npx ganache-cli
 ```
 
+**Clone our backend repo**
+
+Clone the [backend repo](https://githbu.com/noblocknoparty/server) into a
+sibling folder called `server` such that directory structure is as follows:
+
+```shell
+/my/path
+  /my/path/server    <- backend repo
+  /my/path/app    <- app repo (this project)
+```
+
+Follow the instructions in the `server` repo README to get the server up and
+running locally.
+
 **Deploy our Deployer contract to local test network**
 
-Clone the [contracts repo](https://github.com/noblocknoparty/contracts) into a sibling folder called `contracts` such that
+Clone the [contracts repo](https://github.com/noblocknoparty/contracts) into a
+sibling folder called `contracts` such that
 directory structure is as follows:
 
 ```shell
 /my/path
   /my/path/contracts    <- contracts repo
+  /my/path/server    <- backend repo
   /my/path/app    <- app repo (this project)
 ```
 
-Now go into the `contracts` repo folder and run:
+Follow the instructions in the `contracts` repo README to get contracts
+compilation and deployment working, ensuring that you run the following command
+within it:
 
 ```shell
 yarn deploy:local
 ```
 
-_Note: This will update the file `src/config/env.json` to contain the deployer
-address_.
+_Note: This will update both this project and the backend repo project to have
+the right deployer address_.
+
+**Run the backend server**
+
+Go back into the server repo folder and re-run the server. Now let's ensure
+that the frontend app will speak to the server instance running locally.
+
+Edit `src/config/env.js` and enter the `API_URL` key:
+
+```js
+{
+  ...
+  "API_KEY": "http://localhost:3001",
+  ...
+}
+```
 
 **Run the app**
 

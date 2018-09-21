@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import GlobalConsumer from '../../GlobalState'
-import { Transition } from 'react-spring'
+// import { Transition } from 'react-spring'
 
 class Modal extends Component {
   render() {
@@ -9,29 +9,22 @@ class Modal extends Component {
     return (
       <GlobalConsumer>
         {({ state, handleModalToggle }) => (
-          <Transition
-            from={{ opacity: 0 }}
-            enter={{ opacity: 1 }}
-            leave={{ opacity: 0 }}
-          >
-            {name === state.currentModal &&
-              (styles => (
-                <ModalContainer
-                  show={name === state.currentModal}
-                  style={styles}
-                  onClick={event => {
-                    console.log(event)
-                    event.stopPropagation()
-                    handleModalToggle(name)
-                  }}
-                >
-                  <ModalContent onClick={event => event.stopPropagation()}>
-                    <Component name={name} />
-                    {children}
-                  </ModalContent>
-                </ModalContainer>
-              ))}
-          </Transition>
+          name === state.currentModal &&
+            (
+              <ModalContainer
+                show={name === state.currentModal}
+                onClick={event => {
+                  console.log(event)
+                  event.stopPropagation()
+                  handleModalToggle(name)
+                }}
+              >
+                <ModalContent onClick={event => event.stopPropagation()}>
+                  <Component name={name} />
+                  {children}
+                </ModalContent>
+              </ModalContainer>
+            )
         )}
       </GlobalConsumer>
     )
