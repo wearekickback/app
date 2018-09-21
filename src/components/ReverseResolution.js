@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import gql from 'graphql-tag'
 
-import Query from './Query'
+import SafeQuery from'./SafeQuery'
 
 const GET_REVERSE_RECORD = gql`
   query getReverseRecord($address: String) @client {
@@ -15,7 +15,7 @@ const GET_REVERSE_RECORD = gql`
 class ReverseResolution extends Component {
   render() {
     return (
-      <Query
+      <SafeQuery
         query={GET_REVERSE_RECORD}
         variables={{ address: this.props.address }}
         renderLoading={() => (
@@ -28,7 +28,7 @@ class ReverseResolution extends Component {
           }
           return <span>{getReverseRecord.name}</span>
         }}
-      </Query>
+      </SafeQuery>
     )
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import Query from '../Query'
+import SafeQuery from'../SafeQuery'
 
 const GetUserContainer = styled('div')``
 
@@ -18,7 +18,7 @@ class GetUser extends Component {
   render(){
     return (
       <GetUserContainer>
-        <Query query={}></Query>
+        <SafeQuery query={}></SafeQuery>
       </GetUserContainer>
     )
   }

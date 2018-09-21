@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 import PropTypes from 'prop-types'
-import { Query as ReactApolloQuery } from 'react-apollo'
+import { Query } from 'react-apollo'
 
 import Loader from './Loader'
 
@@ -16,7 +16,7 @@ const DEFAULT_IS_LOADING = ({ loading }) => loading
 const DEFAULT_RENDER_ERROR = ({ error }) => <GraphQLError>{`${error}`}</GraphQLError>
 const DEFAULT_RENDER_LOADING = () => <Loader />
 
-export default class Query extends PureComponent {
+export default class SafeQuery extends PureComponent {
   static propTypes = {
     children: PropTypes.func.isRequired,
   }
@@ -32,7 +32,7 @@ export default class Query extends PureComponent {
     } = this.props
 
     return (
-      <ReactApolloQuery query={query} variables={variables}>
+      <Query query={query} variables={variables}>
         {result => {
           const { error } = result
 
@@ -41,7 +41,7 @@ export default class Query extends PureComponent {
 
           return children(result.data || {})
         }}
-      </ReactApolloQuery>
+      </Query>
     )
   }
 }

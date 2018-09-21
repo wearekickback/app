@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import { PartyQuery } from '../graphql/queries'
-import Query from '../components/Query'
+import SafeQuery from'../components/SafeQuery'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'
@@ -26,7 +26,7 @@ class SingleEvent extends Component {
     const { address } = this.props.match.params
     return (
       <SingleEventContainer>
-        <Query query={PartyQuery} variables={{ address }}>
+        <SafeQuery query={PartyQuery} variables={{ address }}>
           {({ party }) => {
             return (
               <div>
@@ -48,7 +48,7 @@ class SingleEvent extends Component {
               </div>
             )
           }}
-        </Query>
+        </SafeQuery>
       </SingleEventContainer>
     )
   }
