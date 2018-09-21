@@ -13,7 +13,7 @@ const GraphQLError = styled('div')`
 `
 
 const DEFAULT_IS_LOADING = ({ loading }) => loading
-const DEFAULT_RENDER_ERROR = ({ error }) => <GraphQLError>{error}</GraphQLError>
+const DEFAULT_RENDER_ERROR = ({ error }) => <GraphQLError>{`${error}`}</GraphQLError>
 const DEFAULT_RENDER_LOADING = () => <Loader />
 
 export default class Query extends PureComponent {
