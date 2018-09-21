@@ -5,6 +5,10 @@ try {
   /* do nothing */
 }
 
+if (config.GIT_COMMIT) {
+  console.log(`Built from git commit: ${config.GIT_COMMIT}`)
+}
+
 module.exports = {
   ...config
 }

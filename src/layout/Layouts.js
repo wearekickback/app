@@ -16,7 +16,7 @@ const Warning = styled('div')`
 const DefaultLayout = ({ children }) => (
   <Fragment>
     <Header />
-    {networkError ? <Warning>{networkError}</Warning> : null}
+    {networkError ? <Warning>{`${networkError}`}</Warning> : null}
     {children}
     <Footer />
   </Fragment>
