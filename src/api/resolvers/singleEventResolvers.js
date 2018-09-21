@@ -1,4 +1,4 @@
-import getEthers, { provider, signer } from '../ethers'
+import getWeb3, { getAccount } from '../web3'
 import { Conference } from '@noblocknoparty/contracts'
 
 const abi = Conference.abi
@@ -8,56 +8,56 @@ export const defaults = {}
 const resolvers = {
   Party: {
     async owner({ contract }) {
-      return contract.owner()
+      return contract.owner().call()
     },
     async name({ contract }) {
-      return contract.name()
+      return contract.name().call()
     },
     async attendees({ contract }) {
-      const attendees = await contract.registered()
-      return attendees.toNumber()
+      const attendees = await contract.registered().call()
+      return parseInt(attendees, 10)
     },
     async deposit({ contract }) {
-      const deposit = await contract.deposit()
-      const { utils } = getEthers()
-      return utils.formatEther(deposit.toString())
+      const deposit = await contract.deposit().call()
+      const { utils } = getWeb3()
+      return utils.fromWei(deposit.toString())
     },
     async limitOfParticipants({ contract }) {
-      const limitOfParticipants = await contract.limitOfParticipants()
-      return limitOfParticipants.toNumber()
+      const limitOfParticipants = await contract.limitOfParticipants().call()
+      return parseInt(limitOfParticipants, 10)
     },
     async registered({ contract }) {
-      const registered = await contract.registered()
-      return registered.toNumber()
+      const registered = await contract.registered().call()
+      return parseInt(registered, 10)
     },
     async attended({ contract }) {
-      const attended = await contract.attended()
-      return attended.toNumber()
+      const attended = await contract.attended().call()
+      return parseInt(attended, 10)
     },
     async ended({ contract }) {
-      const ended = await contract.ended()
+      const ended = await contract.ended().call()
       return ended
     },
     async cancelled({ contract }) {
-      const cancelled = await contract.cancelled()
+      const cancelled = await contract.cancelled().call()
       return cancelled
     },
     async endedAt({ contract }) {
-      const endedAt = await contract.endedAt()
+      const endedAt = await contract.endedAt().call()
       return endedAt
     },
     async coolingPeriod({ contract }) {
-      const coolingPeriod = await contract.coolingPeriod()
+      const coolingPeriod = await contract.coolingPeriod().call()
       return coolingPeriod
     },
     async payoutAmount({ contract }) {
-      const payoutAmount = await contract.payoutAmount()
-      const { utils } = getEthers()
-      return utils.formatEther(payoutAmount.toString())
+      const payoutAmount = await contract.payoutAmount().call()
+      const { utils } = getWeb3()
+      return utils.fromWei(payoutAmount.toString())
     },
     async encryption({ contract }) {
       try {
-        const encryption = await contract.encryption()
+        const encryption = await contract.encryption().call()
         return encryption
       } catch (e) {
         console.log(e)
@@ -65,12 +65,13 @@ const resolvers = {
       }
     },
     async participants({ contract }) {
-      const registeredRaw = await contract.registered()
-      const registered = registeredRaw.toNumber()
+      const registeredRaw = await contract.registered().call()
+      const registered = parseInt(registeredRaw)
       const participantsRaw = Array.from({ length: registered }).map((_, i) =>
         contract
           .participantsIndex(i + 1)
-          .then(address => contract.participants(address))
+          .call()
+          .then(address => contract.participants(address).call())
       )
 
       const participants = await Promise.all(participantsRaw).then(
@@ -88,11 +89,12 @@ const resolvers = {
   },
   Query: {
     async party(_, { address }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer || provider)
+      const web3 = getWeb3()
+      const contract = new web3.eth.Contract(abi, address)
       return {
         address,
-        contract,
+        contract: contract.methods,
+        __rawContract: contract,
         __typename: 'Party'
       }
     }
@@ -100,9 +102,10 @@ const resolvers = {
 
   Mutation: {
     async rsvp(_, { twitter, address }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer)
-      const deposit = await contract.deposit()
+      const web3 = getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const deposit = await contract.deposit().send({ from: account })
       try {
         return contract.register(twitter, {
           value: deposit,
@@ -114,50 +117,55 @@ const resolvers = {
       }
     },
     async setLimitOfParticipants(_, { address, limit }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer)
+      const web3 = getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(address, abi)
       try {
-        return contract.setLimitOfParticipants(1000)
+        return contract.setLimitOfParticipants(limit).send({ from: account })
       } catch (e) {
         console.log(e)
         return null
       }
     },
     async payback(_, { address }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer)
+      const web3 = getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(address, abi)
       try {
-        return contract.payback()
+        return contract.payback().send({ from: account })
       } catch (e) {
         console.log(e)
         return null
       }
     },
     async clear(_, { address }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer)
+      const web3 = getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(address, abi)
       try {
-        return contract.clear()
+        return contract.clear().send({ from: account })
       } catch (e) {
         console.log(e)
         return null
       }
     },
     async changeName(_, { address, name }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer)
+      const web3 = getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(address, abi)
       try {
-        return contract.changeName(name)
+        return contract.changeName(name).send({ from: account })
       } catch (e) {
         console.log(e)
         return null
       }
     },
     async attend(_, { address, participantAddresses }) {
-      const ethers = getEthers()
-      const contract = new ethers.Contract(address, abi, signer)
+      const web3 = getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(address, abi)
       try {
-        return contract.attend(participantAddresses)
+        return contract.attend(participantAddresses).send({ from: account })
       } catch (e) {
         console.log(e)
         return null

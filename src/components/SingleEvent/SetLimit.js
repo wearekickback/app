@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styled from 'react-emotion'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -9,21 +9,32 @@ const SET_LIMIT = gql`
   }
 `
 
-const SetLimit = ({ address }) => (
-  <SetLimitContainer>
-    <Mutation
-      mutation={SET_LIMIT}
-      variables={{
-        address,
-        limit: 1000
-      }}
-    >
-      {setLimitOfParticipants => (
-        <button onClick={setLimitOfParticipants}>Set Limit</button>
-      )}
-    </Mutation>
-  </SetLimitContainer>
-)
+const SetLimit = ({ address }) => {
+  let input
+  return (
+    <SetLimitContainer>
+      <Mutation mutation={SET_LIMIT}>
+        {setLimitOfParticipants => (
+          <Fragment>
+            <input type="text" ref={element => (input = element)} />
+            <button
+              onClick={() =>
+                setLimitOfParticipants({
+                  variables: {
+                    address,
+                    limit: parseInt(input.value)
+                  }
+                })
+              }
+            >
+              Set Limit
+            </button>
+          </Fragment>
+        )}
+      </Mutation>
+    </SetLimitContainer>
+  )
+}
 
 const SetLimitContainer = styled('div')``
 

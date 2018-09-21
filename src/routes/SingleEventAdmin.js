@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-
+import { Query } from 'react-apollo'
 import { PartyQuery } from '../graphql/queries'
-import SafeQuery from '../components/SafeQuery'
+import Loader from '../components/Loader'
+import SetLimit from '../components/SingleEvent/SetLimit'
+import Clear from '../components/SingleEvent/Clear'
+import Payback from '../components/SingleEvent/Payback'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'
 import EventFilters from '../components/SingleEvent/EventFilters'
@@ -25,8 +28,11 @@ class SingleEvent extends Component {
     const { address } = this.props.match.params
     return (
       <SingleEventContainer>
-        <SafeQuery query={PartyQuery} variables={{ address }}>
-          {({ party }) => {
+        <Query query={PartyQuery} variables={{ address }}>
+          {({ data: { party }, loading }) => {
+            if (loading) {
+              return <Loader />
+            }
             return (
               <div>
                 <EventInfo party={party} address={address} />
@@ -37,17 +43,13 @@ class SingleEvent extends Component {
                   party={party}
                   participants={party.participants}
                 />
-
-                {/* {Object.entries(party).map(arr => {
-                  if (arr[0] === 'participants') {
-                    return ''
-                  }
-                  return <div>{`${arr[0]} ${arr[1]}`}</div>
-                })} */}
+                <SetLimit address={address} />
+                <Clear address={address} />
+                <Payback address={address} />
               </div>
             )
           }}
-        </SafeQuery>
+        </Query>
       </SingleEventContainer>
     )
   }
