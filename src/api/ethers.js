@@ -66,9 +66,7 @@ export async function setupEthers() {
       const id = await promisify(window.web3.version.getNetwork.bind(window.web3.version))()
 
       if (expectedNetwork && NETWORKS[id] !== expectedNetwork) {
-        networkError = `Not on expected network: ${expectedNetwork}`
-
-        return console.error(networkError)
+        throw new Error(`Not on expected network: ${expectedNetwork}`)
       }
 
       // Use Mist/MetaMask's provider
