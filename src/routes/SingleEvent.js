@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { Query } from 'react-apollo'
+
 import { PartyQuery } from '../graphql/queries'
-import Loader from '../components/Loader'
+import Query from '../components/Query'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'
@@ -27,10 +27,7 @@ class SingleEvent extends Component {
     return (
       <SingleEventContainer>
         <Query query={PartyQuery} variables={{ address }}>
-          {({ data: { party }, loading }) => {
-            if (loading) {
-              return <Loader />
-            }
+          {({ party }) => {
             return (
               <div>
                 <EventInfo party={party} address={address} />

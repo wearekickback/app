@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+
+import Query from './Query'
 
 const GET_REVERSE_RECORD = gql`
   query getReverseRecord($address: String) @client {
@@ -17,10 +18,11 @@ class ReverseResolution extends Component {
       <Query
         query={GET_REVERSE_RECORD}
         variables={{ address: this.props.address }}
+        renderLoading={() => (
+          <span>{this.props.address}</span>
+        )}
       >
-        {({ data, loading, error }) => {
-          const { getReverseRecord } = data
-          if (loading) return <span>{this.props.address}</span>
+        {({ getReverseRecord }) => {
           if (!getReverseRecord.name) {
             return <span>{this.props.address}</span>
           }

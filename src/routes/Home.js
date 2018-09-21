@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Query } from 'react-apollo'
 import { AllPartiesQuery, AllEventsQuery } from '../graphql/queries'
 import { Link } from 'react-router-dom'
 
-import Loader from '../components/Loader'
+import Query from '../components/Query'
 
 class Home extends Component {
   render() {
@@ -11,8 +10,7 @@ class Home extends Component {
       <div className="App">
         <h2>All parties</h2>
         <Query query={AllPartiesQuery}>
-          {({ data: { parties } = {}, loading }) => {
-            if (loading) return <Loader />
+          {({ parties }) => {
             return parties ? (
               <div>
                 {parties.map(party => (
@@ -28,8 +26,7 @@ class Home extends Component {
         </Query>
         <h2>All events</h2>
         <Query query={AllEventsQuery}>
-          {({ data: { events } = {}, loading }) => {
-            if (loading) return <Loader />
+          {({ events }) => {
             return events ? (
               <div>
                 {events.map(party => (
