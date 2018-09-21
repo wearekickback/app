@@ -4,6 +4,7 @@ import Web3 from 'web3'
 import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
 
 let web3
+let networkError
 
 function getWeb3() {
   if (!web3) {
