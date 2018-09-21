@@ -5,7 +5,7 @@ import { PartyQuery } from '../graphql/queries'
 import Loader from '../components/Loader'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import Clear from '../components/SingleEvent/Clear'
-import PayBack from '../components/SingleEvent/PayBack'
+import Payback from '../components/SingleEvent/Payback'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'
 import EventFilters from '../components/SingleEvent/EventFilters'
@@ -45,7 +45,7 @@ class SingleEvent extends Component {
                 />
                 <SetLimit address={address} />
                 <Clear address={address} />
-                <PayBack address={address} />e
+                <Payback address={address} />
               </div>
             )
           }}

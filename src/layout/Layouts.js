@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import Header from './Header'
 import Footer from './Footer'
 
-import { networkError } from '../api/ethers'
+import { networkError } from '../api/web3'
 
 const Warning = styled('div')`
   width: 100%;
@@ -22,10 +22,6 @@ const DefaultLayout = ({ children }) => (
   </Fragment>
 )
 
-export const HomePageLayout = ({ children }) => (
-  <Fragment>
-    {children}
-  </Fragment>
-)
+export const HomePageLayout = ({ children }) => <Fragment>{children}</Fragment>
 
 export default DefaultLayout

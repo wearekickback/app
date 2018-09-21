@@ -3,7 +3,6 @@ import styled from 'react-emotion'
 
 import { PartyQuery } from '../graphql/queries'
 import Query from '../components/Query'
-import SetLimit from '../components/SingleEvent/SetLimit'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'
 import EventFilters from '../components/SingleEvent/EventFilters'
@@ -38,7 +37,7 @@ class SingleEvent extends Component {
                   party={party}
                   participants={party.participants}
                 />
-                <SetLimit address={address} />
+
                 {/* {Object.entries(party).map(arr => {
                   if (arr[0] === 'participants') {
                     return ''

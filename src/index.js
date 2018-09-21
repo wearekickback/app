@@ -11,7 +11,7 @@ import registerServiceWorker from './registerServiceWorker'
 import resolvers, { defaults } from './api/rootResolver'
 import typeDefs from './api/schema'
 import { ApolloProvider } from 'react-apollo'
-import { setupEthers } from './api/ethers'
+import { setupWeb3 } from './api/web3'
 import { GlobalProvider } from './GlobalState'
 import './globalStyles'
 
@@ -28,7 +28,7 @@ const graphqlClient = new ApolloClient({
 })
 
 window.addEventListener('load', async () => {
-  await setupEthers()
+  await setupWeb3()
   ReactDOM.render(
     <GlobalProvider>
       <ApolloProvider client={graphqlClient}>
