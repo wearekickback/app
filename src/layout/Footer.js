@@ -22,8 +22,8 @@ class Footer extends Component {
         <a href="mailto:hello@kickback.events">hello@kickback.events</a>
         <h2>Kickback</h2>
         <Social>
-          <a href="">Github</a>
-          <a href="">Twitter</a>
+          <a href="https://github.com/noblocknoparty">Github</a>
+          <a href="https://twitter.com/wearekickback">Twitter</a>
         </Social>
         <Copyright>&copy; Kickback 2018</Copyright>
       </FooterContainer>
