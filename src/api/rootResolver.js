@@ -1,6 +1,6 @@
 import merge from 'lodash/merge'
 import {toHex, toWei} from 'web3-utils'
-import Deployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
+import { Deployer } from '@noblocknoparty/contracts'
 import { events } from '@noblocknoparty/contracts'
 import { parseLog } from 'ethereum-event-logs'
 

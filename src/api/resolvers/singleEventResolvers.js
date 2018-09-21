@@ -1,5 +1,5 @@
 import getEthers, { provider, signer } from '../ethers'
-import Conference from '@noblocknoparty/contracts/build/contracts/Conference.json'
+import { Conference } from '@noblocknoparty/contracts'
 
 const abi = Conference.abi
 

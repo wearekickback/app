@@ -1,5 +1,5 @@
 import ethers from 'ethers'
-import Deployer from '@noblocknoparty/contracts/build/contracts/Deployer.json'
+import { Deployer } from '@noblocknoparty/contracts'
 
 import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
 
