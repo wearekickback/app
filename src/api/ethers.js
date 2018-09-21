@@ -4,7 +4,7 @@ import { promisify } from 'es6-promisify'
 
 import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
 
-export let provider = null
+export let provider
 export let signer
 export let networkError
 let networkId
@@ -27,11 +27,13 @@ function getEthers() {
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
   return (
-    DEPLOYER_CONTRACT_ADDRESS || Deployer.NETWORKS[networkId].address
+    DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkId].address
   )
 }
 
 export async function getTransactionLogs(txHash) {
+  await provider.waitForTransaction(txHash)
+
   const { logs } = await provider.getTransactionReceipt(txHash)
 
   return logs
@@ -63,9 +65,9 @@ export async function setupEthers() {
   // try and connect via web3
   if (window.web3 && window.web3.currentProvider) {
     try {
-      const id = await promisify(window.web3.version.getNetwork.bind(window.web3.version))()
+      networkId = await promisify(window.web3.version.getNetwork.bind(window.web3.version))()
 
-      if (expectedNetwork && NETWORKS[id] !== expectedNetwork) {
+      if (expectedNetwork && NETWORKS[networkId] !== expectedNetwork) {
         throw new Error(`Not on expected network: ${expectedNetwork}`)
       }
 
@@ -92,6 +94,8 @@ export async function setupEthers() {
       // Allow read-only access to the blockchain if no Mist/Metamask/EthersWallet
       provider = ethers.providers.getDefaultProvider(expectedNetwork)
 
+      networkId = provider.chainId
+
       // check that it works!
       await provider.getBlockNumber()
     } catch (err) {
@@ -100,8 +104,6 @@ export async function setupEthers() {
       return console.error(networkError)
     }
   }
-
-  networkId = provider.chainId
 }
 
 export default getEthers

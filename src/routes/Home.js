@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { AllPartiesQuery, AllEventsQuery } from '../graphql/queries'
 import { Link } from 'react-router-dom'
 
-import Query from '../components/Query'
+import SafeQuery from '../components/SafeQuery'
 
 class Home extends Component {
   render() {
     return (
       <div className="App">
         <h2>All parties</h2>
-        <Query query={AllPartiesQuery}>
+        <SafeQuery query={AllPartiesQuery}>
           {({ parties }) => {
             return parties ? (
               <div>
@@ -23,9 +23,9 @@ class Home extends Component {
               <div>No parties to show!</div>
             )
           }}
-        </Query>
+        </SafeQuery>
         <h2>All events</h2>
-        <Query query={AllEventsQuery}>
+        <SafeQuery query={AllEventsQuery}>
           {({ events }) => {
             return events ? (
               <div>
@@ -39,7 +39,7 @@ class Home extends Component {
               <div>No events to show!</div>
             )
           }}
-        </Query>
+        </SafeQuery>
       </div>
     )
   }
