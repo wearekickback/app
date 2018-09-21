@@ -14,6 +14,10 @@ function getWeb3() {
   return web3
 }
 
+export function getNetworkError() {
+  return networkError
+}
+
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
   const id = await web3.eth.net.getId()
