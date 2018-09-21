@@ -1,22 +1,15 @@
 import React, { Fragment } from 'react'
-import styled from 'react-emotion'
+
 import Header from './Header'
 import Footer from './Footer'
-
+import ErrorBox from '../components/ErrorBox'
 import { networkError } from '../api/ethers'
 
-const Warning = styled('div')`
-  width: 100%;
-  background: #f00;
-  color: #fff;
-  padding: 1em 2em;
-  justify-content: space-between;
-`
 
 const DefaultLayout = ({ children }) => (
   <Fragment>
     <Header />
-    {networkError ? <Warning>{`${networkError}`}</Warning> : null}
+    {networkError ? <ErrorBox>{`${networkError}`}</ErrorBox> : null}
     {children}
     <Footer />
   </Fragment>

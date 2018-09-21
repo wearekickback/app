@@ -32,6 +32,8 @@ export async function getDeployerAddress() {
 }
 
 export async function getTransactionLogs(txHash) {
+  await provider.waitForTransaction(txHash)
+
   const { logs } = await provider.getTransactionReceipt(txHash)
 
   return logs

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
+import { Mutation } from 'react-apollo'
 
 import Loader from './Loader'
 import ErrorBox from './ErrorBox'
@@ -9,14 +9,14 @@ const DEFAULT_IS_LOADING = ({ loading }) => loading
 const DEFAULT_RENDER_ERROR = ({ error }) => <ErrorBox>{`${error}`}</ErrorBox>
 const DEFAULT_RENDER_LOADING = () => <Loader />
 
-export default class SafeQuery extends PureComponent {
+export default class SafeMutation extends PureComponent {
   static propTypes = {
     children: PropTypes.func.isRequired,
   }
 
   render () {
     const {
-      query,
+      mutation,
       variables,
       children,
       isLoading = DEFAULT_IS_LOADING,
@@ -25,16 +25,17 @@ export default class SafeQuery extends PureComponent {
     } = this.props
 
     return (
-      <Query query={query} variables={variables}>
-        {result => {
-          const { error } = result
-
-          if (error) return renderError(result)
-          if (isLoading(result)) return renderLoading(result)
-
-          return children(result.data || {})
+      <Mutation mutation={mutation} variables={variables}>
+        {(mutator, result) => {
+          return (
+            <div>
+              {children(mutator, result.data || {})}
+              {result.error ? renderError(result) : null}
+              {isLoading(result) ? renderLoading(result) : null}
+            </div>
+          )
         }}
-      </Query>
+      </Mutation>
     )
   }
 }

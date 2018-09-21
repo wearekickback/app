@@ -73,6 +73,8 @@ const resolvers = {
         return event.args.deployedAddress
       } catch (e) {
         console.log('error', e)
+
+        throw new Error(`Failed to deploy party: ${e}`)
       }
     },
     async signMessage(message) {
