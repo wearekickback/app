@@ -27,7 +27,7 @@ function getEthers() {
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
   return (
-    DEPLOYER_CONTRACT_ADDRESS || Deployer.NETWORKS[networkId].address
+    DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkId].address
   )
 }
 
