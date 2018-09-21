@@ -14,7 +14,7 @@ try {
 }
 
 if (argv.dev) {
-  appConfig.API_URL = 'http://dev.kickback.events'
+  appConfig.API_URL = 'https://dev.kickback.events'
 } else {
   appConfig.API_URL = 'http://localhost:3001'
 }
