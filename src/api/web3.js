@@ -57,7 +57,8 @@ export async function setupWeb3() {
       console.error(networkError)
     }
   } else {
-    console.log('No web3 instance injected.')
+    web3 = new Web3('https://mainnet.infura.io/')
+    console.log('No web3 instance injected. Falling back to Infura')
   }
 }
 
