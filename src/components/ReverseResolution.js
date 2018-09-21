@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import gql from 'graphql-tag'
 
-import SafeQuery from'./SafeQuery'
+import SafeQuery from './SafeQuery'
 
 const GET_REVERSE_RECORD = gql`
   query getReverseRecord($address: String) @client {

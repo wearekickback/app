@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import { PartyQuery } from '../graphql/queries'
-import SafeQuery from'../components/SafeQuery'
+import SafeQuery from '../components/SafeQuery'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import EventInfo from '../components/SingleEvent/EventInfo'
 import EventCTA from '../components/SingleEvent/EventCTA'

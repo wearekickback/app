@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import SafeQuery from'../SafeQuery'
+import SafeQuery from '../SafeQuery'
 
 const GetUserContainer = styled('div')``
 
