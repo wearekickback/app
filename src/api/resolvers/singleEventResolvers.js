@@ -119,7 +119,7 @@ const resolvers = {
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract.setLimitOfParticipants(limit).send({ from: account })
       } catch (e) {
@@ -130,7 +130,7 @@ const resolvers = {
     async payback(_, { address }) {
       const web3 = getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract.payback().send({ from: account })
       } catch (e) {
@@ -141,7 +141,7 @@ const resolvers = {
     async clear(_, { address }) {
       const web3 = getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract.clear().send({ from: account })
       } catch (e) {
@@ -152,7 +152,7 @@ const resolvers = {
     async changeName(_, { address, name }) {
       const web3 = getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract.changeName(name).send({ from: account })
       } catch (e) {
@@ -163,7 +163,7 @@ const resolvers = {
     async attend(_, { address, participantAddresses }) {
       const web3 = getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract.attend(participantAddresses).send({ from: account })
       } catch (e) {

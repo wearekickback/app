@@ -37,15 +37,15 @@ class SingleEvent extends Component {
               <div>
                 <EventInfo party={party} address={address} />
                 <EventCTA party={party} address={address} />
+                <SetLimit address={address} />
+                <Clear address={address} />
+                <Payback address={address} />
                 <EventFilters handleSearch={this.handleSearch} />
                 <EventParticipants
                   search={this.state.search}
                   party={party}
                   participants={party.participants}
                 />
-                <SetLimit address={address} />
-                <Clear address={address} />
-                <Payback address={address} />
               </div>
             )
           }}
