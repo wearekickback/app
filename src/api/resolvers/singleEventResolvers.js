@@ -1,18 +1,20 @@
 import getWeb3, { getAccount } from '../web3'
 import { Conference } from '@noblocknoparty/contracts'
 import events from '../../fixtures/events.json'
+import { GET_MARKED_ATTENDED } from '../../graphql/queries'
+import { getItem, setItem } from '../localStorage'
 
 const abi = Conference.abi
 
 export const defaults = {
-  attended: []
+  markedAttendedList: getItem('markedAttendedList') || []
 }
 
 const resolvers = {
   Party: {
-    description: party => party.description_text,
-    date: party => party.date,
-    location: party => party.location_text,
+    description: party => party.description_text || null,
+    date: party => party.date || null,
+    location: party => party.location_text || null,
 
     async owner({ contract }) {
       return contract.owner().call()
@@ -112,13 +114,47 @@ const resolvers = {
   },
 
   Mutation: {
-    async markAttended(_, { address }) {
-      //add to cache
-      //sync localStorage
+    async markAttended(_, { address }, { cache }) {
+      const { markedAttendedList } = cache.readQuery({
+        query: GET_MARKED_ATTENDED
+      })
+
+      const data = {
+        markedAttendedList: [...markedAttendedList]
+      }
+
+      const exists = data.markedAttendedList.includes(address.toLowerCase())
+      //check for duplicates
+      if (!exists) {
+        data.markedAttendedList.push(address.toLowerCase())
+      } else {
+        console.log('Attendee already marked as attended')
+        return null
+      }
+
+      cache.writeData({ data })
+      setItem('markedAttendedList', data.markedAttendedList)
+
+      return data.markedAttendedList
     },
-    async unmarkAttended(_, { address }) {
-      //remove from cache
-      //sync localStorage
+    async unmarkAttended(_, { address }, { cache }) {
+      console.log('here')
+      const { markedAttendedList } = cache.readQuery({
+        query: GET_MARKED_ATTENDED
+      })
+
+      const lowercaseAddress = address.toLowerCase()
+
+      const data = {
+        markedAttendedList: markedAttendedList.filter(
+          item => item !== lowercaseAddress
+        )
+      }
+
+      cache.writeData({ data })
+      setItem('markedAttendedList', data.markedAttendedList)
+
+      return data.markedAttendedList
     },
     async rsvp(_, { twitter, address }) {
       const web3 = getWeb3()

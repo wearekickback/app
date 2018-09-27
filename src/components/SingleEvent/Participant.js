@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 import { winningShare } from './utils'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 
 const TwitterAvatar = styled('img')`
   border-radius: 50%;
@@ -11,6 +13,18 @@ const TwitterAvatar = styled('img')`
 const ParticipantAddress = styled('div')``
 
 const WinningShare = styled('div')``
+
+const MARK_ATTENDED = gql`
+  mutation markAttended($address: String) {
+    markAttended(address: $address) @client
+  }
+`
+
+const UNMARK_ATTENDED = gql`
+  mutation unmarkAttended($address: String) {
+    unmarkAttended(address: $address) @client
+  }
+`
 
 class Participant extends Component {
   render() {
@@ -28,7 +42,7 @@ class Participant extends Component {
           <ReverseResolution address={address} />
         </ParticipantAddress>
 
-        {ended && (
+        {ended ? (
           <WinningShare>
             {attended
               ? `won ${winningShare(
@@ -38,6 +52,22 @@ class Participant extends Component {
                 )} ${paid && 'and withdrawn'}`
               : `lost ${deposit}`}
           </WinningShare>
+        ) : (
+          <Mutation mutation={UNMARK_ATTENDED} variables={{ address: address }}>
+            {unmarkAttended => (
+              <Mutation
+                mutation={MARK_ATTENDED}
+                variables={{ address: address }}
+              >
+                {markAttended => (
+                  <Fragment>
+                    <div onClick={markAttended}>Attend</div>
+                    <div onClick={unmarkAttended}>UnAttend</div>
+                  </Fragment>
+                )}
+              </Mutation>
+            )}
+          </Mutation>
         )}
       </ParticipantContainer>
     )

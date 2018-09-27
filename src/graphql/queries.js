@@ -55,3 +55,9 @@ export const AllEventsQuery = gql`
     }
   }
 `
+
+export const GET_MARKED_ATTENDED = gql`
+  query getMarkedAttended {
+    markedAttendedList
+  }
+`
