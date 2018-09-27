@@ -3,7 +3,8 @@ import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 import { winningShare } from './utils'
 import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
+import { GET_MARKED_ATTENDED_SINGLE } from '../../graphql/queries'
 
 const TwitterAvatar = styled('img')`
   border-radius: 50%;
@@ -15,22 +16,30 @@ const ParticipantAddress = styled('div')``
 const WinningShare = styled('div')``
 
 const MARK_ATTENDED = gql`
-  mutation markAttended($address: String) {
-    markAttended(address: $address) @client
+  mutation markAttended($address: String, $contractAddress: String) {
+    markAttended(address: $address, contractAddress: $contractAddress) @client
   }
 `
 
 const UNMARK_ATTENDED = gql`
-  mutation unmarkAttended($address: String) {
-    unmarkAttended(address: $address) @client
+  mutation unmarkAttended($address: String, $contractAddress: String) {
+    unmarkAttended(address: $address, contractAddress: $contractAddress) @client
   }
 `
 
 class Participant extends Component {
   render() {
-    const { participant, party } = this.props
+    const { participant, party, markedAttendedList } = this.props
     const { participantName, address, paid, attended } = participant
-    const { registered, attended: attendedCount, deposit, ended } = party
+    const {
+      registered,
+      attended: attendedCount,
+      deposit,
+      ended,
+      address: contractAddress
+    } = party
+
+    const isMarked = markedAttendedList.includes(address.toLowerCase())
 
     return (
       <ParticipantContainer>
@@ -41,6 +50,8 @@ class Participant extends Component {
         <ParticipantAddress>
           <ReverseResolution address={address} />
         </ParticipantAddress>
+
+        {attended ? 'marked as attended' : 'needs to sign in'}
 
         {ended ? (
           <WinningShare>
@@ -53,16 +64,24 @@ class Participant extends Component {
               : `lost ${deposit}`}
           </WinningShare>
         ) : (
-          <Mutation mutation={UNMARK_ATTENDED} variables={{ address: address }}>
+          <Mutation
+            mutation={UNMARK_ATTENDED}
+            variables={{ address, contractAddress }}
+            refetchQueries={['getMarkedAttendedSingle']}
+          >
             {unmarkAttended => (
               <Mutation
                 mutation={MARK_ATTENDED}
-                variables={{ address: address }}
+                variables={{ address, contractAddress }}
+                refetchQueries={['getMarkedAttendedSingle']}
               >
                 {markAttended => (
                   <Fragment>
-                    <div onClick={markAttended}>Attend</div>
-                    <div onClick={unmarkAttended}>UnAttend</div>
+                    {isMarked ? (
+                      <div onClick={unmarkAttended}>UnAttend</div>
+                    ) : (
+                      <div onClick={markAttended}>Attend</div>
+                    )}
                   </Fragment>
                 )}
               </Mutation>

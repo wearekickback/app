@@ -15,6 +15,8 @@ export const PartyQuery = gql`
       description
       date
       location
+      # from resolver
+      address
       # From Contract
       owner
       name
@@ -56,8 +58,14 @@ export const AllEventsQuery = gql`
   }
 `
 
+export const GET_MARKED_ATTENDED_SINGLE = gql`
+  query getMarkedAttendedSingle($contractAddress: String) {
+    markAttendedSingle(contractAddress: $contractAddress) @client
+  }
+`
+
 export const GET_MARKED_ATTENDED = gql`
   query getMarkedAttended {
-    markedAttendedList
+    markedAttendedList @client
   }
 `

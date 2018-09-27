@@ -6,8 +6,10 @@ import { getItem, setItem } from '../localStorage'
 
 const abi = Conference.abi
 
+let hydrated = {}
+
 export const defaults = {
-  markedAttendedList: getItem('markedAttendedList') || []
+  markedAttendedList: []
 }
 
 const resolvers = {
@@ -110,11 +112,24 @@ const resolvers = {
         __rawContract: contract,
         __typename: 'Party'
       }
+    },
+    markAttendedSingle: async (_, { contractAddress }, { cache }) => {
+      const array = getItem('markedAttendedList' + contractAddress)
+
+      cache.writeData({
+        data: {
+          markedAttendedList: array
+        }
+      })
+
+      console.log('calling this query')
+
+      return array
     }
   },
 
   Mutation: {
-    async markAttended(_, { address }, { cache }) {
+    async markAttended(_, { address, contractAddress }, { cache }) {
       const { markedAttendedList } = cache.readQuery({
         query: GET_MARKED_ATTENDED
       })
@@ -122,6 +137,8 @@ const resolvers = {
       const data = {
         markedAttendedList: [...markedAttendedList]
       }
+
+      console.log(contractAddress)
 
       const exists = data.markedAttendedList.includes(address.toLowerCase())
       //check for duplicates
@@ -133,12 +150,11 @@ const resolvers = {
       }
 
       cache.writeData({ data })
-      setItem('markedAttendedList', data.markedAttendedList)
+      setItem('markedAttendedList' + contractAddress, data.markedAttendedList)
 
       return data.markedAttendedList
     },
-    async unmarkAttended(_, { address }, { cache }) {
-      console.log('here')
+    async unmarkAttended(_, { address, contractAddress }, { cache }) {
       const { markedAttendedList } = cache.readQuery({
         query: GET_MARKED_ATTENDED
       })
@@ -152,7 +168,7 @@ const resolvers = {
       }
 
       cache.writeData({ data })
-      setItem('markedAttendedList', data.markedAttendedList)
+      setItem('markedAttendedList' + contractAddress, data.markedAttendedList)
 
       return data.markedAttendedList
     },
