@@ -11,6 +11,11 @@ export const EthersQuery = gql`
 export const PartyQuery = gql`
   query getParty($address: String) {
     party(address: $address) @client {
+      # hardcoded in events.json
+      description
+      date
+      location
+      # From Contract
       owner
       name
       attendees

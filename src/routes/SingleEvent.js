@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
 import { PartyQuery } from '../graphql/queries'
@@ -8,7 +8,17 @@ import EventCTA from '../components/SingleEvent/EventCTA'
 import EventFilters from '../components/SingleEvent/EventFilters'
 import EventParticipants from '../components/SingleEvent/EventParticipants'
 
-const SingleEventContainer = styled('div')``
+const SingleEventContainer = styled('div')`
+  display: flex;
+`
+
+const EventInfoContainer = styled('div')`
+  width: 50%;
+`
+
+const RightContainer = styled('div')`
+  width: 50%;
+`
 
 class SingleEvent extends Component {
   state = {
@@ -28,23 +38,20 @@ class SingleEvent extends Component {
         <SafeQuery query={PartyQuery} variables={{ address }}>
           {({ party }) => {
             return (
-              <div>
-                <EventInfo party={party} address={address} />
-                <EventCTA party={party} address={address} />
-                <EventFilters handleSearch={this.handleSearch} />
-                <EventParticipants
-                  search={this.state.search}
-                  party={party}
-                  participants={party.participants}
-                />
-
-                {/* {Object.entries(party).map(arr => {
-                  if (arr[0] === 'participants') {
-                    return ''
-                  }
-                  return <div>{`${arr[0]} ${arr[1]}`}</div>
-                })} */}
-              </div>
+              <Fragment>
+                <EventInfoContainer>
+                  <EventInfo party={party} address={address} />
+                </EventInfoContainer>
+                <RightContainer>
+                  <EventCTA party={party} address={address} />
+                  <EventFilters handleSearch={this.handleSearch} />
+                  <EventParticipants
+                    search={this.state.search}
+                    party={party}
+                    participants={party.participants}
+                  />
+                </RightContainer>
+              </Fragment>
             )
           }}
         </SafeQuery>

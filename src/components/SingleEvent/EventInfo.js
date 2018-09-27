@@ -21,9 +21,10 @@ const Comment = styled('div')``
 
 class EventInfo extends Component {
   render() {
-    const { party, address } = this.props
+    const { party, address, className } = this.props
+    console.log(this.props)
     return (
-      <EventInfoContainer>
+      <EventInfoContainer className={className}>
         <Date>{party.date}</Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>{address}</ContractAddress>
@@ -31,7 +32,9 @@ class EventInfo extends Component {
         <OrganiserName>
           <ReverseResolution address={party.owner} />
         </OrganiserName>
-        <Location>{party.location}</Location>
+        <Location>
+          {party.location || '11 Macclesfield St, London W1D 5BW'}
+        </Location>
         <TotalPot>
           Total pot {parseFloat(party.deposit) * parseInt(party.attendees, 10)}
         </TotalPot>
@@ -39,7 +42,7 @@ class EventInfo extends Component {
           <Tag>Ethereum</Tag>
           <Tag>Fintech</Tag>
         </Tags>
-        <EventDescription>Some description</EventDescription>
+        <EventDescription>{party.description}</EventDescription>
         <EventWarning />
         <Photos>
           <PhotoContainer>

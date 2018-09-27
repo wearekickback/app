@@ -1,12 +1,19 @@
 import getWeb3, { getAccount } from '../web3'
 import { Conference } from '@noblocknoparty/contracts'
+import events from '../../fixtures/events.json'
 
 const abi = Conference.abi
 
-export const defaults = {}
+export const defaults = {
+  attended: []
+}
 
 const resolvers = {
   Party: {
+    description: party => party.description_text,
+    date: party => party.date,
+    location: party => party.location_text,
+
     async owner({ contract }) {
       return contract.owner().call()
     },
@@ -91,9 +98,13 @@ const resolvers = {
     async party(_, { address }) {
       const web3 = getWeb3()
       const contract = new web3.eth.Contract(abi, address)
+      const eventFixture = events.filter(event => {
+        return event.address === address
+      })[0]
       return {
         address,
         contract: contract.methods,
+        ...eventFixture,
         __rawContract: contract,
         __typename: 'Party'
       }
@@ -101,6 +112,14 @@ const resolvers = {
   },
 
   Mutation: {
+    async markAttended(_, { address }) {
+      //add to cache
+      //sync localStorage
+    },
+    async unmarkAttended(_, { address }) {
+      //remove from cache
+      //sync localStorage
+    },
     async rsvp(_, { twitter, address }) {
       const web3 = getWeb3()
       const account = await getAccount()
@@ -160,7 +179,7 @@ const resolvers = {
         return null
       }
     },
-    async attend(_, { address, participantAddresses }) {
+    async batchAttend(_, { address, participantAddresses }) {
       const web3 = getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
