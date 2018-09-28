@@ -26,22 +26,22 @@ const UNMARK_ATTENDED = gql`
   }
 `
 
-class Participant extends Component {
+export class Participant extends Component {
   render() {
-    const { participant, party, markedAttendedList } = this.props
-    const { participantName, address, paid, attended } = participant
     const {
-      registered,
-      attended: attendedCount,
-      deposit,
-      ended,
-      address: contractAddress
-    } = party
+      participant,
+      party,
+      markedAttendedList,
+      markAttended,
+      unmarkAttended
+    } = this.props
+    const { participantName, address, paid, attended } = participant
+    const { registered, attended: attendedCount, deposit, ended } = party
 
     const isMarked = markedAttendedList.includes(address.toLowerCase())
 
     return (
-      <ParticipantContainer>
+      <ParticipantWrapper>
         <div>{participantName}</div>
         <TwitterAvatar
           src={`https://avatars.io/twitter/${participantName}/medium`}
@@ -61,37 +61,50 @@ class Participant extends Component {
               : `lost ${deposit}`}
           </WinningShare>
         ) : !attended ? (
-          <Mutation
-            mutation={UNMARK_ATTENDED}
-            variables={{ address, contractAddress }}
-            refetchQueries={['getMarkedAttendedSingle']}
-          >
-            {unmarkAttended => (
-              <Mutation
-                mutation={MARK_ATTENDED}
-                variables={{ address, contractAddress }}
-                refetchQueries={['getMarkedAttendedSingle']}
-              >
-                {markAttended => (
-                  <Fragment>
-                    {isMarked ? (
-                      <div onClick={unmarkAttended}>UnAttend</div>
-                    ) : (
-                      <div onClick={markAttended}>Attend</div>
-                    )}
-                  </Fragment>
-                )}
-              </Mutation>
+          <Fragment>
+            {isMarked ? (
+              <div onClick={unmarkAttended}>UnAttend</div>
+            ) : (
+              <div onClick={markAttended}>Attend</div>
             )}
-          </Mutation>
+          </Fragment>
         ) : (
           'marked as attended'
         )}
-      </ParticipantContainer>
+      </ParticipantWrapper>
     )
   }
 }
 
-const ParticipantContainer = styled('div')``
+const ParticipantWrapper = styled('div')``
 
-export default Participant
+class ParticipantContainer extends Component {
+  render() {
+    const { address, contractAddress } = this.props
+    return (
+      <Mutation
+        mutation={UNMARK_ATTENDED}
+        variables={{ address, contractAddress }}
+        refetchQueries={['getMarkedAttendedSingle']}
+      >
+        {unmarkAttended => (
+          <Mutation
+            mutation={MARK_ATTENDED}
+            variables={{ address, contractAddress }}
+            refetchQueries={['getMarkedAttendedSingle']}
+          >
+            {markAttended => (
+              <Participant
+                markAttended={markAttended}
+                unmarkAttended={unmarkAttended}
+                {...this.props}
+              />
+            )}
+          </Mutation>
+        )}
+      </Mutation>
+    )
+  }
+}
+
+export default ParticipantContainer
