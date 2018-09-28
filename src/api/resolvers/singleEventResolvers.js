@@ -6,7 +6,8 @@ import { getItem, setItem } from '../localStorage'
 
 const abi = Conference.abi
 
-let hydrated = {}
+// TODO: check if local storage has been called for this contract
+// let hydrated = {}
 
 export const defaults = {
   markedAttendedList: []
@@ -114,15 +115,13 @@ const resolvers = {
       }
     },
     markAttendedSingle: async (_, { contractAddress }, { cache }) => {
-      const array = getItem('markedAttendedList' + contractAddress)
+      const array = getItem('markedAttendedList' + contractAddress) || []
 
       cache.writeData({
         data: {
           markedAttendedList: array
         }
       })
-
-      console.log('calling this query')
 
       return array
     }
@@ -231,12 +230,23 @@ const resolvers = {
         return null
       }
     },
-    async batchAttend(_, { address, attendees }) {
+    async batchAttend(_, { address, attendees }, { cache }) {
       const web3 = getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.attend(attendees).send({ from: account })
+        return contract
+          .attend(attendees)
+          .send({ from: account })
+          .then(() => {
+            cache.write({
+              data: {
+                markedAttendedList: []
+              }
+            })
+
+            setItem('markedAttendedList' + address, [])
+          })
       } catch (e) {
         console.log(e)
         return null

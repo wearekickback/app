@@ -3,8 +3,7 @@ import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 import { winningShare } from './utils'
 import gql from 'graphql-tag'
-import { Mutation, Query } from 'react-apollo'
-import { GET_MARKED_ATTENDED_SINGLE } from '../../graphql/queries'
+import { Mutation } from 'react-apollo'
 
 const TwitterAvatar = styled('img')`
   border-radius: 50%;
@@ -51,8 +50,6 @@ class Participant extends Component {
           <ReverseResolution address={address} />
         </ParticipantAddress>
 
-        {attended ? 'marked as attended' : 'needs to sign in'}
-
         {ended ? (
           <WinningShare>
             {attended
@@ -63,7 +60,7 @@ class Participant extends Component {
                 )} ${paid && 'and withdrawn'}`
               : `lost ${deposit}`}
           </WinningShare>
-        ) : (
+        ) : !attended ? (
           <Mutation
             mutation={UNMARK_ATTENDED}
             variables={{ address, contractAddress }}
@@ -87,6 +84,8 @@ class Participant extends Component {
               </Mutation>
             )}
           </Mutation>
+        ) : (
+          'marked as attended'
         )}
       </ParticipantContainer>
     )
