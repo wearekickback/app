@@ -1,22 +1,16 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
-import { Query } from 'react-apollo'
-import { GET_MARKED_ATTENDED_SINGLE } from '../../graphql/queries'
+import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 
 class EventParticipants extends Component {
   render() {
     const { participants, search, party } = this.props
     const searchTerm = search.toLowerCase()
-    console.log(party.address)
     return (
-      <Query
-        query={GET_MARKED_ATTENDED_SINGLE}
-        variables={{ contractAddress: party.address }}
-      >
-        {({ data: { markAttendedSingle } }) => (
+      <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
+        {markAttendedSingle => (
           <EventParticipantsContainer>
-            {console.log(markAttendedSingle)}
             {participants
               .filter(
                 participant =>
@@ -35,7 +29,7 @@ class EventParticipants extends Component {
               ))}
           </EventParticipantsContainer>
         )}
-      </Query>
+      </GetMarkedAttendedQuery>
     )
   }
 }

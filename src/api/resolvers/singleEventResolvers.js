@@ -231,12 +231,12 @@ const resolvers = {
         return null
       }
     },
-    async batchAttend(_, { address, participantAddresses }) {
+    async batchAttend(_, { address, attendees }) {
       const web3 = getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.attend(participantAddresses).send({ from: account })
+        return contract.attend(attendees).send({ from: account })
       } catch (e) {
         console.log(e)
         return null
