@@ -17,9 +17,7 @@ const Clear = ({ address }) => (
         address
       }}
     >
-      {setLimitOfParticipants => (
-        <button onClick={setLimitOfParticipants}>Clear</button>
-      )}
+      {clear => <button onClick={clear}>Clear</button>}
     </Mutation>
   </ClearContainer>
 )
