@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions'
 import { linkTo } from '@storybook/addon-links'
 
 import Button from '../components/Forms/Button'
+import TextInput from '../components/Forms/TextInput'
 
 storiesOf('<Button>', module)
   .add('with text', () => (
@@ -20,7 +21,7 @@ storiesOf('<Button>', module)
   ))
 
 storiesOf('<Button type="hollow">', module)
-  .add('with text with hollow type', () => (
+  .add('with text', () => (
     <Button type="hollow" onClick={action('clicked')}>
       RSVP
     </Button>
@@ -37,7 +38,7 @@ storiesOf('<Button type="hollow">', module)
   ))
 
 storiesOf('<Button type="disabled">', module)
-  .add('with text with hollow type', () => (
+  .add('with text', () => (
     <Button type="disabled" onClick={action('clicked')}>
       RSVP
     </Button>
@@ -52,3 +53,7 @@ storiesOf('<Button type="disabled">', module)
       RSVP
     </Button>
   ))
+
+storiesOf('<TextInput type="text">', module)
+  .add('default', () => <TextInput />)
+  .add('error', () => <TextInput error errorMessage="Boom" />)

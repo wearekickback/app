@@ -49,6 +49,10 @@ const ButtonContainer = styled('button')`
     border: 1px solid #4c54d3;
   }
 
+  &:focus {
+    outline: 0;
+  }
+
   ${({ type }) => getButtonStyles(type)};
 `
 
