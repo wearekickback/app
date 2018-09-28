@@ -7,6 +7,21 @@ function getButtonStyles(type) {
       return `
         color: #5D64DE;
         background-color: transparent;
+        &:hover {
+          background-color:rgba(233,234,255,0.75);
+        }
+      `
+    case 'disabled':
+      return `
+        color: #BCBDC5;
+        background-color: #EDEEF4;
+        border: 1px solid #EDEEF4;
+        &:hover {
+          cursor: default;
+          color: #BCBDC5;
+          background-color: #EDEEF4;
+          border: 1px solid #EDEEF4;
+        }
       `
     default:
       return ''
@@ -21,8 +36,10 @@ const ButtonContainer = styled('button')`
   padding: 10px 20px;
   color: white;
   ${({ wide }) => (wide ? 'width: 100%' : '')};
+  transition: 0.2s ease-out;
 
   &:hover {
+    cursor: pointer;
     background-color: #5d64de;
     border: 1px solid #5d64de;
   }

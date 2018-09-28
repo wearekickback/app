@@ -35,3 +35,20 @@ storiesOf('<Button type="hollow">', module)
       RSVP
     </Button>
   ))
+
+storiesOf('<Button type="disabled">', module)
+  .add('with text with hollow type', () => (
+    <Button type="disabled" onClick={action('clicked')}>
+      RSVP
+    </Button>
+  ))
+  .add('with some emoji', () => (
+    <Button type="disabled" onClick={action('clicked')}>
+      😀 😎 👍 💯
+    </Button>
+  ))
+  .add('with text with wide prop', () => (
+    <Button type="disabled" wide onClick={action('clicked')}>
+      RSVP
+    </Button>
+  ))
