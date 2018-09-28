@@ -49,7 +49,6 @@ export class Participant extends Component {
         <ParticipantAddress>
           <ReverseResolution address={address} />
         </ParticipantAddress>
-
         {ended ? (
           <WinningShare>
             {attended
