@@ -43,7 +43,7 @@ export const PartyQuery = gql`
 
 export const AllPartiesQuery = gql`
   query getParties {
-    parties @client {
+    parties: activeParties {
       name
       address
     }
