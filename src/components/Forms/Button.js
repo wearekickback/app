@@ -33,6 +33,7 @@ const ButtonContainer = styled('button')`
   border-radius: 4px;
   border: 1px solid #6e76ff;
   font-size: 14px;
+  font-family: Muli;
   padding: 10px 20px;
   color: white;
   ${({ wide }) => (wide ? 'width: 100%' : '')};

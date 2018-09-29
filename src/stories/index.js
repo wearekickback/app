@@ -9,6 +9,14 @@ import TextInput from '../components/Forms/TextInput'
 import { Participant } from '../components/SingleEvent/Participant'
 import client from '../testing-utils/mockedClient'
 import { ApolloProvider } from 'react-apollo'
+import { injectGlobal } from 'emotion'
+
+injectGlobal`
+  @import url('https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800');
+  body {
+    font-family: Muli;
+  }
+`
 
 storiesOf('<Button>', module)
   .add('with text', () => (
