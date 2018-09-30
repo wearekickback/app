@@ -70,7 +70,7 @@ storiesOf('<TextInput type="text">', module)
   .add('error', () => <TextInput error errorMessage="Boom" />)
 
 const mockParticipant = {
-  participantName: 'Vitalik Buterin',
+  participantName: 'vitalikbuterin',
   address: '0x123',
   paid: false,
   attended: false
