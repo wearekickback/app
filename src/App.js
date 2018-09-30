@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import {
   BrowserRouter as Router,
   Route as DefaultRoute,
@@ -12,7 +12,8 @@ import Create from './routes/Create'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import Modal from './components/Modal/Modal'
-import SignIn from './components/SignIn/SignIn'
+import SignUp from './components/Auth/SignUp'
+import SignIn from './components/Auth/SignIn'
 
 import './App.css'
 
@@ -33,7 +34,7 @@ const Route = ({
   )
 }
 
-class App extends Component {
+class App extends PureComponent {
   render() {
     return (
       <Fragment>
@@ -45,7 +46,8 @@ class App extends Component {
             <Route path="/create" component={Create} />
           </Switch>
         </Router>
-        <Modal name="signIn" component={SignIn} />
+        <Modal name="signUp" component={SignUp} />
+        <Modal name="signUp" component={SignIn} />
       </Fragment>
     )
   }

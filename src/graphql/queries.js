@@ -8,6 +8,15 @@ export const EthersQuery = gql`
   }
 `
 
+export const MyProfile = gql`
+query getMyProfile {
+  myProfile {
+    # if legal agreements not accepted then profile not created!
+    legal
+  }
+}
+`
+
 export const PartyQuery = gql`
   query getParty($address: String) {
     party(address: $address) @client {
@@ -43,12 +52,22 @@ export const PartyQuery = gql`
 
 export const AllPartiesQuery = gql`
   query getParties {
-    parties: activeParties {
+    parties: activeParties @auth {
       name
       address
+      description
+      date
+      location
+      deposit
+      coolingPeriod
+      attendeeLimit
+      attendees
+      owner
+      admins
     }
   }
 `
+
 export const AllEventsQuery = gql`
   query getEvents {
     events @client {

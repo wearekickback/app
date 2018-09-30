@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ const Social = styled('div')``
 
 const Copyright = styled('div')``
 
-class Footer extends Component {
+class Footer extends PureComponent {
   render() {
     return (
       <FooterContainer>

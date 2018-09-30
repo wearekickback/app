@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import gql from 'graphql-tag'
 
 import SafeQuery from './SafeQuery'
@@ -12,7 +12,7 @@ const GET_REVERSE_RECORD = gql`
   }
 `
 
-class ReverseResolution extends Component {
+class ReverseResolution extends PureComponent {
   render() {
     return (
       <SafeQuery

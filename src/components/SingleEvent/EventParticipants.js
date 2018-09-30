@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 
-class EventParticipants extends Component {
+class EventParticipants extends PureComponent {
   render() {
     const { participants, search, party } = this.props
     const searchTerm = search.toLowerCase()

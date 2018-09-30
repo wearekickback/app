@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
-import GlobalConsumer from '../../GlobalState'
+import { GlobalConsumer } from '../../GlobalState'
 
-class ToggleModal extends Component {
+class ToggleModal extends PureComponent {
   render() {
     const { className, children, modalName } = this.props
     return (

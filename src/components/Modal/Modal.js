@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
-import GlobalConsumer from '../../GlobalState'
+import { GlobalConsumer } from '../../GlobalState'
 // import { Transition } from 'react-spring'
 
-class Modal extends Component {
+class Modal extends PureComponent {
   render() {
     const { name, children, component: Component } = this.props
     return (

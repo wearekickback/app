@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 import InputAddress from '../Forms/InputAddress'
 import TextInput from '../Forms/TextInput'
@@ -10,7 +10,7 @@ const SignInContainer = styled('div')``
 
 const Form = styled('form')``
 
-class SignIn extends Component {
+class SignIn extends PureComponent {
   constructor(props) {
     super(props)
     this.email = null
@@ -24,7 +24,7 @@ class SignIn extends Component {
   render() {
     return (
       <SignInContainer>
-        <H2>Create account</H2>
+        <H2>Please sign in</H2>
         <Form onSubmit={this.signIn}>
           <Label>Ethereum address (public)</Label>
           <InputAddress address="0x866B3c4994e1416B7C738B9818b31dC246b95eEE" />

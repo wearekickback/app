@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 
 import SafeQuery from '../SafeQuery'
@@ -14,7 +14,7 @@ const GET_REVERSE_RECORD = gql`
   }
 `
 
-class GetUser extends Component {
+class GetUser extends PureComponent {
   render(){
     return (
       <GetUserContainer>

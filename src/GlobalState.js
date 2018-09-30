@@ -1,12 +1,29 @@
 import React, { createContext, Component } from 'react'
 
+import { getItem } from './api/localStorage'
+
 const GlobalContext = createContext({})
-const GlobalConsumer = GlobalContext.Consumer
+
+export const GlobalConsumer = GlobalContext.Consumer
+
+let setProviderInstance
+const providerPromise = new Promise(resolve => { setProviderInstance = resolve })
+
+export const getProvider = () => providerPromise
 
 export class GlobalProvider extends Component {
   state = {
-    currentModal: null
+    currentModal: null,
+    userAddress: null,
+    auth: {
+      token: getItem('authToken')
+    }
   }
+
+  componentDidMount () {
+    setProviderInstance(this)
+  }
+
   handleModalToggle = modal => {
     this.setState(state => {
       if (state.currentModal === modal) {
@@ -34,5 +51,3 @@ export class GlobalProvider extends Component {
     )
   }
 }
-
-export default GlobalConsumer

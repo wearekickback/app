@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 import { winningShare } from './utils'
@@ -26,7 +26,7 @@ const UNMARK_ATTENDED = gql`
   }
 `
 
-export class Participant extends Component {
+export class Participant extends PureComponent {
   render() {
     const {
       participant,
@@ -77,7 +77,7 @@ export class Participant extends Component {
 
 const ParticipantWrapper = styled('div')``
 
-class ParticipantContainer extends Component {
+class ParticipantContainer extends PureComponent {
   render() {
     const { address, contractAddress } = this.props
     return (

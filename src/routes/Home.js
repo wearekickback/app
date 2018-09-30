@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { AllPartiesQuery, AllEventsQuery } from '../graphql/queries'
 import { Link } from 'react-router-dom'
 
 import SafeQuery from '../components/SafeQuery'
 
-class Home extends Component {
+class Home extends PureComponent {
   render() {
     return (
       <div className="App">

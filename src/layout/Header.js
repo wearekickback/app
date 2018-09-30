@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
-import SignIn from '../components/Modal/ToggleModal'
+import ToggleModal from '../components/Modal/ToggleModal'
 import LogoIconDefault from '../components/Icons/Logo'
 
 const HeaderContainer = styled('header')`
@@ -54,7 +54,7 @@ const Header = () => (
         <AccountAddress>vitalik.eth</AccountAddress>
         <Avatar />
       </Account>
-      <SignIn modalName="signIn">Sign in</SignIn>
+      <ToggleModal modalName="signIn">Sign in</ToggleModal>
     </RightBar>
   </HeaderContainer>
 )

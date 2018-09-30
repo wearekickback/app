@@ -1,15 +1,10 @@
-import React, { Component } from 'react'
-import gql from 'graphql-tag'
+import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
 import SafeMutation from '../components/SafeMutation'
+import { CreateParty } from '../graphql/mutations'
 
-const CREATE = gql`
-  mutation create($name: String, $deposit: String, $limitOfParticipants: String, ) {
-    create(name: $name, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client
-  }
-`
-class Create extends Component {
+class Create extends PureComponent {
   state = {
     name: '',
     deposit: '0.02',
@@ -45,7 +40,7 @@ class Create extends Component {
           /><br/>
         </div>
 
-        <SafeMutation mutation={CREATE} variables={{ name, deposit, limitOfParticipants }}>
+        <SafeMutation mutation={CreateParty} variables={{ name, deposit, limitOfParticipants }}>
           {(postMutation, { create: address }) => (
             <div>
               <button onClick={postMutation}>Submit</button>

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import SingleEventWrapper from '../components/SingleEvent/SingleEventWrapper'
 
-class SingleEvent extends Component {
+class SingleEvent extends PureComponent {
   state = {
     search: ''
   }

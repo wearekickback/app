@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 
 const Search = styled('input')``
 
-class EventFilters extends Component {
+class EventFilters extends PureComponent {
   render() {
     const { handleSearch } = this.props
     return (
