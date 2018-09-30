@@ -52,7 +52,7 @@ const resolvers = {
 
   Mutation: {
     async create(_, { name, deposit, limitOfParticipants }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
 
       const deployerAddress = await getDeployerAddress()
@@ -83,7 +83,7 @@ const resolvers = {
 
         throw new Error(`Failed to deploy party: ${e}`)
       }
-    }
+    },
     // async signMessage(message) {
     //   const signature = await signer.signMessage(message)
     //   return signature
@@ -92,6 +92,14 @@ const resolvers = {
     //   const ethers = getEthers()
     //   return ethers.Wallet.verifyMessage(message, signature)
     // }
+    async signChallengeString (_, { challengeString }) {
+      const web3 = await getWeb3()
+      const address = await getAccount()
+
+      console.log(`Ask user ${address} to sign: ${challengeString}`)
+
+      return web3.eth.personal.sign(challengeString, address)
+    }
   }
 }
 

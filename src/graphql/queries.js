@@ -8,13 +8,25 @@ export const EthersQuery = gql`
   }
 `
 
-export const MyProfile = gql`
-query getMyProfile {
-  myProfile {
-    # if legal agreements not accepted then profile not created!
-    legal
+export const UserProfileQuery = gql`
+  query getUserProfile($address: String!) {
+    profile: userProfile(address: $address) {
+      address
+      social {
+        type
+        value
+      }
+      # if I am logged in then these following props will also get returned
+      email {
+        verified
+        pending
+      }
+      legal {
+        type
+        accepted
+      }
+    }
   }
-}
 `
 
 export const PartyQuery = gql`
@@ -86,5 +98,14 @@ export const GET_MARKED_ATTENDED_SINGLE = gql`
 export const GET_MARKED_ATTENDED = gql`
   query getMarkedAttended {
     markedAttendedList @client
+  }
+`
+
+export const ReverseRecordQuery = gql`
+  query getReverseRecord($address: String) {
+    getReverseRecord(address: $address) @client {
+      name
+      address
+    }
   }
 `

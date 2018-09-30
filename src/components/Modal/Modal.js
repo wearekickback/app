@@ -8,15 +8,14 @@ class Modal extends PureComponent {
     const { name, children, component: Component } = this.props
     return (
       <GlobalConsumer>
-        {({ state, handleModalToggle }) => (
-          name === state.currentModal &&
+        {({ currentModal, toggleModal }) => (
+          name === currentModal &&
             (
               <ModalContainer
-                show={name === state.currentModal}
+                show={name === currentModal}
                 onClick={event => {
-                  console.log(event)
                   event.stopPropagation()
-                  handleModalToggle(name)
+                  toggleModal(name)
                 }}
               >
                 <ModalContent onClick={event => event.stopPropagation()}>

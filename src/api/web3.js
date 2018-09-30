@@ -6,9 +6,28 @@ import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
 let web3
 let networkError
 
-function getWeb3() {
+async function getWeb3() {
   if (!web3) {
-    setupWeb3()
+    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+    if (window.web3 && window.web3.currentProvider) {
+      web3 = new Web3(window.web3.currentProvider)
+    } else {
+      console.log('No web3 instance injected. Falling back to Infura')
+      if (NETWORK) {
+        web3 = new Web3(`https://${NETWORK}.infura.io/`)
+      } else {
+        web3 = new Web3(`https://mainnet.infura.io/`)
+        console.log('No network specified in config, Falling back to mainnet.')
+      }
+    }
+
+    try {
+      await web3.eth.net.getId()
+    } catch (e) {
+      web3 = null
+      networkError = `We were unable to connect to the Ethereum network`
+      throw e
+    }
   }
 
   return web3
@@ -45,30 +64,9 @@ export async function getEvents(address, abi) {
 }
 
 export async function getAccount() {
-  const web3 = getWeb3()
+  const web3 = await getWeb3()
   const accounts = await web3.eth.getAccounts()
   return accounts[0]
-}
-
-export async function setupWeb3() {
-  // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-  if (window.web3 && window.web3.currentProvider) {
-    web3 = new Web3(window.web3.currentProvider)
-    try {
-      await web3.eth.net.getId()
-    } catch (e) {
-      networkError = `We were unable to connect to the Ethereum network`
-      console.error(networkError)
-    }
-  } else {
-    console.log('No web3 instance injected. Falling back to Infura')
-    if (NETWORK) {
-      web3 = new Web3(`https://${NETWORK}.infura.io/`)
-    } else {
-      web3 = new Web3(`https://mainnet.infura.io/`)
-      console.log('No network detected in env.json. Falling back to mainnet')
-    }
-  }
 }
 
 export default getWeb3

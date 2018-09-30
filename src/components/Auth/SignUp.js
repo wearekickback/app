@@ -1,45 +1,99 @@
 import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
+
 import InputAddress from '../Forms/InputAddress'
 import TextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import Button from '../Forms/Button'
 import { H2 } from '../Typography/Basic'
+import { UpdateUserProfile } from '../../graphql/mutations'
+import SafeMutation from '../SafeMutation'
+import { GlobalConsumer } from '../../GlobalState'
+import RefreshAuthToken from './RefreshAuthToken'
 
 const SignInContainer = styled('div')``
 
-const Form = styled('form')``
+const FormDiv = styled('div')``
 
 class SignUp extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.email = null
-    this.twitter = null
+  state = {
+    email: '',
+    twitter: '',
   }
-  signIn = e => {
-    e.preventDefault()
-    console.log(this.email.value, this.twitter.value)
+
+  signUp = (refreshAuthToken, updateUserProfile) => formSubmitEvent => {
+    formSubmitEvent.preventDefault()
+
+    refreshAuthToken().then(() => updateUserProfile())
+  }
+
+  handleEmailChange = e => {
+    this.setState({
+      email: e.target.value
+    })
+  }
+
+  handleTwitterChange = e => {
+    this.setState({
+      twitter: e.target.value
+    })
   }
 
   render() {
+    const { email, twitter } = this.state
+
+    const social = [
+      {
+        type: 'twitter',
+        value: twitter
+      }
+    ]
+
+    const legal = [
+      {
+        type: 'TERMS_AND_CONDITIONS',
+        accepted: `${Date.now()}`,
+      },
+      {
+        type: 'PRIVACY_POLICY',
+        accepted: `${Date.now()}`,
+      },
+    ]
+
     return (
       <SignInContainer>
         <H2>Create account</H2>
-        <Form onSubmit={this.signIn}>
-          <Label>Ethereum address (public)</Label>
-          <InputAddress address="0x866B3c4994e1416B7C738B9818b31dC246b95eEE" />
-          <Label>Email: (optional)</Label>
-          <TextInput
-            placeholder="alice@gmail.com"
-            innerRef={input => (this.email = input)}
-          />
-          <Label>Twitter: (optional)</Label>
-          <TextInput
-            placeholder="@jack"
-            innerRef={input => (this.twitter = input)}
-          />
-          <Button>Create account</Button>
-        </Form>
+        <GlobalConsumer>
+          {({ userAddress }) => (
+            <FormDiv>
+              <Label>Ethereum address (public)</Label>
+              <InputAddress address={userAddress} />
+              <Label>Email: (optional)</Label>
+              <TextInput
+                placeholder="alice@gmail.com"
+                value={email}
+                onChange={this.handleEmailChange}
+              />
+              <Label>Twitter: (optional)</Label>
+              <TextInput
+                placeholder="@jack"
+                value={twitter}
+                onChange={this.handleTwitterChange}
+              />
+              <SafeMutation mutation={UpdateUserProfile} variables={{ profile: { email, social, legal } }}>
+                {updateUserProfile => (
+                  <RefreshAuthToken>
+                    {refreshAuthToken => (
+                      <Button onClick={this.signUp(refreshAuthToken, updateUserProfile)}>
+                        Create account
+                      </Button>
+                    )}
+                  </RefreshAuthToken>
+                )}
+              </SafeMutation>
+            </FormDiv>
+          )}
+        </GlobalConsumer>
       </SignInContainer>
     )
   }

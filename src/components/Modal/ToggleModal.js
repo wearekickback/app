@@ -7,10 +7,10 @@ class ToggleModal extends PureComponent {
     const { className, children, modalName } = this.props
     return (
       <GlobalConsumer>
-        {({ handleModalToggle }) => (
+        {({ toggleModal }) => (
           <ToggleModalContainer
             className={className}
-            onClick={() => handleModalToggle(modalName)}
+            onClick={() => toggleModal(modalName)}
           >
             {children}
           </ToggleModalContainer>

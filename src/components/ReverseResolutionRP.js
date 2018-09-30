@@ -1,23 +1,14 @@
 import React, { PureComponent } from 'react'
-import gql from 'graphql-tag'
 
 import SafeQuery from './SafeQuery'
+import { ReverseRecordQuery } from '../graphql/queries'
 
-
-const GET_REVERSE_RECORD = gql`
-  query getReverseRecord($address: String) @client {
-    getReverseRecord(address: $address) {
-      name
-      address
-    }
-  }
-`
 
 class ReverseResolution extends PureComponent {
   render() {
     return (
       <SafeQuery
-        query={GET_REVERSE_RECORD}
+        query={ReverseRecordQuery}
         variables={{ address: this.props.address }}
         renderLoading={() => (
           this.props.children({
@@ -26,8 +17,8 @@ class ReverseResolution extends PureComponent {
           })
         )}
       >
-        {({ getReverseRecord }) => {
-          if (!getReverseRecord.name) {
+        {({ reverseRecord = {} }) => {
+          if (!reverseRecord.name) {
             return this.props.children({
               address: this.props.address,
               name: null
@@ -36,7 +27,7 @@ class ReverseResolution extends PureComponent {
 
           return this.props.children({
             address: this.props.address,
-            name: getReverseRecord.name
+            name: reverseRecord.name
           })
         }}
       </SafeQuery>

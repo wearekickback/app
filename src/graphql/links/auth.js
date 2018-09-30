@@ -1,26 +1,28 @@
-import { Observable, Operation, ApolloLink } from 'apollo-link'
+import _ from 'lodash'
+import { Observable, ApolloLink } from 'apollo-link'
 import { hasDirectives, checkDocument, removeDirectivesFromDocument } from 'apollo-utilities'
 
-import { GetMyProfileNoAuth } from '../queries'
+import { SIGN_IN, SIGN_UP } from '../../modals'
+import { UserProfileQuery } from '../queries'
 import { getProvider as getGlobalProvider } from '../../GlobalState'
-
+import { getAccount } from '../../api/web3'
 
 const sanitizedQueryCache = new Map()
 
-const getAuthHeaders = auth => {
-  return auth ? {
-    Authorization: `Bearer ${auth.token}`
+const getAuthHeaders = token => {
+  return token ? {
+    Authorization: `Bearer ${token}`
   } : {}
 }
 
 export default () => (
   new ApolloLink((operation, forward) => {
-    // need auth directive
+    // if no @auth directive then nothing further to do!
     if (!hasDirectives(['auth'], operation.query)) {
       return forward(operation)
     }
 
-    // get sanitized query (remove directive)
+    // get sanitized query (remove @auth directive since server won't understand it)
     let sanitizedQuery = sanitizedQueryCache[operation.query]
     if (!sanitizedQuery) {
       // remove directives (inspired by https://github.com/apollographql/apollo-link-state/blob/master/packages/apollo-link-state/src/utils.ts)
@@ -37,15 +39,65 @@ export default () => (
     return new Observable(async observer => {
       let handle
 
-      // if user already logged in then set headers
-      const { auth } = (await getGlobalProvider()).state
-      if (auth.userAddress) {
+      const globalProvider = await getGlobalProvider()
+
+      // if user logged in
+      if (globalProvider.isLoggedIn()) {
+        // add auth headers
         operation.setContext({
-          headers: getAuthHeaders(auth)
+          headers: getAuthHeaders(globalProvider.authToken())
         })
       } else {
-        console.log('wait')
-        await new Promise(r => setTimeout(r, 4000))
+        // let's request user's profile
+        const address = await getAccount()
+
+        // cannot proceed if we do not have account address
+        if (!address) {
+          observer.error(new Error('Web3 not yet connected!'))
+          observer.complete()
+          return
+        }
+
+        try {
+          console.debug(`Checking if user is logged in ...`)
+
+          const result = await globalProvider.apolloClient().query({
+            query: UserProfileQuery,
+            variables: { address },
+            context: {
+              headers: getAuthHeaders(globalProvider.authToken())
+            }
+          })
+
+          const hasProfile = !!_.get(result, 'data.profile.social.length')
+          const hasValidLoginToken = !!_.get(result, 'data.profile.legal.length')
+
+          // logged in
+          if (hasValidLoginToken) {
+            if (hasProfile) {
+              console.debug('User is logged in')
+              globalProvider.setLoggedIn(true)
+            } else {
+              console.debug('User does not have a profile')
+              globalProvider.showModal(SIGN_UP)
+            }
+          }
+          // not logged in
+          else {
+            if (hasProfile) {
+              console.debug('User is not logged in but has signed up before')
+              globalProvider.showModal(SIGN_IN)
+            } else {
+              console.debug('User is not signed up')
+              globalProvider.showModal(SIGN_UP)
+            }
+          }
+        } catch (err) {
+          console.warn(err)
+          observer.error(new Error('Unable to check if user is logged in'))
+          observer.complete()
+          return
+        }
       }
 
       // pass request down the chain
@@ -62,13 +114,6 @@ export default () => (
           handle.unsubscribe()
         }
       }
-      // // else let's request user's profile to see if they are logged in and have a profile
-      // const result = await client.request({
-      //   query: GetMyProfileNoAuth,
-      //   context: {
-      //     headers: getAuthHeaders()
-      //   }
-      // })
     })
   })
 )

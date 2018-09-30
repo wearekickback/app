@@ -11,7 +11,7 @@ const resolvers = {
       }
 
       try {
-        const web3 = getWeb3()
+        const web3 = await getWeb3()
         const resolver = await web3.eth.resolver(address.slice(0, 2))
         console.log(resolver)
         return {
