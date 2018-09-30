@@ -10,11 +10,18 @@ import { SIGN_IN } from '../modals'
 const HeaderContainer = styled('header')`
   width: 100%;
   height: 70px;
+  background: #6e76ff;
+  margin-bottom: 50px;
+`
+
+const HeaderInner = styled('div')`
+  margin-left: 40px;
+  margin-right: 40px;
+  height: 100%;
   display: flex;
   background: #6e76ff;
   justify-content: space-between;
   align-items: center;
-  color: white;
 `
 
 const Link = styled(DefaultLink)`
@@ -31,7 +38,7 @@ const Logo = styled('h1')`
   font-size: 22px;
 
   a {
-    font-family: Helvetica;
+    font-family: Muli;
     color: white;
   }
 `

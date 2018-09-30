@@ -1,7 +1,14 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
+import { H3 } from '../Typography/Basic'
+
+const EventParticipantsContainer = styled('div')`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 10px;
+`
 
 class EventParticipants extends PureComponent {
   render() {
@@ -10,30 +17,31 @@ class EventParticipants extends PureComponent {
     return (
       <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
         {markAttendedSingle => (
-          <EventParticipantsContainer>
-            {participants
-              .filter(
-                participant =>
-                  participant.participantName
-                    .toLowerCase()
-                    .includes(searchTerm) ||
-                  participant.address.toLowerCase().includes(searchTerm)
-              )
-              .map(participant => (
-                <Participant
-                  participant={participant}
-                  party={party}
-                  key={participant.address}
-                  markedAttendedList={markAttendedSingle || []}
-                />
-              ))}
-          </EventParticipantsContainer>
+          <Fragment>
+            <H3>Attendees</H3>
+            <EventParticipantsContainer>
+              {participants
+                .filter(
+                  participant =>
+                    participant.participantName
+                      .toLowerCase()
+                      .includes(searchTerm) ||
+                    participant.address.toLowerCase().includes(searchTerm)
+                )
+                .map(participant => (
+                  <Participant
+                    participant={participant}
+                    party={party}
+                    key={participant.address}
+                    markedAttendedList={markAttendedSingle || []}
+                  />
+                ))}
+            </EventParticipantsContainer>
+          </Fragment>
         )}
       </GetMarkedAttendedQuery>
     )
   }
 }
-
-const EventParticipantsContainer = styled('div')``
 
 export default EventParticipants

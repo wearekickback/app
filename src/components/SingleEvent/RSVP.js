@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'react-emotion'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import Button from '../Forms/Button'
 
 const RSVP_TO_EVENT = gql`
   mutation rsvp($twitter: String, $address: String) {
@@ -18,7 +19,7 @@ const RSVP = ({ address }) => (
         twitter: '_jefflau'
       }}
     >
-      {rsvp => <button onClick={rsvp}>rsvp</button>}
+      {rsvp => <Button onClick={rsvp}>RSVP</Button>}
     </Mutation>
   </RSVPContainer>
 )

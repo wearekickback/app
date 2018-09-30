@@ -3,6 +3,7 @@ import styled from 'react-emotion'
 
 const SVG = styled('svg')`
   width: 40px;
+  margin-left: -5px;
 `
 
 const Logo = ({ className }) => (

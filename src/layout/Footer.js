@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
+import { H2 as DefaultH2 } from '../components/Typography/Basic'
 
 const FooterContainer = styled('footer')`
   width: 100%;
-  background: #ccc;
+  background-color: #6e76ff;
+`
+
+const H2 = styled(DefaultH2)`
+  color: white;
 `
 
 const Social = styled('div')``
@@ -15,7 +20,7 @@ class Footer extends PureComponent {
   render() {
     return (
       <FooterContainer>
-        Get in touch
+        <H2>Get in touch</H2>
         <Link to="/">About</Link>
         <Link to="/">Team</Link>
         <Link to="/">Contact</Link>

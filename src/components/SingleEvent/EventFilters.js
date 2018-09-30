@@ -1,14 +1,18 @@
 import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
-
-const Search = styled('input')``
+import { Search } from '../Forms/TextInput'
 
 class EventFilters extends PureComponent {
   render() {
     const { handleSearch } = this.props
     return (
       <EventFiltersContainer>
-        <Search type="text" onChange={handleSearch} />
+        <Search
+          type="text"
+          onChange={handleSearch}
+          placeholder="Search for names or addresses"
+          wide
+        />
       </EventFiltersContainer>
     )
   }

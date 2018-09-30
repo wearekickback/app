@@ -5,14 +5,46 @@ import { winningShare } from './utils'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-const TwitterAvatar = styled('img')`
-  border-radius: 50%;
-  width: 50px;
+const ParticipantWrapper = styled('div')`
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
-const ParticipantAddress = styled('div')``
+const TwitterAvatar = styled('img')`
+  border-radius: 50%;
+  width: 61px;
+`
 
-const WinningShare = styled('div')``
+const ParticipantAddress = styled('div')`
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const Status = styled('div')`
+  ${({ type }) => {
+    switch (type) {
+      case 'won':
+        return `
+          color: #5cca94;
+          background-color: #e7f7ef;
+        `
+      case 'lost':
+        return `
+          color: #6E76FF;
+          background-color: #F4F5FF;
+        `
+      default:
+        return ``
+    }
+  }} font-size: 12px;
+  padding: 5px;
+  border-radius: 4px;
+  text-align: center;
+`
 
 const MARK_ATTENDED = gql`
   mutation markAttended($address: String, $contractAddress: String) {
@@ -42,23 +74,23 @@ export class Participant extends PureComponent {
 
     return (
       <ParticipantWrapper>
-        <div>{participantName}</div>
         <TwitterAvatar
           src={`https://avatars.io/twitter/${participantName}/medium`}
         />
+        <div>{participantName}</div>
         <ParticipantAddress>
           <ReverseResolution address={address} />
         </ParticipantAddress>
         {ended ? (
-          <WinningShare>
-            {attended
-              ? `won ${winningShare(
-                  deposit,
-                  registered,
-                  attendedCount
-                )} ${paid && 'and withdrawn'}`
-              : `lost ${deposit}`}
-          </WinningShare>
+          attended ? (
+            <Status type="won">{`${paid ? ' Withdrew' : 'Won'} ${winningShare(
+              deposit,
+              registered,
+              attendedCount
+            )} ETH `}</Status>
+          ) : (
+            <Status type="lost">Lost {deposit} ETH</Status>
+          )
         ) : !attended ? (
           <Fragment>
             {isMarked ? (
@@ -74,8 +106,6 @@ export class Participant extends PureComponent {
     )
   }
 }
-
-const ParticipantWrapper = styled('div')``
 
 class ParticipantContainer extends PureComponent {
   render() {

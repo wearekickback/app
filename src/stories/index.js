@@ -7,7 +7,7 @@ import { linkTo } from '@storybook/addon-links'
 import Button from '../components/Forms/Button'
 import TextInput from '../components/Forms/TextInput'
 import { Participant } from '../components/SingleEvent/Participant'
-import client from '../testing-utils/mockedClient'
+import createClient from '../testing-utils/mockedClient'
 import { ApolloProvider } from 'react-apollo'
 import { injectGlobal } from 'emotion'
 
@@ -70,8 +70,8 @@ storiesOf('<TextInput type="text">', module)
   .add('error', () => <TextInput error errorMessage="Boom" />)
 
 const mockParticipant = {
-  participantName: 'Vitalik Buterin',
-  address: '0x123',
+  participantName: 'vitalikbuterin',
+  address: '0xf12dF26321821fCDBBb343Fd9A5f9da5C935F908',
   paid: false,
   attended: false
 }
@@ -85,10 +85,40 @@ const mockParty = {
 
 const mockMarkedAttendedList = []
 
-storiesOf('<Participant participant={mockParticipant}>', module).add(
-  'default',
+const mockResolvers = {
+  Query: {
+    getReverseRecord: (_, { address }) => {
+      const obj = {
+        address,
+        __typename: 'ReverseRecord'
+      }
+
+      const obj2 = {
+        ...obj,
+        name: null
+      }
+      console.log(obj2)
+      return obj2
+    }
+  }
+}
+
+storiesOf('<Participant>', module).add('default', () => (
+  <ApolloProvider client={createClient()}>
+    <Participant
+      markAttended={action('clicked attend')}
+      ummarkAttended={action('clicked unattend')}
+      participant={mockParticipant}
+      markedAttendedList={mockMarkedAttendedList}
+      party={mockParty}
+    />
+  </ApolloProvider>
+))
+
+storiesOf('<Participant> with no reverse', module).add(
+  'no reverse record',
   () => (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={createClient(mockResolvers)}>
       <Participant
         markAttended={action('clicked attend')}
         ummarkAttended={action('clicked unattend')}

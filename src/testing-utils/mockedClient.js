@@ -2,12 +2,13 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { withClientState } from 'apollo-link-state'
 const cache = new InMemoryCache(window.__APOLLO_STATE__)
+const merge = require('lodash/merge')
 
 const typeDefs = ``
 
-const resolvers = {
+const defaultResolvers = {
   Query: {
-    getReverseRecord: async (_, { address }) => {
+    getReverseRecord: (_, { address }) => {
       const obj = {
         address,
         __typename: 'ReverseRecord'
@@ -22,14 +23,15 @@ const resolvers = {
 }
 const defaults = {}
 
-const graphqlClient = new ApolloClient({
-  cache,
-  link: withClientState({
-    resolvers,
+export default function createClient(resolvers = {}) {
+  const merged = merge({ ...defaultResolvers }, resolvers)
+  console.log(merged)
+  return new ApolloClient({
     cache,
-    defaults,
-    typeDefs
+    link: withClientState({
+      resolvers: merge({ ...defaultResolvers }, resolvers),
+      defaults,
+      typeDefs
+    })
   })
-})
-
-export default graphqlClient
+}
