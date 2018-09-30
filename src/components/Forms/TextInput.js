@@ -8,10 +8,16 @@ const Input = styled('input')`
   color: #1e1e1e;
   border-radius: 2px;
   border: 1px solid #edeef4;
+  padding-left: 30px;
   ${({ wide }) => wide && `width: 100%`};
   &:focus {
     outline: 0;
     border: 1px solid #6e76ff;
+  }
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #ccced8;
+    opacity: 1; /* Firefox */
   }
 `
 

@@ -7,7 +7,12 @@ class EventFilters extends Component {
     const { handleSearch } = this.props
     return (
       <EventFiltersContainer>
-        <Search type="text" onChange={handleSearch} wide />
+        <Search
+          type="text"
+          onChange={handleSearch}
+          placeholder="Search for names or addresses"
+          wide
+        />
       </EventFiltersContainer>
     )
   }

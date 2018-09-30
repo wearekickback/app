@@ -2,11 +2,11 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
-import { H2 } from '../Typography/Basic'
+import { H3 } from '../Typography/Basic'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
-  grid-template-columns: 200px 200px 200px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 10px;
 `
 
@@ -18,7 +18,7 @@ class EventParticipants extends Component {
       <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
         {markAttendedSingle => (
           <Fragment>
-            <H2>Attendees</H2>
+            <H3>Attendees</H3>
             <EventParticipantsContainer>
               {participants
                 .filter(

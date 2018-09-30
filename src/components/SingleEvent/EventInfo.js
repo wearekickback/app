@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
+import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
 const Date = styled('div')``
 const EventName = styled('h2')``
-const ContractAddress = styled('h3')``
+const ContractAddress = styled('h3')`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 const OrganiserImage = styled('img')``
 const OrganiserName = styled('div')``
 const Location = styled('div')``
@@ -26,8 +31,10 @@ class EventInfo extends Component {
       <EventInfoContainer className={className}>
         <Date>{party.date}</Date>
         <EventName>{party.name}</EventName>
-        <ContractAddress>{address}</ContractAddress>
-        <OrganiserImage />
+        <ContractAddress>
+          <EtherScanLink address={address}>{address}</EtherScanLink>
+        </ContractAddress>
+        <OrganiserImage src="https://placeimg.com/640/480/tech" />
         <OrganiserName>
           <ReverseResolution address={party.owner} />
         </OrganiserName>

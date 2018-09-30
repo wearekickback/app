@@ -10,6 +10,7 @@ const Container = styled('main')`
   background: white;
   margin-left: 40px;
   margin-right: 40px;
+  max-width: 100%;
 `
 
 const DefaultLayout = ({ children }) => (

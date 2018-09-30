@@ -83,13 +83,13 @@ export class Participant extends Component {
         </ParticipantAddress>
         {ended ? (
           attended ? (
-            <Status type="won">{`${paid ? ' withdrew' : 'won'} ${winningShare(
+            <Status type="won">{`${paid ? ' Withdrew' : 'Won'} ${winningShare(
               deposit,
               registered,
               attendedCount
             )} ETH `}</Status>
           ) : (
-            <Status type="lost">lost {deposit} ETH</Status>
+            <Status type="lost">Lost {deposit} ETH</Status>
           )
         ) : !attended ? (
           <Fragment>

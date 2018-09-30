@@ -10,14 +10,15 @@ import EventParticipants from './EventParticipants'
 
 const SingleEventContainer = styled('div')`
   display: flex;
+  justify-content: space-between;
 `
 
 const EventInfoContainer = styled('div')`
-  width: 50%;
+  width: 47.5%;
 `
 
 const RightContainer = styled('div')`
-  width: 50%;
+  width: 47.5%;
 `
 
 class SingleEventWrapper extends Component {
