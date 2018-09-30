@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-
-const Search = styled('input')``
+import { Search } from '../Forms/TextInput'
 
 class EventFilters extends Component {
   render() {
     const { handleSearch } = this.props
     return (
       <EventFiltersContainer>
-        <Search type="text" onChange={handleSearch} />
+        <Search type="text" onChange={handleSearch} wide />
       </EventFiltersContainer>
     )
   }

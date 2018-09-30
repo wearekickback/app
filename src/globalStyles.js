@@ -6,7 +6,6 @@ injectGlobal`
   }
   body {
     font-family: Muli;
-    background: #6E76FF;
   }
 
   a {
