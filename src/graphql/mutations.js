@@ -24,7 +24,6 @@ export const SignChallengeString = gql`
 export const UpdateUserProfile = gql`
   mutation updateUserProfile($profile: UserProfileInput!) {
     profile: updateUserProfile(profile: $profile) @auth {
-      created
       address
       social {
         type

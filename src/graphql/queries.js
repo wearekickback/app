@@ -64,7 +64,7 @@ export const PartyQuery = gql`
 
 export const AllPartiesQuery = gql`
   query getParties {
-    parties: activeParties @auth {
+    parties: activeParties {
       name
       address
       description

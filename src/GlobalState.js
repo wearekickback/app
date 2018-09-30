@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import * as LocalStorage from './api/localStorage'
 import { getAccount } from './api/web3'
+import { SIGN_IN } from './modals'
 
 const GlobalContext = createContext({})
 
@@ -11,6 +12,9 @@ export const GlobalConsumer = GlobalContext.Consumer
 
 let setProviderInstance
 const providerPromise = new Promise(resolve => { setProviderInstance = resolve })
+
+let setSignedIn
+const signInPromise = new Promise(resolve => { setSignedIn = resolve })
 
 export const getProvider = () => providerPromise
 
@@ -34,7 +38,21 @@ class Provider extends Component {
   }
 
   isLoggedIn () {
-    return this.state.auth.isLoggedIn
+    return this.state.auth.loggedIn
+  }
+
+  async signIn () {
+    this.setState(state => ({
+      auth: {
+        ...state.auth,
+        token: undefined,
+        loggedIn: false,
+      }
+    }))
+
+    this.showModal(SIGN_IN)
+
+    return signInPromise
   }
 
   setAuthTokenFromSignature = (address, sig) => {
@@ -48,9 +66,10 @@ class Provider extends Component {
     this.setState(state => ({
       auth: {
         ...state.auth,
-        token
+        token,
+        loggedIn: true, /* we'll assume token works */
       }
-    }))
+    }), /* now we resolve the promsie -> */ setSignedIn)
   }
 
   showModal = modal => {
@@ -86,6 +105,7 @@ class Provider extends Component {
         value={{
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
+          loggedIn: this.state.auth.loggedIn,
           toggleModal: this.toggleModal,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,

@@ -5,7 +5,7 @@ import http from './http'
 import auth from './auth'
 
 export default args => ApolloLink.from([
-  client(args),
   auth(args),
+  client(args),
   http(args)
 ])

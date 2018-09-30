@@ -3,6 +3,7 @@ import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 import ToggleModal from '../components/Modal/ToggleModal'
 
+import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
 import { SIGN_IN } from '../modals'
 
@@ -51,12 +52,21 @@ const Header = () => (
       </Link>
     </Logo>
     <RightBar>
-      <Notifications>Notification</Notifications>
-      <Account>
-        <AccountAddress>vitalik.eth</AccountAddress>
-        <Avatar />
-      </Account>
-      <ToggleModal modalName={SIGN_IN}>Sign in</ToggleModal>
+      <GlobalConsumer>
+        {({ userAddress, loggedIn }) => (
+          loggedIn ? (
+            <>
+              <Notifications>Notification</Notifications>
+              <Account>
+                <AccountAddress>{userAddress}</AccountAddress>
+                <Avatar />
+              </Account>
+            </>
+          ) : (
+            <ToggleModal modalName={SIGN_IN}>Sign in</ToggleModal>
+          )
+        )}
+      </GlobalConsumer>
     </RightBar>
   </HeaderContainer>
 )

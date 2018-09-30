@@ -12,9 +12,8 @@ import Create from './routes/Create'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import Modal from './components/Modal/Modal'
-import SignUp from './components/Auth/SignUp'
 import SignIn from './components/Auth/SignIn'
-import { SIGN_IN, SIGN_UP } from './modals'
+import { SIGN_IN } from './modals'
 
 import './App.css'
 
@@ -47,7 +46,6 @@ class App extends PureComponent {
             <Route path="/create" component={Create} />
           </Switch>
         </Router>
-        <Modal name={SIGN_UP} component={SignUp} />
         <Modal name={SIGN_IN} component={SignIn} />
       </Fragment>
     )
