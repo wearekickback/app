@@ -7,7 +7,13 @@ import { GlobalConsumer } from '../../GlobalState'
 
 
 export default class RefreshAuthToken extends PureComponent {
-  buildCallback = (userAddress, createLoginChallenge, signChallengeString, setAuthTokenFromSignature) => () => (
+  buildCallback = ({
+    userAddress,
+    createLoginChallenge,
+    signChallengeString,
+    setAuthTokenFromSignature,
+    setUserProfile,
+  }) => ({ fetchUserProfileFromServer }) => (
     createLoginChallenge()
       .then(({ data, errors }) => {
         if (errors) {
@@ -31,12 +37,22 @@ export default class RefreshAuthToken extends PureComponent {
 
         return setAuthTokenFromSignature(userAddress, signature)
       })
+      .then(() => fetchUserProfileFromServer())
+      .then(({ errors, data }) => {
+        if (errors) {
+          throw new Error('Failed to fetch user profile!')
+        }
+
+        const { profile } = data
+
+        setUserProfile(profile)
+      })
   )
 
   render() {
     return (
       <GlobalConsumer>
-        {({ userAddress, setAuthTokenFromSignature }) => (
+        {({ userAddress, setAuthTokenFromSignature, setUserProfile }) => (
           (!userAddress) ? (
             <ErrorBox>Please ensure you are connected to Ethereum!</ErrorBox>
           ) : (
@@ -44,7 +60,13 @@ export default class RefreshAuthToken extends PureComponent {
               {createLoginChallenge => (
                 <SafeMutation mutation={SignChallengeString}>
                   {signChallengeString => this.props.children(
-                    this.buildCallback(userAddress, createLoginChallenge, signChallengeString, setAuthTokenFromSignature)
+                    this.buildCallback({
+                      userAddress,
+                      createLoginChallenge,
+                      signChallengeString,
+                      setAuthTokenFromSignature,
+                      setUserProfile,
+                    })
                   )}
                 </SafeMutation>
               )}

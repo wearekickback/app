@@ -21,22 +21,42 @@ export const SignChallengeString = gql`
   }
 `
 
+const ProfileFields = gql`
+  fragment ProfileFields on UserProfile {
+    address
+    lastLogin
+    created
+    social {
+      type
+      value
+    }
+    email {
+      verified
+      pending
+    }
+    legal {
+      type
+      accepted
+    }
+  }
+`
+
+export const LoginUser = gql`
+  ${ProfileFields}
+
+  mutation loginUser {
+    profile: loginUser @auth {
+      ...ProfileFields
+    }
+  }
+`
+
 export const UpdateUserProfile = gql`
+  ${ProfileFields}
+
   mutation updateUserProfile($profile: UserProfileInput!) {
     profile: updateUserProfile(profile: $profile) @auth {
-      address
-      social {
-        type
-        value
-      }
-      email {
-        verified
-        pending
-      }
-      legal {
-        type
-        accepted
-      }
+      ...ProfileFields
     }
   }
 `

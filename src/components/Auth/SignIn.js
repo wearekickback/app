@@ -7,7 +7,7 @@ import TextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import Button from '../Forms/Button'
 import { H2 } from '../Typography/Basic'
-import { UpdateUserProfile } from '../../graphql/mutations'
+import { UpdateUserProfile, LoginUser } from '../../graphql/mutations'
 import { UserProfileQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
@@ -89,7 +89,7 @@ export default class SignIn extends PureComponent {
           {updateUserProfile => (
             <RefreshAuthToken>
               {refreshAuthToken => (
-                <Button onClick={this.signInOrSignUp({ refreshAuthToken, updateUserProfile, toggleModal })}>
+                <Button onClick={this.signInOrSignUp({ refreshAuthToken, fetchUserProfileFromServer: updateUserProfile, toggleModal })}>
                   Create account
                 </Button>
               )}
@@ -106,22 +106,25 @@ export default class SignIn extends PureComponent {
         <H2>Sign in</H2>
         <Label>Ethereum address</Label>
         <div>{userAddress}</div>
-          <RefreshAuthToken>
-            {refreshAuthToken => (
-              <Button onClick={this.signInOrSignUp({ refreshAuthToken, toggleModal })}>
-                Sign in
-              </Button>
-            )}
-          </RefreshAuthToken>
+        <SafeMutation mutation={LoginUser}>
+          {loginUser => (
+            <RefreshAuthToken>
+              {refreshAuthToken => (
+                <Button onClick={this.signInOrSignUp({ refreshAuthToken, fetchUserProfileFromServer: loginUser, toggleModal })}>
+                  Sign in
+                </Button>
+              )}
+            </RefreshAuthToken>
+          )}
+        </SafeMutation>
       </FormDiv>
     )
   }
 
-  signInOrSignUp = ({ refreshAuthToken, updateUserProfile, toggleModal }) => e => {
+  signInOrSignUp = ({ refreshAuthToken, fetchUserProfileFromServer, toggleModal }) => e => {
     e.preventDefault()
 
-    refreshAuthToken()
-      .then(() => updateUserProfile ? updateUserProfile() : null)
+    refreshAuthToken({ fetchUserProfileFromServer })
       .then(() => toggleModal(SIGN_IN))
   }
 

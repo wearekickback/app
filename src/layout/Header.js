@@ -60,12 +60,13 @@ const Header = () => (
     </Logo>
     <RightBar>
       <GlobalConsumer>
-        {({ userAddress, loggedIn }) => (
+        {({ userAddress, userProfile, loggedIn }) => (
           loggedIn ? (
             <>
               <Notifications>Notification</Notifications>
               <Account>
                 <AccountAddress>{userAddress}</AccountAddress>
+                {console.log(userProfile)}
                 <Avatar />
               </Account>
             </>

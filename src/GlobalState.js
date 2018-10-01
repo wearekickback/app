@@ -46,6 +46,7 @@ class Provider extends Component {
       auth: {
         ...state.auth,
         token: undefined,
+        profile: null,
         loggedIn: false,
       }
     }))
@@ -53,6 +54,15 @@ class Provider extends Component {
     this.showModal(SIGN_IN)
 
     return signInPromise
+  }
+
+  setUserProfile = profile => {
+    this.setState(state => ({
+      auth: {
+        ...state.auth,
+        profile,
+      }
+    }))
   }
 
   setAuthTokenFromSignature = (address, sig) => {
@@ -105,10 +115,12 @@ class Provider extends Component {
         value={{
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
+          userProfile: this.state.auth.profile,
           loggedIn: this.state.auth.loggedIn,
           toggleModal: this.toggleModal,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
+          setUserProfile: this.setUserProfile,
         }}
       >
         {this.props.children}
