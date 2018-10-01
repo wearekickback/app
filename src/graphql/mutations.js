@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 
+import { ProfileFields } from './fragments'
 
 export const CreateParty = gql`
   mutation create($name: String, $deposit: String, $limitOfParticipants: String) {
@@ -18,26 +19,6 @@ export const CreateLoginChallenge = gql`
 export const SignChallengeString = gql`
   mutation signChallengeString($challengeString: String!) {
     signature: signChallengeString(challengeString: $challengeString) @client
-  }
-`
-
-const ProfileFields = gql`
-  fragment ProfileFields on UserProfile {
-    address
-    lastLogin
-    created
-    social {
-      type
-      value
-    }
-    email {
-      verified
-      pending
-    }
-    legal {
-      type
-      accepted
-    }
   }
 `
 

@@ -61,6 +61,8 @@ class Provider extends Component {
       auth: {
         ...state.auth,
         profile,
+        // need this on both this function and setUserProfile() since they can be called independently of each other
+        loggedIn: true,
       }
     }))
   }
@@ -77,7 +79,8 @@ class Provider extends Component {
       auth: {
         ...state.auth,
         token,
-        loggedIn: true, /* we'll assume token works */
+        // need this on both this function and setUserProfile() since they can be called independently of each other
+        loggedIn: true,
       }
     }), /* now we resolve the promsie -> */ setSignedIn)
   }

@@ -1,9 +1,8 @@
-import _ from 'lodash'
+import gql from 'graphql-tag'
 import { Observable, ApolloLink } from 'apollo-link'
 import { hasDirectives, checkDocument, removeDirectivesFromDocument } from 'apollo-utilities'
 
-import { SIGN_IN } from '../../modals'
-import { UserProfileQuery } from '../queries'
+import { ProfileFields } from '../fragments'
 import { getProvider as getGlobalProvider } from '../../GlobalState'
 import { getAccount } from '../../api/web3'
 
@@ -25,6 +24,16 @@ const makeError = (observer, err) => {
   // ])
   observer.complete([])
 }
+
+const LoginUserNoAuth = gql`
+  ${ProfileFields}
+
+  mutation loginUser {
+    profile: loginUser {
+      ...ProfileFields
+    }
+  }
+`
 
 export default () => (
   new ApolloLink((operation, forward) => {
@@ -70,23 +79,18 @@ export default () => (
 
           console.debug(`Checking if user is logged in ...`)
 
-          const result = await globalProvider.apolloClient().query({
-            query: UserProfileQuery,
-            variables: { address },
-            context: {
-              headers: getAuthHeaders(globalProvider.authToken())
-            }
-          })
+          try {
+            const { data: { profile } } = await globalProvider.apolloClient().mutate({
+              mutation: LoginUserNoAuth,
+              context: {
+                headers: getAuthHeaders(globalProvider.authToken())
+              }
+            })
 
-          const hasProfile = !!_.get(result, 'data.profile.social.length')
-          const hasValidLoginToken = !!_.get(result, 'data.profile.legal.length')
-
-          // logged in
-          if (hasValidLoginToken && hasProfile) {
             console.debug('User is logged in and has a profile')
 
-            globalProvider.setLoggedIn(true)
-          } else {
+            globalProvider.setUserProfile(profile)
+          } catch (err) {
             console.debug('User is not logged and/or does not have a profile')
 
             await globalProvider.signIn()
