@@ -64,7 +64,7 @@ class Provider extends Component {
         // need this on both this function and setUserProfile() since they can be called independently of each other
         loggedIn: true,
       }
-    }))
+    }), /* now we resolve the promsie -> */ setSignedIn)
   }
 
   setAuthTokenFromSignature = (address, sig) => {
@@ -82,7 +82,7 @@ class Provider extends Component {
         // need this on both this function and setUserProfile() since they can be called independently of each other
         loggedIn: true,
       }
-    }), /* now we resolve the promsie -> */ setSignedIn)
+    }))
   }
 
   showModal = modal => {
@@ -119,7 +119,7 @@ class Provider extends Component {
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
           userProfile: this.state.auth.profile,
-          loggedIn: this.state.auth.loggedIn,
+          loggedIn: this.isLoggedIn(),
           toggleModal: this.toggleModal,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
