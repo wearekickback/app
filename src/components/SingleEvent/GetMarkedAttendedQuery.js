@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import SafeQuery from '../SafeQuery'
 import { GET_MARKED_ATTENDED_SINGLE } from '../../graphql/queries'
 
-class GetMarkedAttendeesQuery extends PureComponent {
+class GetMarkedAttendeesQuery extends Component {
   render() {
     return (
       <SafeQuery

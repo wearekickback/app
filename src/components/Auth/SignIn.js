@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import InputAddress from '../Forms/InputAddress'
@@ -19,7 +19,7 @@ const SignInContainer = styled('div')``
 
 const FormDiv = styled('div')``
 
-export default class SignIn extends PureComponent {
+export default class SignIn extends Component {
   state = {
     email: '',
     twitter: '',

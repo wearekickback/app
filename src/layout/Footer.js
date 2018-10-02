@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
@@ -16,7 +16,7 @@ const Social = styled('div')``
 
 const Copyright = styled('div')``
 
-class Footer extends PureComponent {
+class Footer extends Component {
   render() {
     return (
       <FooterContainer>

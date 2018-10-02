@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -24,7 +24,7 @@ const Photo = styled('img')``
 const Comments = styled('section')``
 const Comment = styled('div')``
 
-class EventInfo extends PureComponent {
+class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
     return (

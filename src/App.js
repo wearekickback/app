@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
   BrowserRouter as Router,
   Route as DefaultRoute,
@@ -34,7 +34,7 @@ const Route = ({
   )
 }
 
-class App extends PureComponent {
+class App extends Component {
   render() {
     return (
       <Fragment>

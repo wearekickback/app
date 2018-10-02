@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import RSVP from './RSVP'
@@ -6,7 +6,7 @@ import RSVP from './RSVP'
 const CTA = styled('div')``
 const RemainingSpots = styled('div')``
 
-class EventCTA extends PureComponent {
+class EventCTA extends Component {
   render() {
     const {
       party: { attendees, limitOfParticipants, ended },

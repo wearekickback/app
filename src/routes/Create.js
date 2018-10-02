@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import SafeMutation from '../components/SafeMutation'
 import { CreateParty } from '../graphql/mutations'
 
-class Create extends PureComponent {
+class Create extends Component {
   state = {
     name: '',
     deposit: '0.02',

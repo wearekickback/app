@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
@@ -10,7 +10,7 @@ const EventParticipantsContainer = styled('div')`
   grid-gap: 10px;
 `
 
-class EventParticipants extends PureComponent {
+class EventParticipants extends Component {
   render() {
     const { participants, search, party } = this.props
     const searchTerm = search.toLowerCase()

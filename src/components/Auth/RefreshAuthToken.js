@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 
 import SafeMutation from '../SafeMutation'
 import ErrorBox from '../ErrorBox'
@@ -6,7 +6,7 @@ import { CreateLoginChallenge, SignChallengeString } from '../../graphql/mutatio
 import { GlobalConsumer } from '../../GlobalState'
 
 
-export default class RefreshAuthToken extends PureComponent {
+export default class RefreshAuthToken extends Component {
   buildCallback = ({
     userAddress,
     createLoginChallenge,

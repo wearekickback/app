@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
 import { PartyQuery } from '../../graphql/queries'
@@ -21,7 +21,7 @@ const RightContainer = styled('div')`
   width: 47.5%;
 `
 
-class SingleEventWrapper extends PureComponent {
+class SingleEventWrapper extends Component {
   state = {
     search: ''
   }
