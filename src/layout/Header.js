@@ -14,15 +14,15 @@ const HeaderContainer = styled('header')`
   margin-bottom: 50px;
 `
 
-const HeaderInner = styled('div')`
-  margin-left: 40px;
-  margin-right: 40px;
-  height: 100%;
-  display: flex;
-  background: #6e76ff;
-  justify-content: space-between;
-  align-items: center;
-`
+// const HeaderInner = styled('div')`
+//   margin-left: 40px;
+//   margin-right: 40px;
+//   height: 100%;
+//   display: flex;
+//   background: #6e76ff;
+//   justify-content: space-between;
+//   align-items: center;
+// `
 
 const Link = styled(DefaultLink)`
   display: flex;
