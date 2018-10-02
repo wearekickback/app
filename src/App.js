@@ -12,7 +12,8 @@ import Create from './routes/Create'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import Modal from './components/Modal/Modal'
-import SignIn from './components/SignIn/SignIn'
+import SignIn from './components/Auth/SignIn'
+import { SIGN_IN } from './modals'
 
 import './App.css'
 
@@ -45,7 +46,7 @@ class App extends Component {
             <Route path="/create" component={Create} />
           </Switch>
         </Router>
-        <Modal name="signIn" component={SignIn} />
+        <Modal name={SIGN_IN} component={SignIn} />
       </Fragment>
     )
   }

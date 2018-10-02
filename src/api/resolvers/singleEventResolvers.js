@@ -31,7 +31,7 @@ const resolvers = {
     },
     async deposit({ contract }) {
       const deposit = await contract.deposit().call()
-      const { utils } = getWeb3()
+      const { utils } = await getWeb3()
       return utils.fromWei(deposit.toString())
     },
     async limitOfParticipants({ contract }) {
@@ -64,7 +64,7 @@ const resolvers = {
     },
     async payoutAmount({ contract }) {
       const payoutAmount = await contract.payoutAmount().call()
-      const { utils } = getWeb3()
+      const { utils } = await getWeb3()
       return utils.fromWei(payoutAmount.toString())
     },
     async encryption({ contract }) {
@@ -101,7 +101,7 @@ const resolvers = {
   },
   Query: {
     async party(_, { address }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const contract = new web3.eth.Contract(abi, address)
       const eventFixture = events.filter(event => {
         return event.address === address
@@ -172,7 +172,7 @@ const resolvers = {
       return data.markedAttendedList
     },
     async rsvp(_, { twitter, address }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(address, abi)
       const deposit = await contract.deposit().send({ from: account })
@@ -187,7 +187,7 @@ const resolvers = {
       }
     },
     async setLimitOfParticipants(_, { address, limit }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
@@ -198,7 +198,7 @@ const resolvers = {
       }
     },
     async payback(_, { address }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
@@ -209,7 +209,7 @@ const resolvers = {
       }
     },
     async clear(_, { address }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
@@ -220,7 +220,7 @@ const resolvers = {
       }
     },
     async changeName(_, { address, name }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
@@ -231,7 +231,7 @@ const resolvers = {
       }
     },
     async batchAttend(_, { address, attendees }, { cache }) {
-      const web3 = getWeb3()
+      const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {

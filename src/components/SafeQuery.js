@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 
@@ -9,7 +9,7 @@ const DEFAULT_IS_LOADING = ({ loading }) => loading
 const DEFAULT_RENDER_ERROR = ({ error }) => <ErrorBox>{`${error}`}</ErrorBox>
 const DEFAULT_RENDER_LOADING = () => <Loader />
 
-export default class SafeQuery extends PureComponent {
+export default class SafeQuery extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
   }

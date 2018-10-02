@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
-import SignIn from '../components/Modal/ToggleModal'
+import ToggleModal from '../components/Modal/ToggleModal'
+
+import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
+import { SIGN_IN } from '../modals'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -11,15 +14,15 @@ const HeaderContainer = styled('header')`
   margin-bottom: 50px;
 `
 
-const HeaderInner = styled('div')`
-  margin-left: 40px;
-  margin-right: 40px;
-  height: 100%;
-  display: flex;
-  background: #6e76ff;
-  justify-content: space-between;
-  align-items: center;
-`
+// const HeaderInner = styled('div')`
+//   margin-left: 40px;
+//   margin-right: 40px;
+//   height: 100%;
+//   display: flex;
+//   background: #6e76ff;
+//   justify-content: space-between;
+//   align-items: center;
+// `
 
 const Link = styled(DefaultLink)`
   display: flex;
@@ -49,22 +52,30 @@ const Avatar = styled('img')``
 
 const Header = () => (
   <HeaderContainer>
-    <HeaderInner>
-      <Logo>
-        <Link to="/">
-          <LogoIcon />
-          Kickback
-        </Link>
-      </Logo>
-      <RightBar>
-        <Notifications>Notification</Notifications>
-        <Account>
-          <AccountAddress>vitalik.eth</AccountAddress>
-          <Avatar />
-        </Account>
-        <SignIn modalName="signIn">Sign in</SignIn>
-      </RightBar>
-    </HeaderInner>
+    <Logo>
+      <Link to="/">
+        <LogoIcon />
+        Kickback
+      </Link>
+    </Logo>
+    <RightBar>
+      <GlobalConsumer>
+        {({ userAddress, userProfile, loggedIn }) => (
+          loggedIn ? (
+            <>
+              <Notifications>Notification</Notifications>
+              <Account>
+                <AccountAddress>{userAddress}</AccountAddress>
+                {console.log(userProfile)}
+                <Avatar />
+              </Account>
+            </>
+          ) : (
+            <ToggleModal modalName={SIGN_IN}>Sign in</ToggleModal>
+          )
+        )}
+      </GlobalConsumer>
+    </RightBar>
   </HeaderContainer>
 )
 

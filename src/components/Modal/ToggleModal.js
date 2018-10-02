@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import GlobalConsumer from '../../GlobalState'
+import { GlobalConsumer } from '../../GlobalState'
 
 class ToggleModal extends Component {
   render() {
     const { className, children, modalName } = this.props
     return (
       <GlobalConsumer>
-        {({ handleModalToggle }) => (
+        {({ toggleModal }) => (
           <ToggleModalContainer
             className={className}
-            onClick={() => handleModalToggle(modalName)}
+            onClick={() => toggleModal(modalName)}
           >
             {children}
           </ToggleModalContainer>
