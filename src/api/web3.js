@@ -1,12 +1,14 @@
 import { Deployer } from '@noblocknoparty/contracts'
 import Web3 from 'web3'
+import EventEmitter from 'eventemitter3'
 
 import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
 import { NEW_BLOCK } from '../constants/events'
-import { pubsub } from '../graphql/utils'
 
 let web3
 let networkError
+
+export const events = new EventEmitter()
 
 async function getWeb3() {
   if (!web3) {
@@ -32,9 +34,15 @@ async function getWeb3() {
     }
 
     if (web3) {
-      web3.eth.subscribe('newBlockHeaders', block => {
-        pubsub.publish(NEW_BLOCK, block)
-      })
+      // poll for blocks
+      setInterval(async () => {
+        try {
+          const block = await web3.eth.getBlock('latest')
+          events.emit(NEW_BLOCK, block)
+        } catch (__) {
+          /* nothing to do */
+        }
+      }, 10000)
     }
   }
 
@@ -52,7 +60,7 @@ export async function getDeployerAddress() {
 }
 
 export async function getTransactionReceipt(txHash) {
-  const web3 = getWeb3()
+  const web3 = await getWeb3()
   return web3.eth.getTransactionReceipt(txHash)
 }
 
