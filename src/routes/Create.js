@@ -46,8 +46,8 @@ class Create extends Component {
           resultKey='create'
           variables={{ name, deposit, limitOfParticipants }}
         >
-          {(postMutation, { inProgress, percentComplete, complete, tx }) => {
-            const address = complete ? extractNewPartyAddressFromTx(tx) : null
+          {(postMutation, { inProgress, percentComplete, succeeded, tx }) => {
+            const address = succeeded ? extractNewPartyAddressFromTx(tx) : null
 
             return (
               <div>

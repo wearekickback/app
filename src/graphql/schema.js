@@ -61,6 +61,16 @@ const typeDefs = `
     value: String!
   }
 
+  input TransactionInput {
+    hash: String!
+    blockNumber: Int!
+  }
+
+  type SocialMedia {
+    type: String!
+    value: String!
+  }
+
   type SocialMedia {
     type: String!
     value: String!

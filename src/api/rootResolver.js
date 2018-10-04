@@ -93,22 +93,29 @@ const resolvers = {
   },
 
   Subscription: {
-    transactionStatus: subscriptionResolver(NEW_BLOCK, async ({ number }, { txHash }) => {
-      // check if transaction succeeded
-      const tx = await getTransactionReceipt(txHash)
-      if (!_.get(tx, 'status')) {
-        throw new Error('Transaction failed!')
-      }
+    transactionStatus: subscriptionResolver(NEW_BLOCK, async ({ number }, { tx }) => {
+      console.log(number, tx)
 
       // confirmations
-      const confirmations = number - tx.blockNumber
-      const progress = parseInt((confirmations / NUM_CONFIRMATIONS) * 100.0)
-      const confirmed = (confirmations === NUM_CONFIRMATIONS)
+      const numConfirmations = number - tx.blockNumber
+      const percentComplete = parseInt((numConfirmations / NUM_CONFIRMATIONS) * 100.0)
+      const inProgress = numConfirmations < NUM_CONFIRMATIONS
+
+      // check result
+      let succeeded = false
+      let failed = false
+      if (!inProgress) {
+        const real = await getTransactionReceipt(tx.hash)
+        failed = !_.get(real, 'status')
+        succeeded = !failed
+      }
 
       return {
-        confirmed,
-        confirmations,
-        progress,
+        inProgress,
+        percentComplete,
+        numConfirmations,
+        succeeded,
+        failed,
       }
     })
   }
