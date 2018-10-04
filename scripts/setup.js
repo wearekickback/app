@@ -16,18 +16,16 @@ try {
   /* do nothing */
 }
 
-const _set = (k, v, overwrite) => {
-  if (overwrite || undefined === appConfig[k]) {
-    appConfig[k] = v
-  }
+const _set = (k, v) => {
+  appConfig[k] = v
 }
 
 if (argv.dev) {
   _set('NETWORK', 'ropsten')
-  _set('API_URL', 'https://dev.kickback.events')
+  _set('API_URL', 'https://dev.api.kickback.events')
 
   const commitHash = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
-  _set('GIT_COMMIT', commitHash, true)
+  _set('GIT_COMMIT', commitHash)
 } else {
   _set('NETWORK', 'local')
   _set('API_URL', 'http://localhost:3001')

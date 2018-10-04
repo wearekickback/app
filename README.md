@@ -62,14 +62,10 @@ the right deployer address_.
 Go back into the server repo folder and re-run the server. Now let's ensure
 that the frontend app will speak to the server instance running locally.
 
-Edit `src/config/env.js` and enter the `API_URL` key:
+Run the setup script:
 
-```js
-{
-  ...
-  "API_KEY": "http://localhost:3001",
-  ...
-}
+```
+yarn setup
 ```
 
 **Run the app**

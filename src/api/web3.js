@@ -2,6 +2,8 @@ import { Deployer } from '@noblocknoparty/contracts'
 import Web3 from 'web3'
 
 import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
+import { NEW_BLOCK } from '../constants/events'
+import { pubsub } from '../graphql/utils'
 
 let web3
 let networkError
@@ -28,6 +30,12 @@ async function getWeb3() {
       networkError = `We were unable to connect to the Ethereum network`
       throw e
     }
+
+    if (web3) {
+      web3.eth.subscribe('newBlockHeaders', block => {
+        pubsub.publish(NEW_BLOCK, block)
+      })
+    }
   }
 
   return web3
@@ -43,7 +51,7 @@ export async function getDeployerAddress() {
   return DEPLOYER_CONTRACT_ADDRESS || Deployer.NETWORKS[id].address
 }
 
-export async function getTransactionLogs(txHash) {
+export async function getTransactionReceipt(txHash) {
   const web3 = getWeb3()
   return web3.eth.getTransactionReceipt(txHash)
 }

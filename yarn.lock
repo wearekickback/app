@@ -1348,9 +1348,9 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@noblocknoparty/contracts@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-0.12.0.tgz#da029c0a39c8189f9d9b7120a23f2cae78c420cd"
+"@noblocknoparty/contracts@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-0.15.0.tgz#38b30eb7b4bc61f2130a47f4031282072f3689c0"
 
 "@nodelib/fs.stat@^1.0.1":
   version "1.1.2"
@@ -6052,6 +6052,12 @@ graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.19:
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.19.tgz#5f6ca3b58218e5449f4798e3c6d942fcd2fef082"
   dependencies:
     apollo-utilities "^1.0.21"
+
+graphql-subscriptions@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-1.0.0.tgz#475267694b3bd465af6477dbab4263a3f62702b8"
+  dependencies:
+    iterall "^1.2.1"
 
 graphql-tag@2.9.2, graphql-tag@^2.9.2:
   version "2.9.2"
