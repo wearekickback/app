@@ -6,6 +6,7 @@ import { H2 as DefaultH2 } from '../components/Typography/Basic'
 const FooterContainer = styled('footer')`
   width: 100%;
   background-color: #6e76ff;
+  padding: 20px 40px;
 `
 
 const H2 = styled(DefaultH2)`

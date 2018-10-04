@@ -6,7 +6,7 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
 const ParticipantWrapper = styled('div')`
-  height: 200px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;

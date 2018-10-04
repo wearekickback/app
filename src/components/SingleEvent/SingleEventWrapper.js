@@ -11,6 +11,8 @@ import EventParticipants from './EventParticipants'
 const SingleEventContainer = styled('div')`
   display: flex;
   justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto 0;
 `
 
 const EventInfoContainer = styled('div')`
