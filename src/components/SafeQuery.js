@@ -6,7 +6,10 @@ import Loader from './Loader'
 import ErrorBox from './ErrorBox'
 
 const DEFAULT_IS_LOADING = ({ loading }) => loading
-const DEFAULT_RENDER_ERROR = ({ error }) => <ErrorBox>{`${error}`}</ErrorBox>
+const DEFAULT_RENDER_ERROR = ({ error }) => {
+  console.error(error)
+  return <ErrorBox>{`${error}`}</ErrorBox>
+}
 const DEFAULT_RENDER_LOADING = () => <Loader />
 
 export default class SafeQuery extends Component {

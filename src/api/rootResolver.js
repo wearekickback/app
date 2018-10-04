@@ -1,16 +1,11 @@
-import _ from 'lodash'
 import merge from 'lodash/merge'
 import { toHex, toWei } from 'web3-utils'
 import { Deployer } from '@noblocknoparty/contracts'
 
 import eventsList from '../fixtures/events.json'
-import { subscriptionResolver } from '../graphql/utils'
-import { NEW_BLOCK } from '../constants/events'
-import { NUM_CONFIRMATIONS } from '../constants/ethereum'
 import getWeb3, {
   getAccount,
   getEvents,
-  getTransactionReceipt,
   getDeployerAddress
 } from './web3'
 import singleEventResolvers, {
@@ -91,34 +86,6 @@ const resolvers = {
       return web3.eth.personal.sign(challengeString, address)
     },
   },
-
-  Subscription: {
-    transactionStatus: subscriptionResolver(NEW_BLOCK, async ({ number }, { tx }) => {
-      console.log(number, tx)
-
-      // confirmations
-      const numConfirmations = number - tx.blockNumber
-      const percentComplete = parseInt((numConfirmations / NUM_CONFIRMATIONS) * 100.0)
-      const inProgress = numConfirmations < NUM_CONFIRMATIONS
-
-      // check result
-      let succeeded = false
-      let failed = false
-      if (!inProgress) {
-        const real = await getTransactionReceipt(tx.hash)
-        failed = !_.get(real, 'status')
-        succeeded = !failed
-      }
-
-      return {
-        inProgress,
-        percentComplete,
-        numConfirmations,
-        succeeded,
-        failed,
-      }
-    })
-  }
 }
 
 const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults)
