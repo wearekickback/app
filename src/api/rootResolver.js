@@ -1,14 +1,16 @@
+import _ from 'lodash'
 import merge from 'lodash/merge'
 import { toHex, toWei } from 'web3-utils'
 import { Deployer } from '@noblocknoparty/contracts'
-import { events } from '@noblocknoparty/contracts'
-import { parseLog } from 'ethereum-event-logs'
 
 import eventsList from '../fixtures/events.json'
+import { subscriptionResolver } from '../graphql/utils'
+import { NEW_BLOCK } from '../constants/events'
+import { NUM_CONFIRMATIONS } from '../constants/ethereum'
 import getWeb3, {
   getAccount,
   getEvents,
-  getTransactionLogs,
+  getTransactionReceipt,
   getDeployerAddress
 } from './web3'
 import singleEventResolvers, {
@@ -73,25 +75,13 @@ const resolvers = {
             from: account
           })
 
-        const logs = await getTransactionLogs(tx.hash)
-
-        const [event] = parseLog(logs, [events.NewParty])
-
-        return event.args.deployedAddress
+        return tx
       } catch (e) {
         console.log('error', e)
 
         throw new Error(`Failed to deploy party: ${e}`)
       }
     },
-    // async signMessage(message) {
-    //   const signature = await signer.signMessage(message)
-    //   return signature
-    // },
-    // async verifyMessage(message, signature) {
-    //   const ethers = getEthers()
-    //   return ethers.Wallet.verifyMessage(message, signature)
-    // }
     async signChallengeString (_, { challengeString }) {
       const web3 = await getWeb3()
       const address = await getAccount()
@@ -99,7 +89,28 @@ const resolvers = {
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
       return web3.eth.personal.sign(challengeString, address)
-    }
+    },
+  },
+
+  Subscription: {
+    transactionStatus: subscriptionResolver(NEW_BLOCK, async ({ number }, { txHash }) => {
+      // check if transaction succeeded
+      const tx = await getTransactionReceipt(txHash)
+      if (!_.get(tx, 'status')) {
+        throw new Error('Transaction failed!')
+      }
+
+      // confirmations
+      const confirmations = number - tx.blockNumber
+      const progress = parseInt((confirmations / NUM_CONFIRMATIONS) * 100.0)
+      const confirmed = (confirmations === NUM_CONFIRMATIONS)
+
+      return {
+        confirmed,
+        confirmations,
+        progress,
+      }
+    })
   }
 }
 

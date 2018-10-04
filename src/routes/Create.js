@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import SafeMutation from '../components/SafeMutation'
+import ChainMutation from '../components/ChainMutation'
 import { CreateParty } from '../graphql/mutations'
+import { extractNewPartyAddressFromTx } from '../api/utils'
 
 class Create extends Component {
   state = {
@@ -40,16 +41,27 @@ class Create extends Component {
           /><br/>
         </div>
 
-        <SafeMutation mutation={CreateParty} variables={{ name, deposit, limitOfParticipants }}>
-          {(postMutation, { create: address }) => (
-            <div>
-              <button onClick={postMutation}>Submit</button>
-              {address ? (
-                <Link to={`/party/${address}`}>View party {address}</Link>
-              ) : null}
-            </div>
-          )}
-        </SafeMutation>
+        <ChainMutation
+          mutation={CreateParty}
+          resultKey='create'
+          variables={{ name, deposit, limitOfParticipants }}
+        >
+          {(postMutation, { inProgress, percentComplete, complete, tx }) => {
+            const address = complete ? extractNewPartyAddressFromTx(tx) : null
+
+            return (
+              <div>
+                <button onClick={postMutation}>Create</button>
+                {inProgress ? (
+                  <div>Confirming: {percentComplete}% complete!</div>
+                ) : null}
+                {address ? (
+                  <Link to={`/party/${address}`}>View party {address}</Link>
+                ) : null}
+              </div>
+            )
+          }}
+        </ChainMutation>
       </div>
     )
   }
