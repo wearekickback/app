@@ -88,13 +88,16 @@ const resolvers = {
 
       const participants = await Promise.all(participantsRaw).then(
         participantsRaw =>
-          participantsRaw.map(arr => ({
-            participantName: arr[0],
-            address: arr[1],
-            attended: arr[2],
-            paid: arr[3],
-            __typename: 'Participant'
-          }))
+          participantsRaw.map(arr => {
+            console.log(arr)
+            return {
+              participantName: arr.participantName,
+              address: arr.addr,
+              attended: arr.attended,
+              paid: arr.paid,
+              __typename: 'Participant'
+            }
+          })
       )
       return participants
     }
@@ -137,7 +140,7 @@ const resolvers = {
         markedAttendedList: [...markedAttendedList]
       }
 
-      console.log(contractAddress)
+      console.log(contractAddress, address)
 
       const exists = data.markedAttendedList.includes(address.toLowerCase())
       //check for duplicates

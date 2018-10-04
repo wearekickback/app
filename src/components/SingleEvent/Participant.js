@@ -4,6 +4,7 @@ import ReverseResolution from '../ReverseResolution'
 import { winningShare } from './utils'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
+import Button from '../Forms/Button'
 
 const ParticipantWrapper = styled('div')`
   height: 150px;
@@ -72,6 +73,8 @@ export class Participant extends Component {
 
     const isMarked = markedAttendedList.includes(address.toLowerCase())
 
+    console.log(participant)
+
     return (
       <ParticipantWrapper>
         <TwitterAvatar
@@ -94,13 +97,13 @@ export class Participant extends Component {
         ) : !attended ? (
           <Fragment>
             {isMarked ? (
-              <div onClick={unmarkAttended}>UnAttend</div>
+              <Button onClick={unmarkAttended}>Unmark as attended</Button>
             ) : (
-              <div onClick={markAttended}>Attend</div>
+              <Button onClick={markAttended}>Mark as attended</Button>
             )}
           </Fragment>
         ) : (
-          'marked as attended'
+          <Status type="won">Marked as attended</Status>
         )}
       </ParticipantWrapper>
     )
@@ -109,17 +112,25 @@ export class Participant extends Component {
 
 class ParticipantContainer extends Component {
   render() {
+    const { party, participant } = this.props
     const { address, contractAddress } = this.props
+    console.log(address, contractAddress)
     return (
       <Mutation
         mutation={UNMARK_ATTENDED}
-        variables={{ address, contractAddress }}
+        variables={{
+          address: participant.address,
+          contractAddress: party.address
+        }}
         refetchQueries={['getMarkedAttendedSingle']}
       >
         {unmarkAttended => (
           <Mutation
             mutation={MARK_ATTENDED}
-            variables={{ address, contractAddress }}
+            variables={{
+              address: participant.address,
+              contractAddress: party.address
+            }}
             refetchQueries={['getMarkedAttendedSingle']}
           >
             {markAttended => (
