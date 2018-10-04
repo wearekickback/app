@@ -13,8 +13,8 @@ class Home extends Component {
           {({ parties }) => {
             return parties ? (
               <div>
-                {parties.map(party => (
-                  <li>
+                {parties.map((party, index) => (
+                  <li key={index}>
                     <Link to={`/party/${party.address}`}>{party.name}</Link>
                   </li>
                 ))}
@@ -29,8 +29,8 @@ class Home extends Component {
           {({ events }) => {
             return events ? (
               <div>
-                {events.map(party => (
-                  <li>
+                {events.map((party, index) => (
+                  <li key={index}>
                     <Link to={`/party/${party.address}`}>{party.name}</Link>
                   </li>
                 ))}

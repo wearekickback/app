@@ -29,6 +29,7 @@ if (argv.dev) {
   const commitHash = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
   _set('GIT_COMMIT', commitHash, true)
 } else {
+  _set('NETWORK', 'local')
   _set('API_URL', 'http://localhost:3001')
 }
 

@@ -35,6 +35,42 @@ const typeDefs = `
     encryption: String
     participants: [Participant]
   }
+
+  enum LegalAgreementType {
+    TERMS_AND_CONDITIONS
+    PRIVACY_POLICY
+  }
+
+  type EmailSettings {
+    verified: String
+    pending: String
+  }
+
+  type LegalAgreement {
+    type: LegalAgreementType!
+    accepted: String!
+  }
+
+  input LegalAgreementInput {
+    type: LegalAgreementType!
+    accepted: Int!
+  }
+
+  input SocialMediaInput {
+    type: String!
+    value: String!
+  }
+
+  type SocialMedia {
+    type: String!
+    value: String!
+  }
+
+  input UserProfileInput {
+    email: String
+    social: [SocialMediaInput]
+    legal: [LegalAgreementInput]
+  }
 `
 
 export default typeDefs

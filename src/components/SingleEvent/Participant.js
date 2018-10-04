@@ -30,7 +30,7 @@ const Status = styled('div')`
       case 'won':
         return `
           color: #5cca94;
-          background-color: #e7f7ef; 
+          background-color: #e7f7ef;
         `
       case 'lost':
         return `

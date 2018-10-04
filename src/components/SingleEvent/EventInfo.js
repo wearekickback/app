@@ -2,15 +2,19 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
+import { H2 } from '../Typography/Basic'
+import Avatar from '../User/Avatar'
 
 const Date = styled('div')``
-const EventName = styled('h2')``
+const EventName = styled(H2)``
 const ContractAddress = styled('h3')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `
-const OrganiserImage = styled('img')``
+const OrganiserImage = styled('img')`
+  border-radius: 4px;
+`
 const OrganiserName = styled('div')``
 const Location = styled('div')``
 const TotalPot = styled('div')``
@@ -36,7 +40,13 @@ class EventInfo extends Component {
         </ContractAddress>
         <OrganiserImage src="https://placeimg.com/640/480/tech" />
         <OrganiserName>
-          <ReverseResolution address={party.owner} />
+          <Avatar
+            src={'https://api.adorable.io/avatars/57/abott@adorable.png'}
+          />{' '}
+          Hosted by{' '}
+          <EtherScanLink address={address}>
+            <ReverseResolution address={party.owner} />
+          </EtherScanLink>
         </OrganiserName>
         <Location>
           {party.location || '11 Macclesfield St, London W1D 5BW'}

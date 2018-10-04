@@ -10,6 +10,8 @@ const EventParticipantsContainer = styled('div')`
   grid-gap: 20px;
 `
 
+const NoAttendees = styled('div')``
+
 class EventParticipants extends Component {
   render() {
     const { participants, search, party } = this.props
@@ -20,22 +22,26 @@ class EventParticipants extends Component {
           <Fragment>
             <H3>Attendees</H3>
             <EventParticipantsContainer>
-              {participants
-                .filter(
-                  participant =>
-                    participant.participantName
-                      .toLowerCase()
-                      .includes(searchTerm) ||
-                    participant.address.toLowerCase().includes(searchTerm)
-                )
-                .map(participant => (
-                  <Participant
-                    participant={participant}
-                    party={party}
-                    key={participant.address}
-                    markedAttendedList={markAttendedSingle || []}
-                  />
-                ))}
+              {participants.length > 0 ? (
+                participants
+                  .filter(
+                    participant =>
+                      participant.participantName
+                        .toLowerCase()
+                        .includes(searchTerm) ||
+                      participant.address.toLowerCase().includes(searchTerm)
+                  )
+                  .map(participant => (
+                    <Participant
+                      participant={participant}
+                      party={party}
+                      key={participant.address}
+                      markedAttendedList={markAttendedSingle || []}
+                    />
+                  ))
+              ) : (
+                <NoAttendees>No is attending.</NoAttendees>
+              )}
             </EventParticipantsContainer>
           </Fragment>
         )}

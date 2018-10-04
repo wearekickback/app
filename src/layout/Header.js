@@ -1,8 +1,11 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
-import SignIn from '../components/Modal/ToggleModal'
+import ToggleModal from '../components/Modal/ToggleModal'
+
+import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
+import { SIGN_IN } from '../modals'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -13,7 +16,7 @@ const HeaderContainer = styled('header')`
 
 const HeaderInner = styled('div')`
   margin: 0 auto 0;
-  max-width: 1024px;
+  max-width: 1200px;
   height: 100%;
   display: flex;
   background: #6e76ff;
@@ -57,12 +60,22 @@ const Header = () => (
         </Link>
       </Logo>
       <RightBar>
-        <Notifications>Notification</Notifications>
-        <Account>
-          <AccountAddress>vitalik.eth</AccountAddress>
-          <Avatar />
-        </Account>
-        <SignIn modalName="signIn">Sign in</SignIn>
+        <GlobalConsumer>
+          {({ userAddress, userProfile, loggedIn }) =>
+            loggedIn ? (
+              <>
+                <Notifications>Notification</Notifications>
+                <Account>
+                  <AccountAddress>{userAddress}</AccountAddress>
+                  {console.log(userProfile)}
+                  <Avatar />
+                </Account>
+              </>
+            ) : (
+              <ToggleModal modalName={SIGN_IN}>Sign in</ToggleModal>
+            )
+          }
+        </GlobalConsumer>
       </RightBar>
     </HeaderInner>
   </HeaderContainer>

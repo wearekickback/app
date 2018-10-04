@@ -16,7 +16,6 @@ const Container = styled('main')`
 const DefaultLayout = ({ children }) => (
   <Fragment>
     <Header />
-
     {getNetworkError() ? <ErrorBox>{`${getNetworkError}`}</ErrorBox> : null}
     <Container>{children}</Container>
     <Footer />

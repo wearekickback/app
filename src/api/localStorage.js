@@ -1,9 +1,17 @@
 const localStorage = window.localStorage
 
 export function setItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value))
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch (_) {
+    console.error(`Error writing to localStorage`, key, value)
+  }
 }
 
 export function getItem(key) {
-  return JSON.parse(localStorage.getItem(key))
+  try {
+    return JSON.parse(localStorage.getItem(key))
+  } catch (err) {
+    return undefined
+  }
 }

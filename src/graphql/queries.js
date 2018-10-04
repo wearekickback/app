@@ -8,6 +8,27 @@ export const EthersQuery = gql`
   }
 `
 
+export const UserProfileQuery = gql`
+  query getUserProfile($address: String!) {
+    profile: userProfile(address: $address) {
+      address
+      social {
+        type
+        value
+      }
+      # if I am logged in then these following props will also get returned
+      email {
+        verified
+        pending
+      }
+      legal {
+        type
+        accepted
+      }
+    }
+  }
+`
+
 export const PartyQuery = gql`
   query getParty($address: String) {
     party(address: $address) @client {
@@ -43,12 +64,22 @@ export const PartyQuery = gql`
 
 export const AllPartiesQuery = gql`
   query getParties {
-    parties @client {
+    parties: activeParties {
       name
       address
+      description
+      date
+      location
+      deposit
+      coolingPeriod
+      attendeeLimit
+      attendees
+      owner
+      admins
     }
   }
 `
+
 export const AllEventsQuery = gql`
   query getEvents {
     events @client {
@@ -67,5 +98,14 @@ export const GET_MARKED_ATTENDED_SINGLE = gql`
 export const GET_MARKED_ATTENDED = gql`
   query getMarkedAttended {
     markedAttendedList @client
+  }
+`
+
+export const ReverseRecordQuery = gql`
+  query getReverseRecord($address: String) {
+    getReverseRecord(address: $address) @client {
+      name
+      address
+    }
   }
 `
