@@ -10,7 +10,7 @@ const AvatarContainer = styled('div')`
 
 const Avatar = ({ src }) => (
   <AvatarContainer>
-    <img src={src} />
+    <img src={src} alt="avatar" />
   </AvatarContainer>
 )
 
