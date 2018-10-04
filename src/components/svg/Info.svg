@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Info</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M6.38,12.006 C6.167,12.006 5.995,11.805 5.995,11.558 C5.995,11.311 6.167,11.11 6.38,11.11 L7,11 L7,8 L6.38,7.884 C6.167,7.884 5.995,7.683 5.995,7.436 C5.995,7.189 6.167,6.988 6.38,6.988 L8.894,6.988 L9,7 L9,11 L9.619,11.11 C9.832,11.11 10.005,11.311 10.005,11.558 C10.005,11.805 9.832,12.006 9.619,12.006 L6.38,12.006 Z M8,6 C7.44771525,6 7,5.55228475 7,5 C7,4.44771525 7.44771525,4 8,4 C8.55228475,4 9,4.44771525 9,5 C9,5.55228475 8.55228475,6 8,6 Z M8,0 C3.581,0 0,3.582 0,8 C0,12.418 3.581,16 8,16 C12.418,16 16,12.418 16,8 C16,3.582 12.418,0 8,0 L8,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Design-System" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Design-system-01" transform="translate(-910.000000, -2963.000000)">
+            <g id="Icons/Info" transform="translate(910.210938, 2963.535156)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Info-Icon" fill="#6E76FF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <g id="Color/Secondary" mask="url(#mask-2)" fill="#F1F2FF" fill-rule="evenodd">
+                    <rect id="Base" x="0" y="0" width="16" height="16"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

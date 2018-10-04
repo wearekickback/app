@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-const InputContainer = styled('div')``
+const InputContainer = styled('div')`
+  position: relative;
+`
 const Input = styled('input')`
   height: 40px;
   font-size: 14px;
@@ -21,22 +23,36 @@ const Input = styled('input')`
   }
 `
 
-const SearchContainer = styled(InputContainer)``
+const SearchContainer = styled(InputContainer)`
+  background-color: rgba(243, 243, 249, 0.5);
+`
 
 const SearchInput = styled(Input)`
   background-color: rgba(243, 243, 249, 0.5);
 `
 
-export const Search = ({ placeholder = '', innerRef, ...props }) => (
-  <SearchContainer {...props}>
-    <SearchInput
-      type="text"
-      placeholder={placeholder}
-      innerRef={innerRef}
-      {...props}
-    />
-  </SearchContainer>
-)
+export const Search = ({ placeholder = '', Icon, innerRef, ...props }) => {
+  let SearchIcon
+  if (Icon) {
+    SearchIcon = styled(Icon)`
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translate(0, -50%);
+    `
+  }
+  return (
+    <SearchContainer {...props}>
+      {Icon ? <SearchIcon /> : ''}
+      <SearchInput
+        type="text"
+        placeholder={placeholder}
+        innerRef={innerRef}
+        {...props}
+      />
+    </SearchContainer>
+  )
+}
 
 const TextInput = ({ placeholder = '', innerRef, ...props }) => (
   <InputContainer {...props}>

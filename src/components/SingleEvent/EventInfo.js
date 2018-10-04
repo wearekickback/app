@@ -5,6 +5,8 @@ import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import Avatar from '../User/Avatar'
 
+import { ReactComponent as Eth } from '../svg/Ethereum.svg'
+
 const Date = styled('div')``
 const EventName = styled(H2)``
 const ContractAddress = styled('h3')`
@@ -52,7 +54,11 @@ class EventInfo extends Component {
           {party.location || '11 Macclesfield St, London W1D 5BW'}
         </Location>
         <TotalPot>
-          Total pot {parseFloat(party.deposit) * parseInt(party.attendees, 10)}
+          <Eth />
+          Total pot{' '}
+          {(parseFloat(party.deposit) * parseInt(party.attendees, 10)).toFixed(
+            2
+          )}
         </TotalPot>
         <Tags>
           <Tag>Ethereum</Tag>

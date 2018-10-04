@@ -31,16 +31,16 @@ class EventParticipants extends Component {
                         .includes(searchTerm) ||
                       participant.address.toLowerCase().includes(searchTerm)
                   )
-                  .map(participant => (
+                  .map((participant, i) => (
                     <Participant
                       participant={participant}
                       party={party}
-                      key={participant.address}
+                      key={participant.address + i}
                       markedAttendedList={markAttendedSingle || []}
                     />
                   ))
               ) : (
-                <NoAttendees>No is attending.</NoAttendees>
+                <NoAttendees>No one is attending.</NoAttendees>
               )}
             </EventParticipantsContainer>
           </Fragment>

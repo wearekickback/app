@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="37px" viewBox="0 0 36 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Ethereum</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Design-System" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Design-system-01" transform="translate(-508.000000, -2953.000000)">
+            <g id="Icons/Ethereum" transform="translate(508.263672, 2953.244141)">
+                <ellipse id="Oval-" fill="#E9EAFF" cx="17.5" cy="18" rx="17.5" ry="18"></ellipse>
+                <g id="Ethereum-logo" stroke-width="1" transform="translate(12.000000, 8.228571)" fill="#6E76FF">
+                    <polygon id="Path-2" points="0.0411376953 9.77142857 5.5 12.8518694 10.9592285 9.77142857 5.5 0.749455915"></polygon>
+                    <polygon id="Path-3" points="0.0589599609 10.7839286 5.5 18.2961914 10.9464111 10.7839286 5.5 13.8899833"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

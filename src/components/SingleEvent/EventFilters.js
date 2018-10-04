@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Search } from '../Forms/TextInput'
+import { ReactComponent as SearchIcon } from '../svg/Search.svg'
 
 class EventFilters extends Component {
   render() {
@@ -9,6 +10,7 @@ class EventFilters extends Component {
       <EventFiltersContainer>
         <Search
           type="text"
+          Icon={SearchIcon}
           onChange={handleSearch}
           placeholder="Search for names or addresses"
           wide

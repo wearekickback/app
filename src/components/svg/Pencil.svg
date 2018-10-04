@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="35px" viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Pencil</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Design-System" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Design-system-01" transform="translate(-661.000000, -2954.000000)">
+            <g id="Icons/Pencil" transform="translate(661.000000, 2953.744141)">
+                <g id="Wallet-" fill="#E9EAFF">
+                    <circle id="Oval" cx="17.3125003" cy="17.5000003" r="17.0000003"></circle>
+                </g>
+                <g transform="translate(10.000000, 10.000000)" fill="#6E76FF" id="pencil">
+                    <g transform="translate(0.468750, 0.468750)" fill-rule="nonzero">
+                        <path d="M8.74440995,2.34685012 L11.6050406,5.22146347 L4.36399449,12.4979713 L1.50498572,9.62335795 L8.74440995,2.34685012 Z M13.775706,1.65355929 L12.4999748,0.371580427 C12.0069487,-0.123860142 11.2063763,-0.123860142 10.7116751,0.371580427 L9.48965223,1.59958798 L12.3502829,4.47422805 L13.775706,3.04182421 C14.1580983,2.65753247 14.1580983,2.03782431 13.775706,1.65355929 Z M0.00796046013,13.6638584 C-0.0440993485,13.8993016 0.16743683,14.1102706 0.401759146,14.0530129 L3.58945195,13.2763337 L0.730443188,10.4017204 L0.00796046013,13.6638584 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

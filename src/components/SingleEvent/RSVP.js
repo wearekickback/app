@@ -10,20 +10,20 @@ const RSVP_TO_EVENT = gql`
   }
 `
 
-const RSVP = ({ address }) => (
-  <RSVPContainer>
-    <Mutation
-      mutation={RSVP_TO_EVENT}
-      variables={{
-        address,
-        twitter: '_jefflau'
-      }}
-    >
-      {rsvp => <Button onClick={rsvp}>RSVP</Button>}
-    </Mutation>
-  </RSVPContainer>
+const RSVP = ({ address, className }) => (
+  <Mutation
+    mutation={RSVP_TO_EVENT}
+    variables={{
+      address,
+      twitter: '_jefflau'
+    }}
+  >
+    {rsvp => (
+      <Button className={className} onClick={rsvp}>
+        RSVP
+      </Button>
+    )}
+  </Mutation>
 )
-
-const RSVPContainer = styled('div')``
 
 export default RSVP
