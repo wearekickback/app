@@ -7,6 +7,7 @@ import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
 import EventFilters from './EventFilters'
 import EventParticipants from './EventParticipants'
+import { GlobalConsumer } from '../../GlobalState'
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -38,26 +39,38 @@ class SingleEventWrapper extends Component {
     const { address, handleSearch, search } = this.props
     return (
       <SingleEventContainer>
-        <SafeQuery query={PartyQuery} variables={{ address }}>
-          {({ party }) => {
-            return (
-              <Fragment>
-                <EventInfoContainer>
-                  <EventInfo party={party} address={address} />
-                </EventInfoContainer>
-                <RightContainer>
-                  <EventCTA party={party} address={address} />
-                  <EventFilters handleSearch={handleSearch} />
-                  <EventParticipants
-                    search={search}
-                    party={party}
-                    participants={party.participants}
-                  />
-                </RightContainer>
-              </Fragment>
-            )
-          }}
-        </SafeQuery>
+        <GlobalConsumer>
+          {({ userAddress }) => (
+            <SafeQuery query={PartyQuery} variables={{ address }}>
+              {({ party }) => {
+                return (
+                  <Fragment>
+                    <EventInfoContainer>
+                      <EventInfo
+                        party={party}
+                        address={address}
+                        participants={party.participants}
+                      />
+                    </EventInfoContainer>
+                    <RightContainer>
+                      <EventCTA
+                        party={party}
+                        address={address}
+                        userAddress={userAddress}
+                      />
+                      <EventFilters handleSearch={handleSearch} />
+                      <EventParticipants
+                        search={search}
+                        party={party}
+                        participants={party.participants}
+                      />
+                    </RightContainer>
+                  </Fragment>
+                )
+              }}
+            </SafeQuery>
+          )}
+        </GlobalConsumer>
       </SingleEventContainer>
     )
   }

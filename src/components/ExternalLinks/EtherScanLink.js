@@ -1,7 +1,12 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-const Link = styled('a')``
+const Link = styled('a')`
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 
 const EtherScanLink = ({ address, tx, children }) => {
   let link

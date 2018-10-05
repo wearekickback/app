@@ -5,6 +5,14 @@ import { winningShare } from './utils'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import Button from '../Forms/Button'
+import EtherScanLink from '../ExternalLinks/EtherScanLink'
+
+const ParticipantName = styled('div')`
+  font-size: 12px;
+  font-weight: 700;
+  color: #3d3f50;
+  text-align: center;
+`
 
 const ParticipantWrapper = styled('div')`
   height: 150px;
@@ -16,6 +24,7 @@ const ParticipantWrapper = styled('div')`
 const TwitterAvatar = styled('img')`
   border-radius: 50%;
   width: 61px;
+  margin-bottom: 15px;
 `
 
 const ParticipantAddress = styled('div')`
@@ -23,6 +32,10 @@ const ParticipantAddress = styled('div')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #3d3f50;
+  text-align: center;
 `
 
 const Status = styled('div')`
@@ -80,9 +93,11 @@ export class Participant extends Component {
         <TwitterAvatar
           src={`https://avatars.io/twitter/${participantName}/medium`}
         />
-        <div>{participantName}</div>
+        <ParticipantName>{participantName}</ParticipantName>
         <ParticipantAddress>
-          <ReverseResolution address={address} />
+          <EtherScanLink address={address}>
+            <ReverseResolution address={address} />
+          </EtherScanLink>
         </ParticipantAddress>
         {ended ? (
           attended ? (
@@ -97,9 +112,13 @@ export class Participant extends Component {
         ) : !attended ? (
           <Fragment>
             {isMarked ? (
-              <Button onClick={unmarkAttended}>Unmark as attended</Button>
+              <Button wide onClick={unmarkAttended}>
+                Unmark attended
+              </Button>
             ) : (
-              <Button onClick={markAttended}>Mark as attended</Button>
+              <Button wide onClick={markAttended}>
+                Mark attended
+              </Button>
             )}
           </Fragment>
         ) : (

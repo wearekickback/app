@@ -8,6 +8,7 @@ const EventParticipantsContainer = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 20px;
+  margin-bottom: 40px;
 `
 
 const NoAttendees = styled('div')``

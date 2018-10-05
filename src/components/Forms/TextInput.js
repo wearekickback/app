@@ -3,6 +3,7 @@ import styled from 'react-emotion'
 
 const InputContainer = styled('div')`
   position: relative;
+  margin-bottom: 20px;
 `
 const Input = styled('input')`
   height: 40px;

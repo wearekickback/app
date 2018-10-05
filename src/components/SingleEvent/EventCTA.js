@@ -51,18 +51,20 @@ class EventCTA extends Component {
   render() {
     const {
       party: { attendees, limitOfParticipants, deposit, ended },
-      address
+      address,
+      participants = [],
+      userAddress
     } = this.props
 
-    //TODO add going flag by checking attendee list with user address
-    const going = true
+    const going =
+      userAddress && participants.find(e => e.address === userAddress)
 
     console.log('EVENT CTA', address)
     return (
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>{deposit} ETH</Deposit>
-          {!ended ? (
+          {userAddress && !ended ? (
             going ? (
               <Going>You're going!</Going>
             ) : (

@@ -8,8 +8,7 @@ import { getNetworkError } from '../api/web3'
 
 const Container = styled('main')`
   background: white;
-  margin-left: 40px;
-  margin-right: 40px;
+  padding: 0 20px;
   max-width: 100%;
 `
 

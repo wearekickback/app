@@ -17,7 +17,11 @@ const ContractAddress = styled('h3')`
 const OrganiserImage = styled('img')`
   border-radius: 4px;
 `
-const OrganiserName = styled('div')``
+const OrganiserName = styled('div')`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 const Location = styled('div')``
 const TotalPot = styled('div')``
 const Tags = styled('section')``
