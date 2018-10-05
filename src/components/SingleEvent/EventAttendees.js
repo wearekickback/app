@@ -4,7 +4,7 @@ import Attendee from './Attendee'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 import { H3 } from '../Typography/Basic'
 
-const EventParticipantsContainer = styled('div')`
+const EventAttendeesContainer = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 20px;
@@ -13,14 +13,14 @@ const EventParticipantsContainer = styled('div')`
 
 const NoAttendees = styled('div')``
 
-class EventParticipants extends Component {
+class EventAttendees extends Component {
   render() {
     const { attendees, search, party } = this.props
 
     const searchTerm = search.toLowerCase()
 
     attendees.sort((a, b) => {
-      return a.index < a.index ? -1 : 1
+      return a.index < b.index ? -1 : 1
     })
 
     return (
@@ -28,11 +28,11 @@ class EventParticipants extends Component {
         {markAttendedSingle => (
           <Fragment>
             <H3>Attendees</H3>
-            <EventParticipantsContainer>
+            <EventAttendeesContainer>
               {attendees.length > 0 ? (
                 attendees
                   .filter(
-                    attendee => attendee.address.toLowerCase().includes(searchTerm)
+                    attendee => attendee.user.address.toLowerCase().includes(searchTerm)
                   )
                   .map((attendee, i) => (
                     <Attendee
@@ -45,7 +45,7 @@ class EventParticipants extends Component {
               ) : (
                 <NoAttendees>No one is attending.</NoAttendees>
               )}
-            </EventParticipantsContainer>
+            </EventAttendeesContainer>
           </Fragment>
         )}
       </GetMarkedAttendedQuery>
@@ -53,4 +53,4 @@ class EventParticipants extends Component {
   }
 }
 
-export default EventParticipants
+export default EventAttendees

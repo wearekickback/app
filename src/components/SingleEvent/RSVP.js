@@ -1,6 +1,5 @@
 import React from 'react'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
 
 import Button from '../Forms/Button'
 import { RsvpToEvent } from '../../graphql/mutations'

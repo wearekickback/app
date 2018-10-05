@@ -2,21 +2,20 @@ import React, { Component, Fragment } from 'react'
 import { Mutation } from 'react-apollo'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
-import gql from 'graphql-tag'
 
 import { ATTENDEE_STATUS } from '../../constants/status'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { winningShare } from '../../utils/calculations'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
-import EtherScanLink from '../ExternalLinks/EtherScanLink'
+// import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
-const ParticipantName = styled('div')`
-  font-size: 12px;
-  font-weight: 700;
-  color: #3d3f50;
-  text-align: center;
-`
+// const ParticipantName = styled('div')`
+//   font-size: 12px;
+//   font-weight: 700;
+//   color: #3d3f50;
+//   text-align: center;
+// `
 
 const ParticipantWrapper = styled('div')`
   height: 150px;
@@ -72,16 +71,16 @@ export class Attendee extends Component {
       markAttended,
       unmarkAttended
     } = this.props
-    const { user, index, status } = attendee
+    const { user, status } = attendee
     const { deposit, ended } = party
 
     const attended = (status === ATTENDEE_STATUS.SHOWED_UP)
     const withdrawn = (status === ATTENDEE_STATUS.WITHDRAWN_PAYOUT)
 
-    const { value: twitter } = user.social.find(({ type }) => type === 'twitter') || {}
+    const { value: twitter } = (user.social || []).find(({ type }) => type === 'twitter') || {}
 
     const numRegistered = party.attendees.length
-    const numShowedUp = party.attendees.reduce((m, ({ status })) => (
+    const numShowedUp = party.attendees.reduce((m, { status }) => (
       m + (status === (ATTENDEE_STATUS.SHOWED_UP || ATTENDEE_STATUS.WITHDRAWN_PAYOUT) ? 1 : 0)
     ), 0)
 
@@ -124,14 +123,13 @@ export class Attendee extends Component {
 class AttendeeContainer extends Component {
   render() {
     const { party, attendee } = this.props
-    const { address, contractAddress } = this.props
     return (
       <Mutation
         mutation={UnmarkUserAttended}
         variables={{
           address: party.address,
           attendee: {
-            address: attendee.address,
+            address: attendee.user.address,
             status: ATTENDEE_STATUS.REGISTERED,
           }
         }}
@@ -143,7 +141,7 @@ class AttendeeContainer extends Component {
             variables={{
               address: party.address,
               attendee: {
-                address: attendee.address,
+                address: attendee.user.address,
                 status: ATTENDEE_STATUS.SHOWED_UP,
               }
             }}

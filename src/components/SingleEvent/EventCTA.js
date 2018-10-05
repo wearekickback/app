@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
-import { pluralize } from '../../utils/calculations'
-import { addressesMatch } from '../../utils/strings'
+import { addressesMatch, pluralize } from '../../utils/strings'
 
 const CTA = styled('div')`
   font-family: Overpass;

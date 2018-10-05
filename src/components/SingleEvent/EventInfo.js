@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+
 import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import Avatar from '../User/Avatar'
-
+import { parseEthValue } from '../../utils/calculations'
 import { ReactComponent as Eth } from '../svg/Ethereum.svg'
 
 const Date = styled('div')``

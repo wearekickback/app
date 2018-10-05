@@ -61,12 +61,10 @@ export default class ChainMutation extends Component {
     if (tx) {
       this.setState({
         tx,
-        percentComplete: 0,
-<<<<<<< HEAD
-        inProgress: true,
-=======
-        inProgress: true
->>>>>>> dev
+        percentComplete: NUM_CONFIRMATIONS > 0 ? 0 : 100,
+        inProgress: NUM_CONFIRMATIONS > 0 ? true : false,
+        succeeded: NUM_CONFIRMATIONS > 0 ? false : true,
+        failed: false,
       })
     }
   }

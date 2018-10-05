@@ -8,7 +8,7 @@ export class EthValue {
 
     ;['mul', 'sub', 'div', 'add'].forEach(method => {
       this[method] = v => {
-        this._bn = this._bn[method].call(this._bn, v)
+        this._bn = this._bn[method].call(this._bn, toBN(v))
         return this
       }
     })
@@ -72,5 +72,5 @@ export class EthValue {
 export const parseEthValue = v => new EthValue(v)
 
 export const winningShare = (deposit, numRegistered, numAttended) => (
-  parseEthValue(deposit).mul(registered).div(attended).toFixed(3)
+  parseEthValue(deposit).mul(numRegistered).div(numAttended).toFixed(3)
 )

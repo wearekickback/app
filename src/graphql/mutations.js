@@ -43,21 +43,21 @@ export const UpdateUserProfile = gql`
 `
 
 
-const MarkUserAttended = gql`
+export const MarkUserAttended = gql`
   mutation markUserAttended($address: String!, $attendee: AttendeeInput!) {
     updateAttendeeStatus(address: $address, attendee: $attendee)
   }
 `
 
-const UnmarkUserAttended = gql`
+export const UnmarkUserAttended = gql`
   mutation unmarkUserAttended($address: String!, $attendee: AttendeeInput!) {
     updateAttendeeStatus(address: $address, attendee: $attendee)
   }
 `
 
 
-const RsvpToEvent = gql`
+export const RsvpToEvent = gql`
   mutation rsvp($twitter: String, $address: String) {
-    rsvp(twitter: $twitter, address: $address) @client @auth 
+    rsvp(twitter: $twitter, address: $address) @client @auth
   }
 `

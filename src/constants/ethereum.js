@@ -1,3 +1,3 @@
 module.exports = {
-  NUM_CONFIRMATIONS: 6
+  NUM_CONFIRMATIONS: 0
 }

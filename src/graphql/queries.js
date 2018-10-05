@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { ProfileFields } from './fragments'
+import { ProfileFields, PartyFields } from './fragments'
 
 export const EthersQuery = gql`
   query ethers {
@@ -11,84 +11,31 @@ export const EthersQuery = gql`
 `
 
 export const UserProfileQuery = gql`
+  ${ProfileFields}
+
   query getUserProfile($address: String!) {
     profile: userProfile(address: $address) {
-      address
-      social {
-        type
-        value
-      }
-      # if I am logged in then these following props will also get returned
-      email {
-        verified
-        pending
-      }
-      legal {
-        type
-        accepted
-      }
+      ...ProfileFields
     }
   }
 `
 
 export const PartyQuery = gql`
-  ${ProfileFields}
+  ${PartyFields}
 
-  query getParty($address: String) {
+  query getParty($address: String!) {
     party(address: $address) {
-      address
-      name
-      description
-      date
-      location
-      deposit
-      coolingPeriod
-      attendeeLimit
-      attendees {
-        user {
-          ...ProfileFields,
-        }
-        status
-        index
-      }
-      ended
-      cancelled
-      owner {
-        ...ProfileFields
-      }
-      admins {
-        ...ProfileFields
-      }
+      ...PartyFields
     }
   }
 `
 
 export const AllPartiesQuery = gql`
+  ${PartyFields}
+
   query getParties {
     parties: activeParties {
-      name
-      address
-      description
-      date
-      location
-      deposit
-      coolingPeriod
-      attendeeLimit
-      attendees
-      owner {
-        address
-        social {
-          type
-          value
-        }
-      }
-      admins {
-        address
-        social {
-          type
-          value
-        }
-      }
+      ...PartyFields
     }
   }
 `
