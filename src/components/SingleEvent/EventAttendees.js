@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import Participant from './Participant'
+import Attendee from './Attendee'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 import { H3 } from '../Typography/Basic'
 
@@ -8,6 +8,7 @@ const EventParticipantsContainer = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 20px;
+  margin-bottom: 40px;
 `
 
 const NoAttendees = styled('div')``
@@ -35,7 +36,7 @@ class EventParticipants extends Component {
                   )
                   .map((attendee, i) => (
                     <Attendee
-                      participant={attendee}
+                      attendee={attendee}
                       party={party}
                       key={attendee.address + i}
                       markedAttendedList={markAttendedSingle || []}

@@ -6,12 +6,15 @@ import ToggleModal from '../components/Modal/ToggleModal'
 import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
 import { SIGN_IN } from '../modals'
+import Button from '../components/Forms/Button'
+import ReverseResolution from '../components/ReverseResolution'
 
 const HeaderContainer = styled('header')`
   width: 100%;
   height: 70px;
   background: #6e76ff;
   margin-bottom: 50px;
+  padding: 0 20px;
 `
 
 const HeaderInner = styled('div')`
@@ -45,7 +48,10 @@ const Logo = styled('h1')`
 const RightBar = styled('div')`
   display: flex;
 `
-const Notifications = styled('div')``
+const Notifications = styled('div')`
+  color: white;
+  margin-right: 20px;
+`
 const Account = styled('div')``
 const AccountAddress = styled('div')``
 const Avatar = styled('img')``
@@ -66,13 +72,18 @@ const Header = () => (
               <>
                 <Notifications>Notification</Notifications>
                 <Account>
-                  <AccountAddress>{userAddress}</AccountAddress>
+                  <AccountAddress>
+                    <ReverseResolution address={userAddress} />
+                  </AccountAddress>
+
                   {console.log(userProfile)}
                   <Avatar />
                 </Account>
               </>
             ) : (
-              <ToggleModal modalName={SIGN_IN}>Sign in</ToggleModal>
+              <ToggleModal modalName={SIGN_IN}>
+                <Button type="light">Sign in</Button>
+              </ToggleModal>
             )
           }
         </GlobalConsumer>

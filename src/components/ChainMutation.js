@@ -8,8 +8,9 @@ import { NEW_BLOCK } from '../constants/events'
 import { NUM_CONFIRMATIONS } from '../constants/ethereum'
 
 export default class ChainMutation extends Component {
+  state = {}
   static propTypes = {
-    children: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired
   }
 
   state = {}
@@ -18,7 +19,7 @@ export default class ChainMutation extends Component {
     events.on(NEW_BLOCK, this._onNewBlock)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     events.off(NEW_BLOCK, this._onNewBlock)
   }
 
@@ -28,7 +29,9 @@ export default class ChainMutation extends Component {
     if (tx) {
       // confirmations
       const numConfirmations = block.number - tx.blockNumber
-      const percentComplete = parseInt((numConfirmations / NUM_CONFIRMATIONS) * 100.0)
+      const percentComplete = parseInt(
+        (numConfirmations / NUM_CONFIRMATIONS) * 100.0
+      )
       const inProgress = numConfirmations < NUM_CONFIRMATIONS
 
       // check result
@@ -45,7 +48,7 @@ export default class ChainMutation extends Component {
         percentComplete,
         inProgress,
         succeeded,
-        failed,
+        failed
       })
     }
   }
@@ -59,12 +62,16 @@ export default class ChainMutation extends Component {
       this.setState({
         tx,
         percentComplete: 0,
+<<<<<<< HEAD
         inProgress: true,
+=======
+        inProgress: true
+>>>>>>> dev
       })
     }
   }
 
-  render () {
+  render() {
     const {
       mutation,
       variables,
@@ -74,12 +81,12 @@ export default class ChainMutation extends Component {
     } = this.props
 
     return (
-       <SafeMutation
-         mutation={mutation}
-         variables={variables}
-         {...otherProps}
-         onCompleted={this._onCompleted}
-        >
+      <SafeMutation
+        mutation={mutation}
+        variables={variables}
+        {...otherProps}
+        onCompleted={this._onCompleted}
+      >
         {(mutator, result) => {
           return children(mutator, {
             tx: _.get(result, resultKey),

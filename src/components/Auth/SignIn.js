@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import InputAddress from '../Forms/InputAddress'
-import TextInput from '../Forms/TextInput'
+import DefaultTextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import Button from '../Forms/Button'
-import { H2 } from '../Typography/Basic'
+import { H2 as DefaultH2 } from '../Typography/Basic'
 import { UpdateUserProfile, LoginUser } from '../../graphql/mutations'
 import { UserProfileQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
@@ -14,15 +14,27 @@ import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
 import RefreshAuthToken from './RefreshAuthToken'
 import { SIGN_IN } from '../../modals'
+import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
 
 const SignInContainer = styled('div')``
 
 const FormDiv = styled('div')``
 
+const Pencil = styled(DefaultPencil)`
+  margin-right: 10px;
+`
+
+const H2 = styled(DefaultH2)`
+  display: flex;
+  align-items: center;
+`
+
+const TextInput = styled(DefaultTextInput)``
+
 export default class SignIn extends Component {
   state = {
     email: '',
-    twitter: '',
+    twitter: ''
   }
 
   render() {
@@ -30,7 +42,10 @@ export default class SignIn extends Component {
       <SignInContainer>
         <GlobalConsumer>
           {({ userAddress, toggleModal }) => (
-            <SafeQuery query={UserProfileQuery} variables={{ address: userAddress }}>
+            <SafeQuery
+              query={UserProfileQuery}
+              variables={{ address: userAddress }}
+            >
               {data => {
                 const hasProfile = !!_.get(data, 'profile.social.length')
 
@@ -47,7 +62,7 @@ export default class SignIn extends Component {
     )
   }
 
-  renderSignUp (userAddress, toggleModal) {
+  renderSignUp(userAddress, toggleModal) {
     const { email, twitter } = this.state
 
     const social = [
@@ -60,36 +75,48 @@ export default class SignIn extends Component {
     const legal = [
       {
         type: 'TERMS_AND_CONDITIONS',
-        accepted: `${Date.now()}`,
+        accepted: `${Date.now()}`
       },
       {
         type: 'PRIVACY_POLICY',
-        accepted: `${Date.now()}`,
-      },
+        accepted: `${Date.now()}`
+      }
     ]
 
     return (
       <FormDiv>
-        <H2>Create account</H2>
-        <Label>Ethereum address (public)</Label>
+        <H2>
+          <Pencil />
+          Create account
+        </H2>
+        <Label secondaryText="(public)">Ethereum address</Label>
         <InputAddress address={userAddress} />
-        <Label>Email: (optional)</Label>
+        <Label>Email</Label>
         <TextInput
           placeholder="alice@gmail.com"
           value={email}
           onChange={this.handleEmailChange}
         />
-        <Label>Twitter: (optional)</Label>
+        <Label secondaryText="(optional)">Twitter</Label>
         <TextInput
           placeholder="@jack"
           value={twitter}
           onChange={this.handleTwitterChange}
         />
-        <SafeMutation mutation={UpdateUserProfile} variables={{ profile: { email, social, legal } }}>
+        <SafeMutation
+          mutation={UpdateUserProfile}
+          variables={{ profile: { email, social, legal } }}
+        >
           {updateUserProfile => (
             <RefreshAuthToken>
               {refreshAuthToken => (
-                <Button onClick={this.signInOrSignUp({ refreshAuthToken, fetchUserProfileFromServer: updateUserProfile, toggleModal })}>
+                <Button
+                  onClick={this.signInOrSignUp({
+                    refreshAuthToken,
+                    fetchUserProfileFromServer: updateUserProfile,
+                    toggleModal
+                  })}
+                >
                   Create account
                 </Button>
               )}
@@ -100,7 +127,7 @@ export default class SignIn extends Component {
     )
   }
 
-  renderSignIn (userAddress, toggleModal) {
+  renderSignIn(userAddress, toggleModal) {
     return (
       <FormDiv>
         <H2>Sign in</H2>
@@ -110,7 +137,13 @@ export default class SignIn extends Component {
           {loginUser => (
             <RefreshAuthToken>
               {refreshAuthToken => (
-                <Button onClick={this.signInOrSignUp({ refreshAuthToken, fetchUserProfileFromServer: loginUser, toggleModal })}>
+                <Button
+                  onClick={this.signInOrSignUp({
+                    refreshAuthToken,
+                    fetchUserProfileFromServer: loginUser,
+                    toggleModal
+                  })}
+                >
                   Sign in
                 </Button>
               )}
@@ -121,11 +154,16 @@ export default class SignIn extends Component {
     )
   }
 
-  signInOrSignUp = ({ refreshAuthToken, fetchUserProfileFromServer, toggleModal }) => e => {
+  signInOrSignUp = ({
+    refreshAuthToken,
+    fetchUserProfileFromServer,
+    toggleModal
+  }) => e => {
     e.preventDefault()
 
-    refreshAuthToken({ fetchUserProfileFromServer })
-      .then(() => toggleModal(SIGN_IN))
+    refreshAuthToken({ fetchUserProfileFromServer }).then(() =>
+      toggleModal(SIGN_IN)
+    )
   }
 
   handleEmailChange = e => {

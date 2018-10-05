@@ -54,3 +54,10 @@ const UnmarkUserAttended = gql`
     updateAttendeeStatus(address: $address, attendee: $attendee)
   }
 `
+
+
+const RsvpToEvent = gql`
+  mutation rsvp($twitter: String, $address: String) {
+    rsvp(twitter: $twitter, address: $address) @client @auth 
+  }
+`

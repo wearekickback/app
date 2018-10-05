@@ -174,15 +174,16 @@ const resolvers = {
 
       return data.markedAttendedList
     },
-    async rsvp(_, { twitter, address }) {
+    async rsvp(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(address, abi)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().send({ from: account })
       try {
-        return contract.register(twitter, {
+        return contract.register('').send({
+          from: account,
           value: deposit,
-          gasLimit: 1000000
+          gas: 1000000
         })
       } catch (e) {
         console.log(e)

@@ -9,6 +9,14 @@ import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { winningShare } from '../../utils/calculations'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
+import EtherScanLink from '../ExternalLinks/EtherScanLink'
+
+const ParticipantName = styled('div')`
+  font-size: 12px;
+  font-weight: 700;
+  color: #3d3f50;
+  text-align: center;
+`
 
 const ParticipantWrapper = styled('div')`
   height: 150px;
@@ -20,6 +28,7 @@ const ParticipantWrapper = styled('div')`
 const TwitterAvatar = styled('img')`
   border-radius: 50%;
   width: 61px;
+  margin-bottom: 15px;
 `
 
 const ParticipantAddress = styled('div')`
@@ -27,6 +36,10 @@ const ParticipantAddress = styled('div')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #3d3f50;
+  text-align: center;
 `
 
 const Status = styled('div')`
@@ -51,15 +64,15 @@ const Status = styled('div')`
   text-align: center;
 `
 
-export class Participant extends Component {
+export class Attendee extends Component {
   render() {
     const {
-      participant,
+      attendee,
       party,
       markAttended,
       unmarkAttended
     } = this.props
-    const { user, index, status } = participant
+    const { user, index, status } = attendee
     const { deposit, ended } = party
 
     const attended = (status === ATTENDEE_STATUS.SHOWED_UP)
@@ -95,9 +108,9 @@ export class Participant extends Component {
             ) : (
               <Fragment>
                 {attended ? (
-                  <Button onClick={unmarkAttended}>Unmark as attended</Button>
+                  <Button wide onClick={unmarkAttended}>Unmark attended</Button>
                 ) : (
-                  <Button onClick={markAttended}>Mark as attended</Button>
+                  <Button wide onClick={markAttended}>Mark attended</Button>
                 )}
               </Fragment>
             )}
@@ -108,9 +121,9 @@ export class Participant extends Component {
   }
 }
 
-class ParticipantContainer extends Component {
+class AttendeeContainer extends Component {
   render() {
-    const { party, participant } = this.props
+    const { party, attendee } = this.props
     const { address, contractAddress } = this.props
     return (
       <Mutation
@@ -118,7 +131,7 @@ class ParticipantContainer extends Component {
         variables={{
           address: party.address,
           attendee: {
-            address: participant.address,
+            address: attendee.address,
             status: ATTENDEE_STATUS.REGISTERED,
           }
         }}
@@ -130,14 +143,14 @@ class ParticipantContainer extends Component {
             variables={{
               address: party.address,
               attendee: {
-                address: participant.address,
+                address: attendee.address,
                 status: ATTENDEE_STATUS.SHOWED_UP,
               }
             }}
             refetchQueries={['getMarkedAttendedSingle']}
           >
             {markAttended => (
-              <Participant
+              <Attendee
                 markAttended={markAttended}
                 unmarkAttended={unmarkAttended}
                 {...this.props}
@@ -150,4 +163,4 @@ class ParticipantContainer extends Component {
   }
 }
 
-export default ParticipantContainer
+export default AttendeeContainer

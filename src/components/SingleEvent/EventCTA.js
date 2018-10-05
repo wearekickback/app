@@ -3,6 +3,7 @@ import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
 import { pluralize } from '../../utils/calculations'
+import { addressesMatch } from '../../utils/strings'
 
 const CTA = styled('div')`
   font-family: Overpass;
@@ -52,17 +53,17 @@ class EventCTA extends Component {
   render() {
     const {
       party: { attendees, attendeeLimit, deposit, ended },
-      address
+      address,
+      userAddress,
     } = this.props
 
-    //TODO add going flag by checking attendee list with user address
-    const going = true
+    const going = attendees.find(e => addressesMatch(e.address, userAddress))
 
     return (
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>{deposit} ETH</Deposit>
-          {!ended ? (
+          {userAddress && !ended ? (
             going ? (
               <Going>You're going!</Going>
             ) : (

@@ -3,6 +3,14 @@ import styled from 'react-emotion'
 
 function getButtonStyles(type) {
   switch (type) {
+    case 'light':
+      return `
+        color: #6e76ff;
+        background-color: white;
+        &:hover {
+          background-color:rgba(233,234,255,0.75);
+        }
+      `
     case 'hollow':
       return `
         color: #5D64DE;
