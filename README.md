@@ -33,14 +33,6 @@ sibling folder called `server` such that directory structure is as follows:
 Follow the instructions in the `server` repo README to get the server up and
 running locally.
 
-**Run setup script**
-
-Run the setup script in the app project folder:
-
-```
-yarn setup
-```
-
 **Deploy our Deployer contract to local test network**
 
 Clone the [contracts repo](https://github.com/noblocknoparty/contracts) into a
@@ -70,6 +62,12 @@ the right deployer address_.
 Go back into the server repo folder and re-run the server.
 
 **Run the app**
+
+Run the setup script in the app project folder:
+
+```
+yarn setup
+```
 
 Run the app:
 
