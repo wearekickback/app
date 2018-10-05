@@ -74,8 +74,20 @@ export const AllPartiesQuery = gql`
       coolingPeriod
       attendeeLimit
       attendees
-      owner
-      admins
+      owner {
+        address
+        social {
+          type
+          value
+        }
+      }
+      admins {
+        address
+        social {
+          type
+          value
+        }
+      }
     }
   }
 `
