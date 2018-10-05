@@ -31,11 +31,11 @@
   },
   "scripts": {
     "setup": "scripts/setup.js",
-    "start": "yarn setup && react-scripts start",
-    "build": "yarn setup && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "build:dev": "yarn setup --dev && react-scripts build",
     "predeploy": "cp build/index.html build/200.html",
-    "test": "yarn setup && react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
