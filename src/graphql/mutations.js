@@ -41,3 +41,16 @@ export const UpdateUserProfile = gql`
     }
   }
 `
+
+
+const MarkUserAttended = gql`
+  mutation markUserAttended($address: String!, $attendee: AttendeeInput!) {
+    updateAttendeeStatus(address: $address, attendee: $attendee)
+  }
+`
+
+const UnmarkUserAttended = gql`
+  mutation unmarkUserAttended($address: String!, $attendee: AttendeeInput!) {
+    updateAttendeeStatus(address: $address, attendee: $attendee)
+  }
+`

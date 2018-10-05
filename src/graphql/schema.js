@@ -1,5 +1,4 @@
 const typeDefs = `
-  # Root resolver
   type Web3 {
     accounts: [String]
   }
@@ -9,41 +8,40 @@ const typeDefs = `
     createdAt: String
   }
 
-  type Query {
-    web3: Web3
-    party: Party
-  }
-
-  type Participant {
-    participantName: String
-    address: String,
-    attended: Boolean,
-    paid: Boolean
-  }
-
   type Party {
+    name: String!
+    description: String
+    location: String
+    date: String
+    address: String!
+    deposit: String!
+    coolingPeriod: String!
+    attendeeLimit: Int!
+    attendees: [Attendee]!
+    owner: UserProfile!
+    admins: [UserProfile]!
+  }
+
+  input PartyMetaInput {
     name: String
-    deposit: Int
-    limitOfParticipants: Int
-    registered: Int
-    attended: Int
-    ended: Boolean
-    cancelled: Boolean
-    endedAt: Int
-    coolingPeriod: Int
-    payoutAmount: Int
-    encryption: String
-    participants: [Participant]
+    description: String
+    date: String
+    location: String
+  }
+
+  type SocialMedia {
+    type: String!
+    value: String!
+  }
+
+  input SocialMediaInput {
+    type: String!
+    value: String!
   }
 
   enum LegalAgreementType {
     TERMS_AND_CONDITIONS
     PRIVACY_POLICY
-  }
-
-  type EmailSettings {
-    verified: String
-    pending: String
   }
 
   type LegalAgreement {
@@ -53,33 +51,59 @@ const typeDefs = `
 
   input LegalAgreementInput {
     type: LegalAgreementType!
-    accepted: Int!
+    accepted: String!
   }
 
-  input SocialMediaInput {
-    type: String!
-    value: String!
+  type EmailSettings {
+    verified: String
+    pending: String
   }
 
-  input TransactionInput {
-    hash: String!
-    blockNumber: Int!
-  }
-
-  type SocialMedia {
-    type: String!
-    value: String!
-  }
-
-  type SocialMedia {
-    type: String!
-    value: String!
+  type UserProfile {
+    address: String!
+    created: String
+    lastLogin: String
+    social: [SocialMedia]
+    email: EmailSettings
+    legal: [LegalAgreement]
   }
 
   input UserProfileInput {
     email: String
     social: [SocialMediaInput]
     legal: [LegalAgreementInput]
+  }
+
+  type LoginChallenge {
+    str: String!
+  }
+
+  enum AttendeeStatus {
+    REGISTERED
+    SHOWED_UP
+    WITHDRAWN_PAYOUT
+    UNKNOWN
+  }
+
+  # we only allow certain statuses to be externally updateable
+  enum UpdateableAttendeeStatus {
+    REGISTERED # if they don't show up
+    SHOWED_UP # if they show up
+  }
+
+  type Attendee {
+    user: UserProfile!
+    index: Int!
+    status: AttendeeStatus!
+  }
+
+  input AttendeeInput {
+    address: String!
+    status: UpdateableAttendeeStatus!
+  }
+
+  type Query {
+    web3: Web3
   }
 `
 

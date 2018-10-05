@@ -1,8 +1,5 @@
 import { toBN } from 'web3-utils'
 
-export function winningShare(deposit, registered, attended) {
-  return ((deposit * registered) / attended).toFixed(3)
-}
 
 export class EthValue {
   constructor (src, unit) {
@@ -73,3 +70,7 @@ export class EthValue {
 }
 
 export const parseEthValue = v => new EthValue(v)
+
+export const winningShare = (deposit, numRegistered, numAttended) => (
+  parseEthValue(deposit).mul(registered).div(attended).toFixed(3)
+)

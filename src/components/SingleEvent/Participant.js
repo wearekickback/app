@@ -1,9 +1,13 @@
 import React, { Component, Fragment } from 'react'
+import { Mutation } from 'react-apollo'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
-import { winningShare } from '../../utils/calculations'
 import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
+
+import { ATTENDEE_STATUS } from '../../constants/status'
+import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
+import { winningShare } from '../../utils/calculations'
+import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 
 const ParticipantWrapper = styled('div')`
@@ -47,65 +51,59 @@ const Status = styled('div')`
   text-align: center;
 `
 
-const MARK_ATTENDED = gql`
-  mutation markAttended($address: String, $contractAddress: String) {
-    markAttended(address: $address, contractAddress: $contractAddress) @client
-  }
-`
-
-const UNMARK_ATTENDED = gql`
-  mutation unmarkAttended($address: String, $contractAddress: String) {
-    unmarkAttended(address: $address, contractAddress: $contractAddress) @client
-  }
-`
-
 export class Participant extends Component {
   render() {
     const {
       participant,
       party,
-      markedAttendedList,
       markAttended,
       unmarkAttended
     } = this.props
-    const { participantName, address, paid, attended } = participant
-    const { registered, attended: attendedCount, deposit, ended } = party
+    const { user, index, status } = participant
+    const { deposit, ended } = party
 
-    const isMarked = markedAttendedList.includes(address.toLowerCase())
+    const attended = (status === ATTENDEE_STATUS.SHOWED_UP)
+    const withdrawn = (status === ATTENDEE_STATUS.WITHDRAWN_PAYOUT)
 
-    console.log(participant)
+    const { value: twitter } = user.social.find(({ type }) => type === 'twitter') || {}
+
+    const numRegistered = party.attendees.length
+    const numShowedUp = party.attendees.reduce((m, ({ status })) => (
+      m + (status === (ATTENDEE_STATUS.SHOWED_UP || ATTENDEE_STATUS.WITHDRAWN_PAYOUT) ? 1 : 0)
+    ), 0)
 
     return (
-      <ParticipantWrapper>
-        <TwitterAvatar
-          src={`https://avatars.io/twitter/${participantName}/medium`}
-        />
-        <div>{participantName}</div>
-        <ParticipantAddress>
-          <ReverseResolution address={address} />
-        </ParticipantAddress>
-        {ended ? (
-          attended ? (
-            <Status type="won">{`${paid ? ' Withdrew' : 'Won'} ${winningShare(
-              deposit,
-              registered,
-              attendedCount
-            )} ETH `}</Status>
-          ) : (
-            <Status type="lost">Lost {deposit} ETH</Status>
-          )
-        ) : !attended ? (
-          <Fragment>
-            {isMarked ? (
-              <Button onClick={unmarkAttended}>Unmark as attended</Button>
+      <GlobalConsumer>
+        {({ userAddress, loggedIn }) => (
+          <ParticipantWrapper>
+            <TwitterAvatar
+              src={`https://avatars.io/twitter/${twitter}/medium`}
+            />
+            <ParticipantAddress>
+              <ReverseResolution address={user.address} />
+            </ParticipantAddress>
+            {ended ? (
+              attended ? (
+                <Status type="won">{`${withdrawn ? ' Withdrew' : 'Won'} ${winningShare(
+                  deposit,
+                  numRegistered,
+                  numShowedUp
+                )} ETH `}</Status>
+              ) : (
+                <Status type="lost">Lost {deposit} ETH</Status>
+              )
             ) : (
-              <Button onClick={markAttended}>Mark as attended</Button>
+              <Fragment>
+                {attended ? (
+                  <Button onClick={unmarkAttended}>Unmark as attended</Button>
+                ) : (
+                  <Button onClick={markAttended}>Mark as attended</Button>
+                )}
+              </Fragment>
             )}
-          </Fragment>
-        ) : (
-          <Status type="won">Marked as attended</Status>
+          </ParticipantWrapper>
         )}
-      </ParticipantWrapper>
+      </GlobalConsumer>
     )
   }
 }
@@ -114,22 +112,27 @@ class ParticipantContainer extends Component {
   render() {
     const { party, participant } = this.props
     const { address, contractAddress } = this.props
-    console.log(address, contractAddress)
     return (
       <Mutation
-        mutation={UNMARK_ATTENDED}
+        mutation={UnmarkUserAttended}
         variables={{
-          address: participant.address,
-          contractAddress: party.address
+          address: party.address,
+          attendee: {
+            address: participant.address,
+            status: ATTENDEE_STATUS.REGISTERED,
+          }
         }}
         refetchQueries={['getMarkedAttendedSingle']}
       >
         {unmarkAttended => (
           <Mutation
-            mutation={MARK_ATTENDED}
+            mutation={MarkUserAttended}
             variables={{
-              address: participant.address,
-              contractAddress: party.address
+              address: party.address,
+              attendee: {
+                address: participant.address,
+                status: ATTENDEE_STATUS.SHOWED_UP,
+              }
             }}
             refetchQueries={['getMarkedAttendedSingle']}
           >
