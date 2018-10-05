@@ -12,6 +12,8 @@ export default class ChainMutation extends Component {
     children: PropTypes.func.isRequired,
   }
 
+  state = {}
+
   componentDidMount () {
     events.on(NEW_BLOCK, this._onNewBlock)
   }
@@ -57,7 +59,7 @@ export default class ChainMutation extends Component {
       this.setState({
         tx,
         percentComplete: 0,
-        inProgress: true, 
+        inProgress: true,
       })
     }
   }

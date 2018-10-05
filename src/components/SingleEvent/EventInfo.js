@@ -47,7 +47,7 @@ class EventInfo extends Component {
           />{' '}
           Hosted by{' '}
           <EtherScanLink address={address}>
-            <ReverseResolution address={party.owner} />
+            <ReverseResolution address={party.owner.address} />
           </EtherScanLink>
         </OrganiserName>
         <Location>
@@ -55,10 +55,7 @@ class EventInfo extends Component {
         </Location>
         <TotalPot>
           <Eth />
-          Total pot{' '}
-          {(parseFloat(party.deposit) * parseInt(party.attendees, 10)).toFixed(
-            2
-          )}
+          Total pot {parseEthValue(party.deposit).mul(party.attendees.length).toFixed(2)}
         </TotalPot>
         <Tags>
           <Tag>Ethereum</Tag>

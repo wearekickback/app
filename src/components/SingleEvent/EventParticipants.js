@@ -14,29 +14,30 @@ const NoAttendees = styled('div')``
 
 class EventParticipants extends Component {
   render() {
-    const { participants, search, party } = this.props
+    const { attendees, search, party } = this.props
+
     const searchTerm = search.toLowerCase()
-    console.log(party)
+
+    attendees.sort((a, b) => {
+      return a.index < a.index ? -1 : 1
+    })
+
     return (
       <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
         {markAttendedSingle => (
           <Fragment>
             <H3>Attendees</H3>
             <EventParticipantsContainer>
-              {participants.length > 0 ? (
-                participants
+              {attendees.length > 0 ? (
+                attendees
                   .filter(
-                    participant =>
-                      participant.participantName
-                        .toLowerCase()
-                        .includes(searchTerm) ||
-                      participant.address.toLowerCase().includes(searchTerm)
+                    attendee => attendee.address.toLowerCase().includes(searchTerm)
                   )
-                  .map((participant, i) => (
-                    <Participant
-                      participant={participant}
+                  .map((attendee, i) => (
+                    <Attendee
+                      participant={attendee}
                       party={party}
-                      key={participant.address + i}
+                      key={attendee.address + i}
                       markedAttendedList={markAttendedSingle || []}
                     />
                   ))

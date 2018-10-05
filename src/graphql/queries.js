@@ -1,5 +1,7 @@
 import gql from 'graphql-tag'
 
+import { ProfileFields } from './fragments'
+
 export const EthersQuery = gql`
   query ethers {
     ethers @client {
@@ -30,33 +32,32 @@ export const UserProfileQuery = gql`
 `
 
 export const PartyQuery = gql`
+  ${ProfileFields}
+
   query getParty($address: String) {
-    party(address: $address) @client {
-      # hardcoded in events.json
+    party(address: $address) {
+      address
+      name
       description
       date
       location
-      # from resolver
-      address
-      # From Contract
-      owner
-      name
-      attendees
       deposit
-      limitOfParticipants
-      registered
-      attended
+      coolingPeriod
+      attendeeLimit
+      attendees {
+        user {
+          ...ProfileFields,
+        }
+        status
+        index
+      }
       ended
       cancelled
-      endedAt
-      coolingPeriod
-      payoutAmount
-      encryption
-      participants {
-        participantName
-        address
-        attended
-        paid
+      owner {
+        ...ProfileFields
+      }
+      admins {
+        ...ProfileFields
       }
     }
   }

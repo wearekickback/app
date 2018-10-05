@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
-import { winningShare } from './utils'
+import { winningShare } from '../../utils/calculations'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import Button from '../Forms/Button'

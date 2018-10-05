@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
+import { pluralize } from '../../utils/calculations'
 
 const CTA = styled('div')`
   font-family: Overpass;
@@ -50,14 +51,13 @@ const RSVP = styled(DefaultRSVP)`
 class EventCTA extends Component {
   render() {
     const {
-      party: { attendees, limitOfParticipants, deposit, ended },
+      party: { attendees, attendeeLimit, deposit, ended },
       address
     } = this.props
 
     //TODO add going flag by checking attendee list with user address
     const going = true
 
-    console.log('EVENT CTA', address)
     return (
       <EventCTAContainer>
         <RSVPContainer>
@@ -79,12 +79,7 @@ class EventCTA extends Component {
         )}
         {!ended && (
           <RemainingSpots>
-            {attendees} going.{' '}
-            {parseInt(limitOfParticipants, 10) - parseInt(attendees, 10)} spot
-            {parseInt(limitOfParticipants, 10) - parseInt(attendees, 10) === 1
-              ? ''
-              : 's'}{' '}
-            left!
+            {`${attendees.length} going. ${pluralize('spot', attendeeLimit - attendees.length)} left.`}
           </RemainingSpots>
         )}
       </EventCTAContainer>
