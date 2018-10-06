@@ -116,10 +116,7 @@ class EventCTA extends Component {
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>
-            {parseEthValue(deposit)
-              .toEth()
-              .toFixed(2)}{' '}
-            ETH
+            {parseEthValue(deposit).toEth().toFixed(2)} ETH
           </Deposit>
           {ended ? this._renderEnded() : this._renderActive()}
         </RSVPContainer>

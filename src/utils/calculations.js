@@ -1,14 +1,16 @@
-import { toBN } from 'web3-utils'
+import { Decimal } from 'decimal.js'
+import { isBN } from 'web3-utils'
 
+const toDecimal = v => isBN(v) ? new Decimal(v.toString(10)) : new Decimal(v)
 
 export class EthValue {
   constructor (src, unit = 'wei') {
-    this._bn = toBN(src)
+    this._n = toDecimal(src)
     this._unit = unit
 
     ;['mul', 'sub', 'div', 'add'].forEach(method => {
       this[method] = v => {
-        this._bn = this._bn[method].call(this._bn, toBN(v))
+        this._n = this._n[method].call(this._n, toDecimal(v))
         return this
       }
     })
@@ -27,11 +29,11 @@ export class EthValue {
   }
 
   scaleDown (v) {
-    return this.mul(toBN(10).pow(toBN(v)))
+    return this.mul(toDecimal(10).pow(toDecimal(v)))
   }
 
   scaleUp (v) {
-    return this.div(toBN(10).pow(toBN(v)))
+    return this.div(toDecimal(10).pow(toDecimal(v)))
   }
 
   toWei () {
@@ -59,17 +61,18 @@ export class EthValue {
   }
 
   toString (v) {
-    return this._bn.toString(v)
+    switch (v) {
+      case 2:
+        return this._n.toBinary()
+      case 16:
+        return this._n.toHexadecimal()
+      default:
+        return this._n.toString()
+    }
   }
 
   toFixed (v) {
-    const str = this._bn.toString(10)
-    const dotPos = str.indexOf('.')
-    if (0 <= dotPos) {
-      return str.substr(0, dotPos + v + 1)
-    } else {
-      return `${str}.`.padEnd(str.length + 1 + v, '0')
-    }
+    return this._n.toFixed(v)
   }
 }
 
