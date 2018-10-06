@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
-import { amParticipant, checkAdmin } from '../../utils/parties'
+import { amParticipant, amInAddressList } from '../../utils/parties'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS, sanitizeStatus } from '../../utils/status'
 import { parseEthValue } from '../../utils/calculations'
@@ -106,10 +106,11 @@ class EventCTA extends Component {
 
   render() {
     const {
-      party: { participants, participantLimit, deposit, ended },
+      party: { admins, participants, participantLimit, deposit, ended },
+      userAddress,
     } = this.props
 
-    let isAdmin = userAddress && party && checkAdmin(party, userAddress)
+    let isAdmin = userAddress && admins && amInAddressList(admins, userAddress)
 
     return (
       <EventCTAContainer>
@@ -123,7 +124,7 @@ class EventCTA extends Component {
           {ended ? this._renderEnded() : this._renderActive()}
         </RSVPContainer>
         {ended ? (
-          <CTA>This meetup is past. {attended} people went this event.</CTA>
+          <CTA>This meetup is past. {participants.length} people went to this event.</CTA>
         ) : (
           <CTA>Join the event.</CTA>
         )}

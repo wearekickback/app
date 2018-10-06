@@ -55,7 +55,7 @@ class SingleEventWrapper extends Component {
                         userAddress={userAddress}
                       />
                       <EventFilters handleSearch={handleSearch} />
-                      <EventAttendees search={search} party={party} />
+                      <EventParticipants search={search} party={party} />
                     </RightContainer>
                   </Fragment>
                 )
