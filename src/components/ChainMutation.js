@@ -4,8 +4,9 @@ import PropTypes from 'prop-types'
 
 import { events, getTransactionReceipt } from '../api/web3'
 import SafeMutation from './SafeMutation'
-import { NEW_BLOCK } from '../constants/events'
-import { NUM_CONFIRMATIONS } from '../constants/ethereum'
+import ErrorBox from './ErrorBox'
+import { NEW_BLOCK } from '../utils/events'
+import { NUM_CONFIRMATIONS } from '../utils/ethereum'
 
 export default class ChainMutation extends Component {
   state = {}
@@ -56,6 +57,15 @@ export default class ChainMutation extends Component {
   _onCompleted = result => {
     const { resultKey } = this.props
 
+    if (result.error) {
+      this.setState({
+        failed: true,
+        error: result.error,
+      })
+
+      return
+    }
+
     const tx = result[resultKey]
 
     if (tx) {
@@ -94,4 +104,23 @@ export default class ChainMutation extends Component {
       </SafeMutation>
     )
   }
+}
+
+export const ChainMutationResult = ({ children, tx, inProgress, percentComplete, succeeded, error }) => {
+  let extraContent = null
+
+  if (error) {
+    extraContent = <ErrorBox>{`${error}`}</ErrorBox>
+  } else if (inProgress) {
+    extraContent = <div>{percentComplete}% complete</div>
+  } else if (succeeded) {
+    extraContent = <div>Success!</div>
+  }
+
+  return (
+    <>
+      {children}
+      {extraContent}
+    </>
+  )
 }

@@ -1,21 +1,23 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
 
+import ChainMutation, { ChainMutationResult } from '../ChainMutation'
 import Button from '../Forms/Button'
 import { RsvpToEvent } from '../../graphql/mutations'
 
 
 const RSVP = ({ address, className }) => (
-  <Mutation
+  <ChainMutation
     mutation={RsvpToEvent}
     variables={{ address }}
   >
-    {rsvp => (
-      <Button className={className} onClick={rsvp}>
-        RSVP
-      </Button>
+    {(rsvp, result) => (
+      <ChainMutationResult result={result}>
+        <Button onClick={rsvp} className={className}>
+          RSVP
+        </Button>
+      </ChainMutationResult>
     )}
-  </Mutation>
+  </ChainMutation>
 )
 
 export default RSVP

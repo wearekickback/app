@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
-import { addressesMatch, pluralize } from '../../utils/strings'
+import { amAttendee } from '../../utils/attendees'
+import { pluralize } from '../../utils/strings'
+import { ATTENDEE_STATUS, sanitizeStatus } from '../../utils/status'
+import { parseEthValue } from '../../utils/calculations'
 
 const CTA = styled('div')`
   font-family: Overpass;
@@ -49,34 +52,67 @@ const RSVP = styled(DefaultRSVP)`
 `
 
 class EventCTA extends Component {
+  _renderEnded () {
+    const {
+      userAddress,
+      party: { attendees }
+    } = this.props
+
+    const went = amAttendee(attendees, userAddress)
+
+    const cta = <CTA>This meetup is past. {attendees.length} people registered to attend this event.</CTA>
+
+    if (!went) {
+      return cta
+    }
+
+    switch (sanitizeStatus(went.status)) {
+      case ATTENDEE_STATUS.REGISTERED:
+        return <Going>You registered to attend but didn't show up.</Going>
+      case  ATTENDEE_STATUS.SHOWED_UP:
+        return <Going>You attended!</Going>
+      default:
+        return cta
+    }
+  }
+
+  _renderActive () {
+    const {
+      userAddress,
+      party: { address, attendees, attendeeLimit }
+    } = this.props
+
+    const going = amAttendee(attendees, userAddress)
+
+    if (!going) {
+      if (attendees.length < attendeeLimit) {
+        return <RSVP address={address} />
+      }
+
+      return ''
+    }
+
+    switch (sanitizeStatus(going.status)) {
+      case ATTENDEE_STATUS.REGISTERED:
+        return <Going>You are registered to attend this event.</Going>
+      case ATTENDEE_STATUS.SHOWED_UP:
+        return <Going>You showed up to this event!</Going>
+      default:
+        return ''
+    }
+  }
+
   render() {
     const {
       party: { attendees, attendeeLimit, deposit, ended },
-      address,
-      userAddress,
     } = this.props
-
-    const going = attendees.find(e => addressesMatch(e.address, userAddress))
 
     return (
       <EventCTAContainer>
         <RSVPContainer>
-          <Deposit>{deposit} ETH</Deposit>
-          {userAddress && !ended ? (
-            going ? (
-              <Going>You're going!</Going>
-            ) : (
-              <RSVP address={address} />
-            )
-          ) : (
-            ''
-          )}
+          <Deposit>{parseEthValue(deposit).toEth().toFixed(2)} ETH</Deposit>
+          {ended ? this._renderEnded() : this._renderActive()}
         </RSVPContainer>
-        {ended ? (
-          <CTA>This meetup is past. 114 people went this event.</CTA>
-        ) : (
-          <CTA>Join the event.</CTA>
-        )}
         {!ended && (
           <RemainingSpots>
             {`${attendees.length} going. ${pluralize('spot', attendeeLimit - attendees.length)} left.`}

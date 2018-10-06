@@ -8,5 +8,6 @@ module.exports = {
     REGISTERED: 'registered',
     SHOWED_UP: 'showed_up',
     WITHDRAWN_PAYOUT: 'withdrawn_payout',
-  }
+  },
+  sanitizeStatus: s => s.toLowerCase(),
 }

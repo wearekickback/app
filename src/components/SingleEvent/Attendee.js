@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 
-import { ATTENDEE_STATUS } from '../../constants/status'
+import { ATTENDEE_STATUS } from '../../utils/status'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { winningShare } from '../../utils/calculations'
 import { GlobalConsumer } from '../../GlobalState'

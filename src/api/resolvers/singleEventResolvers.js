@@ -178,17 +178,12 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      const deposit = await contract.deposit().send({ from: account })
-      try {
-        return contract.register('').send({
-          from: account,
-          value: deposit,
-          gas: 1000000
-        })
-      } catch (e) {
-        console.log(e)
-        return null
-      }
+      const deposit = await contract.deposit().call()
+      return contract.register('').send({
+        from: account,
+        value: deposit,
+        gas: 1000000
+      })
     },
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()

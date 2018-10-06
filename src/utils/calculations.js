@@ -2,7 +2,7 @@ import { toBN } from 'web3-utils'
 
 
 export class EthValue {
-  constructor (src, unit) {
+  constructor (src, unit = 'wei') {
     this._bn = toBN(src)
     this._unit = unit
 
@@ -27,11 +27,11 @@ export class EthValue {
   }
 
   scaleDown (v) {
-    return this.mul(toBN(10).pow(v))
+    return this.mul(toBN(10).pow(toBN(v)))
   }
 
   scaleUp (v) {
-    return this.div(toBN(10).pow(v))
+    return this.div(toBN(10).pow(toBN(v)))
   }
 
   toWei () {
@@ -56,6 +56,10 @@ export class EthValue {
     if (this.isEth) return this
 
     throw new Error('Unit of measurement uncertain')
+  }
+
+  toString (v) {
+    return this._bn.toString(v)
   }
 
   toFixed (v) {
