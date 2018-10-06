@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Mutation } from 'react-apollo'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 
+import SafeMutation from '../SafeMutation'
 import { ATTENDEE_STATUS } from '../../utils/status'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { winningShare } from '../../utils/calculations'
@@ -124,7 +124,7 @@ class AttendeeContainer extends Component {
   render() {
     const { party, attendee } = this.props
     return (
-      <Mutation
+      <SafeMutation
         mutation={UnmarkUserAttended}
         variables={{
           address: party.address,
@@ -136,7 +136,7 @@ class AttendeeContainer extends Component {
         refetchQueries={['getMarkedAttendedSingle']}
       >
         {unmarkAttended => (
-          <Mutation
+          <SafeMutation
             mutation={MarkUserAttended}
             variables={{
               address: party.address,
@@ -154,9 +154,9 @@ class AttendeeContainer extends Component {
                 {...this.props}
               />
             )}
-          </Mutation>
+          </SafeMutation>
         )}
-      </Mutation>
+      </SafeMutation>
     )
   }
 }

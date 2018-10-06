@@ -6,7 +6,7 @@ import { events, getTransactionReceipt } from '../api/web3'
 import SafeMutation from './SafeMutation'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
-import { NUM_CONFIRMATIONS } from '../utils/ethereum'
+import { NUM_CONFIRMATIONS } from '../config'
 
 export default class ChainMutation extends Component {
   state = {}

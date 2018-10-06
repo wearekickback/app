@@ -19,16 +19,15 @@ export default class SafeQuery extends Component {
 
   render () {
     const {
-      query,
-      variables,
       children,
       isLoading = DEFAULT_IS_LOADING,
       renderError = DEFAULT_RENDER_ERROR,
       renderLoading = DEFAULT_RENDER_LOADING,
+      ...props
     } = this.props
 
     return (
-      <Query query={query} variables={variables}>
+      <Query {...props}>
         {result => {
           const { error } = result
 

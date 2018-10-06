@@ -9,6 +9,6 @@ if (config.GIT_COMMIT) {
   console.log(`Built from git commit: ${config.GIT_COMMIT}`)
 }
 
-module.exports = {
+module.exports = Object.freeze({
   ...config
-}
+})

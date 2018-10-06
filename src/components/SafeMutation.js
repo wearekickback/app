@@ -19,17 +19,15 @@ export default class SafeMutation extends Component {
 
   render () {
     const {
-      mutation,
-      variables,
       children,
       isLoading = DEFAULT_IS_LOADING,
       renderError = DEFAULT_RENDER_ERROR,
       renderLoading = DEFAULT_RENDER_LOADING,
-      onCompleted,
+      ...props
     } = this.props
 
     return (
-      <Mutation mutation={mutation} variables={variables} onCompleted={onCompleted}>
+      <Mutation {...props}>
         {(mutator, result) => {
           return (
             <div>

@@ -9,26 +9,23 @@ const projectDir = path.join(__dirname, '..')
 
 // ensure env.json is valid!
 const appConfigPath = path.join(projectDir, 'src', 'config', 'env.json')
-let appConfig = {}
-try {
-  appConfig = require(appConfigPath)
-} catch (err) {
-  /* do nothing */
-}
 
-const _set = (k, v) => {
-  appConfig[k] = v
+let appConfig = {}
+
+// try loading from existing file
+try { appConfig = require(appConfigPath) } catch (_) { /* do nothing */ }
+
+appConfig.NETWORK = 'local'
+appConfig.API_URL = 'http://localhost:3001'
+
+if (undefined === appConfig.NUM_CONFIRMATIONS) {
+  appConfig.NUM_CONFIRMATIONS = 6
 }
 
 if (argv.dev) {
-  _set('NETWORK', 'ropsten')
-  _set('API_URL', 'https://dev.api.kickback.events')
-
-  const commitHash = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
-  _set('GIT_COMMIT', commitHash)
-} else {
-  _set('NETWORK', 'local')
-  _set('API_URL', 'http://localhost:3001')
+  appConfig.NETWORK = 'ropsten'
+  appConfig.API_URL = 'https://dev.api.kickback.events'
+  appConfig.GIT_COMMIT = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
 }
 
 const str = JSON.stringify(appConfig, null, 2)
