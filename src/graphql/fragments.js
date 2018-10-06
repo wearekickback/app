@@ -29,10 +29,11 @@ export const PartyFields = gql`
     description
     date
     location
+    image
     deposit
     coolingPeriod
-    attendeeLimit
-    attendees {
+    participantLimit
+    participants {
       user {
         ...ProfileFields,
       }

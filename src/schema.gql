@@ -7,7 +7,7 @@ type Participant {
 
 type Party {
   name: String
-  attendees: Int #Big Number
+  participants: Int #Big Number
   deposit: Int #Big Number
   limitOfParticipants: Int #Big Number
   registered: Int #Big Number

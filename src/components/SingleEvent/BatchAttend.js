@@ -5,8 +5,8 @@ import gql from 'graphql-tag'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 
 const BATCH_ATTEND = gql`
-  mutation batchAttend($address: String, $attendees: [String]) {
-    batchAttend(address: $address, attendees: $attendees) @client
+  mutation batchAttend($address: String, $participants: [String]) {
+    batchAttend(address: $address, participants: $participants) @client
   }
 `
 
@@ -15,12 +15,12 @@ const BatchAttendContainer = styled('div')``
 const BatchAttend = ({ address }) => (
   <BatchAttendContainer>
     <GetMarkedAttendedQuery variables={{ contractAddress: address }}>
-      {attendees => (
+      {participants => (
         <Mutation
           mutation={BATCH_ATTEND}
           variables={{
             address,
-            attendees
+            participants
           }}
         >
           {batchAttend => <button onClick={batchAttend}>Batch Attend</button>}

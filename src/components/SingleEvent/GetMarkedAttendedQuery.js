@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import SafeQuery from '../SafeQuery'
 import { GET_MARKED_ATTENDED_SINGLE } from '../../graphql/queries'
 
-class GetMarkedAttendeesQuery extends Component {
+class GetMarkedParticipantsQuery extends Component {
   render() {
     return (
       <SafeQuery
@@ -15,4 +15,4 @@ class GetMarkedAttendeesQuery extends Component {
   }
 }
 
-export default GetMarkedAttendeesQuery
+export default GetMarkedParticipantsQuery

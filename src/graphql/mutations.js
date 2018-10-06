@@ -8,6 +8,12 @@ export const CreateParty = gql`
   }
 `
 
+export const UpdatePartyMeta = gql`
+  mutation updatePartyMeta($address: String!, $meta: PartyMetaInput!) {
+    updatePartyMeta(address: $address, meta: $meta) @auth
+  }
+`
+
 export const CreateLoginChallenge = gql`
   mutation createLoginChallenge($address: String!) {
     challenge: createLoginChallenge(address: $address) {
@@ -44,14 +50,14 @@ export const UpdateUserProfile = gql`
 
 
 export const MarkUserAttended = gql`
-  mutation markUserAttended($address: String!, $attendee: AttendeeInput!) {
-    updateAttendeeStatus(address: $address, attendee: $attendee)
+  mutation markUserAttended($address: String!, $participant: ParticipantInput!) {
+    updateParticipantStatus(address: $address, participant: $participant)
   }
 `
 
 export const UnmarkUserAttended = gql`
-  mutation unmarkUserAttended($address: String!, $attendee: AttendeeInput!) {
-    updateAttendeeStatus(address: $address, attendee: $attendee)
+  mutation unmarkUserAttended($address: String!, $participant: ParticipantInput!) {
+    updateParticipantStatus(address: $address, participant: $participant)
   }
 `
 

@@ -13,11 +13,12 @@ const typeDefs = `
     description: String
     location: String
     date: String
+    image: String
     address: String!
     deposit: String!
     coolingPeriod: String!
-    attendeeLimit: Int!
-    attendees: [Attendee]!
+    participantLimit: Int!
+    participants: [Participant]!
     owner: UserProfile!
     admins: [UserProfile]!
   }
@@ -27,6 +28,7 @@ const typeDefs = `
     description: String
     date: String
     location: String
+    image: String
   }
 
   type SocialMedia {
@@ -78,7 +80,7 @@ const typeDefs = `
     str: String!
   }
 
-  enum AttendeeStatus {
+  enum ParticipantStatus {
     REGISTERED
     SHOWED_UP
     WITHDRAWN_PAYOUT
@@ -86,20 +88,20 @@ const typeDefs = `
   }
 
   # we only allow certain statuses to be externally updateable
-  enum UpdateableAttendeeStatus {
+  enum UpdateableParticipantStatus {
     REGISTERED # if they don't show up
     SHOWED_UP # if they show up
   }
 
-  type Attendee {
+  type Participant {
     user: UserProfile!
     index: Int!
-    status: AttendeeStatus!
+    status: ParticipantStatus!
   }
 
-  input AttendeeInput {
+  input ParticipantInput {
     address: String!
-    status: UpdateableAttendeeStatus!
+    status: UpdateableParticipantStatus!
   }
 
   type Query {

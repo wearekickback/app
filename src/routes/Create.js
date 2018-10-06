@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import ChainMutation, { ChainMutationResult } from '../components/ChainMutation'
 import Button from '../components/Forms/Button'
-import { CreateParty } from '../graphql/mutations'
+import { CreateParty, UpdatePartyMeta } from '../graphql/mutations'
 import { extractNewPartyAddressFromTx } from '../api/utils'
 
 class Create extends Component {
@@ -11,13 +11,23 @@ class Create extends Component {
     name: '',
     description: '',
     location: '',
-    dates: '',
+    date: '',
+    image: '',
     deposit: '0.02',
     limitOfParticipants: 20,
   }
 
   render() {
-    const { name, deposit, limitOfParticipants } = this.state
+    const {
+      name,
+      description,
+      location,
+      date,
+      image,
+      deposit,
+      limitOfParticipants
+    } = this.state
+
     return (
       <div className="App">
         <h1>Create a new party</h1>
@@ -28,6 +38,34 @@ class Create extends Component {
             onChange={e => this.setState({ name: e.target.value })}
             type="text"
             placeholder="Name of the event"
+          /><br/>
+          <label>Description</label>
+          <input
+            value={description}
+            onChange={e => this.setState({ description: e.target.value })}
+            type="text"
+            placeholder="Description of the event"
+          /><br/>
+          <label>Location</label>
+          <input
+            value={location}
+            onChange={e => this.setState({ location: e.target.value })}
+            type="text"
+            placeholder="Location of the event"
+          /><br/>
+          <label>Dates</label>
+          <input
+            value={date}
+            onChange={e => this.setState({ date: e.target.value })}
+            type="text"
+            placeholder="Dates of the event"
+          /><br/>
+          <label>Image</label>
+          <input
+            value={image}
+            onChange={e => this.setState({ image: e.target.value })}
+            type="text"
+            placeholder="URL to image for the event"
           /><br/>
           <label>Deposit</label>
           <input

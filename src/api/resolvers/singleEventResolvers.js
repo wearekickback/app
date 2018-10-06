@@ -25,9 +25,9 @@ const resolvers = {
     async name({ contract }) {
       return contract.name().call()
     },
-    async attendees({ contract }) {
-      const attendees = await contract.registered().call()
-      return parseInt(attendees, 10)
+    async participants({ contract }) {
+      const participants = await contract.registered().call()
+      return parseInt(participants, 10)
     },
     async deposit({ contract }) {
       const deposit = await contract.deposit().call()
@@ -147,7 +147,7 @@ const resolvers = {
       if (!exists) {
         data.markedAttendedList.push(address.toLowerCase())
       } else {
-        console.log('Attendee already marked as attended')
+        console.log('Participant already marked as attended')
         return null
       }
 
@@ -229,13 +229,13 @@ const resolvers = {
         return null
       }
     },
-    async batchAttend(_, { address, attendees }, { cache }) {
+    async batchAttend(_, { address, participants }, { cache }) {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract
-          .attend(attendees)
+          .attend(participants)
           .send({ from: account })
           .then(() => {
             cache.write({

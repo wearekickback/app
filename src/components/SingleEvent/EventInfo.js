@@ -60,7 +60,7 @@ class EventInfo extends Component {
         </Location>
         <TotalPot>
           <Eth />
-          Total pot {parseEthValue(party.deposit).mul(party.attendees.length).toFixed(2)}
+          Total pot {parseEthValue(party.deposit).mul(party.participants.length).toFixed(2)}
         </TotalPot>
         <Tags>
           <Tag>Ethereum</Tag>

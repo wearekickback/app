@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 
 import SafeMutation from '../SafeMutation'
-import { ATTENDEE_STATUS } from '../../utils/status'
+import { PARTICIPANT_STATUS } from '../../utils/status'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { winningShare } from '../../utils/calculations'
 import { GlobalConsumer } from '../../GlobalState'
@@ -63,25 +63,25 @@ const Status = styled('div')`
   text-align: center;
 `
 
-export class Attendee extends Component {
+export class Participant extends Component {
   render() {
     const {
-      attendee,
+      participant,
       party,
       markAttended,
       unmarkAttended
     } = this.props
-    const { user, status } = attendee
+    const { user, status } = participant
     const { deposit, ended } = party
 
-    const attended = (status === ATTENDEE_STATUS.SHOWED_UP)
-    const withdrawn = (status === ATTENDEE_STATUS.WITHDRAWN_PAYOUT)
+    const attended = (status === PARTICIPANT_STATUS.SHOWED_UP)
+    const withdrawn = (status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT)
 
     const { value: twitter } = (user.social || []).find(({ type }) => type === 'twitter') || {}
 
-    const numRegistered = party.attendees.length
-    const numShowedUp = party.attendees.reduce((m, { status }) => (
-      m + (status === (ATTENDEE_STATUS.SHOWED_UP || ATTENDEE_STATUS.WITHDRAWN_PAYOUT) ? 1 : 0)
+    const numRegistered = party.participants.length
+    const numShowedUp = party.participants.reduce((m, { status }) => (
+      m + (status === (PARTICIPANT_STATUS.SHOWED_UP || PARTICIPANT_STATUS.WITHDRAWN_PAYOUT) ? 1 : 0)
     ), 0)
 
     return (
@@ -120,17 +120,17 @@ export class Attendee extends Component {
   }
 }
 
-class AttendeeContainer extends Component {
+class ParticipantContainer extends Component {
   render() {
-    const { party, attendee } = this.props
+    const { party, participant } = this.props
     return (
       <SafeMutation
         mutation={UnmarkUserAttended}
         variables={{
           address: party.address,
-          attendee: {
-            address: attendee.user.address,
-            status: ATTENDEE_STATUS.REGISTERED,
+          participant: {
+            address: participant.user.address,
+            status: PARTICIPANT_STATUS.REGISTERED,
           }
         }}
         refetchQueries={['getMarkedAttendedSingle']}
@@ -140,15 +140,15 @@ class AttendeeContainer extends Component {
             mutation={MarkUserAttended}
             variables={{
               address: party.address,
-              attendee: {
-                address: attendee.user.address,
-                status: ATTENDEE_STATUS.SHOWED_UP,
+              participant: {
+                address: participant.user.address,
+                status: PARTICIPANT_STATUS.SHOWED_UP,
               }
             }}
             refetchQueries={['getMarkedAttendedSingle']}
           >
             {markAttended => (
-              <Attendee
+              <Participant
                 markAttended={markAttended}
                 unmarkAttended={unmarkAttended}
                 {...this.props}
@@ -161,4 +161,4 @@ class AttendeeContainer extends Component {
   }
 }
 
-export default AttendeeContainer
+export default ParticipantContainer

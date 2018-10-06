@@ -1,25 +1,25 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import Attendee from './Attendee'
+import Participant from './Participant'
 import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 import { H3 } from '../Typography/Basic'
 
-const EventAttendeesContainer = styled('div')`
+const EventParticipantsContainer = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 20px;
   margin-bottom: 40px;
 `
 
-const NoAttendees = styled('div')``
+const NoParticipants = styled('div')``
 
-class EventAttendees extends Component {
+class EventParticipants extends Component {
   render() {
-    const { attendees, search, party } = this.props
+    const { participants, search, party } = this.props
 
     const searchTerm = search.toLowerCase()
 
-    attendees.sort((a, b) => {
+    participants.sort((a, b) => {
       return a.index < b.index ? -1 : 1
     })
 
@@ -27,25 +27,25 @@ class EventAttendees extends Component {
       <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
         {markAttendedSingle => (
           <Fragment>
-            <H3>Attendees</H3>
-            <EventAttendeesContainer>
-              {attendees.length > 0 ? (
-                attendees
+            <H3>Participants</H3>
+            <EventParticipantsContainer>
+              {participants.length > 0 ? (
+                participants
                   .filter(
-                    attendee => attendee.user.address.toLowerCase().includes(searchTerm)
+                    participant => participant.user.address.toLowerCase().includes(searchTerm)
                   )
-                  .map((attendee, i) => (
-                    <Attendee
-                      attendee={attendee}
+                  .map((participant, i) => (
+                    <Participant
+                      participant={participant}
                       party={party}
-                      key={attendee.address + i}
+                      key={participant.address + i}
                       markedAttendedList={markAttendedSingle || []}
                     />
                   ))
               ) : (
-                <NoAttendees>No one is attending.</NoAttendees>
+                <NoParticipants>No one is attending.</NoParticipants>
               )}
-            </EventAttendeesContainer>
+            </EventParticipantsContainer>
           </Fragment>
         )}
       </GetMarkedAttendedQuery>
@@ -53,4 +53,4 @@ class EventAttendees extends Component {
   }
 }
 
-export default EventAttendees
+export default EventParticipants

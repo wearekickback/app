@@ -3,7 +3,7 @@ module.exports = {
     PENDING: 'pending',
     DEPLOYED: 'deployed',
   },
-  ATTENDEE_STATUS: {
+  PARTICIPANT_STATUS: {
     UNKNOWN: 'unknown',
     REGISTERED: 'registered',
     SHOWED_UP: 'showed_up',
