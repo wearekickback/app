@@ -50,7 +50,7 @@ const RSVP = styled(DefaultRSVP)`
 class EventCTA extends Component {
   render() {
     const {
-      party: { attendees, limitOfParticipants, deposit, ended },
+      party: { attendees, limitOfParticipants, deposit, ended, attended },
       address,
       participants = [],
       userAddress
@@ -75,7 +75,7 @@ class EventCTA extends Component {
           )}
         </RSVPContainer>
         {ended ? (
-          <CTA>This meetup is past. 114 people went this event.</CTA>
+          <CTA>This meetup is past. {attended} people went this event.</CTA>
         ) : (
           <CTA>Join the event.</CTA>
         )}
