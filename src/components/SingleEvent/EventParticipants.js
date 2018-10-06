@@ -38,7 +38,7 @@ class EventParticipants extends Component {
                     <Participant
                       participant={participant}
                       party={party}
-                      key={participant.address + i}
+                      key={`${participant.address}${i}`}
                       markedAttendedList={markAttendedSingle || []}
                     />
                   ))

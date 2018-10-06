@@ -4,7 +4,7 @@ import styled from 'react-emotion'
 import DefaultRSVP from './RSVP'
 import { amParticipant, amInAddressList } from '../../utils/parties'
 import { pluralize } from '../../utils/strings'
-import { PARTICIPANT_STATUS, sanitizeStatus } from '../../utils/status'
+import { PARTICIPANT_STATUS } from '../../utils/status'
 import { parseEthValue } from '../../utils/calculations'
 
 const CTA = styled('div')`
@@ -68,7 +68,7 @@ class EventCTA extends Component {
       return cta
     }
 
-    switch (sanitizeStatus(went.status)) {
+    switch (went.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You didn't show up :/</Going>
       case  PARTICIPANT_STATUS.SHOWED_UP:
@@ -94,7 +94,7 @@ class EventCTA extends Component {
       return ''
     }
 
-    switch (sanitizeStatus(going.status)) {
+    switch (going.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You are going to this event.</Going>
       case PARTICIPANT_STATUS.SHOWED_UP:

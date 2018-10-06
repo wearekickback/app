@@ -1,13 +1,12 @@
 module.exports = {
   PARTY_STATUS: {
-    PENDING: 'pending',
-    DEPLOYED: 'deployed',
+    PENDING: 'PENDING',
+    DEPLOYED: 'DEPLOYED',
   },
   PARTICIPANT_STATUS: {
-    UNKNOWN: 'unknown',
-    REGISTERED: 'registered',
-    SHOWED_UP: 'showed_up',
-    WITHDRAWN_PAYOUT: 'withdrawn_payout',
+    UNKNOWN: 'UNKNOWN',
+    REGISTERED: 'REGISTERED',
+    SHOWED_UP: 'SHOWED_UP',
+    WITHDRAWN_PAYOUT: 'WITHDRAWN_PAYOUT',
   },
-  sanitizeStatus: s => s.toLowerCase(),
 }

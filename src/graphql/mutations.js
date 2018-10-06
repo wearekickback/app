@@ -51,13 +51,17 @@ export const UpdateUserProfile = gql`
 
 export const MarkUserAttended = gql`
   mutation markUserAttended($address: String!, $participant: ParticipantInput!) {
-    updateParticipantStatus(address: $address, participant: $participant)
+    updateParticipantStatus(address: $address, participant: $participant) {
+      status
+    }
   }
 `
 
 export const UnmarkUserAttended = gql`
   mutation unmarkUserAttended($address: String!, $participant: ParticipantInput!) {
-    updateParticipantStatus(address: $address, participant: $participant)
+    updateParticipantStatus(address: $address, participant: $participant) {
+      status
+    }
   }
 `
 
