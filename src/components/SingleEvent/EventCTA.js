@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { checkAdmin } from './utils'
 
 import DefaultRSVP from './RSVP'
 
@@ -47,19 +48,33 @@ const RSVP = styled(DefaultRSVP)`
   width: calc(100% - 120px);
 `
 
+const AdminCTA = styled('div')``
+
 class EventCTA extends Component {
   render() {
+    const { party } = this.props
     const {
-      party: { attendees, limitOfParticipants, deposit, ended, attended },
+      party: {
+        attendees,
+        limitOfParticipants,
+        deposit,
+        ended,
+        attended,
+        participants
+      },
       address,
-      participants = [],
       userAddress
     } = this.props
 
     const going =
-      userAddress && participants.find(e => e.address === userAddress)
+      userAddress &&
+      participants.find(
+        e => e.address.toLowerCase() === userAddress.toLowerCase()
+      )
 
-    console.log('EVENT CTA', address)
+    let isAdmin = userAddress && party && checkAdmin(party, userAddress)
+    console.log(isAdmin)
+
     return (
       <EventCTAContainer>
         <RSVPContainer>
@@ -89,6 +104,7 @@ class EventCTA extends Component {
             left!
           </RemainingSpots>
         )}
+        {isAdmin && <AdminCTA>I'm admin!</AdminCTA>}
       </EventCTAContainer>
     )
   }

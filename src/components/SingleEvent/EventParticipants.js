@@ -15,9 +15,9 @@ const NoAttendees = styled('div')``
 
 class EventParticipants extends Component {
   render() {
-    const { participants, search, party } = this.props
+    const { search, party } = this.props
+    const { participants } = party
     const searchTerm = search.toLowerCase()
-    console.log(party)
     return (
       <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
         {markAttendedSingle => (

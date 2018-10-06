@@ -46,11 +46,7 @@ class SingleEventWrapper extends Component {
                 return (
                   <Fragment>
                     <EventInfoContainer>
-                      <EventInfo
-                        party={party}
-                        address={address}
-                        participants={party.participants}
-                      />
+                      <EventInfo party={party} address={address} />
                     </EventInfoContainer>
                     <RightContainer>
                       <EventCTA
@@ -59,11 +55,7 @@ class SingleEventWrapper extends Component {
                         userAddress={userAddress}
                       />
                       <EventFilters handleSearch={handleSearch} />
-                      <EventParticipants
-                        search={search}
-                        party={party}
-                        participants={party.participants}
-                      />
+                      <EventParticipants search={search} party={party} />
                     </RightContainer>
                   </Fragment>
                 )

@@ -48,13 +48,24 @@ const Logo = styled('h1')`
 `
 const RightBar = styled('div')`
   display: flex;
+  align-items: center;
 `
 const Notifications = styled('div')`
   color: white;
   margin-right: 20px;
 `
-const Account = styled('div')``
-const AccountAddress = styled('div')``
+const Account = styled('div')`
+  display: flex;
+  align-items: center;
+`
+const AccountAddress = styled('div')`
+  max-width: 100px;
+  color: white;
+  font-family: 'Source Code Pro';
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 
 const Header = () => (
   <HeaderContainer>
@@ -67,10 +78,12 @@ const Header = () => (
       </Logo>
       <RightBar>
         <GlobalConsumer>
-          {({ userAddress, userProfile, loggedIn }) =>
-            loggedIn ? (
+          {({ userAddress, userProfile, loggedIn }) => {
+            const twitterProfile =
+              userProfile && userProfile.social.find(s => s.type === 'twitter')
+            return loggedIn ? (
               <>
-                <Notifications>Notification</Notifications>
+                {/* <Notifications>Notification</Notifications> */}
                 <Account>
                   <AccountAddress>
                     <ReverseResolution address={userAddress} />
@@ -78,9 +91,11 @@ const Header = () => (
 
                   {console.log('USER', userProfile)}
                   <Avatar
-                    src={`https://avatars.io/twitter/${userProfile &&
-                      userProfile.social.find(s => s.type === 'twitter')
-                        .value}/medium`}
+                    src={`https://avatars.io/twitter/${
+                      twitterProfile
+                        ? twitterProfile.value
+                        : 'unknowntwitter123abc'
+                    }/medium`}
                   />
                 </Account>
               </>
@@ -89,7 +104,7 @@ const Header = () => (
                 <Button type="light">Sign in</Button>
               </ToggleModal>
             )
-          }
+          }}
         </GlobalConsumer>
       </RightBar>
     </HeaderInner>

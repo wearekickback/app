@@ -22,6 +22,9 @@ const resolvers = {
     async owner({ contract }) {
       return contract.owner().call()
     },
+    async admins({ contract }) {
+      return contract.getAdmins().call()
+    },
     async name({ contract }) {
       return contract.name().call()
     },
@@ -178,7 +181,9 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      const deposit = await contract.deposit().send({ from: account })
+      const deposit = await contract.deposit().call()
+
+      console.log(deposit, twitter, address)
       try {
         return contract.register(twitter).send({
           from: account,

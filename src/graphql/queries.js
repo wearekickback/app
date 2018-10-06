@@ -40,6 +40,7 @@ export const PartyQuery = gql`
       address
       # From Contract
       owner
+      admins
       name
       attendees
       deposit
