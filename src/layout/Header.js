@@ -88,8 +88,6 @@ const Header = () => (
                   <AccountAddress>
                     <ReverseResolution address={userAddress} />
                   </AccountAddress>
-
-                  {console.log('USER', userProfile)}
                   <Avatar
                     src={`https://avatars.io/twitter/${
                       twitterProfile

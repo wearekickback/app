@@ -61,13 +61,8 @@ export default () => (
 
       const globalProvider = await getGlobalProvider()
 
-      // if user logged in
-      if (globalProvider.isLoggedIn()) {
-        // add auth headers
-        operation.setContext({
-          headers: getAuthHeaders(globalProvider.authToken())
-        })
-      } else {
+      // if user is not logged in
+      if (!globalProvider.isLoggedIn()) {
         try {
           // let's request user's profile
           const address = await getAccount()
@@ -99,6 +94,11 @@ export default () => (
           return makeError(observer, err.message)
         }
       }
+
+      // add auth headers (by this point we should have them!)
+      operation.setContext({
+        headers: getAuthHeaders(globalProvider.authToken())
+      })
 
       // pass request down the chain
       handle = forward(operation).subscribe({

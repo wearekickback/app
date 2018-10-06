@@ -55,6 +55,8 @@ class Provider extends Component {
   }
 
   setUserProfile = profile => {
+    console.log('Current user', profile)
+
     this.setState(state => ({
       auth: {
         ...state.auth,
