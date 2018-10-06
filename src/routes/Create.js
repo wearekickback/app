@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import ChainMutation, { ChainMutationResult } from '../components/ChainMutation'
 import Button from '../components/Forms/Button'
-import { CreateParty, UpdatePartyMeta } from '../graphql/mutations'
+import { CreateParty } from '../graphql/mutations'
 import { extractNewPartyAddressFromTx } from '../api/utils'
 
 class Create extends Component {

@@ -50,10 +50,10 @@ const RightBar = styled('div')`
   display: flex;
   align-items: center;
 `
-const Notifications = styled('div')`
-  color: white;
-  margin-right: 20px;
-`
+// const Notifications = styled('div')`
+//   color: white;
+//   margin-right: 20px;
+// `
 const Account = styled('div')`
   display: flex;
   align-items: center;

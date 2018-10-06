@@ -28,10 +28,6 @@ const resolvers = {
     async name({ contract }) {
       return contract.name().call()
     },
-    async participants({ contract }) {
-      const participants = await contract.registered().call()
-      return parseInt(participants, 10)
-    },
     async deposit({ contract }) {
       const deposit = await contract.deposit().call()
       const { utils } = await getWeb3()
