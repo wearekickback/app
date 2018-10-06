@@ -20,8 +20,21 @@ export const ProfileFields = gql`
   }
 `
 
+export const ParticipantFields = gql`
+  ${ProfileFields}
+
+  fragment ParticipantFields on Participant {
+    user {
+      ...ProfileFields
+    }
+    status
+    index
+  }
+`
+
 export const PartyFields = gql`
   ${ProfileFields}
+  ${ParticipantFields}
 
   fragment PartyFields on Party {
     address
@@ -34,11 +47,7 @@ export const PartyFields = gql`
     coolingPeriod
     participantLimit
     participants {
-      user {
-        ...ProfileFields
-      }
-      status
-      index
+      ...ParticipantFields
     }
     ended
     cancelled

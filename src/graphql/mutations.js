@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { ProfileFields } from './fragments'
+import { ProfileFields, ParticipantFields } from './fragments'
 
 export const CreateParty = gql`
   mutation create($name: String, $deposit: String, $limitOfParticipants: String) {
@@ -50,17 +50,21 @@ export const UpdateUserProfile = gql`
 
 
 export const MarkUserAttended = gql`
+  ${ParticipantFields}
+
   mutation markUserAttended($address: String!, $participant: ParticipantInput!) {
     updateParticipantStatus(address: $address, participant: $participant) @auth {
-      status
+      ...ParticipantFields
     }
   }
 `
 
 export const UnmarkUserAttended = gql`
+  ${ParticipantFields}
+
   mutation unmarkUserAttended($address: String!, $participant: ParticipantInput!) {
     updateParticipantStatus(address: $address, participant: $participant) @auth {
-      status
+      ...ParticipantFields
     }
   }
 `

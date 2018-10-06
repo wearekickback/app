@@ -133,7 +133,6 @@ class ParticipantContainer extends Component {
             status: PARTICIPANT_STATUS.REGISTERED,
           }
         }}
-        refetchQueries={['getMarkedAttendedSingle']}
       >
         {unmarkAttended => (
           <SafeMutation
@@ -145,7 +144,6 @@ class ParticipantContainer extends Component {
                 status: PARTICIPANT_STATUS.SHOWED_UP,
               }
             }}
-            refetchQueries={['getMarkedAttendedSingle']}
           >
             {markAttended => (
               <Participant
