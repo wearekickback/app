@@ -34,7 +34,7 @@ export const AllPartiesQuery = gql`
   ${PartyFields}
 
   query getParties {
-    parties: activeParties {
+    parties: allParties {
       ...PartyFields
     }
   }
