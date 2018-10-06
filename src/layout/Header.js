@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
-import ToggleModal from '../components/Modal/ToggleModal'
 
+import ToggleModal from '../components/Modal/ToggleModal'
 import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
 import { SIGN_IN } from '../modals'
 import Button from '../components/Forms/Button'
 import ReverseResolution from '../components/ReverseResolution'
+import Avatar from '../components/User/Avatar'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -54,7 +55,6 @@ const Notifications = styled('div')`
 `
 const Account = styled('div')``
 const AccountAddress = styled('div')``
-const Avatar = styled('img')``
 
 const Header = () => (
   <HeaderContainer>
@@ -76,8 +76,12 @@ const Header = () => (
                     <ReverseResolution address={userAddress} />
                   </AccountAddress>
 
-                  {console.log(userProfile)}
-                  <Avatar />
+                  {console.log('USER', userProfile)}
+                  <Avatar
+                    src={`https://avatars.io/twitter/${userProfile &&
+                      userProfile.social.find(s => s.type === 'twitter')
+                        .value}/medium`}
+                  />
                 </Account>
               </>
             ) : (

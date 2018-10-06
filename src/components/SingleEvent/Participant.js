@@ -86,8 +86,6 @@ export class Participant extends Component {
 
     const isMarked = markedAttendedList.includes(address.toLowerCase())
 
-    console.log(participant)
-
     return (
       <ParticipantWrapper>
         <TwitterAvatar
@@ -132,8 +130,6 @@ export class Participant extends Component {
 class ParticipantContainer extends Component {
   render() {
     const { party, participant } = this.props
-    const { address, contractAddress } = this.props
-    console.log(address, contractAddress)
     return (
       <Mutation
         mutation={UNMARK_ATTENDED}
