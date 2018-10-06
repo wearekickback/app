@@ -6,7 +6,7 @@ import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
 import EventFilters from './EventFilters'
-import EventParticipants from './EventParticipants'
+import EventAttendees from './EventAttendees'
 import { GlobalConsumer } from '../../GlobalState'
 
 const SingleEventContainer = styled('div')`
@@ -55,7 +55,7 @@ class SingleEventWrapper extends Component {
                         userAddress={userAddress}
                       />
                       <EventFilters handleSearch={handleSearch} />
-                      <EventParticipants search={search} party={party} />
+                      <EventAttendees search={search} party={party} />
                     </RightContainer>
                   </Fragment>
                 )

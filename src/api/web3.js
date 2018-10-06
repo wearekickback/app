@@ -3,7 +3,7 @@ import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
 
 import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
-import { NEW_BLOCK } from '../constants/events'
+import { NEW_BLOCK } from '../utils/events'
 
 let web3
 let networkError

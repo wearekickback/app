@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+
 import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import Avatar from '../User/Avatar'
-
+import { parseEthValue } from '../../utils/calculations'
 import { ReactComponent as Eth } from '../svg/Ethereum.svg'
 
 const Date = styled('div')``
@@ -51,7 +52,7 @@ class EventInfo extends Component {
           />{' '}
           Hosted by{' '}
           <EtherScanLink address={address}>
-            <ReverseResolution address={party.owner} />
+            <ReverseResolution address={party.owner.address} />
           </EtherScanLink>
         </OrganiserName>
         <Location>
@@ -59,10 +60,7 @@ class EventInfo extends Component {
         </Location>
         <TotalPot>
           <Eth />
-          Total pot{' '}
-          {(parseFloat(party.deposit) * parseInt(party.attendees, 10)).toFixed(
-            2
-          )}
+          Total pot {parseEthValue(party.deposit).mul(party.attendees.length).toFixed(2)}
         </TotalPot>
         <Tags>
           <Tag>Ethereum</Tag>

@@ -18,15 +18,13 @@ const signInPromise = new Promise(resolve => { setSignedIn = resolve })
 
 export const getProvider = () => providerPromise
 
-const AUTH_TOKEN = 'authToken'
+const AUTH = 'auth'
 
 class Provider extends Component {
   state = {
     apolloClient: this.props.client,
     currentModal: null,
-    auth: {
-      token: LocalStorage.getItem(AUTH_TOKEN)
-    }
+    auth: LocalStorage.getItem(AUTH) || {}
   }
 
   authToken () {
@@ -73,7 +71,7 @@ class Provider extends Component {
     console.log(`New auth token: ${token}`)
 
     // save to local storage for next time!
-    LocalStorage.setItem(AUTH_TOKEN, token)
+    LocalStorage.setItem(AUTH, { token })
 
     this.setState(state => ({
       auth: {

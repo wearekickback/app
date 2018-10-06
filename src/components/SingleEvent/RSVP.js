@@ -1,28 +1,23 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-import Button from '../Forms/Button'
 
-const RSVP_TO_EVENT = gql`
-  mutation rsvp($twitter: String, $address: String) {
-    rsvp(twitter: $twitter, address: $address) @client
-  }
-`
+import ChainMutation, { ChainMutationResult } from '../ChainMutation'
+import Button from '../Forms/Button'
+import { RsvpToEvent } from '../../graphql/mutations'
+
 
 const RSVP = ({ address, className }) => (
-  <Mutation
-    mutation={RSVP_TO_EVENT}
-    variables={{
-      address,
-      twitter: '_jefflau'
-    }}
+  <ChainMutation
+    mutation={RsvpToEvent}
+    variables={{ address }}
   >
-    {rsvp => (
-      <Button className={className} onClick={rsvp}>
-        RSVP
-      </Button>
+    {(rsvp, result) => (
+      <ChainMutationResult result={result}>
+        <Button onClick={rsvp} className={className}>
+          RSVP
+        </Button>
+      </ChainMutationResult>
     )}
-  </Mutation>
+  </ChainMutation>
 )
 
 export default RSVP

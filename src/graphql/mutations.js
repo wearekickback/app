@@ -41,3 +41,23 @@ export const UpdateUserProfile = gql`
     }
   }
 `
+
+
+export const MarkUserAttended = gql`
+  mutation markUserAttended($address: String!, $attendee: AttendeeInput!) {
+    updateAttendeeStatus(address: $address, attendee: $attendee)
+  }
+`
+
+export const UnmarkUserAttended = gql`
+  mutation unmarkUserAttended($address: String!, $attendee: AttendeeInput!) {
+    updateAttendeeStatus(address: $address, attendee: $attendee)
+  }
+`
+
+
+export const RsvpToEvent = gql`
+  mutation rsvp($twitter: String, $address: String) {
+    rsvp(twitter: $twitter, address: $address) @client @auth
+  }
+`

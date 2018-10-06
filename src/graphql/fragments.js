@@ -19,3 +19,33 @@ export const ProfileFields = gql`
     }
   }
 `
+
+export const PartyFields = gql`
+  ${ProfileFields}
+
+  fragment PartyFields on Party {
+    address
+    name
+    description
+    date
+    location
+    deposit
+    coolingPeriod
+    attendeeLimit
+    attendees {
+      user {
+        ...ProfileFields
+      }
+      status
+      index
+    }
+    ended
+    cancelled
+    owner {
+      ...ProfileFields
+    }
+    admins {
+      ...ProfileFields
+    }
+  }
+`
