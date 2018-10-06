@@ -85,7 +85,11 @@ export default class ChainMutation extends Component {
 
     if (refetchQueries) {
       // NOTE: only 1st query is refetched at the mo, to keep things simple
-      return <SafeQuery {...refetchQueries[0]}>{() => content}</SafeQuery>
+      return (
+        <SafeQuery {...refetchQueries[0]} fetchPolicy='cache-and-network'>
+          {() => content}
+        </SafeQuery>
+      )
     }
 
     return content
