@@ -35,7 +35,7 @@ export const PartyFields = gql`
     participantLimit
     participants {
       user {
-        ...ProfileFields,
+        ...ProfileFields
       }
       status
       index

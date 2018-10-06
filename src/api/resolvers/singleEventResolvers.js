@@ -22,6 +22,9 @@ const resolvers = {
     async owner({ contract }) {
       return contract.owner().call()
     },
+    async admins({ contract }) {
+      return contract.getAdmins().call()
+    },
     async name({ contract }) {
       return contract.name().call()
     },

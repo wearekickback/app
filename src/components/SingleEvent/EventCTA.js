@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
-import { amParticipant } from '../../utils/participants'
+import { amParticipant, checkAdmin } from '../../utils/parties'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS, sanitizeStatus } from '../../utils/status'
 import { parseEthValue } from '../../utils/calculations'
@@ -51,8 +51,10 @@ const RSVP = styled(DefaultRSVP)`
   width: calc(100% - 120px);
 `
 
+const AdminCTA = styled('div')``
+
 class EventCTA extends Component {
-  _renderEnded () {
+  _renderEnded() {
     const {
       userAddress,
       party: { participants }
@@ -76,7 +78,7 @@ class EventCTA extends Component {
     }
   }
 
-  _renderActive () {
+  _renderActive() {
     const {
       userAddress,
       party: { address, participants, participantLimit }
@@ -107,17 +109,30 @@ class EventCTA extends Component {
       party: { participants, participantLimit, deposit, ended },
     } = this.props
 
+    let isAdmin = userAddress && party && checkAdmin(party, userAddress)
+
     return (
       <EventCTAContainer>
         <RSVPContainer>
-          <Deposit>{parseEthValue(deposit).toEth().toFixed(2)} ETH</Deposit>
+          <Deposit>
+            {parseEthValue(deposit)
+              .toEth()
+              .toFixed(2)}{' '}
+            ETH
+          </Deposit>
           {ended ? this._renderEnded() : this._renderActive()}
         </RSVPContainer>
+        {ended ? (
+          <CTA>This meetup is past. {attended} people went this event.</CTA>
+        ) : (
+          <CTA>Join the event.</CTA>
+        )}
         {!ended && (
           <RemainingSpots>
             {`${participants.length} going. ${pluralize('spot', participantLimit - participants.length)} left.`}
           </RemainingSpots>
         )}
+        {isAdmin && <AdminCTA>I'm admin!</AdminCTA>}
       </EventCTAContainer>
     )
   }

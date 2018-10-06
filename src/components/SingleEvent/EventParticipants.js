@@ -15,7 +15,7 @@ const NoParticipants = styled('div')``
 
 class EventParticipants extends Component {
   render() {
-    const { participants, search, party } = this.props
+    const { search, party, party: { participants } } = this.props
 
     const searchTerm = search.toLowerCase()
 

@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
-import ToggleModal from '../components/Modal/ToggleModal'
 
+import ToggleModal from '../components/Modal/ToggleModal'
 import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
 import { SIGN_IN } from '../modals'
 import Button from '../components/Forms/Button'
 import ReverseResolution from '../components/ReverseResolution'
+import Avatar from '../components/User/Avatar'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -47,14 +48,24 @@ const Logo = styled('h1')`
 `
 const RightBar = styled('div')`
   display: flex;
+  align-items: center;
 `
 const Notifications = styled('div')`
   color: white;
   margin-right: 20px;
 `
-const Account = styled('div')``
-const AccountAddress = styled('div')``
-const Avatar = styled('img')``
+const Account = styled('div')`
+  display: flex;
+  align-items: center;
+`
+const AccountAddress = styled('div')`
+  max-width: 100px;
+  color: white;
+  font-family: 'Source Code Pro';
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 
 const Header = () => (
   <HeaderContainer>
@@ -67,17 +78,25 @@ const Header = () => (
       </Logo>
       <RightBar>
         <GlobalConsumer>
-          {({ userAddress, userProfile, loggedIn }) =>
-            loggedIn ? (
+          {({ userAddress, userProfile, loggedIn }) => {
+            const twitterProfile =
+              userProfile && userProfile.social.find(s => s.type === 'twitter')
+            return loggedIn ? (
               <>
-                <Notifications>Notification</Notifications>
+                {/* <Notifications>Notification</Notifications> */}
                 <Account>
                   <AccountAddress>
                     <ReverseResolution address={userAddress} />
                   </AccountAddress>
 
-                  {console.log(userProfile)}
-                  <Avatar />
+                  {console.log('USER', userProfile)}
+                  <Avatar
+                    src={`https://avatars.io/twitter/${
+                      twitterProfile
+                        ? twitterProfile.value
+                        : 'unknowntwitter123abc'
+                    }/medium`}
+                  />
                 </Account>
               </>
             ) : (
@@ -85,7 +104,7 @@ const Header = () => (
                 <Button type="light">Sign in</Button>
               </ToggleModal>
             )
-          }
+          }}
         </GlobalConsumer>
       </RightBar>
     </HeaderInner>
