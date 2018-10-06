@@ -4,14 +4,15 @@ import PropTypes from 'prop-types'
 
 import { events, getTransactionReceipt } from '../api/web3'
 import SafeMutation from './SafeMutation'
+import SafeQuery from './SafeQuery'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
 
 export default class ChainMutation extends Component {
-  state = {}
   static propTypes = {
-    children: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired,
+    resultKey: PropTypes.string.isRequired,
   }
 
   state = {}
@@ -25,9 +26,9 @@ export default class ChainMutation extends Component {
   }
 
   _onNewBlock = async block => {
-    const { tx } = this.state
+    const { tx, inProgress } = this.state
 
-    if (tx) {
+    if (tx && inProgress) {
       // confirmations
       const numConfirmations = block.number - tx.blockNumber
       const percentComplete = parseInt(
@@ -79,6 +80,17 @@ export default class ChainMutation extends Component {
     }
   }
 
+  _renderWithSuccessQuery = content => {
+    const { refetchQueries } = this.props
+
+    if (refetchQueries) {
+      // NOTE: only 1st query is refetched at the mo, to keep things simple
+      return <SafeQuery {...refetchQueries[0]}>{() => content}</SafeQuery>
+    }
+
+    return content
+  }
+
   render() {
     const {
       mutation,
@@ -88,31 +100,35 @@ export default class ChainMutation extends Component {
       ...otherProps
     } = this.props
 
+    const { succeeded } = this.state
+
     return (
       <SafeMutation
         mutation={mutation}
         variables={variables}
         {...otherProps}
         onCompleted={this._onCompleted}
+        refetchQueries={[]}
       >
         {(mutator, result) => {
-          return children(mutator, {
-            tx: _.get(result, resultKey),
-            ...this.state
-          })
+          const content = children(mutator, { ...this.state })
+
+          return succeeded ? this._renderWithSuccessQuery(content) : content
         }}
       </SafeMutation>
     )
   }
 }
 
-export const ChainMutationResult = ({ children, tx, inProgress, percentComplete, succeeded, error }) => {
+export const ChainMutationResult = ({ children, result }) => {
+  const { inProgress, percentComplete, succeeded, error } = result
+
   let extraContent = null
 
   if (error) {
     extraContent = <ErrorBox>{`${error}`}</ErrorBox>
   } else if (inProgress) {
-    extraContent = <div>{percentComplete}% complete</div>
+    extraContent = <div>Awaiting confirmation ({percentComplete}%)</div>
   } else if (succeeded) {
     extraContent = <div>Success!</div>
   }

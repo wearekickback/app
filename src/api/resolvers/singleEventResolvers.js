@@ -178,11 +178,19 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
-      return contract.register('').send({
-        from: account,
-        value: deposit,
-        gas: 1000000
-      })
+      try {
+        const tx = await contract.register('').send({
+          from: account,
+          value: deposit,
+          gas: 1000000
+        })
+
+        return tx
+      } catch (err) {
+        console.error(err)
+
+        throw new Error(`Failed to RSVP`)
+      }
     },
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
