@@ -2491,7 +2491,7 @@ babel-plugin-macros@^2.0.0:
   dependencies:
     cosmiconfig "^5.0.5"
 
-babel-plugin-macros@^2.2.0:
+babel-plugin-macros@^2.2.0, babel-plugin-macros@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/babel-plugin-macros/-/babel-plugin-macros-2.4.2.tgz#21b1a2e82e2130403c5ff785cba6548e9b644b28"
   dependencies:

@@ -8,23 +8,22 @@ class Modal extends Component {
     const { name, children, component: Component } = this.props
     return (
       <GlobalConsumer>
-        {({ currentModal, toggleModal }) => (
-          name === currentModal &&
-            (
-              <ModalContainer
-                show={name === currentModal}
-                onClick={event => {
-                  event.stopPropagation()
-                  toggleModal(name)
-                }}
-              >
-                <ModalContent onClick={event => event.stopPropagation()}>
-                  <Component name={name} />
-                  {children}
-                </ModalContent>
-              </ModalContainer>
-            )
-        )}
+        {({ currentModal, toggleModal }) =>
+          name === currentModal && (
+            <ModalContainer
+              show={name === currentModal}
+              onClick={event => {
+                event.stopPropagation()
+                toggleModal(name)
+              }}
+            >
+              <ModalContent onClick={event => event.stopPropagation()}>
+                <Component name={name} />
+                {children}
+              </ModalContent>
+            </ModalContainer>
+          )
+        }
       </GlobalConsumer>
     )
   }

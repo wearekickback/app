@@ -9,6 +9,4 @@ const ErrorDiv = styled('div')`
   justify-content: space-between;
 `
 
-export default ({ children }) => (
-  <ErrorDiv>{children}</ErrorDiv>
-)
+export default ({ children }) => <ErrorDiv>{children}</ErrorDiv>

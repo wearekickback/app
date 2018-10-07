@@ -8,8 +8,8 @@ const AvatarContainer = styled('div')`
   overflow: hidden;
 `
 
-const Avatar = ({ src }) => (
-  <AvatarContainer>
+const Avatar = ({ src, className }) => (
+  <AvatarContainer className={className}>
     <img src={src} alt="avatar" />
   </AvatarContainer>
 )
