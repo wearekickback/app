@@ -17,6 +17,10 @@ const ContractAddress = styled('h3')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-family: Muli-SemiBold;
+  font-size: 13px;
+  color: #6e76ff;
+  letter-spacing: 0;
 `
 const EventImage = styled('img')`
   border-radius: 4px;
