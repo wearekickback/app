@@ -11,7 +11,6 @@ import { parseEthValue } from '../../utils/calculations'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 
-
 const CTA = styled('div')`
   font-family: Overpass;
   font-weight: 500;
@@ -60,9 +59,7 @@ const AdminCTA = styled('div')``
 
 class EventCTA extends Component {
   _renderEndedRsvp() {
-    const {
-      myParticipantEntry
-    } = this.props
+    const { myParticipantEntry } = this.props
 
     if (!myParticipantEntry) {
       return ''
@@ -150,20 +147,15 @@ class EventCTA extends Component {
 
   render() {
     const {
-<<<<<<< HEAD
       party: {
-        admins,
+        address,
         participants,
         participantLimit,
         deposit,
         ended,
         cancelled
       },
-      userAddress
-=======
-      party: { address, participants, participantLimit, deposit, ended, cancelled },
       amAdmin
->>>>>>> 5346d59b1acfe5f7dd0e7127013690b73b6ccb8c
     } = this.props
 
     const totalReg = participants.length
@@ -179,24 +171,31 @@ class EventCTA extends Component {
           </Deposit>
           {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
         </RSVPContainer>
-        {ended ? (
-          cancelled ? this._renderCanceled() : this._renderEnded()
-        ) : (
-          totalReg < participantLimit ? this._renderJoin() : this._renderEventFull()
-        )}
+        {ended
+          ? cancelled
+            ? this._renderCanceled()
+            : this._renderEnded()
+          : totalReg < participantLimit
+            ? this._renderJoin()
+            : this._renderEventFull()}
         {amAdmin && (
           <div>
             <AdminCTA>I'm admin!</AdminCTA>
             {!ended ? (
               <ChainMutation
                 mutation={Finalize}
-                resultKey='finalize'
-                variables={{ address, maps: calculateFinalizeMaps(participants) }}
-                refetchQueries={[{ query: PartyQuery, variables: { address }}]}
+                resultKey="finalize"
+                variables={{
+                  address,
+                  maps: calculateFinalizeMaps(participants)
+                }}
+                refetchQueries={[{ query: PartyQuery, variables: { address } }]}
               >
                 {(finalize, result) => (
                   <ChainMutationResult result={result}>
-                    <Button onClick={finalize}>Finalize and enable payouts</Button>
+                    <Button onClick={finalize}>
+                      Finalize and enable payouts
+                    </Button>
                   </ChainMutationResult>
                 )}
               </ChainMutation>
