@@ -32,18 +32,18 @@ class EventParticipants extends Component {
         {markAttendedSingle => (
           <Fragment>
             <H3>Participants</H3>
-            {console.log('event participants')}
             <EventParticipantsContainer>
               {participants.length > 0 ? (
                 participants
+                  .sort((a, b) => a.index < b.index ? -1 : 1)
                   .filter(participant =>
                     participant.user.address.toLowerCase().includes(searchTerm)
                   )
-                  .map((participant, i) => (
+                  .map(participant => (
                     <Participant
                       participant={participant}
                       party={party}
-                      key={`${participant.address}${i}`}
+                      key={`${participant.address}${participant.index}`}
                       markedAttendedList={markAttendedSingle || []}
                     />
                   ))

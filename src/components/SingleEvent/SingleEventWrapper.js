@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
+import { addressesMatch } from '../../utils/strings'
 import { amInAddressList } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
@@ -48,12 +49,12 @@ class SingleEventWrapper extends Component {
               {({ party }) => {
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
-                  amOwner: userAddress && party && party.owner && party.owner.address === userAddress,
-                  myParticipantEntry: userAddress && party && party.participants && party.participants.find(a => _.get(a, 'user.address', '') === userAddress),
+                  amOwner: addressesMatch(_.get(party, 'owner.address', ''), userAddress),
+                  myParticipantEntry: userAddress && _.get(party, 'participants', []).find(a => addressesMatch(_.get(a, 'user.address', ''), userAddress)),
                 }
 
                 preCalculatedProps.amAdmin = preCalculatedProps.amOwner || (
-                  userAddress && party && amInAddressList(party.admins.map(a => a.address), userAddress)
+                  userAddress && amInAddressList(_.get(party, 'admins', []).map(a => a.address), userAddress)
                 )
 
                 return (
