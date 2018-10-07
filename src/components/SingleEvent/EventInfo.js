@@ -126,7 +126,8 @@ class EventInfo extends Component {
             {parseEthValue(party.deposit)
               .mul(party.participants.length)
               .toEth()
-              .toFixed(2)}
+              .toFixed(2)}{' '}
+            ETH
           </span>
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>
