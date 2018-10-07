@@ -1,6 +1,9 @@
+import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
+import { addressesMatch } from '../../utils/strings'
+import { amInAddressList } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
@@ -37,25 +40,37 @@ class SingleEventWrapper extends Component {
 
   render() {
     const { address, handleSearch, search } = this.props
+
     return (
       <SingleEventContainer>
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery query={PartyQuery} variables={{ address }}>
               {({ party }) => {
+                // pre-calculate some stuff up here
+                const preCalculatedProps = {
+                  amOwner: addressesMatch(_.get(party, 'owner.address', ''), userAddress),
+                  myParticipantEntry: userAddress && _.get(party, 'participants', []).find(a => addressesMatch(_.get(a, 'user.address', ''), userAddress)),
+                }
+
+                preCalculatedProps.amAdmin = preCalculatedProps.amOwner || (
+                  userAddress && amInAddressList(_.get(party, 'admins', []).map(a => a.address), userAddress)
+                )
+
                 return (
                   <Fragment>
                     <EventInfoContainer>
-                      <EventInfo party={party} address={address} />
+                      <EventInfo party={party} address={address} {...preCalculatedProps} />
                     </EventInfoContainer>
                     <RightContainer>
                       <EventCTA
                         party={party}
                         address={address}
                         userAddress={userAddress}
+                        {...preCalculatedProps}
                       />
-                      <EventFilters handleSearch={handleSearch} />
-                      <EventParticipants search={search} party={party} />
+                      <EventFilters handleSearch={handleSearch} {...preCalculatedProps} />
+                      <EventParticipants search={search} party={party} {...preCalculatedProps} />
                     </RightContainer>
                   </Fragment>
                 )
