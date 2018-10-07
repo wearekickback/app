@@ -45,7 +45,7 @@ class SingleEventWrapper extends Component {
       <SingleEventContainer>
         <GlobalConsumer>
           {({ userAddress }) => (
-            <SafeQuery query={PartyQuery} variables={{ address }}>
+            <SafeQuery query={PartyQuery} variables={{ address }} fetchPolicy="cache-and-network">
               {({ party }) => {
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
