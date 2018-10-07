@@ -4,6 +4,7 @@ import ReverseResolution from '../ReverseResolution'
 
 import SafeMutation from '../SafeMutation'
 import { PARTICIPANT_STATUS } from '../../utils/status'
+import { getSocial } from '../../utils/parties'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { winningShare, parseEthValue } from '../../utils/calculations'
 import { GlobalConsumer } from '../../GlobalState'
@@ -72,8 +73,7 @@ export class Participant extends Component {
     const attended = status === PARTICIPANT_STATUS.SHOWED_UP
     const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
 
-    const { value: twitter } =
-      (user.social || []).find(({ type }) => type === 'twitter') || {}
+    const twitter = getSocial(user.social, 'twitter')
 
     const numRegistered = party.participants.length
     const numShowedUp = party.participants.reduce(
