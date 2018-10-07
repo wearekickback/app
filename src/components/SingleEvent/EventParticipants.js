@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
-import GetMarkedAttendedQuery from './GetMarkedAttendedQuery'
 import { H3 } from '../Typography/Basic'
 
 const EventParticipantsContainer = styled('div')`
@@ -28,32 +27,27 @@ class EventParticipants extends Component {
     })
 
     return (
-      <GetMarkedAttendedQuery variables={{ contractAddress: party.address }}>
-        {markAttendedSingle => (
-          <Fragment>
-            <H3>Participants</H3>
-            <EventParticipantsContainer>
-              {participants.length > 0 ? (
-                participants
-                  .sort((a, b) => a.index < b.index ? -1 : 1)
-                  .filter(participant =>
-                    participant.user.address.toLowerCase().includes(searchTerm)
-                  )
-                  .map(participant => (
-                    <Participant
-                      participant={participant}
-                      party={party}
-                      key={`${participant.address}${participant.index}`}
-                      markedAttendedList={markAttendedSingle || []}
-                    />
-                  ))
-              ) : (
-                <NoParticipants>No one is attending.</NoParticipants>
-              )}
-            </EventParticipantsContainer>
-          </Fragment>
-        )}
-      </GetMarkedAttendedQuery>
+      <Fragment>
+        <H3>Participants</H3>
+        <EventParticipantsContainer>
+          {participants.length > 0 ? (
+            participants
+              .sort((a, b) => a.index < b.index ? -1 : 1)
+              .filter(participant =>
+                participant.user.address.toLowerCase().includes(searchTerm)
+              )
+              .map(participant => (
+                <Participant
+                  participant={participant}
+                  party={party}
+                  key={`${participant.address}${participant.index}`}
+                />
+              ))
+          ) : (
+            <NoParticipants>No one is attending.</NoParticipants>
+          )}
+        </EventParticipantsContainer>
+      </Fragment>
     )
   }
 }

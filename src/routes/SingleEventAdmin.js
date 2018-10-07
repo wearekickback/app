@@ -3,7 +3,6 @@ import SingleEventWrapper from '../components/SingleEvent/SingleEventWrapper'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import Clear from '../components/SingleEvent/Clear'
 import Payback from '../components/SingleEvent/Payback'
-import BatchAttend from '../components/SingleEvent/BatchAttend'
 
 class SingleEvent extends Component {
   state = {
@@ -23,7 +22,6 @@ class SingleEvent extends Component {
         <SetLimit address={address} />
         <Clear address={address} />
         <Payback address={address} />
-        <BatchAttend address={address} />
         <SingleEventWrapper
           handleSearch={this.handleSearch}
           search={this.state.search}

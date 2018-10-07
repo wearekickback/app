@@ -76,10 +76,3 @@ export class EthValue {
 }
 
 export const parseEthValue = v => new EthValue(v)
-
-export const winningShare = (deposit, numRegistered, numAttended) =>
-  parseEthValue(deposit)
-    .mul(numRegistered)
-    .div(numAttended)
-    .toEth()
-    .toFixed(3)

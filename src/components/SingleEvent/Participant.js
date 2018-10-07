@@ -6,7 +6,8 @@ import SafeMutation from '../SafeMutation'
 import { PARTICIPANT_STATUS } from '../../utils/status'
 import { getSocial } from '../../utils/parties'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
-import { winningShare, parseEthValue } from '../../utils/calculations'
+import { parseEthValue } from '../../utils/units'
+import { calculateWinningShare, calculateNumAttended } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -70,20 +71,18 @@ export class Participant extends Component {
     const { user, status } = participant
     const { deposit, ended } = party
 
-    const attended = status === PARTICIPANT_STATUS.SHOWED_UP
     const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+    const attended = (status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn)
 
     const twitter = getSocial(user.social, 'twitter')
 
     const numRegistered = party.participants.length
-    const numShowedUp = party.participants.reduce(
-      (m, { status }) =>
-        m +
-        (status ===
-        (PARTICIPANT_STATUS.SHOWED_UP || PARTICIPANT_STATUS.WITHDRAWN_PAYOUT)
-          ? 1
-          : 0),
-      0
+    const numShowedUp = calculateNumAttended(party.participants)
+
+    const payout = calculateWinningShare(
+      deposit,
+      numRegistered,
+      numShowedUp
     )
 
     return (
@@ -100,11 +99,7 @@ export class Participant extends Component {
               attended ? (
                 <Status type="won">{`${
                   withdrawn ? ' Withdrew' : 'Won'
-                } ${winningShare(
-                  deposit,
-                  numRegistered,
-                  numShowedUp
-                )} ETH `}</Status>
+                } ${payout} ETH `}</Status>
               ) : (
                 <Status type="lost">
                   Lost{' '}

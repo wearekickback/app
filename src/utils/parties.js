@@ -2,6 +2,7 @@ import { toBN } from 'web3-utils'
 
 import { addressesMatch } from './strings'
 import { PARTICIPANT_STATUS } from './status'
+import { parseEthValue } from './units'
 
 export const amParticipant = (participants, address) =>
   participants.find(a => addressesMatch(a.user.address, address))
@@ -14,6 +15,11 @@ export const getSocial = (socials, socialType) => {
     (socials || []).find(({ type }) => type === socialType) || {}
   return value
 }
+
+export const calculateNumAttended = participants => participants.reduce((m, v) => {
+  const attended = v.status === PARTICIPANT_STATUS.SHOWED_UP || v.status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+  return m + (attended ? 1 : 0)
+}, 0)
 
 export const calculateFinalizeMaps = participants => {
   // sort participants array
@@ -35,3 +41,10 @@ export const calculateFinalizeMaps = participants => {
 
   return maps.map(m => m.toString(10))
 }
+
+export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
+  parseEthValue(deposit)
+    .mul(numRegistered)
+    .div(numAttended)
+    .toEth()
+    .toFixed(3)

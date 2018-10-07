@@ -2,8 +2,6 @@ import { toBN } from 'web3-utils'
 import getWeb3, { getAccount } from '../web3'
 import { Conference } from '@noblocknoparty/contracts'
 import events from '../../fixtures/events.json'
-import { GET_MARKED_ATTENDED } from '../../graphql/queries'
-import { getItem, setItem } from '../localStorage'
 
 const abi = Conference.abi
 
@@ -117,63 +115,9 @@ const resolvers = {
         __typename: 'Party'
       }
     },
-    markAttendedSingle: async (_, { contractAddress }, { cache }) => {
-      const array = getItem('markedAttendedList' + contractAddress) || []
-
-      cache.writeData({
-        data: {
-          markedAttendedList: array
-        }
-      })
-
-      return array
-    }
   },
 
   Mutation: {
-    async markAttended(_, { address, contractAddress }, { cache }) {
-      const { markedAttendedList } = cache.readQuery({
-        query: GET_MARKED_ATTENDED
-      })
-
-      const data = {
-        markedAttendedList: [...markedAttendedList]
-      }
-
-      console.log(contractAddress, address)
-
-      const exists = data.markedAttendedList.includes(address.toLowerCase())
-      //check for duplicates
-      if (!exists) {
-        data.markedAttendedList.push(address.toLowerCase())
-      } else {
-        console.log('Participant already marked as attended')
-        return null
-      }
-
-      cache.writeData({ data })
-      setItem('markedAttendedList' + contractAddress, data.markedAttendedList)
-
-      return data.markedAttendedList
-    },
-    async unmarkAttended(_, { address, contractAddress }, { cache }) {
-      const { markedAttendedList } = cache.readQuery({
-        query: GET_MARKED_ATTENDED
-      })
-
-      const lowercaseAddress = address.toLowerCase()
-
-      const data = {
-        markedAttendedList: markedAttendedList.filter(
-          item => item !== lowercaseAddress
-        )
-      }
-
-      cache.writeData({ data })
-      setItem('markedAttendedList' + contractAddress, data.markedAttendedList)
-
-      return data.markedAttendedList
-    },
     async rsvp(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -210,23 +154,29 @@ const resolvers = {
         throw new Error(`Failed to finalize`)
       }
     },
+    async withdrawPayout(_, { address }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      try {
+        const tx = await contract.withdraw().send({
+          from: account,
+          gas: 2000000
+        })
+
+        return tx
+      } catch (err) {
+        console.error(err)
+
+        throw new Error(`Failed to withdraw`)
+      }
+    },
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         return contract.setLimitOfParticipants(limit).send({ from: account })
-      } catch (e) {
-        console.log(e)
-        return null
-      }
-    },
-    async payback(_, { address }) {
-      const web3 = await getWeb3()
-      const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
-      try {
-        return contract.payback().send({ from: account })
       } catch (e) {
         console.log(e)
         return null
@@ -243,39 +193,6 @@ const resolvers = {
         return null
       }
     },
-    async changeName(_, { address, name }) {
-      const web3 = await getWeb3()
-      const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
-      try {
-        return contract.changeName(name).send({ from: account })
-      } catch (e) {
-        console.log(e)
-        return null
-      }
-    },
-    async batchAttend(_, { address, participants }, { cache }) {
-      const web3 = await getWeb3()
-      const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
-      try {
-        return contract
-          .attend(participants)
-          .send({ from: account })
-          .then(() => {
-            cache.write({
-              data: {
-                markedAttendedList: []
-              }
-            })
-
-            setItem('markedAttendedList' + address, [])
-          })
-      } catch (e) {
-        console.log(e)
-        return null
-      }
-    }
   }
 }
 

@@ -4,10 +4,11 @@ import styled from 'react-emotion'
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationResult } from '../ChainMutation'
 import Button from '../Forms/Button'
+import WithdrawPayout from './WithdrawPayout'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
-import { calculateFinalizeMaps } from '../../utils/parties'
-import { parseEthValue } from '../../utils/calculations'
+import { calculateFinalizeMaps, calculateNumAttended, calculateWinningShare } from '../../utils/parties'
+import { parseEthValue } from '../../utils/units'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 
@@ -59,17 +60,24 @@ const AdminCTA = styled('div')``
 
 class EventCTA extends Component {
   _renderEndedRsvp() {
-    const { myParticipantEntry } = this.props
+    const { myParticipantEntry, party: { address, deposit, participants } } = this.props
 
     if (!myParticipantEntry) {
       return ''
     }
 
+    const totalReg = participants.length
+    const numWent = calculateNumAttended(participants)
+
+    const myShare = calculateWinningShare(deposit, totalReg, numWent)
+
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You didn't show up :/</Going>
       case PARTICIPANT_STATUS.SHOWED_UP:
-        return <Going>You attended!</Going>
+        return <WithdrawPayout address={address} amount={myShare} />
+      case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
+        return <Going>You have withdrawn your payout!</Going>
       default:
         return ''
     }

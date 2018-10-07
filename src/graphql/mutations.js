@@ -92,3 +92,9 @@ export const Finalize = gql`
     finalize(address: $address, maps: $maps) @client @auth
   }
 `
+
+export const WithdrawPayout = gql`
+  mutation withdrawPayout($address: String!) {
+    withdrawPayout(address: $address) @client
+  }
+`

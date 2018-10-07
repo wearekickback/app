@@ -49,18 +49,6 @@ export const AllEventsQuery = gql`
   }
 `
 
-export const GET_MARKED_ATTENDED_SINGLE = gql`
-  query getMarkedAttendedSingle($contractAddress: String) {
-    markAttendedSingle(contractAddress: $contractAddress) @client
-  }
-`
-
-export const GET_MARKED_ATTENDED = gql`
-  query getMarkedAttended {
-    markedAttendedList @client
-  }
-`
-
 export const ReverseRecordQuery = gql`
   query getReverseRecord($address: String) {
     getReverseRecord(address: $address) @client {
