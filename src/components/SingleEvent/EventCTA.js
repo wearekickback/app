@@ -93,11 +93,7 @@ class EventCTA extends Component {
 
     if (!going) {
       if (participants.length < participantLimit) {
-        return (
-          <div className="outside-rsvp">
-            <RSVP address={address} />
-          </div>
-        )
+        return <RSVP address={address} />
       }
 
       return ''
