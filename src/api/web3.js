@@ -56,7 +56,7 @@ export function getNetworkError() {
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
   const id = await web3.eth.net.getId()
-  return DEPLOYER_CONTRACT_ADDRESS || Deployer.NETWORKS[id].address
+  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[id].address
 }
 
 export async function getTransactionReceipt(txHash) {
