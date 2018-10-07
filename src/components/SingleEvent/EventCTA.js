@@ -54,7 +54,7 @@ const RSVP = styled(DefaultRSVP)`
 const AdminCTA = styled('div')``
 
 class EventCTA extends Component {
-  _renderEnded() {
+  _renderEndedRsvp() {
     const {
       userAddress,
       party: { participants }
@@ -62,15 +62,8 @@ class EventCTA extends Component {
 
     const went = amParticipant(participants, userAddress)
 
-    const cta = (
-      <CTA>
-        This meetup is past. {participants.length} people registered to attend
-        this event.
-      </CTA>
-    )
-
     if (!went) {
-      return cta
+      return ''
     }
 
     switch (went.status) {
@@ -79,11 +72,11 @@ class EventCTA extends Component {
       case PARTICIPANT_STATUS.SHOWED_UP:
         return <Going>You attended!</Going>
       default:
-        return cta
+        return ''
     }
   }
 
-  _renderActive() {
+  _renderActiveRsvp() {
     const {
       userAddress,
       party: { address, participants, participantLimit }
@@ -109,13 +102,68 @@ class EventCTA extends Component {
     }
   }
 
+  _renderJoin() {
+    const {
+      party: { participants, participantLimit }
+    } = this.props
+
+    return (
+      <CTA>
+        Join the event!{' '}
+        <RemainingSpots>
+          {`${participants.length} going. ${participantLimit -
+            participants.length} ${pluralize(
+            'spot',
+            participantLimit - participants.length
+          )} left.`}
+        </RemainingSpots>
+      </CTA>
+    )
+  }
+
+  _renderEventFull() {
+    return <CTA>This event is now full.</CTA>
+  }
+
+  _renderCanceled() {
+    return <CTA>This event has been cancelled.</CTA>
+  }
+
+  _renderEnded() {
+    const {
+      party: { participants }
+    } = this.props
+
+    const totalReg = participants.length
+    const numWent = participants.reduce(
+      (m, { status }) => m + (PARTICIPANT_STATUS.SHOWED_UP === status ? 1 : 0),
+      0
+    )
+
+    return (
+      <CTA>
+        This meetup is past. {numWent} out of {totalReg} people went to this
+        event.
+      </CTA>
+    )
+  }
+
   render() {
     const {
-      party: { admins, participants, participantLimit, deposit, ended },
+      party: {
+        admins,
+        participants,
+        participantLimit,
+        deposit,
+        ended,
+        cancelled
+      },
       userAddress
     } = this.props
 
     let isAdmin = userAddress && admins && amInAddressList(admins, userAddress)
+
+    const totalReg = participants.length
 
     return (
       <EventCTAContainer>
@@ -126,25 +174,15 @@ class EventCTA extends Component {
               .toFixed(2)}{' '}
             ETH
           </Deposit>
-          {ended ? this._renderEnded() : this._renderActive()}
+          {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
         </RSVPContainer>
-        {ended ? (
-          <CTA>
-            This meetup is past. {participants.length} people went to this
-            event.
-          </CTA>
-        ) : (
-          <CTA>
-            Join the event!{' '}
-            <RemainingSpots>
-              {`${participants.length} going. ${participantLimit -
-                participants.length} ${pluralize(
-                'spot',
-                participantLimit - participants.length
-              )} left.`}
-            </RemainingSpots>
-          </CTA>
-        )}
+        {ended
+          ? cancelled
+            ? this._renderCanceled()
+            : this._renderEnded()
+          : totalReg < participantLimit
+            ? this._renderJoin()
+            : this._renderEventFull()}
         {isAdmin && <AdminCTA>I'm admin!</AdminCTA>}
       </EventCTAContainer>
     )
