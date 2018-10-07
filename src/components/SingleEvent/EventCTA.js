@@ -140,10 +140,7 @@ class EventCTA extends Component {
     } = this.props
 
     const totalReg = participants.length
-    const numWent = participants.reduce(
-      (m, { status }) => m + (PARTICIPANT_STATUS.SHOWED_UP === status ? 1 : 0),
-      0
-    )
+    const numWent = calculateNumAttended(participants)
 
     return (
       <CTA>
