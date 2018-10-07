@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { Link } from 'react-router-dom'
+import { Link as DefaultLink } from 'react-router-dom'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
+import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'
+import { ReactComponent as GithubIcon } from '../components/svg/github.svg'
 
 const FooterContainer = styled('footer')`
   width: 100%;
@@ -19,9 +21,46 @@ const H2 = styled(DefaultH2)`
   color: white;
 `
 
-const Social = styled('div')``
+const Row = styled('section')`
+  display: flex;
+  justify-content: space-between;
+`
 
-const Copyright = styled('div')``
+const Links = styled('nav')`
+  display: flex;
+`
+
+const Link = styled(DefaultLink)`
+  color: white;
+  margin-left: 100px;
+`
+
+const ElevatorPitch = styled('div')`
+  color: white;
+  max-width: 450px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 21px;
+  margin-bottom: 50px;
+`
+
+const Social = styled('div')`
+  display: flex;
+  align-items: center;
+  a {
+    margin-left: 30px;
+    color: white;
+  }
+
+  .twitter {
+    margin-top: 2px;
+  }
+`
+
+const Copyright = styled('div')`
+  color: white;
+  font-weight: 300;
+`
 
 class Footer extends Component {
   render() {
@@ -29,16 +68,30 @@ class Footer extends Component {
       <FooterContainer>
         <FooterInner>
           <H2>Get in touch</H2>
-          <Link to="/">About</Link>
-          <Link to="/">Team</Link>
-          <Link to="/">Contact</Link>
           <a href="mailto:hello@kickback.events">hello@kickback.events</a>
-          <h2>Kickback</h2>
-          <Social>
-            <a href="https://github.com/noblocknoparty">Github</a>
-            <a href="https://twitter.com/wearekickback">Twitter</a>
-          </Social>
-          <Copyright>&copy; Kickback 2018</Copyright>
+          <Row>
+            <ElevatorPitch>
+              Kickback helps event organisers guarantee a high participation
+              rate at their events. Our service encourages attendees to treat
+              the events they sign up for more seriously.
+            </ElevatorPitch>
+            <Links>
+              <Link to="/">About</Link>
+              <Link to="/">Team</Link>
+              <Link to="/">FAQ</Link>
+            </Links>
+          </Row>
+          <Row>
+            <Copyright>&copy; Kickback 2018</Copyright>
+            <Social>
+              <a href="https://github.com/noblocknoparty">
+                <GithubIcon />
+              </a>
+              <a href="https://twitter.com/wearekickback" className="twitter">
+                <TwitterIcon />
+              </a>
+            </Social>
+          </Row>
         </FooterInner>
       </FooterContainer>
     )
