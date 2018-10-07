@@ -5,7 +5,7 @@ import ReverseResolution from '../ReverseResolution'
 import SafeMutation from '../SafeMutation'
 import { PARTICIPANT_STATUS } from '../../utils/status'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
-import { winningShare } from '../../utils/calculations'
+import { winningShare, parseEthValue } from '../../utils/calculations'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -65,24 +65,26 @@ const Status = styled('div')`
 
 export class Participant extends Component {
   render() {
-    const {
-      participant,
-      party,
-      markAttended,
-      unmarkAttended
-    } = this.props
+    const { participant, party, markAttended, unmarkAttended } = this.props
     const { user, status } = participant
     const { deposit, ended } = party
 
-    const attended = (status === PARTICIPANT_STATUS.SHOWED_UP)
-    const withdrawn = (status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT)
+    const attended = status === PARTICIPANT_STATUS.SHOWED_UP
+    const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
 
-    const { value: twitter } = (user.social || []).find(({ type }) => type === 'twitter') || {}
+    const { value: twitter } =
+      (user.social || []).find(({ type }) => type === 'twitter') || {}
 
     const numRegistered = party.participants.length
-    const numShowedUp = party.participants.reduce((m, { status }) => (
-      m + (status === (PARTICIPANT_STATUS.SHOWED_UP || PARTICIPANT_STATUS.WITHDRAWN_PAYOUT) ? 1 : 0)
-    ), 0)
+    const numShowedUp = party.participants.reduce(
+      (m, { status }) =>
+        m +
+        (status ===
+        (PARTICIPANT_STATUS.SHOWED_UP || PARTICIPANT_STATUS.WITHDRAWN_PAYOUT)
+          ? 1
+          : 0),
+      0
+    )
 
     return (
       <GlobalConsumer>
@@ -96,20 +98,32 @@ export class Participant extends Component {
             </ParticipantAddress>
             {ended ? (
               attended ? (
-                <Status type="won">{`${withdrawn ? ' Withdrew' : 'Won'} ${winningShare(
+                <Status type="won">{`${
+                  withdrawn ? ' Withdrew' : 'Won'
+                } ${winningShare(
                   deposit,
                   numRegistered,
                   numShowedUp
                 )} ETH `}</Status>
               ) : (
-                <Status type="lost">Lost {deposit} ETH</Status>
+                <Status type="lost">
+                  Lost{' '}
+                  {parseEthValue(deposit)
+                    .toEth()
+                    .toString()}{' '}
+                  ETH
+                </Status>
               )
             ) : (
               <Fragment>
                 {attended ? (
-                  <Button wide onClick={unmarkAttended}>Unmark attended</Button>
+                  <Button wide onClick={unmarkAttended}>
+                    Unmark attended
+                  </Button>
                 ) : (
-                  <Button wide onClick={markAttended}>Mark attended</Button>
+                  <Button wide onClick={markAttended}>
+                    Mark attended
+                  </Button>
                 )}
               </Fragment>
             )}
@@ -130,7 +144,7 @@ class ParticipantContainer extends Component {
           address: party.address,
           participant: {
             address: participant.user.address,
-            status: PARTICIPANT_STATUS.REGISTERED,
+            status: PARTICIPANT_STATUS.REGISTERED
           }
         }}
       >
@@ -141,7 +155,7 @@ class ParticipantContainer extends Component {
               address: party.address,
               participant: {
                 address: participant.user.address,
-                status: PARTICIPANT_STATUS.SHOWED_UP,
+                status: PARTICIPANT_STATUS.SHOWED_UP
               }
             }}
           >

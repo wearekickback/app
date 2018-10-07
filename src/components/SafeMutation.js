@@ -14,10 +14,10 @@ const DEFAULT_RENDER_LOADING = () => <Loader />
 
 export default class SafeMutation extends Component {
   static propTypes = {
-    children: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired
   }
 
-  render () {
+  render() {
     const {
       children,
       isLoading = DEFAULT_IS_LOADING,
@@ -30,11 +30,11 @@ export default class SafeMutation extends Component {
       <Mutation {...props}>
         {(mutator, result) => {
           return (
-            <div>
+            <>
               {children(mutator, result.data || {})}
               {result.error ? renderError(result) : null}
               {isLoading(result) ? renderLoading(result) : null}
-            </div>
+            </>
           )
         }}
       </Mutation>

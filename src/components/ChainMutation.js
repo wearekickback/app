@@ -12,12 +12,12 @@ import { NUM_CONFIRMATIONS } from '../config'
 export default class ChainMutation extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    resultKey: PropTypes.string.isRequired,
+    resultKey: PropTypes.string.isRequired
   }
 
   state = {}
 
-  componentDidMount () {
+  componentDidMount() {
     events.on(NEW_BLOCK, this._onNewBlock)
   }
 
@@ -61,7 +61,7 @@ export default class ChainMutation extends Component {
     if (result.error) {
       this.setState({
         failed: true,
-        error: result.error,
+        error: result.error
       })
 
       return
@@ -75,7 +75,7 @@ export default class ChainMutation extends Component {
         percentComplete: NUM_CONFIRMATIONS > 0 ? 0 : 100,
         inProgress: NUM_CONFIRMATIONS > 0 ? true : false,
         succeeded: NUM_CONFIRMATIONS > 0 ? false : true,
-        failed: false,
+        failed: false
       })
     }
   }
@@ -86,7 +86,7 @@ export default class ChainMutation extends Component {
     if (refetchQueries) {
       // NOTE: only 1st query is refetched at the mo, to keep things simple
       return (
-        <SafeQuery {...refetchQueries[0]} fetchPolicy='cache-and-network'>
+        <SafeQuery {...refetchQueries[0]} fetchPolicy="cache-and-network">
           {() => content}
         </SafeQuery>
       )
@@ -132,7 +132,12 @@ export const ChainMutationResult = ({ children, result }) => {
   if (error) {
     extraContent = <ErrorBox>{`${error}`}</ErrorBox>
   } else if (inProgress) {
-    extraContent = <div>Awaiting confirmation ({percentComplete}%)</div>
+    extraContent = (
+      <div>
+        Awaiting confirmation ({percentComplete}
+        %)
+      </div>
+    )
   } else if (succeeded) {
     extraContent = <div>Success!</div>
   }

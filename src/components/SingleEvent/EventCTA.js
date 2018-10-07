@@ -62,7 +62,12 @@ class EventCTA extends Component {
 
     const went = amParticipant(participants, userAddress)
 
-    const cta = <CTA>This meetup is past. {participants.length} people registered to attend this event.</CTA>
+    const cta = (
+      <CTA>
+        This meetup is past. {participants.length} people registered to attend
+        this event.
+      </CTA>
+    )
 
     if (!went) {
       return cta
@@ -71,7 +76,7 @@ class EventCTA extends Component {
     switch (went.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You didn't show up :/</Going>
-      case  PARTICIPANT_STATUS.SHOWED_UP:
+      case PARTICIPANT_STATUS.SHOWED_UP:
         return <Going>You attended!</Going>
       default:
         return cta
@@ -88,7 +93,11 @@ class EventCTA extends Component {
 
     if (!going) {
       if (participants.length < participantLimit) {
-        return <RSVP address={address} />
+        return (
+          <div className="outside-rsvp">
+            <RSVP address={address} />
+          </div>
+        )
       }
 
       return ''
@@ -107,7 +116,7 @@ class EventCTA extends Component {
   render() {
     const {
       party: { admins, participants, participantLimit, deposit, ended },
-      userAddress,
+      userAddress
     } = this.props
 
     let isAdmin = userAddress && admins && amInAddressList(admins, userAddress)
@@ -116,18 +125,27 @@ class EventCTA extends Component {
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>
-            {parseEthValue(deposit).toEth().toFixed(2)} ETH
+            {parseEthValue(deposit)
+              .toEth()
+              .toFixed(2)}{' '}
+            ETH
           </Deposit>
           {ended ? this._renderEnded() : this._renderActive()}
         </RSVPContainer>
         {ended ? (
-          <CTA>This meetup is past. {participants.length} people went to this event.</CTA>
+          <CTA>
+            This meetup is past. {participants.length} people went to this
+            event.
+          </CTA>
         ) : (
           <CTA>Join the event.</CTA>
         )}
         {!ended && (
           <RemainingSpots>
-            {`${participants.length} going. ${pluralize('spot', participantLimit - participants.length)} left.`}
+            {`${participants.length} going. ${pluralize(
+              'spot',
+              participantLimit - participants.length
+            )} left.`}
           </RemainingSpots>
         )}
         {isAdmin && <AdminCTA>I'm admin!</AdminCTA>}

@@ -15,7 +15,11 @@ const NoParticipants = styled('div')``
 
 class EventParticipants extends Component {
   render() {
-    const { search, party, party: { participants } } = this.props
+    const {
+      search,
+      party,
+      party: { participants }
+    } = this.props
 
     const searchTerm = search.toLowerCase()
 
@@ -28,11 +32,12 @@ class EventParticipants extends Component {
         {markAttendedSingle => (
           <Fragment>
             <H3>Participants</H3>
+            {console.log('event participants')}
             <EventParticipantsContainer>
               {participants.length > 0 ? (
                 participants
-                  .filter(
-                    participant => participant.user.address.toLowerCase().includes(searchTerm)
+                  .filter(participant =>
+                    participant.user.address.toLowerCase().includes(searchTerm)
                   )
                   .map((participant, i) => (
                     <Participant
