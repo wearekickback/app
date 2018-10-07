@@ -198,8 +198,7 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        console.log(maps.map(m => toBN(m).toString(2)))
-        const tx = await contract.finalize(maps.map(m => `0x${toBN(m).toString(16)}`)).send({
+        const tx = await contract.finalize(maps.map(m => toBN(m).toString(10))).send({
           from: account,
           gas: 2000000
         })

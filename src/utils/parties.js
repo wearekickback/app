@@ -20,17 +20,18 @@ export const calculateFinalizeMaps = participants => {
   participants.sort((a, b) => (a.index < b.index ? -1 : 1))
 
   const maps = []
-  let currentMap
+  let currentMap = toBN(0)
   for (let i = 0; participants.length > i; i += 1) {
-    if (0 === i % 256) {
-      currentMap = toBN(0)
+    if (i && 0 === i % 256) {
       maps.push(currentMap)
+      currentMap = toBN(0)
     }
 
     if (participants[i].status === PARTICIPANT_STATUS.SHOWED_UP) {
       currentMap = currentMap.bincn(i)
     }
   }
+  maps.push(currentMap)
 
-  return maps.map(m => m.toString(16))
+  return maps.map(m => m.toString(10))
 }
