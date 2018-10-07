@@ -1,6 +1,8 @@
+import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
+import { amInAddressList } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
@@ -37,25 +39,37 @@ class SingleEventWrapper extends Component {
 
   render() {
     const { address, handleSearch, search } = this.props
+
     return (
       <SingleEventContainer>
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery query={PartyQuery} variables={{ address }}>
               {({ party }) => {
+                // pre-calculate some stuff up here
+                const preCalculatedProps = {
+                  amOwner: userAddress && party && party.owner && party.owner.address === userAddress,
+                  myParticipantEntry: userAddress && party && party.participants && party.participants.find(a => _.get(a, 'user.address', '') === userAddress),
+                }
+
+                preCalculatedProps.amAdmin = preCalculatedProps.amOwner || (
+                  userAddress && party && amInAddressList(party.admins.map(a => a.address), userAddress)
+                )
+
                 return (
                   <Fragment>
                     <EventInfoContainer>
-                      <EventInfo party={party} address={address} />
+                      <EventInfo party={party} address={address} {...preCalculatedProps} />
                     </EventInfoContainer>
                     <RightContainer>
                       <EventCTA
                         party={party}
                         address={address}
                         userAddress={userAddress}
+                        {...preCalculatedProps}
                       />
-                      <EventFilters handleSearch={handleSearch} />
-                      <EventParticipants search={search} party={party} />
+                      <EventFilters handleSearch={handleSearch} {...preCalculatedProps} />
+                      <EventParticipants search={search} party={party} {...preCalculatedProps} />
                     </RightContainer>
                   </Fragment>
                 )

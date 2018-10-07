@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
-import { amParticipant, amInAddressList } from '../../utils/parties'
+import ChainMutation, { ChainMutationResult } from '../ChainMutation'
+import Button from '../Forms/Button'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
+import { calculateFinalizeMaps } from '../../utils/parties'
 import { parseEthValue } from '../../utils/calculations'
+import { PartyQuery } from '../../graphql/queries'
+import { Finalize } from '../../graphql/mutations'
+
 
 const CTA = styled('div')`
   font-family: Overpass;
@@ -56,17 +61,14 @@ const AdminCTA = styled('div')``
 class EventCTA extends Component {
   _renderEndedRsvp() {
     const {
-      userAddress,
-      party: { participants }
+      myParticipantEntry
     } = this.props
 
-    const went = amParticipant(participants, userAddress)
-
-    if (!went) {
+    if (!myParticipantEntry) {
       return ''
     }
 
-    switch (went.status) {
+    switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You didn't show up :/</Going>
       case PARTICIPANT_STATUS.SHOWED_UP:
@@ -78,13 +80,11 @@ class EventCTA extends Component {
 
   _renderActiveRsvp() {
     const {
-      userAddress,
+      myParticipantEntry,
       party: { address, participants, participantLimit }
     } = this.props
 
-    const going = amParticipant(participants, userAddress)
-
-    if (!going) {
+    if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
         return <RSVP address={address} />
       }
@@ -92,7 +92,7 @@ class EventCTA extends Component {
       return ''
     }
 
-    switch (going.status) {
+    switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You are going to this event.</Going>
       case PARTICIPANT_STATUS.SHOWED_UP:
@@ -152,11 +152,9 @@ class EventCTA extends Component {
 
   render() {
     const {
-      party: { admins, participants, participantLimit, deposit, ended, cancelled },
-      userAddress
+      party: { address, participants, participantLimit, deposit, ended, cancelled },
+      amAdmin
     } = this.props
-
-    let isAdmin = userAddress && admins && amInAddressList(admins, userAddress)
 
     const totalReg = participants.length
 
@@ -176,7 +174,25 @@ class EventCTA extends Component {
         ) : (
           totalReg < participantLimit ? this._renderJoin() : this._renderEventFull()
         )}
-        {isAdmin && <AdminCTA>I'm admin!</AdminCTA>}
+        {amAdmin && (
+          <div>
+            <AdminCTA>I'm admin!</AdminCTA>
+            {!ended ? (
+              <ChainMutation
+                mutation={Finalize}
+                resultKey='finalize'
+                variables={{ address, maps: calculateFinalizeMaps(participants) }}
+                refetchQueries={[{ query: PartyQuery, variables: { address }}]}
+              >
+                {(finalize, result) => (
+                  <ChainMutationResult result={result}>
+                    <Button onClick={finalize}>Finalize and enable payouts</Button>
+                  </ChainMutationResult>
+                )}
+              </ChainMutation>
+            ) : null}
+          </div>
+        )}
       </EventCTAContainer>
     )
   }

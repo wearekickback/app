@@ -2,10 +2,8 @@ import React from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
-import ToggleModal from '../components/Modal/ToggleModal'
 import { GlobalConsumer } from '../GlobalState'
 import LogoIconDefault from '../components/Icons/Logo'
-import { SIGN_IN } from '../modals'
 import Button from '../components/Forms/Button'
 import ReverseResolution from '../components/ReverseResolution'
 import Avatar from '../components/User/Avatar'
@@ -78,7 +76,7 @@ const Header = () => (
       </Logo>
       <RightBar>
         <GlobalConsumer>
-          {({ userAddress, userProfile, loggedIn }) => {
+          {({ userAddress, userProfile, loggedIn, signIn }) => {
             const twitterProfile =
               userProfile && userProfile.social.find(s => s.type === 'twitter')
             return loggedIn ? (
@@ -98,9 +96,11 @@ const Header = () => (
                 </Account>
               </>
             ) : (
-              <ToggleModal modalName={SIGN_IN}>
-                <Button type="light">Sign in</Button>
-              </ToggleModal>
+              <GlobalConsumer>
+                {({ toggleModal }) => (
+                  <Button type="light" onClick={signIn}>Sign in</Button>
+                )}
+              </GlobalConsumer>
             )
           }}
         </GlobalConsumer>

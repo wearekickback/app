@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { createContext, Component } from 'react'
 import { withApollo } from 'react-apollo'
 import jwt from 'jsonwebtoken'
@@ -5,6 +6,8 @@ import jwt from 'jsonwebtoken'
 import * as LocalStorage from './api/localStorage'
 import { getAccount } from './api/web3'
 import { SIGN_IN } from './modals'
+import { LoginUserNoAuth } from './graphql/mutations'
+import { buildAuthHeaders } from './utils/requests'
 
 const GlobalContext = createContext({})
 
@@ -19,6 +22,9 @@ const signInPromise = new Promise(resolve => { setSignedIn = resolve })
 export const getProvider = () => providerPromise
 
 const AUTH = 'auth'
+const TOKEN_SECRET = 'kickback'
+const TOKEN_ALGORITHM = 'HS256'
+
 
 class Provider extends Component {
   state = {
@@ -39,19 +45,52 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  async signIn () {
-    this.setState(state => ({
-      auth: {
-        ...state.auth,
-        token: undefined,
-        profile: null,
-        loggedIn: false,
+  signIn = async () => {
+    if (this.state.loggedIn) {
+      return
+    }
+
+    // let's request user's account address
+    const address = await getAccount()
+    if (!address) {
+      return
+    }
+
+    console.debug(`Checking if user ${address} is logged in ...`)
+
+    try {
+      const token = this.authToken()
+      const payload = jwt.verify(token, TOKEN_SECRET, { algorithm: TOKEN_ALGORITHM })
+      if (_.get(payload, 'address', '') !== address) {
+        throw new Error('Token not valid for current user address')
       }
-    }))
 
-    this.showModal(SIGN_IN)
+      const { data: { profile } } = await this.apolloClient().mutate({
+        mutation: LoginUserNoAuth,
+        context: {
+          headers: buildAuthHeaders(token)
+        }
+      })
 
-    return signInPromise
+      console.debug(`User ${address} is logged in and has a profile`)
+
+      this.setUserProfile(profile)
+    } catch (err) {
+      console.debug(`User ${address} is not logged and/or does not have a profile`)
+
+      this.setState(state => ({
+        auth: {
+          ...state.auth,
+          token: undefined,
+          profile: null,
+          loggedIn: false,
+        }
+      }))
+
+      this.showModal(SIGN_IN)
+
+      return signInPromise
+    }
   }
 
   setUserProfile = profile => {
@@ -68,7 +107,7 @@ class Provider extends Component {
   }
 
   setAuthTokenFromSignature = (address, sig) => {
-    const token = jwt.sign({ address, sig }, 'kickback', { algorithm: 'HS256' })
+    const token = jwt.sign({ address, sig }, TOKEN_SECRET, { algorithm: TOKEN_ALGORITHM })
 
     console.log(`New auth token: ${token}`)
 
@@ -110,6 +149,9 @@ class Provider extends Component {
         address,
       }
     }))
+
+    // try and sign in!
+    await this.signIn()
   }
 
   render() {
@@ -121,6 +163,7 @@ class Provider extends Component {
           userProfile: this.state.auth.profile,
           loggedIn: this.isLoggedIn(),
           toggleModal: this.toggleModal,
+          signIn: this.signIn,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
           setUserProfile: this.setUserProfile,

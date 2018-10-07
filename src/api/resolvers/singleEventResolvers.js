@@ -1,3 +1,4 @@
+import { toBN } from 'web3-utils'
 import getWeb3, { getAccount } from '../web3'
 import { Conference } from '@noblocknoparty/contracts'
 import events from '../../fixtures/events.json'
@@ -190,6 +191,23 @@ const resolvers = {
         console.error(err)
 
         throw new Error(`Failed to RSVP`)
+      }
+    },
+    async finalize(_, { address, maps }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      try {
+        const tx = await contract.finalize(maps.map(hexStr => toBN(hexStr))).send({
+          from: account,
+          gas: 2000000
+        })
+
+        return tx
+      } catch (err) {
+        console.error(err)
+
+        throw new Error(`Failed to finalize`)
       }
     },
     async setLimitOfParticipants(_, { address, limit }) {

@@ -38,6 +38,18 @@ export const LoginUser = gql`
   }
 `
 
+// we use this one for checking if user is signed in
+export const LoginUserNoAuth = gql`
+  ${ProfileFields}
+
+  mutation loginUser {
+    profile: loginUser {
+      ...ProfileFields
+    }
+  }
+`
+
+
 export const UpdateUserProfile = gql`
   ${ProfileFields}
 
@@ -69,9 +81,14 @@ export const UnmarkUserAttended = gql`
   }
 `
 
-
 export const RsvpToEvent = gql`
   mutation rsvp($twitter: String, $address: String) {
     rsvp(twitter: $twitter, address: $address) @client @auth
+  }
+`
+
+export const Finalize = gql`
+  mutation finalize($address: String, $maps: [String!]!) {
+    finalize(address: $address, maps: $maps) @client @auth
   }
 `

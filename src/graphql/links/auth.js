@@ -1,18 +1,11 @@
-import gql from 'graphql-tag'
 import { Observable, ApolloLink } from 'apollo-link'
 import { hasDirectives, checkDocument, removeDirectivesFromDocument } from 'apollo-utilities'
 
-import { ProfileFields } from '../fragments'
 import { getProvider as getGlobalProvider } from '../../GlobalState'
-import { getAccount } from '../../api/web3'
+import { buildAuthHeaders } from '../../utils/requests'
 
 const sanitizedQueryCache = new Map()
 
-const getAuthHeaders = token => {
-  return token ? {
-    Authorization: `Bearer ${token}`
-  } : {}
-}
 
 const makeError = (observer, err) => {
   // observer.next([{
@@ -24,16 +17,6 @@ const makeError = (observer, err) => {
   // ])
   observer.complete([])
 }
-
-const LoginUserNoAuth = gql`
-  ${ProfileFields}
-
-  mutation loginUser {
-    profile: loginUser {
-      ...ProfileFields
-    }
-  }
-`
 
 export default () => (
   new ApolloLink((operation, forward) => {
@@ -64,32 +47,7 @@ export default () => (
       // if user is not logged in
       if (!globalProvider.isLoggedIn()) {
         try {
-          // let's request user's profile
-          const address = await getAccount()
-
-          // cannot proceed if we do not have account address
-          if (!address) {
-            return makeError(observer, 'Web3 not yet connected!')
-          }
-
-          console.debug(`Checking if user is logged in ...`)
-
-          try {
-            const { data: { profile } } = await globalProvider.apolloClient().mutate({
-              mutation: LoginUserNoAuth,
-              context: {
-                headers: getAuthHeaders(globalProvider.authToken())
-              }
-            })
-
-            console.debug('User is logged in and has a profile')
-
-            globalProvider.setUserProfile(profile)
-          } catch (err) {
-            console.debug('User is not logged and/or does not have a profile')
-
-            await globalProvider.signIn()
-          }
+          await globalProvider.signIn()
         } catch (err) {
           return makeError(observer, err.message)
         }
@@ -97,7 +55,7 @@ export default () => (
 
       // add auth headers (by this point we should have them!)
       operation.setContext({
-        headers: getAuthHeaders(globalProvider.authToken())
+        headers: buildAuthHeaders(globalProvider.authToken())
       })
 
       // pass request down the chain
