@@ -40,15 +40,6 @@ export const AllPartiesQuery = gql`
   }
 `
 
-export const AllEventsQuery = gql`
-  query getEvents {
-    events @client {
-      name
-      address
-    }
-  }
-`
-
 export const ReverseRecordQuery = gql`
   query getReverseRecord($address: String) {
     getReverseRecord(address: $address) @client {

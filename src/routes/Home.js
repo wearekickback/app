@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AllPartiesQuery, AllEventsQuery } from '../graphql/queries'
+import { AllPartiesQuery } from '../graphql/queries'
 import { Link } from 'react-router-dom'
 
 import SafeQuery from '../components/SafeQuery'
@@ -21,22 +21,6 @@ class Home extends Component {
               </div>
             ) : (
               <div>No parties to show!</div>
-            )
-          }}
-        </SafeQuery>
-        <h2>All events</h2>
-        <SafeQuery query={AllEventsQuery}>
-          {({ events }) => {
-            return events ? (
-              <div>
-                {events.map((party, index) => (
-                  <li key={index}>
-                    <Link to={`/party/${party.address}`}>{party.name}</Link>
-                  </li>
-                ))}
-              </div>
-            ) : (
-              <div>No events to show!</div>
             )
           }}
         </SafeQuery>
