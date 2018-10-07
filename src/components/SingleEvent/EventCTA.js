@@ -15,7 +15,7 @@ const CTA = styled('div')`
   letter-spacing: 0;
   margin-bottom: 35px;
 `
-const RemainingSpots = styled('div')``
+const RemainingSpots = styled('span')``
 const RSVPContainer = styled('div')`
   display: flex;
   justify-content: space-between;
@@ -134,15 +134,16 @@ class EventCTA extends Component {
             event.
           </CTA>
         ) : (
-          <CTA>Join the event.</CTA>
-        )}
-        {!ended && (
-          <RemainingSpots>
-            {`${participants.length} going. ${pluralize(
-              'spot',
-              participantLimit - participants.length
-            )} left.`}
-          </RemainingSpots>
+          <CTA>
+            Join the event!{' '}
+            <RemainingSpots>
+              {`${participants.length} going. ${participantLimit -
+                participants.length} ${pluralize(
+                'spot',
+                participantLimit - participants.length
+              )} left.`}
+            </RemainingSpots>
+          </CTA>
         )}
         {isAdmin && <AdminCTA>I'm admin!</AdminCTA>}
       </EventCTAContainer>
