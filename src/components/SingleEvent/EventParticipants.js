@@ -17,7 +17,8 @@ class EventParticipants extends Component {
     const {
       search,
       party,
-      party: { participants }
+      party: { participants },
+      amAdmin
     } = this.props
 
     const searchTerm = search.toLowerCase()
@@ -32,12 +33,13 @@ class EventParticipants extends Component {
         <EventParticipantsContainer>
           {participants.length > 0 ? (
             participants
-              .sort((a, b) => a.index < b.index ? -1 : 1)
+              .sort((a, b) => (a.index < b.index ? -1 : 1))
               .filter(participant =>
                 participant.user.address.toLowerCase().includes(searchTerm)
               )
               .map(participant => (
                 <Participant
+                  amAdmin={amAdmin}
                   participant={participant}
                   party={party}
                   key={`${participant.address}${participant.index}`}
