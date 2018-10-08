@@ -5,10 +5,11 @@ import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import DefaultAvatar from '../User/Avatar'
-import { parseEthValue } from '../../utils/units'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
+// import Tooltip from '../Tooltip/Tooltip'
 
+import { parseEthValue } from '../../utils/units'
 import { getSocial } from '../../utils/parties'
 
 const Date = styled('div')``
@@ -133,6 +134,7 @@ class EventInfo extends Component {
               .toFixed(2)}{' '}
             ETH
           </span>
+          {/* <Tooltip text="participants * deposit" /> */}
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>
         <EventWarning>
