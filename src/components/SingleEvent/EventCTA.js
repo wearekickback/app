@@ -7,7 +7,11 @@ import Button from '../Forms/Button'
 import WithdrawPayout from './WithdrawPayout'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
-import { calculateFinalizeMaps, calculateNumAttended, calculateWinningShare } from '../../utils/parties'
+import {
+  calculateFinalizeMaps,
+  calculateNumAttended,
+  calculateWinningShare
+} from '../../utils/parties'
 import { parseEthValue } from '../../utils/units'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
@@ -56,11 +60,16 @@ const RSVP = styled(DefaultRSVP)`
   width: calc(100% - 120px);
 `
 
-const AdminCTA = styled('div')``
+const AdminCTA = styled('div')`
+  margin-bottom: 20px;
+`
 
 class EventCTA extends Component {
   _renderEndedRsvp() {
-    const { myParticipantEntry, party: { address, deposit, participants } } = this.props
+    const {
+      myParticipantEntry,
+      party: { address, deposit, participants }
+    } = this.props
 
     if (!myParticipantEntry) {
       return ''
@@ -184,8 +193,7 @@ class EventCTA extends Component {
             ? this._renderJoin()
             : this._renderEventFull()}
         {amAdmin && (
-          <div>
-            <AdminCTA>I'm admin!</AdminCTA>
+          <AdminCTA>
             {!ended ? (
               <ChainMutation
                 mutation={Finalize}
@@ -198,14 +206,14 @@ class EventCTA extends Component {
               >
                 {(finalize, result) => (
                   <ChainMutationResult result={result}>
-                    <Button onClick={finalize}>
+                    <Button onClick={finalize} twoThirds>
                       Finalize and enable payouts
                     </Button>
                   </ChainMutationResult>
                 )}
               </ChainMutation>
             ) : null}
-          </div>
+          </AdminCTA>
         )}
       </EventCTAContainer>
     )

@@ -44,7 +44,8 @@ const ButtonContainer = styled('button')`
   font-family: Muli;
   padding: 10px 20px;
   color: white;
-  ${({ wide }) => (wide ? 'width: 100%' : '')};
+  ${({ wide }) => (wide ? 'width: 100%;' : '')};
+  ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
   transition: 0.2s ease-out;
 
   &:hover {

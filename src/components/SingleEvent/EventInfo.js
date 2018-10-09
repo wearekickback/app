@@ -5,10 +5,11 @@ import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import DefaultAvatar from '../User/Avatar'
-import { parseEthValue } from '../../utils/units'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
+// import Tooltip from '../Tooltip/Tooltip'
 
+import { parseEthValue } from '../../utils/units'
 import { getSocial } from '../../utils/parties'
 
 const Date = styled('div')``
@@ -17,6 +18,10 @@ const ContractAddress = styled('h3')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-family: Muli-SemiBold;
+  font-size: 13px;
+  color: #6e76ff;
+  letter-spacing: 0;
 `
 const EventImage = styled('img')`
   border-radius: 4px;
@@ -126,8 +131,10 @@ class EventInfo extends Component {
             {parseEthValue(party.deposit)
               .mul(party.participants.length)
               .toEth()
-              .toFixed(2)}
+              .toFixed(2)}{' '}
+            ETH
           </span>
+          {/* <Tooltip text="participants * deposit" /> */}
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>
         <EventWarning>

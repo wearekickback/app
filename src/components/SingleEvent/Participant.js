@@ -7,7 +7,10 @@ import { PARTICIPANT_STATUS } from '../../utils/status'
 import { getSocial } from '../../utils/parties'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { parseEthValue } from '../../utils/units'
-import { calculateWinningShare, calculateNumAttended } from '../../utils/parties'
+import {
+  calculateWinningShare,
+  calculateNumAttended
+} from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -67,23 +70,25 @@ const Status = styled('div')`
 
 export class Participant extends Component {
   render() {
-    const { participant, party, markAttended, unmarkAttended } = this.props
+    const {
+      participant,
+      party,
+      markAttended,
+      unmarkAttended,
+      amAdmin
+    } = this.props
     const { user, status } = participant
     const { deposit, ended } = party
 
     const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
-    const attended = (status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn)
+    const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
     const twitter = getSocial(user.social, 'twitter')
 
     const numRegistered = party.participants.length
     const numShowedUp = calculateNumAttended(party.participants)
 
-    const payout = calculateWinningShare(
-      deposit,
-      numRegistered,
-      numShowedUp
-    )
+    const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
 
     return (
       <GlobalConsumer>
@@ -110,17 +115,19 @@ export class Participant extends Component {
                 </Status>
               )
             ) : (
-              <Fragment>
-                {attended ? (
-                  <Button wide onClick={unmarkAttended}>
-                    Unmark attended
-                  </Button>
-                ) : (
-                  <Button wide onClick={markAttended}>
-                    Mark attended
-                  </Button>
-                )}
-              </Fragment>
+              amAdmin && (
+                <Fragment>
+                  {attended ? (
+                    <Button wide onClick={unmarkAttended}>
+                      Unmark attended
+                    </Button>
+                  ) : (
+                    <Button wide onClick={markAttended}>
+                      Mark attended
+                    </Button>
+                  )}
+                </Fragment>
+              )
             )}
           </ParticipantWrapper>
         )}
