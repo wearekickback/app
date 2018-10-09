@@ -14,7 +14,7 @@
     "emotion": "^9.2.6",
     "es6-promisify": "^6.0.0",
     "ethereum-event-logs": "^1.0.2",
-    "ethval": "^1.0.5",
+    "ethval": "^1.0.7",
     "eventemitter3": "^3.1.0",
     "graphql": "^0.13.2",
     "graphql-subscriptions": "^1.0.0",

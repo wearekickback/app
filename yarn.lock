@@ -5224,9 +5224,9 @@ ethjs-unit@0.1.6:
     bn.js "4.11.6"
     number-to-bn "1.7.0"
 
-ethval@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/ethval/-/ethval-1.0.5.tgz#13de8625c2d8b06646eb3169f7431a8e251fbb46"
+ethval@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/ethval/-/ethval-1.0.7.tgz#597cac2bd10659b72239f049402d20ab644a9aa0"
   dependencies:
     decimal.js "^10.0.1"
     web3-utils "^1.0.0-beta.36"
