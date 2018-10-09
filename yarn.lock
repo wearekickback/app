@@ -5224,6 +5224,13 @@ ethjs-unit@0.1.6:
     bn.js "4.11.6"
     number-to-bn "1.7.0"
 
+ethval@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/ethval/-/ethval-1.0.5.tgz#13de8625c2d8b06646eb3169f7431a8e251fbb46"
+  dependencies:
+    decimal.js "^10.0.1"
+    web3-utils "^1.0.0-beta.36"
+
 event-emitter@~0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/event-emitter/-/event-emitter-0.3.5.tgz#df8c69eef1647923c7157b9ce83840610b02cc39"
