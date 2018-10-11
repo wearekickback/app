@@ -107,7 +107,7 @@ class EventInfo extends Component {
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
         </ContractAddress>
-        <EventImage src="https://placeimg.com/640/480/tech" />
+        <EventImage src={party.image || "https://placeimg.com/640/480/tech"} />
         <Organiser>
           <Avatar
             src={`https://avatars.io/twitter/${getSocial(
