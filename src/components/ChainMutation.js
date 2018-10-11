@@ -27,9 +27,9 @@ export default class ChainMutation extends Component {
 
   async _updateState (tx, blockNumber) {
     // confirmations
-    const numConfirmations = blockNumber - tx.blockNumber
-    const percentComplete = NUM_CONFIRMATIONS ? parseInt((numConfirmations / NUM_CONFIRMATIONS) * 100.0) : 100
-    const stillLoading = numConfirmations < NUM_CONFIRMATIONS
+    const confirmationsSoFar = blockNumber >= tx.blockNumber ? blockNumber - tx.blockNumber : 0
+    const percentComplete = NUM_CONFIRMATIONS ? parseInt((confirmationsSoFar / NUM_CONFIRMATIONS) * 100.0) : 100
+    const stillLoading = confirmationsSoFar < NUM_CONFIRMATIONS
 
     // check result
     let error
@@ -41,7 +41,7 @@ export default class ChainMutation extends Component {
     this.setState({
       tx,
       progress: stillLoading ? {
-        numConfirmations,
+        numConfirmations: confirmationsSoFar,
         percentComplete,
       } : null,
       error
