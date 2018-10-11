@@ -29,30 +29,29 @@ export default class ChainMutation extends Component {
     // confirmations
     const numConfirmations = blockNumber - tx.blockNumber
     const percentComplete = NUM_CONFIRMATIONS ? parseInt((numConfirmations / NUM_CONFIRMATIONS) * 100.0) : 100
-    const loading = numConfirmations < NUM_CONFIRMATIONS
+    const stillLoading = numConfirmations < NUM_CONFIRMATIONS
 
     // check result
     let error
-    if (!loading) {
+    if (!stillLoading) {
       const real = await getTransactionReceipt(tx.transactionHash)
       error = _.get(real, 'status') ? undefined : new Error('Transaction error')
     }
 
     this.setState({
       tx,
-      progress: {
+      progress: stillLoading ? {
         numConfirmations,
         percentComplete,
-      },
-      loading,
+      } : null,
       error
     })
   }
 
   _onNewBlock = async block => {
-    const { tx, loading } = this.state
+    const { tx, progress } = this.state
 
-    if (tx && loading) {
+    if (tx && progress) {
       await this._updateState(tx, block.number)
     }
   }
@@ -62,7 +61,6 @@ export default class ChainMutation extends Component {
 
     if (result.error) {
       this.setState({
-        loading: false,
         error: result.error
       })
 
@@ -98,8 +96,8 @@ export default class ChainMutation extends Component {
       ...otherProps
     } = this.props
 
-    const { tx, progress, loading, error } = this.state
-    const succeeded = tx && !error && !loading
+    const { tx, progress, error } = this.state
+    const succeeded = tx && !error && !progress
     const successProps = succeeded ? {
       [resultKey]: tx,
       data: tx,
@@ -113,8 +111,13 @@ export default class ChainMutation extends Component {
         onCompleted={this._onCompleted}
         refetchQueries={[]}
       >
-        {mutator => {
-          const content = children(mutator, { progress, loading, error, ...successProps })
+        {(mutator, { loading }) => {
+          const content = children(mutator, {
+            progress,
+            loading,
+            error,
+            ...successProps
+          })
 
           return succeeded ? this._renderWithSuccessQuery(content) : content
         }}
@@ -131,6 +134,8 @@ export const ChainMutationResult = ({ children, result }) => {
   if (error) {
     extraContent = <ErrorBox>{`${error}`}</ErrorBox>
   } else if (loading) {
+    extraContent = <div>Sending transaction</div>
+  } else if (progress) {
     extraContent = (
       <div>
         Awaiting confirmation ({progress.percentComplete}

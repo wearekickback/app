@@ -39,12 +39,12 @@ class Create extends Component {
             placeholder="Name of the event"
           /><br/>
           <label>Description</label>
-          <input
+          <textarea
             value={description}
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
             placeholder="Description of the event"
-          /><br/>
+          >{description}</textarea><br/>
           <label>Location</label>
           <input
             value={location}

@@ -19,6 +19,8 @@ const RSVP = ({ address, className }) => (
       if (error) {
         content = <div>{`${error}`}</div>
       } else if (loading) {
+        content = <div>Sending transaction...</div>
+      } else if (progress) {
         content = (
           <div>
             Awaiting confirmation ({progress.percentComplete}
