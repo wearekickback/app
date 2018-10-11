@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import ChainMutation, { ChainMutationResult } from '../components/ChainMutation'
+import SafeMutation from '../components/SafeMutation'
 import Button from '../components/Forms/Button'
-import { CreateParty } from '../graphql/mutations'
-import { extractNewPartyAddressFromTx } from '../api/utils'
+import { CreatePendingParty } from '../graphql/mutations'
 
 class Create extends Component {
   state = {
@@ -83,26 +82,36 @@ class Create extends Component {
           /><br/>
         </div>
 
-        <ChainMutation
-          mutation={CreateParty}
-          resultKey='create'
-          variables={{ name, deposit, limitOfParticipants }}
+        <SafeMutation
+          mutation={CreatePendingParty}
+          resultKey='id'
+          variables={{ meta: { name, description, location, date, image } }}
         >
-          {(postMutation, result) => {
-            const address = result.succeeded ? extractNewPartyAddressFromTx(result.tx) : null
-
-            return (
-              <ChainMutationResult result={result}>
-                <Button onClick={postMutation}>Create</Button>
-                {address ? (
-                  <Link to={`/party/${address}`}>View party {address}</Link>
-                ) : null}
-              </ChainMutationResult>
-            )
-          }}
-        </ChainMutation>
+          {(createPendingParty, result) => (
+            <div>
+              <Button onClick={createPendingParty}>
+                Create pending party
+              </Button>
+              {result ? (
+                <>
+                  <p>Pending party created, id: {result.id}</p>
+                  <Link to={`/deploy?id=${result.id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`}>Goto deployment page</Link>
+                </>
+              ) : null}
+            </div>
+          )}
+        </SafeMutation>
       </div>
     )
+  }
+
+  _buildHandler = ({ createParty, createPendingParty }) => {
+    return async () => {
+      const result = await createPendingParty()
+      console.log(result)
+      const { id } = result
+      await createParty({ id })
+    }
   }
 }
 

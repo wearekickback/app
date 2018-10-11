@@ -3,14 +3,20 @@ import gql from 'graphql-tag'
 import { ProfileFields, ParticipantFields } from './fragments'
 
 export const CreateParty = gql`
-  mutation create($name: String, $deposit: String, $limitOfParticipants: String) {
-    create(name: $name, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client @auth
+  mutation createParty($id: String, $deposit: String, $limitOfParticipants: String) {
+    create: createParty(id: $id, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client @auth
+  }
+`
+
+export const CreatePendingParty = gql`
+  mutation createPendingParty($meta: PartyMetaInput!) {
+    id: createPendingParty(meta: $meta) @auth
   }
 `
 
 export const UpdatePartyMeta = gql`
   mutation updatePartyMeta($address: String!, $meta: PartyMetaInput!) {
-    updatePartyMeta(address: $address, meta: $meta) @auth
+    update: updatePartyMeta(address: $address, meta: $meta) @auth
   }
 `
 
