@@ -18,7 +18,8 @@ const ContractAddress = styled('h3')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-family: Muli-SemiBold;
+  font-family: Muli;
+  font-weight: 500;
   font-size: 13px;
   color: #6e76ff;
   letter-spacing: 0;
@@ -107,7 +108,7 @@ class EventInfo extends Component {
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
         </ContractAddress>
-        <EventImage src={party.image || "https://placeimg.com/640/480/tech"} />
+        <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
         <Organiser>
           <Avatar
             src={`https://avatars.io/twitter/${getSocial(
