@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { AllPartiesQuery } from '../graphql/queries'
 import { Link } from 'react-router-dom'
+import EventCard from '../components/EventList/EventCard'
 
 import SafeQuery from '../components/SafeQuery'
 
@@ -15,7 +16,9 @@ class Home extends Component {
               <div>
                 {parties.map((party, index) => (
                   <li key={index}>
-                    <Link to={`/party/${party.address}`}>{party.name}</Link>
+                    <Link to={`/party/${party.address}`}>
+                      <EventCard party={party} />
+                    </Link>
                   </li>
                 ))}
               </div>
