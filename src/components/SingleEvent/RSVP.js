@@ -13,8 +13,7 @@ const RSVP = ({ address, className }) => (
     refetchQueries={[{ query: PartyQuery, variables: { address } }]}
   >
     {(rsvp, result) => {
-      const { data, loading, error } = result
-      const { tx, percentComplete } = data
+      const { rsvp: tx, progress, loading, error } = result
       let content
 
       if (error) {
@@ -22,7 +21,7 @@ const RSVP = ({ address, className }) => (
       } else if (loading) {
         content = (
           <div>
-            Awaiting confirmation ({percentComplete}
+            Awaiting confirmation ({progress.percentComplete}
             %)
           </div>
         )
