@@ -76,9 +76,9 @@ class Footer extends Component {
               the events they sign up for more seriously.
             </ElevatorPitch>
             <Links>
-              <Link to="/">About</Link>
-              <Link to="/">Team</Link>
-              <Link to="/">FAQ</Link>
+              <Link to="/about">About</Link>
+              <Link to="/team">Team</Link>
+              <Link to="/faq">FAQ</Link>
             </Links>
           </Row>
           <Row>
