@@ -19,7 +19,7 @@ appConfig.NETWORK = 'local'
 appConfig.API_URL = 'http://localhost:3001'
 
 if (undefined === appConfig.NUM_CONFIRMATIONS) {
-  appConfig.NUM_CONFIRMATIONS = 7 // should be greater than server's level of confirmations
+  appConfig.NUM_CONFIRMATIONS = 1
 }
 
 if (argv.dev) {

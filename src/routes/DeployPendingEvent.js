@@ -38,7 +38,7 @@ class DeployPendingEvent extends Component {
             variables={{ id, deposit, limitOfParticipants }}
           >
             {(createParty, result) => {
-              const address = result.succeeded ? extractNewPartyAddressFromTx(result.tx) : null
+              const address = result.create ? extractNewPartyAddressFromTx(result.create) : null
 
               return (
                 <ChainMutationResult result={result}>

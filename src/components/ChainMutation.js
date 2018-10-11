@@ -25,39 +25,44 @@ export default class ChainMutation extends Component {
     events.off(NEW_BLOCK, this._onNewBlock)
   }
 
+  async _updateState (tx, blockNumber) {
+    // confirmations
+    const numConfirmations = blockNumber - tx.blockNumber
+    const percentComplete = NUM_CONFIRMATIONS ? parseInt((numConfirmations / NUM_CONFIRMATIONS) * 100.0) : 100
+    const loading = numConfirmations < NUM_CONFIRMATIONS
+
+    // check result
+    let error
+    if (!loading) {
+      const real = await getTransactionReceipt(tx.transactionHash)
+      error = _.get(real, 'status') ? undefined : new Error('Transaction error')
+    }
+
+    this.setState({
+      tx,
+      progress: {
+        numConfirmations,
+        percentComplete,
+      },
+      loading,
+      error
+    })
+  }
+
   _onNewBlock = async block => {
     const { tx, loading } = this.state
 
     if (tx && loading) {
-      // confirmations
-      const numConfirmations = block.number - tx.blockNumber
-      const percentComplete = parseInt(
-        (numConfirmations / NUM_CONFIRMATIONS) * 100.0
-      )
-      const loading = numConfirmations < NUM_CONFIRMATIONS
-
-      // check result
-
-      let error
-      if (!loading) {
-        const real = await getTransactionReceipt(tx.transactionHash)
-        error = !_.get(real, 'status')
-      }
-
-      this.setState({
-        numConfirmations,
-        percentComplete,
-        loading,
-        error
-      })
+      await this._updateState(tx, block.number)
     }
   }
 
-  _onCompleted = result => {
+  _onCompleted = async result => {
     const { resultKey } = this.props
 
     if (result.error) {
       this.setState({
+        loading: false,
         error: result.error
       })
 
@@ -66,14 +71,7 @@ export default class ChainMutation extends Component {
 
     const tx = result[resultKey]
 
-    if (tx) {
-      this.setState({
-        tx,
-        percentComplete: NUM_CONFIRMATIONS > 0 ? 0 : 100,
-        loading: NUM_CONFIRMATIONS > 0 ? true : false,
-        error: undefined
-      })
-    }
+    await this._updateState(tx, tx.blockNumber)
   }
 
   _renderWithSuccessQuery = content => {
@@ -100,7 +98,12 @@ export default class ChainMutation extends Component {
       ...otherProps
     } = this.props
 
-    const { succeeded } = this.state
+    const { tx, progress, loading, error } = this.state
+    const succeeded = tx && !error && !loading
+    const successProps = succeeded ? {
+      [resultKey]: tx,
+      data: tx,
+    } : null
 
     return (
       <Mutation
@@ -110,13 +113,8 @@ export default class ChainMutation extends Component {
         onCompleted={this._onCompleted}
         refetchQueries={[]}
       >
-        {(mutator, result) => {
-          const { tx, percentComplete, loading, error } = this.state
-          const content = children(mutator, {
-            data: { tx, percentComplete },
-            loading,
-            error
-          })
+        {mutator => {
+          const content = children(mutator, { progress, loading, error, ...successProps })
 
           return succeeded ? this._renderWithSuccessQuery(content) : content
         }}
@@ -126,7 +124,7 @@ export default class ChainMutation extends Component {
 }
 
 export const ChainMutationResult = ({ children, result }) => {
-  const { loading, percentComplete, succeeded, error } = result
+  const { data, progress, loading, error } = result
 
   let extraContent = null
 
@@ -135,11 +133,11 @@ export const ChainMutationResult = ({ children, result }) => {
   } else if (loading) {
     extraContent = (
       <div>
-        Awaiting confirmation ({percentComplete}
+        Awaiting confirmation ({progress.percentComplete}
         %)
       </div>
     )
-  } else if (succeeded) {
+  } else if (data) {
     extraContent = <div>Success!</div>
   }
 
