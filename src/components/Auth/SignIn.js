@@ -30,6 +30,19 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
+const Row = styled('div')`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
+
+const Column = styled('div')`
+  flex: 0.5;
+`
+
+const Block = styled('div')``
+
+
 const TextInput = styled(DefaultTextInput)``
 
 export default class SignIn extends Component {
@@ -96,25 +109,40 @@ export default class SignIn extends Component {
         </H2>
         <Label secondaryText="(public)">Ethereum address</Label>
         <InputAddress address={userAddress} />
-        <Label>Email</Label>
-        <TextInput
-          placeholder="alice@gmail.com"
-          value={email}
-          onChange={this.handleEmailChange}
-        />
-        <Label secondaryText="(optional)">Twitter</Label>
-        <TextInput
-          placeholder="@jack"
-          value={twitter}
-          onChange={this.handleTwitterChange}
-        />
+        <Row>
+          <Column>
+            <Label>Email</Label>
+            <TextInput
+              placeholder="alice@gmail.com"
+              value={email}
+              onChange={this.handleEmailChange}
+            />
+          </Column>
+          <Column>
+            <Label secondaryText="(optional)">Twitter</Label>
+            <TextInput
+              placeholder="@jack"
+              value={twitter}
+              onChange={this.handleTwitterChange}
+            />
+          </Column>
+        </Row>
+        <Block>
+          <p>
+            <strong>Please note, your payment for an event is non-refundable if:</strong>
+          </p>
+          <ul>
+            <li>You <a href={`/faq`}>RSVP</a> to an event but then don't turn up.</li>
+            <li>You fail to withdraw your post-event payout within the <a href={`/faq`}>cooling period</a>.</li>
+          </ul>
+        </Block>
         <p>
           <input
             type="checkbox"
             value={TERMS_AND_CONDITIONS}
             checked={!!this.state[TERMS_AND_CONDITIONS]}
             onChange={this.handleTermsCheck}
-          /> I agree with the terms and conditions (required)
+          /> I agree with the <a href={`/terms`}>terms and conditions</a>
         </p>
         <p>
           <input
@@ -122,7 +150,7 @@ export default class SignIn extends Component {
             value={PRIVACY_POLICY}
             checked={!!this.state[PRIVACY_POLICY]}
             onChange={this.handlePrivacyCheck}
-          /> I agree with the privacy policy (required)
+          /> I agree with the <a href={`/privacy`}>privacy policy</a>
         </p>
         <p>
           <input
@@ -130,7 +158,7 @@ export default class SignIn extends Component {
             value={MARKETING_INFO}
             checked={!!this.state[MARKETING_INFO]}
             onChange={this.handleMarketingCheck}
-          /> I am happy to receive marketing info
+          /> I am happy to receive marketing info (optional)
         </p>
         <SafeMutation
           mutation={UpdateUserProfile}

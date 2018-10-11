@@ -11,6 +11,7 @@ import Home from './routes/Home'
 import CreatePendingEvent from './routes/CreatePendingEvent'
 import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
+import Faq from './routes/Faq'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
@@ -46,6 +47,7 @@ class App extends Component {
             <Route path="/party/:address/admin" component={SingleEventAdmin} />
             <Route path="/create" component={CreatePendingEvent} />
             <Route path="/deploy" component={DeployPendingEvent} />
+            <Route path="/faq" component={Faq} />
           </Switch>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
