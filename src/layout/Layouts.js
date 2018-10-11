@@ -9,14 +9,20 @@ import { getNetworkError } from '../api/web3'
 const Container = styled('main')`
   background: white;
   padding: 0 20px;
-  max-width: 100%;
+`
+
+const ContainerInner = styled('div')`
+  max-width: 1200px;
+  margin: 0 auto 0;
 `
 
 const DefaultLayout = ({ children }) => (
   <Fragment>
     <Header />
     {getNetworkError() ? <ErrorBox>{`${getNetworkError}`}</ErrorBox> : null}
-    <Container>{children}</Container>
+    <Container>
+      <ContainerInner>{children}</ContainerInner>
+    </Container>
     <Footer />
   </Fragment>
 )

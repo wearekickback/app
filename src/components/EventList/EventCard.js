@@ -17,7 +17,11 @@ const EventCardContainer = styled('li')`
 `
 const EventImage = styled('img')``
 
-const Organiser = styled('div')``
+const Organiser = styled('div')`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 
 const Date = styled('div')`
   font-family: Muli-Regular;

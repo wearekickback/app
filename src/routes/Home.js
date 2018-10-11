@@ -8,7 +8,7 @@ import SafeQuery from '../components/SafeQuery'
 class Home extends Component {
   render() {
     return (
-      <div className="App">
+      <>
         <h2>All parties</h2>
         <SafeQuery query={AllPartiesQuery}>
           {({ parties }) => {
@@ -23,7 +23,7 @@ class Home extends Component {
             )
           }}
         </SafeQuery>
-      </div>
+      </>
     )
   }
 }
