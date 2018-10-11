@@ -13,7 +13,6 @@ import {
   calculateNumAttended,
   calculateWinningShare
 } from '../../utils/parties'
-import { toEthVal } from '../../utils/units'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 
