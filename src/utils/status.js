@@ -1,8 +1,4 @@
 module.exports = {
-  PARTY_STATUS: {
-    PENDING: 'PENDING',
-    DEPLOYED: 'DEPLOYED',
-  },
   PARTICIPANT_STATUS: {
     UNKNOWN: 'UNKNOWN',
     REGISTERED: 'REGISTERED',
