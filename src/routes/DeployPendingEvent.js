@@ -48,7 +48,7 @@ class DeployPendingEvent extends Component {
                     Deploy
                   </Button>
                   {address ? (
-                    <p>Party at {address}! <Link to={`/party/${address}`}>View party page</Link></p>
+                    <p>Party at {address}! <Link to={`/event/${address}`}>View party page</Link></p>
                   ) : null}
                 </ChainMutationResult>
               )
