@@ -14,6 +14,7 @@ import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
 import RefreshAuthToken from './RefreshAuthToken'
 import { SIGN_IN } from '../../modals'
+import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } from '../../utils/legal'
 import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
 
 const SignInContainer = styled('div')``
@@ -72,16 +73,20 @@ export default class SignIn extends Component {
       }
     ]
 
+    const accepted = `${Date.now()}`
     const legal = [
-      {
-        type: 'TERMS_AND_CONDITIONS',
-        accepted: `${Date.now()}`
-      },
-      {
-        type: 'PRIVACY_POLICY',
-        accepted: `${Date.now()}`
+      TERMS_AND_CONDITIONS,
+      PRIVACY_POLICY,
+      MARKETING_INFO,
+    ].reduce((m, v) => {
+      if (this.state[v]) {
+        m.push({
+          type: v,
+          accepted
+        })
       }
-    ]
+      return m
+    }, [])
 
     return (
       <FormDiv>
@@ -103,6 +108,30 @@ export default class SignIn extends Component {
           value={twitter}
           onChange={this.handleTwitterChange}
         />
+        <p>
+          <input
+            type="checkbox"
+            value={TERMS_AND_CONDITIONS}
+            checked={!!this.state[TERMS_AND_CONDITIONS]}
+            onChange={this.handleTermsCheck}
+          /> I agree with the terms and conditions (required)
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            value={PRIVACY_POLICY}
+            checked={!!this.state[PRIVACY_POLICY]}
+            onChange={this.handlePrivacyCheck}
+          /> I agree with the privacy policy (required)
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            value={MARKETING_INFO}
+            checked={!!this.state[MARKETING_INFO]}
+            onChange={this.handleMarketingCheck}
+          /> I am happy to receive marketing info
+        </p>
         <SafeMutation
           mutation={UpdateUserProfile}
           variables={{ profile: { email, social, legal } }}
@@ -175,6 +204,24 @@ export default class SignIn extends Component {
   handleTwitterChange = e => {
     this.setState({
       twitter: e.target.value
+    })
+  }
+
+  handleTermsCheck = e => {
+    this.setState({
+      [TERMS_AND_CONDITIONS]: e.target.checked
+    })
+  }
+
+  handlePrivacyCheck = e => {
+    this.setState({
+      [PRIVACY_POLICY]: e.target.checked
+    })
+  }
+
+  handleMarketingCheck = e => {
+    this.setState({
+      [MARKETING_INFO]: e.target.checked
     })
   }
 }
