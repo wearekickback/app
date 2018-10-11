@@ -1,9 +1,5 @@
-import ethVal from 'ethval'
-import React from 'react'
+import { toEthVal } from '../../utils/units'
 
-const DepositValue = ({ value }) => {
-  const depositValue = new ethVal(value).toEth().toFixed(2)
-  return <>{depositValue}</>
-}
+const DepositValue = ({ value }) => toEthVal(value).toEth().toFixed(2)
 
 export default DepositValue
