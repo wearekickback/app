@@ -87,15 +87,15 @@ class Create extends Component {
           resultKey='id'
           variables={{ meta: { name, description, location, date, image } }}
         >
-          {(createPendingParty, result) => (
+          {(createPendingParty, { id }) => (
             <div>
               <Button onClick={createPendingParty}>
                 Create pending party
               </Button>
-              {result ? (
+              {id ? (
                 <>
-                  <p>Pending party created, id: {result.id}</p>
-                  <Link to={`/deploy?id=${result.id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`}>Goto deployment page</Link>
+                  <p>Pending party created, id: {id}</p>
+                  <Link to={`/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`}>Goto deployment page</Link>
                 </>
               ) : null}
             </div>

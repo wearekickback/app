@@ -25,7 +25,9 @@ class DeployPendingEvent extends Component {
         <SeedDiv>
           <p>If you wish to deploy this party with our seeding script, use:</p>
           <pre>
-            yarn seed:party -n {id} --ropsten
+            For local network:     yarn seed:party -i {id}
+
+            For Ropsten network:   yarn seed:party -i {id} --ropsten
           </pre>
         </SeedDiv>
         <div>
