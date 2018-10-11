@@ -24,6 +24,7 @@ const CTA = styled('div')`
   letter-spacing: 0;
   margin-bottom: 35px;
 `
+
 const RemainingSpots = styled('span')``
 const RSVPContainer = styled('div')`
   display: flex;
@@ -178,8 +179,7 @@ class EventCTA extends Component {
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>
-            <DepositValue value={deposit} />
-            ETH
+            <DepositValue value={deposit} /> ETH
           </Deposit>
           {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
         </RSVPContainer>
