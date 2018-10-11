@@ -7,6 +7,7 @@ import Button from '../Forms/Button'
 import WithdrawPayout from './WithdrawPayout'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
+import DepositValue from '../DepositValue'
 import {
   calculateFinalizeMaps,
   calculateNumAttended,
@@ -178,9 +179,7 @@ class EventCTA extends Component {
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>
-            {toEthVal(deposit)
-              .toEth()
-              .toFixed(2)}{' '}
+            <DepositValue value={deposit} />
             ETH
           </Deposit>
           {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
