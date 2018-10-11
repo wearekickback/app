@@ -7,7 +7,7 @@ import Button from '../Forms/Button'
 import WithdrawPayout from './WithdrawPayout'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
-import DepositValue from '../DepositValue'
+import DepositValue from '../Utils/DepositValue'
 import {
   calculateFinalizeMaps,
   calculateNumAttended,

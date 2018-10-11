@@ -42,8 +42,8 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/party/:address" component={SingleEvent} />
-            <Route path="/party/:address/admin" component={SingleEventAdmin} />
+            <Route exact path="/event/:address" component={SingleEvent} />
+            <Route path="/event/:address/admin" component={SingleEventAdmin} />
             <Route path="/create" component={CreatePendingEvent} />
             <Route path="/deploy" component={DeployPendingEvent} />
           </Switch>

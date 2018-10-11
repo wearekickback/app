@@ -1,17 +1,61 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import DepositValue from '../DepositValue.js'
+import { Link as DefaultLink } from 'react-router-dom'
 
-const EventCardContainer = styled('div')``
+import DepositValue from '../Utils/DepositValue.js'
+
+const Link = styled(DefaultLink)`
+  color: #2b2b2b;
+  text-align: left;
+`
+
+const EventCardContainer = styled('li')`
+  background: #f8f9fb;
+  box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+`
+const EventImage = styled('img')``
+
+const Organiser = styled('div')``
+
+const Date = styled('div')`
+  font-family: Muli-Regular;
+  font-size: 13px;
+  color: #3d3f50;
+  line-height: 21px;
+`
+
+const EventName = styled('h3')`
+  font-family: Muli;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1e1e1e;
+  letter-spacing: 0;
+  line-height: 25px;
+`
+
+const EventDetails = styled('section')`
+  padding: 20px;
+`
 
 class EventCard extends Component {
   render() {
     const { party } = this.props
+    const { address, image, deposit, date, name, owner } = party
+
     return (
       <EventCardContainer>
-        <DepositValue value={party.deposit} />
-        {party.image}
-        {party.name}
+        <Link to={`/event/${address}`}>
+          <EventImage src={image || 'https://placeimg.com/640/480/tech'} />
+          <EventDetails>
+            <Date>{date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
+            <DepositValue value={deposit} />
+            <EventName>{name}</EventName>
+
+            <Organiser>Hosted by: {owner.address}</Organiser>
+          </EventDetails>
+        </Link>
       </EventCardContainer>
     )
   }

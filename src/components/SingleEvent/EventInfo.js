@@ -102,7 +102,7 @@ class EventInfo extends Component {
     const { party, address, className } = this.props
     return (
       <EventInfoContainer className={className}>
-        <Date>{party.date}</Date>
+        <Date>{party.date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
