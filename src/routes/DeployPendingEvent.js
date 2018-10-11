@@ -25,7 +25,7 @@ class DeployPendingEvent extends Component {
         <SeedDiv>
           <p>If you wish to deploy this party with our seeding script, use:</p>
           <pre>
-            yarn seed:party -n {id}
+            yarn seed:party -n {id} --ropsten
           </pre>
         </SeedDiv>
         <div>
