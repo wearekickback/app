@@ -17,7 +17,7 @@ import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 
 const CTA = styled('div')`
-  font-family: Overpass;
+  font-family: Muli;
   font-weight: 500;
   font-size: 13px;
   color: #3d3f50;
@@ -31,7 +31,7 @@ const RSVPContainer = styled('div')`
   margin-bottom: 20px;
 `
 const Deposit = styled('div')`
-  font-family: Overpass;
+  font-family: Muli;
   font-weight: 500;
   font-size: 13px;
   color: #6e76ff;
