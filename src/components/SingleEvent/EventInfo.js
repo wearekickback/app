@@ -9,7 +9,7 @@ import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 // import Tooltip from '../Tooltip/Tooltip'
 
-import { parseEthValue } from '../../utils/units'
+import { toEthVal } from '../../utils/units'
 import { getSocial } from '../../utils/parties'
 
 const Date = styled('div')``
@@ -128,7 +128,7 @@ class EventInfo extends Component {
           <EthIcon />
           Total pot{' '}
           <span>
-            {parseEthValue(party.deposit)
+            {toEthVal(party.deposit)
               .mul(party.participants.length)
               .toEth()
               .toFixed(2)}{' '}

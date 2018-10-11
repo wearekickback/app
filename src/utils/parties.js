@@ -2,7 +2,7 @@ import { toBN } from 'web3-utils'
 
 import { addressesMatch } from './strings'
 import { PARTICIPANT_STATUS } from './status'
-import { parseEthValue } from './units'
+import { toEthVal } from './units'
 
 export const amParticipant = (participants, address) =>
   participants.find(a => addressesMatch(a.user.address, address))
@@ -43,7 +43,7 @@ export const calculateFinalizeMaps = participants => {
 }
 
 export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
-  parseEthValue(deposit)
+  toEthVal(deposit)
     .mul(numRegistered)
     .div(numAttended)
     .toEth()

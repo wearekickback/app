@@ -1,5 +1,4 @@
 import merge from 'lodash/merge'
-import { toHex, toWei } from 'web3-utils'
 import { Deployer } from '@noblocknoparty/contracts'
 
 import eventsList from '../fixtures/events.json'
@@ -8,6 +7,7 @@ import getWeb3, {
   getEvents,
   getDeployerAddress
 } from './web3'
+import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
@@ -48,7 +48,11 @@ const resolvers = {
   },
 
   Mutation: {
-    async create(_, { name, deposit, limitOfParticipants }) {
+    async createParty(_, args) {
+      console.log(`Deploying party`, args)
+
+      const { id, deposit, limitOfParticipants } = args
+
       const web3 = await getWeb3()
       const account = await getAccount()
 
@@ -59,10 +63,10 @@ const resolvers = {
       try {
         const tx = await contract.methods
           .deploy(
-            name,
-            toHex(toWei(deposit)),
-            toHex(limitOfParticipants),
-            toHex(60 * 60 * 24 * 7),
+            id,
+            toEthVal(deposit, 'eth').toWei().toString(16),
+            toEthVal(limitOfParticipants).toString(16),
+            toEthVal(60 * 60 * 24 * 7).toString(16),
             ''
           )
           .send({

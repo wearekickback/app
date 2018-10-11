@@ -8,7 +8,8 @@ import DefaultLayout from './layout/Layouts'
 //import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
-import Create from './routes/Create'
+import CreatePendingEvent from './routes/CreatePendingEvent'
+import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import Modal from './components/Modal/Modal'
@@ -43,7 +44,8 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/party/:address" component={SingleEvent} />
             <Route path="/party/:address/admin" component={SingleEventAdmin} />
-            <Route path="/create" component={Create} />
+            <Route path="/create" component={CreatePendingEvent} />
+            <Route path="/deploy" component={DeployPendingEvent} />
           </Switch>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />

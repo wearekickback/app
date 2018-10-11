@@ -1,3 +1,3 @@
 import EthVal from 'ethval'
 
-export const parseEthValue = v => new EthVal(v)
+export const toEthVal = (v, unit) => new EthVal(v, unit)

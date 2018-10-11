@@ -12,7 +12,7 @@ import {
   calculateNumAttended,
   calculateWinningShare
 } from '../../utils/parties'
-import { parseEthValue } from '../../utils/units'
+import { toEthVal } from '../../utils/units'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 
@@ -178,7 +178,7 @@ class EventCTA extends Component {
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>
-            {parseEthValue(deposit)
+            {toEthVal(deposit)
               .toEth()
               .toFixed(2)}{' '}
             ETH

@@ -12,8 +12,8 @@ const typeDefs = `
     name: String!
     description: String
     location: String
-    date: String
     image: String
+    date: String
     address: String!
     deposit: String!
     coolingPeriod: String!
@@ -21,10 +21,12 @@ const typeDefs = `
     participants: [Participant]!
     owner: UserProfile!
     admins: [UserProfile]!
+    ended: Boolean
+    cancelled: Boolean
   }
 
   input PartyMetaInput {
-    name: String
+    name: String!
     description: String
     date: String
     location: String
@@ -44,6 +46,7 @@ const typeDefs = `
   enum LegalAgreementType {
     TERMS_AND_CONDITIONS
     PRIVACY_POLICY
+    MARKETING_INFO
   }
 
   type LegalAgreement {

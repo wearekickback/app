@@ -6,7 +6,7 @@ import SafeMutation from '../SafeMutation'
 import { PARTICIPANT_STATUS } from '../../utils/status'
 import { getSocial } from '../../utils/parties'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
-import { parseEthValue } from '../../utils/units'
+import { toEthVal } from '../../utils/units'
 import {
   calculateWinningShare,
   calculateNumAttended
@@ -108,7 +108,7 @@ export class Participant extends Component {
               ) : (
                 <Status type="lost">
                   Lost{' '}
-                  {parseEthValue(deposit)
+                  {toEthVal(deposit)
                     .toEth()
                     .toString()}{' '}
                   ETH
