@@ -14,6 +14,10 @@ injectGlobal`
     text-decoration: none;
   }
 
+  ul {
+    padding: 0;
+  }
+
   img {
     max-width: 100%;
   }

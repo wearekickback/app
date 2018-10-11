@@ -7,12 +7,12 @@ import Button from '../Forms/Button'
 import WithdrawPayout from './WithdrawPayout'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
+import DepositValue from '../Utils/DepositValue'
 import {
   calculateFinalizeMaps,
   calculateNumAttended,
   calculateWinningShare
 } from '../../utils/parties'
-import { toEthVal } from '../../utils/units'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 
@@ -178,9 +178,7 @@ class EventCTA extends Component {
       <EventCTAContainer>
         <RSVPContainer>
           <Deposit>
-            {toEthVal(deposit)
-              .toEth()
-              .toFixed(2)}{' '}
+            <DepositValue value={deposit} />
             ETH
           </Deposit>
           {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
