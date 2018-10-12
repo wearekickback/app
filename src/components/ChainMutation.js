@@ -1,7 +1,9 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
+import ReactTooltip from 'react-tooltip'
 
 import { events, getTransactionReceipt } from '../api/web3'
 import SafeQuery from './SafeQuery'
@@ -62,16 +64,14 @@ export default class ChainMutation extends Component {
     }
   }
 
+  _onError = async error => {
+    this.setState({
+      error
+    })
+  }
+
   _onCompleted = async result => {
     const { resultKey } = this.props
-
-    if (result.error) {
-      this.setState({
-        error: result.error
-      })
-
-      return
-    }
 
     const tx = result[resultKey]
 
@@ -117,6 +117,7 @@ export default class ChainMutation extends Component {
         variables={variables}
         {...otherProps}
         onCompleted={this._onCompleted}
+        onError={this._onError}
         refetchQueries={[]}
       >
         {(mutator, { loading }) => {
@@ -162,28 +163,68 @@ export const ChainMutationResult = ({ children, result }) => {
   )
 }
 
-export const ChainMutationButton = ({ result, title, ...props }) => {
-  const { data: tx, progress, loading, error } = result
+export class ChainMutationButton extends Component {
+  componentDidUpdate () {
+    const { result: { loading } } = this.props
 
-  let content
-
-  if (error) {
-    content = <ErrorBox>{`${error}`}</ErrorBox>
-  } else if (loading) {
-    content = <div>Sending transaction...</div>
-  } else if (progress) {
-    content = (
-      <div>Awaiting confirmation ({progress.percentComplete} %)</div>
-    )
-  } else if (!loading && tx) {
-    content = <div>RSVPed!</div>
-  } else {
-    content = title
+    if (this.btn) {
+      if (loading) {
+        ReactTooltip.show(findDOMNode(this.btn))
+      } else {
+        ReactTooltip.hide(findDOMNode(this.btn))
+      }
+    }
   }
 
-  return (
-    <Button {...props} disabled={!!loading}>
-      {content}
-    </Button>
-  )
+  _onRef = elem => {
+    this.btn = elem
+  }
+
+  render() {
+    const {
+      result: { error, loading, progress, data: tx },
+      title,
+      tooltip,
+      ...props
+    } = this.props
+
+    let content
+    let after = error ? (
+      <ErrorBox>{`${error}`}</ErrorBox>
+    ) : null
+
+    if (loading) {
+      content = <div>Sending transaction...</div>
+    } else if (progress) {
+      content = (
+        <div>Awaiting confirmation ({progress.percentComplete} %)</div>
+      )
+    } else if (!loading && tx) {
+      content = <div>RSVPed!</div>
+    } else {
+      content = title
+    }
+
+    const tip = tooltip || 'Please sign the created transaction using your wallet or Dapp browser'
+
+    return (
+      <div>
+        <Button
+          {...props}
+          ref={this._onRef}
+          disabled={!!loading}
+          data-tip={tip}
+        >
+          {content}
+          <ReactTooltip
+            place="top"
+            event="dblclick"
+            effect="solid"
+            type="dark"
+          />
+        </Button>
+        {after}
+      </div>
+    )
+  }
 }
