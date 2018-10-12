@@ -33,6 +33,7 @@ const Avatar = styled(DefaultAvatar)`
   margin-right: 10px;
   height: 35px;
   width: 35px;
+  flex-shrink: 0;
 `
 
 const Organiser = styled('div')`

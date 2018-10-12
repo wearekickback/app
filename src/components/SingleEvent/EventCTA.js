@@ -42,6 +42,7 @@ const Deposit = styled('div')`
   padding: 10px 20px;
   width: 100px;
   background: rgba(233, 234, 255, 0.5);
+  border: 1px solid rgba(233, 234, 255, 0.5);
   border-radius: 4px;
 `
 
