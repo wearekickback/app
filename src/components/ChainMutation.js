@@ -213,7 +213,7 @@ export class ChainMutationButton extends Component {
         <Button
           {...props}
           ref={this._onRef}
-          disabled={!!loading}
+          disabled={!!(loading || progress)}
           data-tip={tip}
         >
           {content}
