@@ -11,7 +11,7 @@ class Home extends Component {
       <>
         <h2>All parties</h2>
         <SafeQuery query={AllPartiesQuery}>
-          {({ parties }) => {
+          {({ data: { parties } }) => {
             return parties ? (
               <EventCardGrid>
                 {parties.map((party, index) => (

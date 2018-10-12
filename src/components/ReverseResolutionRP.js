@@ -17,7 +17,7 @@ class ReverseResolution extends Component {
           })
         )}
       >
-        {({ reverseRecord = {} }) => {
+        {({ data: { reverseRecord = {} } }) => {
           if (!reverseRecord.name) {
             return this.props.children({
               address: this.props.address,

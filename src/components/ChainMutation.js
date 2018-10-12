@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo'
 
 import { events, getTransactionReceipt } from '../api/web3'
 import SafeQuery from './SafeQuery'
+import Button from './Forms/Button'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
@@ -158,5 +159,31 @@ export const ChainMutationResult = ({ children, result }) => {
       {children}
       {extraContent}
     </>
+  )
+}
+
+export const ChainMutationButton = ({ result, title, ...props }) => {
+  const { data: tx, progress, loading, error } = result
+
+  let content
+
+  if (error) {
+    content = <ErrorBox>{`${error}`}</ErrorBox>
+  } else if (loading) {
+    content = <div>Sending transaction...</div>
+  } else if (progress) {
+    content = (
+      <div>Awaiting confirmation ({progress.percentComplete} %)</div>
+    )
+  } else if (!loading && tx) {
+    content = <div>RSVPed!</div>
+  } else {
+    content = title
+  }
+
+  return (
+    <Button {...props} disabled={!!loading}>
+      {content}
+    </Button>
   )
 }

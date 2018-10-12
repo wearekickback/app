@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import DefaultRSVP from './RSVP'
-import ChainMutation, { ChainMutationResult } from '../ChainMutation'
-import Button from '../Forms/Button'
+import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
 import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
@@ -203,11 +202,9 @@ class EventCTA extends Component {
                 refetchQueries={[{ query: PartyQuery, variables: { address } }]}
               >
                 {(finalize, result) => (
-                  <ChainMutationResult result={result}>
-                    <Button onClick={finalize} twoThirds>
-                      Finalize and enable payouts
-                    </Button>
-                  </ChainMutationResult>
+                  <ChainMutationButton result={result} onClick={finalize} toThirds
+                    title='Finalize and enable payouts'
+                  />
                 )}
               </ChainMutation>
             ) : null}
