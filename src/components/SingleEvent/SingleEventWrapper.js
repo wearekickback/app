@@ -11,20 +11,31 @@ import EventCTA from './EventCTA'
 import EventFilters from './EventFilters'
 import EventParticipants from './EventParticipants'
 import { GlobalConsumer } from '../../GlobalState'
+import mq from '../../mediaQuery'
 
 const SingleEventContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto 0;
+  flex-direction: column;
+  ${mq.medium`
+    flex-direction: row;
+  `};
 `
 
 const EventInfoContainer = styled('div')`
-  width: 47.5%;
+  width: 100%;
+  ${mq.medium`
+    width: 47.5%;
+  `};
 `
 
 const RightContainer = styled('div')`
-  width: 47.5%;
+  width: 100%;
+  ${mq.medium`
+    width: 47.5%;
+  `};
 `
 
 class SingleEventWrapper extends Component {
@@ -45,22 +56,41 @@ class SingleEventWrapper extends Component {
       <SingleEventContainer>
         <GlobalConsumer>
           {({ userAddress }) => (
-            <SafeQuery query={PartyQuery} variables={{ address }} fetchPolicy="cache-and-network">
+            <SafeQuery
+              query={PartyQuery}
+              variables={{ address }}
+              fetchPolicy="cache-and-network"
+            >
               {({ party }) => {
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
-                  amOwner: addressesMatch(_.get(party, 'owner.address', ''), userAddress),
-                  myParticipantEntry: userAddress && _.get(party, 'participants', []).find(a => addressesMatch(_.get(a, 'user.address', ''), userAddress)),
+                  amOwner: addressesMatch(
+                    _.get(party, 'owner.address', ''),
+                    userAddress
+                  ),
+                  myParticipantEntry:
+                    userAddress &&
+                    _.get(party, 'participants', []).find(a =>
+                      addressesMatch(_.get(a, 'user.address', ''), userAddress)
+                    )
                 }
 
-                preCalculatedProps.amAdmin = preCalculatedProps.amOwner || (
-                  userAddress && amInAddressList(_.get(party, 'admins', []).map(a => a.address), userAddress)
-                )
+                preCalculatedProps.amAdmin =
+                  preCalculatedProps.amOwner ||
+                  (userAddress &&
+                    amInAddressList(
+                      _.get(party, 'admins', []).map(a => a.address),
+                      userAddress
+                    ))
 
                 return (
                   <Fragment>
                     <EventInfoContainer>
-                      <EventInfo party={party} address={address} {...preCalculatedProps} />
+                      <EventInfo
+                        party={party}
+                        address={address}
+                        {...preCalculatedProps}
+                      />
                     </EventInfoContainer>
                     <RightContainer>
                       <EventCTA
@@ -69,8 +99,15 @@ class SingleEventWrapper extends Component {
                         userAddress={userAddress}
                         {...preCalculatedProps}
                       />
-                      <EventFilters handleSearch={handleSearch} {...preCalculatedProps} />
-                      <EventParticipants search={search} party={party} {...preCalculatedProps} />
+                      <EventFilters
+                        handleSearch={handleSearch}
+                        {...preCalculatedProps}
+                      />
+                      <EventParticipants
+                        search={search}
+                        party={party}
+                        {...preCalculatedProps}
+                      />
                     </RightContainer>
                   </Fragment>
                 )
