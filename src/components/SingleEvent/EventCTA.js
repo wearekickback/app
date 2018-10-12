@@ -14,6 +14,7 @@ import {
 } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
+import Status, { Going } from './Status'
 
 const CTA = styled('div')`
   font-family: Muli;
@@ -41,19 +42,8 @@ const Deposit = styled('div')`
   padding: 10px 20px;
   width: 100px;
   background: rgba(233, 234, 255, 0.5);
+  border: 1px solid rgba(233, 234, 255, 0.5);
   border-radius: 4px;
-`
-
-const Going = styled('div')`
-  background-color: #6e76ff;
-  border-radius: 4px;
-  border: 1px solid #6e76ff;
-  font-size: 14px;
-  font-family: Muli;
-  padding: 10px 20px;
-  color: white;
-  width: calc(100% - 120px);
-  text-align: center;
 `
 
 const RSVP = styled(DefaultRSVP)`
@@ -82,11 +72,11 @@ class EventCTA extends Component {
 
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
-        return <Going>You didn't show up :/</Going>
+        return <Status>You didn't show up :/</Status>
       case PARTICIPANT_STATUS.SHOWED_UP:
         return <WithdrawPayout address={address} amount={myShare} />
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
-        return <Going>You have withdrawn your payout!</Going>
+        return <Status>You have withdrawn your payout!</Status>
       default:
         return ''
     }
@@ -108,9 +98,9 @@ class EventCTA extends Component {
 
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
-        return <Going>You are going to this event.</Going>
+        return <Going>You're going</Going>
       case PARTICIPANT_STATUS.SHOWED_UP:
-        return <Going>You have shown up, congrats!</Going>
+        return <Status>You have showed up!</Status>
       default:
         return ''
     }
@@ -202,8 +192,12 @@ class EventCTA extends Component {
                 refetchQueries={[{ query: PartyQuery, variables: { address } }]}
               >
                 {(finalize, result) => (
-                  <ChainMutationButton result={result} onClick={finalize} toThirds
-                    title='Finalize and enable payouts'
+                  <ChainMutationButton
+                    result={result}
+                    onClick={finalize}
+                    toThirds
+                    preContent="Finalize and enable payouts"
+                    postContent="Finalize and enable payouts"
                   />
                 )}
               </ChainMutation>

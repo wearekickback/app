@@ -183,7 +183,8 @@ export class ChainMutationButton extends Component {
   render() {
     const {
       result: { error, loading, progress, data: tx },
-      title,
+      preContent,
+      postContent,
       tooltip,
       ...props
     } = this.props
@@ -200,9 +201,9 @@ export class ChainMutationButton extends Component {
         <div>Awaiting confirmation ({progress.percentComplete} %)</div>
       )
     } else if (!loading && tx) {
-      content = <div>RSVPed!</div>
+      content = postContent || 'Confirmed!'
     } else {
-      content = title
+      content = preContent
     }
 
     const tip = tooltip || 'Please sign the created transaction using your wallet or Dapp browser'

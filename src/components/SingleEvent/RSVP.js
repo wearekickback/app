@@ -3,6 +3,7 @@ import React from 'react'
 import { PartyQuery } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import { RsvpToEvent } from '../../graphql/mutations'
+import { Going } from './Status'
 
 const RSVP = ({ address, className }) => (
   <ChainMutation
@@ -12,8 +13,12 @@ const RSVP = ({ address, className }) => (
     refetchQueries={[{ query: PartyQuery, variables: { address } }]}
   >
     {(rsvp, result) => (
-      <ChainMutationButton onClick={rsvp} result={result} className={className}
-        title='RSVP'
+      <ChainMutationButton
+        onClick={rsvp}
+        result={result}
+        className={className}
+        preContent="RSVP"
+        postContent={<Going>You are going!</Going>}
       />
     )}
   </ChainMutation>
