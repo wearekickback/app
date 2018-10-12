@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 
-import ChainMutation, { ChainMutationResult } from '../components/ChainMutation'
-import Button from '../components/Forms/Button'
+import ChainMutation, { ChainMutationButton } from '../components/ChainMutation'
 import { CreateParty } from '../graphql/mutations'
 import { extractNewPartyAddressFromTx } from '../api/utils'
 import queryString from 'query-string'
@@ -41,17 +40,15 @@ class DeployPendingEvent extends Component {
             variables={{ id, deposit, limitOfParticipants }}
           >
             {(createParty, result) => {
-              const address = result.create ? extractNewPartyAddressFromTx(result.create) : null
+              const address = result.data ? extractNewPartyAddressFromTx(result.data) : null
 
               return (
-                <ChainMutationResult result={result}>
-                  <Button onClick={createParty}>
-                    Deploy
-                  </Button>
+                <div>
+                  <ChainMutationButton result={result} onClick={createParty} title='Deploy' />
                   {address ? (
                     <p>Party at {address}! <Link to={`/event/${address}`}>View party page</Link></p>
                   ) : null}
-                </ChainMutationResult>
+                </div>
               )
             }}
           </ChainMutation>
