@@ -162,7 +162,12 @@ export const ChainMutationResult = ({ children, result }) => {
   )
 }
 
-export const ChainMutationButton = ({ result, title, ...props }) => {
+export const ChainMutationButton = ({
+  result,
+  preContent,
+  postContent,
+  ...props
+}) => {
   const { data: tx, progress, loading, error } = result
 
   let content
@@ -172,13 +177,11 @@ export const ChainMutationButton = ({ result, title, ...props }) => {
   } else if (loading) {
     content = <div>Sending transaction...</div>
   } else if (progress) {
-    content = (
-      <div>Awaiting confirmation ({progress.percentComplete} %)</div>
-    )
+    content = <div>Awaiting confirmation ({progress.percentComplete} %)</div>
   } else if (!loading && tx) {
-    content = <div>RSVPed!</div>
+    content = postContent || 'Confirmed!'
   } else {
-    content = title
+    content = preContent
   }
 
   return (
