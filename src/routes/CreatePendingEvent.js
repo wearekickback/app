@@ -86,7 +86,7 @@ class Create extends Component {
           mutation={CreatePendingParty}
           resultKey='id'
           variables={{ meta: { name, description, location, date, image } }}
-          onComplete={this._onCreated}
+          onCompleted={this._onCreated}
         >
           {createPendingParty => (
             <div>
@@ -102,7 +102,7 @@ class Create extends Component {
 
   _onCreated = ({ id }) => {
     const { deposit, limitOfParticipants } = this.state
-    
+
     this.props.history.push(`/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`)
   }
 

@@ -5,6 +5,7 @@ import styled from 'react-emotion'
 import { addressesMatch } from '../../utils/strings'
 import { amInAddressList } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
+import ErrorBox from '../ErrorBox'
 import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
@@ -47,6 +48,13 @@ class SingleEventWrapper extends Component {
           {({ userAddress }) => (
             <SafeQuery query={PartyQuery} variables={{ address }} fetchPolicy="cache-and-network">
               {({ party }) => {
+                // no party?
+                if (!party) {
+                  return (
+                    <ErrorBox>We could not find an event at the address {address}!</ErrorBox>
+                  )
+                }
+
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
                   amOwner: addressesMatch(_.get(party, 'owner.address', ''), userAddress),
