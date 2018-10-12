@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import SafeMutation from '../components/SafeMutation'
 import Button from '../components/Forms/Button'
@@ -86,23 +86,24 @@ class Create extends Component {
           mutation={CreatePendingParty}
           resultKey='id'
           variables={{ meta: { name, description, location, date, image } }}
+          onComplete={this._onCreated}
         >
-          {(createPendingParty, { id }) => (
+          {createPendingParty => (
             <div>
               <Button onClick={createPendingParty}>
                 Create pending party
               </Button>
-              {id ? (
-                <>
-                  <p>Pending party created, id: {id}</p>
-                  <Link to={`/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`}>Goto deployment page</Link>
-                </>
-              ) : null}
             </div>
           )}
         </SafeMutation>
       </div>
     )
+  }
+
+  _onCreated = ({ id }) => {
+    const { deposit, limitOfParticipants } = this.state
+    
+    this.props.history.push(`/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`)
   }
 
   _buildHandler = ({ createParty, createPendingParty }) => {
@@ -115,4 +116,4 @@ class Create extends Component {
   }
 }
 
-export default Create
+export default withRouter(Create)

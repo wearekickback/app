@@ -2,15 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 
-import Loader from './Loader'
-import ErrorBox from './ErrorBox'
-
-const DEFAULT_IS_LOADING = ({ loading }) => loading
-const DEFAULT_RENDER_ERROR = ({ error }) => {
-  console.error(error)
-  return <ErrorBox>{`${error}`}</ErrorBox>
-}
-const DEFAULT_RENDER_LOADING = () => <Loader />
+import {
+  DEFAULT_IS_LOADING,
+  DEFAULT_RENDER_ERROR,
+  DEFAULT_RENDER_LOADING
+} from './SafeMutation'
 
 export default class SafeQuery extends Component {
   static propTypes = {

@@ -5,12 +5,20 @@ import { Mutation } from 'react-apollo'
 import Loader from './Loader'
 import ErrorBox from './ErrorBox'
 
-const DEFAULT_IS_LOADING = ({ loading }) => loading
-const DEFAULT_RENDER_ERROR = ({ error }) => {
+export const DEFAULT_IS_LOADING = ({ loading }) => loading
+export const DEFAULT_RENDER_ERROR = ({ error }) => {
   console.error(error)
-  return <ErrorBox>{`${error}`}</ErrorBox>
+
+  let errStr = `${error}`
+  const errStrLowercase = errStr.toLowerCase()
+
+  if (errStrLowercase.includes('failed to fetch')) {
+    errStr = 'We were unable to connect to our backend server. Is your internet connection working?'
+  }
+
+  return <ErrorBox>{errStr}</ErrorBox>
 }
-const DEFAULT_RENDER_LOADING = () => <Loader />
+export const DEFAULT_RENDER_LOADING = () => <Loader />
 
 export default class SafeMutation extends Component {
   static propTypes = {

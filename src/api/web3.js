@@ -6,6 +6,7 @@ import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
 import { NEW_BLOCK } from '../utils/events'
 
 let web3
+let networkId
 let networkError
 
 export const events = new EventEmitter()
@@ -20,13 +21,13 @@ async function getWeb3() {
       if (NETWORK) {
         web3 = new Web3(`https://${NETWORK}.infura.io/`)
       } else {
-        web3 = new Web3(`https://mainnet.infura.io/`)
         console.log('No network specified in config, Falling back to mainnet.')
+        web3 = new Web3(`https://mainnet.infura.io/`)
       }
     }
 
     try {
-      await web3.eth.net.getId()
+      networkId = `${await web3.eth.net.getId()}`
     } catch (e) {
       web3 = null
       networkError = `We were unable to connect to the Ethereum network`
@@ -49,14 +50,38 @@ async function getWeb3() {
   return web3
 }
 
+export async function getNetworkId() {
+  return networkId
+}
+
 export function getNetworkError() {
-  return networkError
+  if (networkError) {
+    return networkError
+  }
+
+  switch (NETWORK) {
+    case 'ropsten': {
+      if (networkId !== '3') {
+        return new Error('You are viewing events on Ropsten, but you are connected to a different network!')
+      }
+      break
+    }
+    case 'mainnet': {
+      if (networkId !== '1') {
+        return new Error('You are viewing events on Mainnet, but you are connected to a different network!')
+      }
+      break
+    }
+    default:
+      break
+  }
+
+  return null
 }
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
-  const id = await web3.eth.net.getId()
-  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[id].address
+  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkId].address
 }
 
 export async function getTransactionReceipt(txHash) {

@@ -66,8 +66,7 @@ const resolvers = {
             id,
             toEthVal(deposit, 'eth').toWei().toString(16),
             toEthVal(limitOfParticipants).toString(16),
-            toEthVal(60 * 60 * 24 * 7).toString(16),
-            ''
+            toEthVal(60 * 60 * 24 * 7).toString(16)
           )
           .send({
             gas: 4000000,
