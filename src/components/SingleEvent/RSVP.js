@@ -3,7 +3,7 @@ import React from 'react'
 import { PartyQuery } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import { RsvpToEvent } from '../../graphql/mutations'
-import Going from './Going'
+import { Going } from './Status'
 
 const RSVP = ({ address, className }) => (
   <ChainMutation

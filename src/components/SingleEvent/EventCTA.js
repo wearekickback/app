@@ -14,7 +14,7 @@ import {
 } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
-import Going from './Going'
+import Status, { Going } from './Status'
 
 const CTA = styled('div')`
   font-family: Muli;
@@ -71,11 +71,11 @@ class EventCTA extends Component {
 
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
-        return <Going type="hollow">You didn't show up :/</Going>
+        return <Status>You didn't show up :/</Status>
       case PARTICIPANT_STATUS.SHOWED_UP:
         return <WithdrawPayout address={address} amount={myShare} />
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
-        return <Going type="hollow">You have withdrawn your payout!</Going>
+        return <Status>You have withdrawn your payout!</Status>
       default:
         return ''
     }
@@ -99,7 +99,7 @@ class EventCTA extends Component {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Going>You're going</Going>
       case PARTICIPANT_STATUS.SHOWED_UP:
-        return <Going>You have showed up!</Going>
+        return <Status>You have showed up!</Status>
       default:
         return ''
     }

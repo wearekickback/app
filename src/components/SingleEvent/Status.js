@@ -29,15 +29,21 @@ const GoingContainer = styled('div')`
   align-items: center;
 
   span {
-    margin-right: 20px;
+    ${p => p.going && `margin-right: 20px;`};
   }
 `
 
-const Going = ({ children }) => (
-  <GoingContainer>
+export const Going = ({ children }) => (
+  <GoingContainer going>
     <Success />
     <span>{children}</span>
   </GoingContainer>
 )
 
-export default Going
+const Status = ({ children }) => (
+  <GoingContainer>
+    <span>{children}</span>
+  </GoingContainer>
+)
+
+export default Status
