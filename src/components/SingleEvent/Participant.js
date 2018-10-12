@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import ReverseResolution from '../ReverseResolution'
 
-import SafeMutation from '../SafeMutation'
+import { Mutation } from 'react-apollo'
 import { PARTICIPANT_STATUS } from '../../utils/status'
 import { getSocial } from '../../utils/parties'
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
@@ -140,7 +140,7 @@ class ParticipantContainer extends Component {
   render() {
     const { party, participant } = this.props
     return (
-      <SafeMutation
+      <Mutation
         mutation={UnmarkUserAttended}
         variables={{
           address: party.address,
@@ -151,7 +151,7 @@ class ParticipantContainer extends Component {
         }}
       >
         {unmarkAttended => (
-          <SafeMutation
+          <Mutation
             mutation={MarkUserAttended}
             variables={{
               address: party.address,
@@ -168,9 +168,9 @@ class ParticipantContainer extends Component {
                 {...this.props}
               />
             )}
-          </SafeMutation>
+          </Mutation>
         )}
-      </SafeMutation>
+      </Mutation>
     )
   }
 }

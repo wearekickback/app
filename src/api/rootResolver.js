@@ -2,11 +2,7 @@ import merge from 'lodash/merge'
 import { Deployer } from '@noblocknoparty/contracts'
 
 import eventsList from '../fixtures/events.json'
-import getWeb3, {
-  getAccount,
-  getEvents,
-  getDeployerAddress
-} from './web3'
+import getWeb3, { getAccount, getEvents, getDeployerAddress } from './web3'
 import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
@@ -64,9 +60,12 @@ const resolvers = {
         const tx = await contract.methods
           .deploy(
             id,
-            toEthVal(deposit, 'eth').toWei().toString(16),
+            toEthVal(deposit, 'eth')
+              .toWei()
+              .toString(16),
             toEthVal(limitOfParticipants).toString(16),
-            toEthVal(60 * 60 * 24 * 7).toString(16)
+            toEthVal(60 * 60 * 24 * 7).toString(16),
+            ''
           )
           .send({
             gas: 4000000,
@@ -80,15 +79,15 @@ const resolvers = {
         throw new Error(`Failed to deploy party: ${e}`)
       }
     },
-    async signChallengeString (_, { challengeString }) {
+    async signChallengeString(_, { challengeString }) {
       const web3 = await getWeb3()
       const address = await getAccount()
 
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
       return web3.eth.personal.sign(challengeString, address)
-    },
-  },
+    }
+  }
 }
 
 const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults)
