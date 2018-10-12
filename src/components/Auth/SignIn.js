@@ -60,8 +60,8 @@ export default class SignIn extends Component {
               query={UserProfileQuery}
               variables={{ address: userAddress }}
             >
-              {data => {
-                const hasProfile = !!_.get(data, 'profile.social.length')
+              {result => {
+                const hasProfile = !!_.get(result, 'data.profile.social.length')
 
                 if (hasProfile) {
                   return this.renderSignIn(userAddress, toggleModal)

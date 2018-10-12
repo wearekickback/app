@@ -30,7 +30,7 @@ export default class SafeQuery extends Component {
           if (error) return renderError(result)
           if (isLoading(result)) return renderLoading(result)
 
-          return children(result.data || {})
+          return children(result)
         }}
       </Query>
     )

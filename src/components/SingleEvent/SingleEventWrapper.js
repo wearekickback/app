@@ -47,7 +47,7 @@ class SingleEventWrapper extends Component {
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery query={PartyQuery} variables={{ address }} fetchPolicy="cache-and-network">
-              {({ party }) => {
+              {({ data: { party } }) => {
                 // no party?
                 if (!party) {
                   return (

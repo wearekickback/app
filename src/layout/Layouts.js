@@ -16,16 +16,20 @@ const ContainerInner = styled('div')`
   margin: 0 auto 0;
 `
 
-const DefaultLayout = ({ children }) => (
-  <Fragment>
-    <Header />
-    {getNetworkError() ? <ErrorBox>{`${getNetworkError}`}</ErrorBox> : null}
-    <Container>
-      <ContainerInner>{children}</ContainerInner>
-    </Container>
-    <Footer />
-  </Fragment>
-)
+const DefaultLayout = ({ children }) => {
+  const networkError = getNetworkError()
+
+  return (
+    <Fragment>
+      <Header />
+      {networkError ? <ErrorBox>{`${networkError}`}</ErrorBox> : null}
+      <Container>
+        <ContainerInner>{children}</ContainerInner>
+      </Container>
+      <Footer />
+    </Fragment>
+  )
+}
 
 export const HomePageLayout = ({ children }) => <Fragment>{children}</Fragment>
 

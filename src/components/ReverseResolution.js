@@ -13,7 +13,7 @@ class ReverseResolution extends Component {
           <span>{this.props.address}</span>
         )}
       >
-        {({ reverseRecord = {} }) => {
+        {({ data: { reverseRecord = {} } }) => {
           if (!reverseRecord.name) {
             return <span>{this.props.address}</span>
           }
