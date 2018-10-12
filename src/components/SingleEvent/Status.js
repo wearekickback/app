@@ -13,10 +13,10 @@ const Success = styled(DefaultSuccess)`
   margin-right: 5px;
 `
 
-const GoingContainer = styled('div')`
-  background-color: #edeef4;
+const StatusContainer = styled('div')`
+  background-color: rgba(233, 234, 255, 0.5);
   border-radius: 4px;
-  border: 1px solid #edeef4;
+  border: 1px solid rgba(233, 234, 255, 0.5);
   font-size: 13px;
   font-weight: 500;
   font-family: Muli;
@@ -34,16 +34,16 @@ const GoingContainer = styled('div')`
 `
 
 export const Going = ({ children }) => (
-  <GoingContainer going>
+  <StatusContainer going>
     <Success />
     <span>{children}</span>
-  </GoingContainer>
+  </StatusContainer>
 )
 
 const Status = ({ children }) => (
-  <GoingContainer>
+  <StatusContainer>
     <span>{children}</span>
-  </GoingContainer>
+  </StatusContainer>
 )
 
 export default Status
