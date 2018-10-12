@@ -24,7 +24,8 @@ const Organiser = styled('div')`
 `
 
 const Date = styled('div')`
-  font-family: Muli-Regular;
+  font-family: Muli;
+  font-weight: 400;
   font-size: 13px;
   color: #3d3f50;
   line-height: 21px;
