@@ -68,7 +68,9 @@ class Footer extends Component {
       <FooterContainer>
         <FooterInner>
           <H2>Get in touch</H2>
-          <a href="mailto:hello@kickback.events">hello@kickback.events</a>
+          <p>
+            <a style={{color:'white'}}href="mailto:hello@kickback.events">hello@kickback.events</a>
+          </p>
           <Row>
             <ElevatorPitch>
               Kickback helps event organisers guarantee a high participation
@@ -76,13 +78,13 @@ class Footer extends Component {
               the events they sign up for more seriously.
             </ElevatorPitch>
             <Links>
-              <Link to="/about">About</Link>
-              <Link to="/team">Team</Link>
               <Link to="/faq">FAQ</Link>
+              <Link to="/terms">Terms and conditions</Link>
+              <Link to="/privacy">Privacy</Link>
             </Links>
           </Row>
           <Row>
-            <Copyright>&copy; Kickback 2018</Copyright>
+            <Copyright>&copy; 2018 No Block No Party Ltd</Copyright>
             <Social>
               <a href="https://github.com/noblocknoparty">
                 <GithubIcon />
