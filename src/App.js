@@ -5,13 +5,14 @@ import {
   Switch
 } from 'react-router-dom'
 import DefaultLayout from './layout/Layouts'
-//import { HomePageLayout } from './layout/Layouts'
+import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
 import CreatePendingEvent from './routes/CreatePendingEvent'
 import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
+import LandingPage from './routes/LandingPage'
 import Faq from './routes/Faq'
 import About from './routes/About'
 import Modal from './components/Modal/Modal'
@@ -50,6 +51,11 @@ class App extends Component {
             <Route path="/deploy" component={DeployPendingEvent} />
             <Route path="/faq" component={Faq} />
             <Route path="/about" component={About} />
+            <Route
+              path="/landing"
+              component={LandingPage}
+              layout={HomePageLayout}
+            />
           </Switch>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
