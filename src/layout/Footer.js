@@ -69,7 +69,7 @@ class Footer extends Component {
         <FooterInner>
           <H2>Get in touch</H2>
           <p>
-            <a style={{color:'white'}}href="mailto:hello@kickback.events">hello@kickback.events</a>
+            <a href="mailto:hello@kickback.events">hello@kickback.events</a>
           </p>
           <Row>
             <ElevatorPitch>
