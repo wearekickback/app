@@ -66,33 +66,32 @@ class Terms extends Component {
         <p>  (c) edit your account details,</p>
         <p>  at any time in our sole discretion without notice or explanation, providing that if we cancel any services you have paid for and you have not breached these terms and conditions, we will give you advance notice of any such cancellation.</p>
         <p>  <strong>8.2</strong> You may cancel your account on our website by contacting us. You will not be entitled to any refund if you cancel your account in accordance with this Section 8.2.</p>
-        <h2 id="9-directory">9. Directory</h2>
-        <p>  <strong>9.1</strong> We welcome submissions to the directory published on our website.</p>
-        <p>  <strong>9.2</strong> Each submission to our directory must be a listing in respect of a job intended for people who primarily work remotely rather than on-site in your office.</p>
-        <p>  <strong>9.3</strong> For the avoidance of doubt, your directory submissions constitute &quot;your content&quot; for the purposes of Section 13 and Section 14, and must comply with the acceptable use rules set out in Section 4.</p>
-        <h2 id="10-paid-directory-listings">10. Paid directory listings</h2>
-        <p>  <strong>10.1</strong> You may submit a paid listing to our directory by following the links to post a job on our website.</p>
-        <p>  <strong>10.2</strong> You will have the opportunity to identify and correct input errors prior to making your order by contacting us with any changes.</p>
-        <p>  <strong>10.3</strong> Paid submissions include the following benefits: your listing is publicly viewable on our site and indexable by search engines.</p>
-        <p>  <strong>10.4</strong> If we accept a paid directory submission, it will remain published on our website for the relevant period specified on our website, subject to termination or deletion in accordance with these terms and conditions.</p>
-        <p>  <strong>10.5</strong> We may delete a paid directory listing at any time, providing that if we delete a paid listing in accordance with this Section 10.5 before the end of the period in respect of which listing fees have been paid, we provide you with advance notice of such a deletion.</p>
-        <h2 id="11-prohibited-directory-submissions">11. Prohibited directory submissions</h2>
-        <p>  <strong>11.1</strong> Without prejudice to our other rights under these terms and conditions, we reserve the right to reject or delete submissions that breach these terms and conditions, or that do not meet the additional guidelines for submissions published on our website.</p>
-        <p>  <strong>11.2</strong> If we reject or delete a submission in accordance with this Section 11, we will not refund any applicable charges.</p>
-        <h2 id="12-fees">12. Fees</h2>
-        <p>  <strong>12.1</strong> The fees in respect of our website services will be as set out on the website from time to time.</p>
-        <p>  <strong>12.2</strong> All amounts stated in these terms and conditions or on our website are in US dollars ($) are thus outside of VAT scope.</p>
-        <p>  <strong>12.3</strong> You must pay to us the fees in respect of our website services in advance, in cleared funds, in accordance with any instructions on our website.</p>
-        <p>  <strong>12.4</strong> We may vary fees from time to time by posting new fees on our website, but this will not affect fees for services that have been previously paid.</p>
-        <p>  <strong>12.5</strong> If you dispute any payment made to us, you must contact us immediately and provide full details of your claim.</p>
-        <p>  <strong>12.6</strong> If you make an unjustified credit card, debit card or other charge-back then you will be liable to pay us, within 7 days following the date of our written request: </p>
-        <p>  (a) an amount equal to the amount of the charge-back;</p>
-        <p>  (b) all third party expenses incurred by us in relation to the charge-back (including charges made by our or your bank or payment processor or card issuer);</p>
-        <p>  (c) an administration fee of GBP 25.00 including VAT; and</p>
-        <p>  (d) all our reasonable costs, losses and expenses incurred in recovering the amounts referred to in this Section 12.6 (including without limitation legal fees and debt collection fees),</p>
-        <p>  and for the avoidance of doubt, if you fail to recognise or fail to remember the source of an entry on your card statement or other financial statement, and make a charge-back as a result, this will constitute an unjustified charge-back for the purposes of this Section 12.6.</p>
-        <p>  <strong>12.7</strong> If you owe us any amount under or relating to these terms and conditions, we may suspend or withdraw the provision of services to you.</p>
-        <p>  <strong>12.8</strong> We may at any time set off any amount that you owe to us against any amount that we owe to you, by sending you written notice of the set-off.</p>
+
+
+        <h2 id="9-refund-policy">9. Refund policy</h2>
+        <p>
+            Kickback software requires that you commit a small amount when you RSVP to reserve your spot.
+Event attendance is determined by the event organisers or an event admin.
+        </p>
+
+        <p>
+        Following the event
+            <ul>
+                <li>
+                    If the event organisers will check you in you will receive notification via email or twitter (based on your registration). Typically you have limited time window or “cooling period” (default is one week but the duration may vary) to withdraw your funds from the event smart contract. After the cooling period has passed, you acknowledge that you are not interested in retrieving your funds and the smart contract owner has the right to clear the remaining funds according to the rule specified in the smart contract.
+                </li>
+                <li>
+                    If the event organiser did not check you in, you will lose any funds you committed. These funds will be divided among the event attendees or they can be applied in other ways (charitable contribution, sponsorship of future events etc)
+                </li>
+            </ul>
+        </p>
+
+        <p>
+            If you did not register a correct email or twitter address during signup process, we have no way to notify you when/whether you are able to withdraw funds. If this is the case, it is your responsibility to visit our website and confirm the status of the funds.
+            In case the organizer decides to cancel the event, you will be able to withdraw funds, but will be again required to do so within the time window of the “cooling period” (default is one week but the duration may vary)
+            In case the smart contract is exploited due to bugs or its account was compromised, you will not be compensated for your loss.
+        </p>
+
         <h2 id="13-your-content-licence">13. Your content: licence</h2>
         <p>  <strong>13.1</strong> In these terms and conditions, &quot;your content&quot; means all works and materials (including without limitation text, graphics, images, audio material, video material, audio-visual material, scripts, software and files) that you submit to us or our website for storage or publication on, processing by, or transmission via, our website.</p>
         <p>  <strong>13.2</strong> You grant to us a worldwide, irrevocable, non-exclusive, royalty-free licence to use, reproduce, store, adapt, publish, translate and distribute your content in any existing or future media, reproduce, store and publish your content on and in relation to this website and any successor website.</p>
@@ -205,30 +204,6 @@ class Terms extends Component {
         <p><strong>30.1</strong> This website is owned and operated by No block no party limited.</p>
         <p><strong>30.2</strong> We are registered in England and Wales under registration number 11471109, and our registered office is at 40 Bloomsbury Way, Lower Ground Floor, London, England, WC1A 2SE.</p>
         <p><strong>30.4</strong> You can contact us by by email to hello@kickback.events.</p>
-
-        <h2>Refund policy</h2>
-        <p>
-            Kickback software requires that you commit a small amount when you RSVP to reserve your spot.
-Event attendance is determined by the event organisers or an event admin.
-        </p>
-
-        <p>
-        Following the event
-            <ul>
-                <li>
-                    If the event organisers will check you in you will receive notification via email or twitter (based on your registration). Typically you have limited time window or “cooling period” (default is one week but the duration may vary) to withdraw your funds from the event smart contract. After the cooling period has passed, you acknowledge that you are not interested in retrieving your funds and the smart contract owner has the right to clear the remaining funds according to the rule specified in the smart contract.
-                </li>
-                <li>
-                    If the event organiser did not check you in, you will lose any funds you committed. These funds will be divided among the event attendees or they can be applied in other ways (charitable contribution, sponsorship of future events etc)
-                </li>
-            </ul>
-        </p>
-
-        <p>
-            If you did not register a correct email or twitter address during signup process, we have no way to notify you when/whether you are able to withdraw funds. If this is the case, it is your responsibility to visit our website and confirm the status of the funds.
-            In case the organizer decides to cancel the event, you will be able to withdraw funds, but will be again required to do so within the time window of the “cooling period” (default is one week but the duration may vary)
-            In case the smart contract is exploited due to bugs or its account was compromised, you will not be compensated for your loss.
-        </p>
       </div>
     )
   }
