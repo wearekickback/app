@@ -4,10 +4,210 @@ class Terms extends Component {
   render() {
     return (
       <div className="terms">
-        <h1>Terms and conditions</h1>
+        <h1>Terms and conditions for kickback.events</h1>
 
-        <h2>Generic policy</h2>
-        <p>To be added.</p>
+        <h2 id="1-introduction">1. Introduction</h2>
+        <p>  <strong>1.1</strong> These terms and conditions govern your use of our website.</p>
+        <p>  <strong>1.2</strong> By using our website, you accept these terms and conditions in full; accordingly, if you disagree with these terms and conditions or any part of these terms and conditions, you must not use our website. </p>
+        <p>  <strong>1.3</strong> If you register with our website, submit any material to our website or use any of our website services, we will ask you to expressly agree to these terms and conditions.</p>
+        <p>  <strong>1.4</strong> Our website uses cookies; by using our website or agreeing to these terms and conditions, you consent to our use of cookies in accordance with the terms of our <a href="/privacy">privacy and cookies policy</a>.</p>
+        <h2 id="2-copyright-notice">2. Copyright notice</h2>
+        <p>  <strong>2.1</strong> Copyright (c) 2018 No block no party Ltd.</p>
+        <p>  <strong>2.2</strong> Subject to the express provisions of these terms and conditions:</p>
+        <p>  (a) we, together with our licensors, own and control all the copyright and other intellectual property rights in our website and the material on our website; and</p>
+        <p>  (b) all the copyright and other intellectual property rights in our website and the material on our website are reserved.</p>
+        <h2 id="3-licence-to-use-website">3. Licence to use website</h2>
+        <p>  <strong>3.1</strong> You may:</p>
+        <p>  (a) view pages from our website in a web browser;</p>
+        <p>  (b) download pages from our website for caching in a web browser;</p>
+        <p>  (c) print pages from our website;</p>
+        <p>  (e) use our website services by means of a web browser,
+            subject to the other provisions of these terms and conditions.</p>
+        <p>  <strong>3.2</strong> Except as expressly permitted by Section 3.1 or the other provisions of these terms and conditions, you must not download any material from our website or save any such material to your computer.</p>
+        <p>  <strong>3.3</strong> You may only use our website for your own personal and business purposes, and you must not use our website for any other purposes.</p>
+        <p>  <strong>3.4</strong> Except as expressly permitted by these terms and conditions, you must not edit or otherwise modify any material on our website.</p>
+        <p>  <strong>3.5</strong> Unless you own or control the relevant rights in the material, you must not:</p>
+        <p>  (a) republish material from our website (including republication on another website);</p>
+        <p>  (b) sell, rent or sub-license material from our website;</p>
+        <p>  (c) show any material from our website in public;</p>
+        <p>  (d) exploit material from our website for a commercial purpose; or</p>
+        <p>  (e) redistribute material from our website.</p>
+        <p>  <strong>3.6</strong> Notwithstanding Section 3.5, you may redistribute our newsletter in electronic form to any person.</p>
+        <p>  <strong>3.7</strong> We reserve the right to restrict access to areas of our website, or indeed our whole website, at our discretion; you must not circumvent or bypass, or attempt to circumvent or bypass, any access restriction measures on our website.</p>
+        <h2 id="4-acceptable-use">4. Acceptable use</h2>
+        <p>  <strong>4.1</strong> You must not:</p>
+        <p>  (a) use our website in any way or take any action that causes, or may cause, damage to the website or impairment of the performance, availability or accessibility of the website;</p>
+        <p>  (b) use our website in any way that is unlawful, illegal, fraudulent or harmful, or in connection with any unlawful, illegal, fraudulent or harmful purpose or activity;</p>
+        <p>  (c) use our website to copy, store, host, transmit, send, use, publish or distribute any material which consists of (or is linked to) any spyware, computer virus, Trojan horse, worm, keystroke logger, rootkit or other malicious computer software;</p>
+        <p>  (d) conduct any systematic or automated data collection activities (including without limitation scraping, data mining, data extraction and data harvesting) on or in relation to our website without our express written consent;</p>
+        <p>  (e) access or otherwise interact with our website using any robot, spider or other automated means;</p>
+        <p>  (f) violate the directives set out in the robots.txt file for our website; or</p>
+        <p>  (g) use data collected from our website for any direct marketing activity (including without limitation email marketing, SMS marketing, telemarketing and direct mailing).</p>
+        <p>  <strong>4.2</strong> You must ensure that all the information you supply to us through our website, or in relation to our website, is true, accurate, current, complete and non-misleading.</p>
+        <h2 id="5-use-on-behalf-of-organisation">5. Use on behalf of organisation</h2>
+        <p>  <strong>5.1</strong> If you use our website or expressly agree to these terms and conditions in the course of a business or other organisational project, then by so doing you bind both:</p>
+        <p>  (a) yourself; and</p>
+        <p>  (b) the person, company or other legal entity that operates that business or organisational project,
+            to these terms and conditions, and in these circumstances references to &quot;you&quot; in these terms and conditions are to both the individual user and the relevant person, company or legal entity (unless the context requires otherwise).</p>
+        <h2 id="6-registration-and-accounts">6. Registration and accounts</h2>
+        <p>  <strong>6.1</strong> You may register for an account with our website by creating a job advert or applying for one, or through the other registration methods provided.</p>
+        <p>  <strong>6.2</strong> You must notify us in writing immediately if you become aware of any unauthorised use of your account.</p>
+        <p>  <strong>6.3</strong> You must not use any other person&#39;s account to access the website, unless you have that person&#39;s express permission to do so.</p>
+        <h2 id="7-user-ids-and-passwords">7. User IDs and passwords</h2>
+        <p>  <strong>7.1</strong> If you register for an account with our website, we may provide you with a password.</p>
+        <p>  <strong>7.2</strong> Your user ID must not be liable to mislead and must comply with the content rules set out in Section 14; you must not use your account or user ID for or in connection with the impersonation of any person. </p>
+        <p>  <strong>7.3</strong> You must keep your password confidential.</p>
+        <p>  <strong>7.4</strong> You must notify us in writing immediately if you become aware of any disclosure of your password.</p>
+        <p>  <strong>7.5</strong> You are responsible for any activity on our website arising out of any failure to keep your password confidential, and may be held liable for any losses arising out of such a failure.</p>
+        <h2 id="8-cancellation-and-suspension-of-account">8. Cancellation and suspension of account</h2>
+        <p>  <strong>8.1</strong> We may:</p>
+        <p>  (a) suspend your account;</p>
+        <p>  (b) cancel your account; and/or</p>
+        <p>  (c) edit your account details,</p>
+        <p>  at any time in our sole discretion without notice or explanation, providing that if we cancel any services you have paid for and you have not breached these terms and conditions, we will give you advance notice of any such cancellation.</p>
+        <p>  <strong>8.2</strong> You may cancel your account on our website by contacting us. You will not be entitled to any refund if you cancel your account in accordance with this Section 8.2.</p>
+        <h2 id="9-directory">9. Directory</h2>
+        <p>  <strong>9.1</strong> We welcome submissions to the directory published on our website.</p>
+        <p>  <strong>9.2</strong> Each submission to our directory must be a listing in respect of a job intended for people who primarily work remotely rather than on-site in your office.</p>
+        <p>  <strong>9.3</strong> For the avoidance of doubt, your directory submissions constitute &quot;your content&quot; for the purposes of Section 13 and Section 14, and must comply with the acceptable use rules set out in Section 4.</p>
+        <h2 id="10-paid-directory-listings">10. Paid directory listings</h2>
+        <p>  <strong>10.1</strong> You may submit a paid listing to our directory by following the links to post a job on our website.</p>
+        <p>  <strong>10.2</strong> You will have the opportunity to identify and correct input errors prior to making your order by contacting us with any changes.</p>
+        <p>  <strong>10.3</strong> Paid submissions include the following benefits: your listing is publicly viewable on our site and indexable by search engines.</p>
+        <p>  <strong>10.4</strong> If we accept a paid directory submission, it will remain published on our website for the relevant period specified on our website, subject to termination or deletion in accordance with these terms and conditions.</p>
+        <p>  <strong>10.5</strong> We may delete a paid directory listing at any time, providing that if we delete a paid listing in accordance with this Section 10.5 before the end of the period in respect of which listing fees have been paid, we provide you with advance notice of such a deletion.</p>
+        <h2 id="11-prohibited-directory-submissions">11. Prohibited directory submissions</h2>
+        <p>  <strong>11.1</strong> Without prejudice to our other rights under these terms and conditions, we reserve the right to reject or delete submissions that breach these terms and conditions, or that do not meet the additional guidelines for submissions published on our website.</p>
+        <p>  <strong>11.2</strong> If we reject or delete a submission in accordance with this Section 11, we will not refund any applicable charges.</p>
+        <h2 id="12-fees">12. Fees</h2>
+        <p>  <strong>12.1</strong> The fees in respect of our website services will be as set out on the website from time to time.</p>
+        <p>  <strong>12.2</strong> All amounts stated in these terms and conditions or on our website are in US dollars ($) are thus outside of VAT scope.</p>
+        <p>  <strong>12.3</strong> You must pay to us the fees in respect of our website services in advance, in cleared funds, in accordance with any instructions on our website.</p>
+        <p>  <strong>12.4</strong> We may vary fees from time to time by posting new fees on our website, but this will not affect fees for services that have been previously paid.</p>
+        <p>  <strong>12.5</strong> If you dispute any payment made to us, you must contact us immediately and provide full details of your claim.</p>
+        <p>  <strong>12.6</strong> If you make an unjustified credit card, debit card or other charge-back then you will be liable to pay us, within 7 days following the date of our written request: </p>
+        <p>  (a) an amount equal to the amount of the charge-back;</p>
+        <p>  (b) all third party expenses incurred by us in relation to the charge-back (including charges made by our or your bank or payment processor or card issuer);</p>
+        <p>  (c) an administration fee of GBP 25.00 including VAT; and</p>
+        <p>  (d) all our reasonable costs, losses and expenses incurred in recovering the amounts referred to in this Section 12.6 (including without limitation legal fees and debt collection fees),</p>
+        <p>  and for the avoidance of doubt, if you fail to recognise or fail to remember the source of an entry on your card statement or other financial statement, and make a charge-back as a result, this will constitute an unjustified charge-back for the purposes of this Section 12.6.</p>
+        <p>  <strong>12.7</strong> If you owe us any amount under or relating to these terms and conditions, we may suspend or withdraw the provision of services to you.</p>
+        <p>  <strong>12.8</strong> We may at any time set off any amount that you owe to us against any amount that we owe to you, by sending you written notice of the set-off.</p>
+        <h2 id="13-your-content-licence">13. Your content: licence</h2>
+        <p>  <strong>13.1</strong> In these terms and conditions, &quot;your content&quot; means all works and materials (including without limitation text, graphics, images, audio material, video material, audio-visual material, scripts, software and files) that you submit to us or our website for storage or publication on, processing by, or transmission via, our website.</p>
+        <p>  <strong>13.2</strong> You grant to us a worldwide, irrevocable, non-exclusive, royalty-free licence to use, reproduce, store, adapt, publish, translate and distribute your content in any existing or future media, reproduce, store and publish your content on and in relation to this website and any successor website.</p>
+        <p>  <strong>13.3</strong> You grant to us the right to sub-license the rights licensed under Section 13.2.</p>
+        <p>  <strong>13.4</strong> You grant to us the right to bring an action for infringement of the rights licensed under Section 13.2.</p>
+        <p>  <strong>13.5</strong> You hereby waive all your moral rights in your content to the maximum extent permitted by applicable law; and you warrant and represent that all other moral rights in your content have been waived to the maximum extent permitted by applicable law.</p>
+        <p>  <strong>13.6</strong> You may edit your content to the extent permitted by contacting us with your desired edits.</p>
+        <p>  <strong>13.7</strong> Without prejudice to our other rights under these terms and conditions, if you breach any provision of these terms and conditions in any way, or if we reasonably suspect that you have breached these terms and conditions in any way, we may delete, unpublish or edit any or all of your content.</p>
+        <h2 id="14-your-content-rules">14. Your content: rules</h2>
+        <p>  <strong>14.1</strong> You warrant and represent that your content will comply with these terms and conditions.</p>
+        <p>  <strong>14.2</strong> Your content must not be illegal or unlawful, must not infringe any person&#39;s legal rights, and must not be capable of giving rise to legal action against any person (in each case in any jurisdiction and under any applicable law).</p>
+        <p>  <strong>14.3</strong> Your content, and the use of your content by us in accordance with these terms and conditions, must not:</p>
+        <p>  (a) be libellous or maliciously false;</p>
+        <p>  (b) be obscene or indecent;</p>
+        <p>  (c) infringe any copyright, moral right, database right, trade mark right, design right, right in passing off, or other intellectual property right;</p>
+        <p>  (d) infringe any right of confidence, right of privacy or right under data protection legislation;</p>
+        <p>  (e) constitute negligent advice or contain any negligent statement;</p>
+        <p>  (f) constitute an incitement to commit a crime[, instructions for the commission of a crime or the promotion of criminal activity];</p>
+        <p>  (g) be in contempt of any court, or in breach of any court order;</p>
+        <p>  (h) be in breach of racial or religious hatred or discrimination legislation;</p>
+        <p>  (i) be blasphemous;</p>
+        <p>  (j) be in breach of official secrets legislation;</p>
+        <p>  (k) be in breach of any contractual obligation owed to any person;</p>
+        <p>  (l) depict violence, in an explicit, graphic or gratuitous manner;</p>
+        <p>  (m) be pornographic, lewd, suggestive or sexually explicit;</p>
+        <p>  (n) be untrue, false, inaccurate or misleading;</p>
+        <p>  (o) consist of or contain any instructions, advice or other information which may be acted upon and could, if acted upon, cause illness, injury or death, or any other loss or damage;</p>
+        <p>  (p) constitute spam;</p>
+        <p>  (q) be offensive, deceptive, fraudulent, threatening, abusive, harassing, anti-social, menacing, hateful, discriminatory or inflammatory; or</p>
+        <p>  (r) cause annoyance, inconvenience or needless anxiety to any person.</p>
+        <p>  <strong>14.4</strong> Your content must be appropriate, civil and tasteful, and accord with generally accepted standards of etiquette and behaviour on the internet.</p>
+        <p>  <strong>14.5</strong> You must not use our website to link to any website or web page consisting of or containing material that would, were it posted on our website, breach the provisions of these terms and conditions.</p>
+        <p>  <strong>14.6</strong> You must not submit to our website any material that is or has ever been the subject of any threatened or actual legal proceedings or other similar complaint.</p>
+        <h2 id="15-report-abuse">15. Report abuse</h2>
+        <p>  <strong>15.1</strong> If you learn of any unlawful material or activity on our website, or any material or activity that breaches these terms and conditions, please let us know.</p>
+        <p>  <strong>15.2</strong> You can let us know by email.</p>
+        <h2 id="16-limited-warranties">16. Limited warranties</h2>
+        <p>  <strong>16.1</strong> We do not warrant or represent:</p>
+        <p>  (a) the completeness or accuracy of the information published on our website;</p>
+        <p>  (b) that the material on the website is up to date; or</p>
+        <p>  (c) that the website or any service on the website will remain available.</p>
+        <p>  <strong>16.2</strong> We reserve the right to discontinue or alter any or all of our website services, and to stop publishing our website, at any time in our sole discretion without notice or explanation; and save to the extent that these terms and conditions expressly provide otherwise, you will not be entitled to any compensation or other payment upon the discontinuance or alteration of any website services, or if we stop publishing the website.</p>
+        <p>  <strong>16.3</strong> To the maximum extent permitted by applicable law and subject to Section 17.1, we exclude all representations and warranties relating to the subject matter of these terms and conditions, our website and the use of our website.</p>
+        <h2 id="17-limitations-and-exclusions-of-liability">17. Limitations and exclusions of liability</h2>
+        <p>  <strong>17.1</strong> Nothing in these terms and conditions will:</p>
+        <p>  (a) limit or exclude any liability for death or personal injury resulting from negligence;</p>
+        <p>  (b) limit or exclude any liability for fraud or fraudulent misrepresentation;</p>
+        <p>  (c) limit any liabilities in any way that is not permitted under applicable law; or</p>
+        <p>  (d) exclude any liabilities that may not be excluded under applicable law.
+        17.2  The limitations and exclusions of liability set out in this Section 17 and elsewhere in these terms and conditions: </p>
+        <ul>
+        <li>(a) are subject to Section 17.1; and</li>
+        <li><p>(b) govern all liabilities arising under these terms and conditions or relating to the subject matter of these terms and conditions, including liabilities arising in contract, in tort (including negligence) and for breach of statutory duty.</p>
+        <p><strong>17.3</strong> To the extent that our website and the information and services on our website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
+        <p><strong>17.4</strong> We will not be liable to you in respect of any losses arising out of any event or events beyond our reasonable control.</p>
+        <p><strong>17.5</strong> We will not be liable to you in respect of any business losses, including (without limitation) loss of or damage to profits, income, revenue, use, production, anticipated savings, business, contracts, commercial opportunities or goodwill.</p>
+        <p><strong>17.6</strong> We will not be liable to you in respect of any loss or corruption of any data, database or software.</p>
+        <p><strong>17.7</strong> We will not be liable to you in respect of any special, indirect or consequential loss or damage.</p>
+        <p><strong>17.8</strong> You accept that we have an interest in limiting the personal liability of our officers and employees and, having regard to that interest, you acknowledge that we are a limited liability entity; you agree that you will not bring any claim personally against our officers or employees in respect of any losses you suffer in connection with the website or these terms and conditions (this will not, of course, limit or exclude the liability of the limited liability entity itself for the acts and omissions of our officers and employees).</p>
+        <p><strong>17.9</strong> Our aggregate liability to you in respect of any contract to provide services to you under these terms and conditions shall not exceed the greater of:</p>
+        <p>(a) $1, and;
+        (b) the total amount paid and payable to us under the contract.</p>
+        <h2 id="18-indemnity">18. Indemnity</h2>
+        <p><strong>18.1</strong> You hereby indemnify us, and undertake to keep us indemnified, against any and all losses, damages, costs, liabilities and expenses (including without limitation legal expenses and any amounts paid by us to a third party in settlement of a claim or dispute) incurred or suffered by us and arising directly or indirectly out of:</p>
+        <p>(a) any breach by you of any provision of these terms and conditions; or</p>
+        <p>(b) your use of our website.</p>
+        <h2 id="19-breaches-of-these-terms-and-conditions">19. Breaches of these terms and conditions</h2>
+        <p><strong>19.1</strong> Without prejudice to our other rights under these terms and conditions, if you breach these terms and conditions in any way, or if we reasonably suspect that you have breached these terms and conditions in any way, we may: </p>
+        <p>(a) send you one or more formal warnings;</p>
+        <p>(b) temporarily suspend your access to our website;</p>
+        <p>(c) permanently prohibit you from accessing our website;</p>
+        <p>(d) block computers using your IP address from accessing our website;</p>
+        <p>(e) contact any or all your internet service providers and request that they block your access to our website;</p>
+        <p>(f) commence legal action against you, whether for breach of contract or otherwise; and/or</p>
+        <p>(g) suspend or delete your account on our website.</p>
+        <p><strong>19.2</strong> Where we suspend or prohibit or block your access to our website or a part of our website, you must not take any action to circumvent such suspension or prohibition or blocking (including without limitation creating and/or using a different account).</p>
+        <h2 id="20-third-party-websites">20. Third party websites</h2>
+        <p><strong>20.1</strong> Our website includes hyperlinks to other websites owned and operated by third parties; such hyperlinks are not recommendations.</p>
+        <p><strong>20.2</strong> We have no control over third party websites and their contents, and subject to Section 17.1 we accept no responsibility for them or for any loss or damage that may arise from your use of them.</p>
+        <h2 id="21-trade-marks">21. Trade marks</h2>
+        <p><strong>21.1</strong> No block no party limited, Kickback, our logos and our other registered and unregistered trade marks are trade marks belonging to us; we give no permission for the use of these trade marks, and such use may constitute an infringement of our rights.</p>
+        <p><strong>21.2</strong> The third party registered and unregistered trade marks or service marks on our website are the property of their respective owners and, unless stated otherwise in these terms and conditions, we do not endorse and are not affiliated with any of the holders of any such rights and as such we cannot grant any licence to exercise such rights.</p>
+        <h2 id="22-competitions">22. Competitions</h2>
+        <p><strong>22.1</strong> From time to time we may run competitions, free prize draws and/or other promotions on our website.</p>
+        <p><strong>22.2</strong> Competitions may be subject to separate terms and conditions (which we will make available to you as appropriate).</p>
+        <h2 id="23-variation">23. Variation</h2>
+        <p><strong>23.1</strong> We may revise these terms and conditions from time to time.</p>
+        <p><strong>23.2</strong> The revised terms and conditions will apply to the use of our website from the date of their publication on the website, and you hereby waive any right you may otherwise have to be notified of, or to consent to, revisions of the terms and conditions.</p>
+        <h2 id="24-assignment">24.  Assignment</h2>
+        <p><strong>24.1</strong> You hereby agree that we may assign, transfer, sub-contract or otherwise deal with our rights and/or obligations under these terms and conditions. </p>
+        <p><strong>24.2</strong> You may not without our prior written consent assign, transfer, sub-contract or otherwise deal with any of your rights and/or obligations under these terms and conditions. </p>
+        <h2 id="25-severability">25.  Severability</h2>
+        <p><strong>25.1</strong> If a provision of these terms and conditions is determined by any court or other competent authority to be unlawful and/or unenforceable, the other provisions will continue in effect.</p>
+        <p><strong>25.2</strong> If any unlawful and/or unenforceable provision of these terms and conditions would be lawful or enforceable if part of it were deleted, that part will be deemed to be deleted, and the rest of the provision will continue in effect. </p>
+        <h2 id="26-third-party-rights">26.  Third party rights</h2>
+        <p><strong>26.1</strong> These terms and conditions are for our benefit and your benefit, and are not intended to benefit or be enforceable by any third party.</p>
+        <p><strong>26.2</strong> The exercise of the parties&#39; rights under these terms and conditions is not subject to the consent of any third party.</p>
+        <h2 id="27-entire-agreement">27.  Entire agreement</h2>
+        <p><strong>27.1</strong>  Subject to Section 17.1, these terms and conditions, together with our <a href="/privacy">privacy and cookies policy</a>, constitute the entire agreement between you and us in relation to your use of our website and supersede all previous agreements between you and us in relation to your use of our website.</p>
+        <h2 id="28-law-and-jurisdiction">28. Law and jurisdiction</h2>
+        <p><strong>28.1</strong> These terms and conditions shall be governed by and construed in accordance with English law.</p>
+        <p><strong>28.2</strong> Any disputes relating to these terms and conditions shall be subject to the exclusive jurisdiction of the courts of England.</p>
+        <h2 id="29-statutory-and-regulatory-disclosures">29.  Statutory and regulatory disclosures</h2>
+        <p><strong>29.1</strong> We will not file a copy of these terms and conditions specifically in relation to each user or customer and, if we update these terms and conditions, the version to which you originally agreed will no longer be available on our website. We recommend that you consider saving a copy of these terms and conditions for future reference.</p>
+        <p><strong>29.2</strong> These terms and conditions are available in the English language only.</p>
+        <p><strong>29.3</strong> Our VAT number is .</p>
+        <h2 id="30-our-details">30.  Our details</h2>
+        <p><strong>30.1</strong> This website is owned and operated by No block no party limited.</p>
+        <p><strong>30.2</strong> We are registered in England and Wales under registration number 11471109, and our registered office is at 40 Bloomsbury Way, Lower Ground Floor, London, England, WC1A 2SE.</p>
+        <p><strong>30.4</strong> You can contact us by by email to hello@kickback.events.</p>
+        </li>
+        </ul>
+
+
+
 
         <h2>Refund policy</h2>
         <p>
