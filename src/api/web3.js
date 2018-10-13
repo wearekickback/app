@@ -7,88 +7,76 @@ import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
 
 let web3
-let networkId
-let networkError
+let networkState = {}
 
 export const events = new EventEmitter()
 
 const updateGlobalState = () => {
   getProvider().then(provider => {
-    provider.setNetworkState({
-      networkId,
-      networkError,
-    })
+    provider.setNetworkState({ ...networkState })
   })
-}
-
-
-function setNetworkId (id) {
-  networkId = id
-  updateGlobalState()
-}
-
-function setNetworkError(msg) {
-  networkError = msg
-  updateGlobalState()
 }
 
 async function getWeb3() {
   if (!web3) {
+    networkState = {}
+
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
     if (window.web3 && window.web3.currentProvider) {
       web3 = new Web3(window.web3.currentProvider)
+      networkState.readOnly = false
     } else {
       console.log('No web3 instance injected. Falling back to Infura')
-      if (NETWORK) {
-        web3 = new Web3(`https://${NETWORK}.infura.io/`)
-      } else {
-        console.log('No network specified in config, Falling back to mainnet.')
-        web3 = new Web3(`https://mainnet.infura.io/`)
-      }
+      web3 = new Web3(`https://${NETWORK}.infura.io/`)
+      networkState.readOnly = true
     }
 
     try {
-      setNetworkId(`${await web3.eth.net.getId()}`)
+      networkState.networkId = `${await web3.eth.net.getId()}`
     } catch (e) {
-      setNetworkError(`You are not connected to the Ethereum network`)
       web3 = null
-      throw e
     }
 
-    try {
+    if (networkState.networkId) {
       switch (NETWORK) {
         case 'ropsten': {
-          if (networkId !== '3') {
-            throw new Error('You are viewing events on Ropsten, but you are connected to a different network!')
+          if (networkState.networkId !== '3') {
+            networkState.shouldBeOnNetwork = 'Ropsten'
           }
           break
         }
         case 'mainnet': {
-          if (networkId !== '1') {
-            throw new Error('You are viewing events on Mainnet, but you are connected to a different network!')
+          if (networkState.networkId !== '1') {
+            networkState.shouldBeOnNetwork = 'Mainnet'
           }
           break
         }
         default:
           break
       }
-    } catch (e) {
-      setNetworkError(e.message)
-      web3 = null
-      throw e
+
+      if (networkState.shouldBeOnNetwork) {
+        web3 = null
+      }
     }
 
-    if (web3) {
-      // poll for blocks
-      setInterval(async () => {
-        try {
-          const block = await web3.eth.getBlock('latest')
-          events.emit(NEW_BLOCK, block)
-        } catch (__) {
-          /* nothing to do */
-        }
-      }, 10000)
+    // update global state with current network state
+    updateGlobalState()
+
+    // if web3 not set then something failed
+    if (!web3) {
+      throw new Error('Error getting web3 setup')
     }
+
+    // poll for blocks
+    setInterval(async () => {
+      try {
+        const block = await web3.eth.getBlock('latest')
+        events.emit(NEW_BLOCK, block)
+      } catch (__) {
+        /* nothing to do */
+      }
+    }, 10000)
   }
 
   return web3
@@ -96,7 +84,7 @@ async function getWeb3() {
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
-  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkId].address
+  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkState.networkId].address
 }
 
 export async function getTransactionReceipt(txHash) {

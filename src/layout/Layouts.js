@@ -21,9 +21,19 @@ const DefaultLayout = ({ children }) => {
     <Fragment>
       <Header />
       <GlobalConsumer>
-        {({ networkState: { networkError } }) => (
-          networkError ? <ErrorBox>{`${networkError}`}</ErrorBox> : null
-        )}
+        {({ networkState: { networkId, shouldBeOnNetwork, readOnly } }) => {
+          let content
+
+          if (shouldBeOnNetwork && networkId) {
+            content = `You are viewing events on ${shouldBeOnNetwork} but your browser is connected to a different Ethereum network.`
+          } else {
+            if (readOnly || !networkId) {
+              content = `Your browser is not connected to the Ethereum network, so you will not be able to sign in or interact with events.`
+            }
+          }
+
+          return content ? <ErrorBox>{content}</ErrorBox> : null
+        }}
       </GlobalConsumer>
       <Container>
         <ContainerInner>{children}</ContainerInner>
