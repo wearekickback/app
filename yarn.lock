@@ -1348,9 +1348,9 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@noblocknoparty/contracts@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-0.16.0.tgz#79d9aa9f4a40074f48ddc897b5fb4ad92f9adc74"
+"@noblocknoparty/contracts@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-1.0.0.tgz#7c6b42be4b8f7674c090b8430a3c5306b387f90d"
 
 "@nodelib/fs.stat@^1.0.1":
   version "1.1.2"

@@ -209,7 +209,7 @@ export class ChainMutationButton extends Component {
     const tip = tooltip || 'Please sign the created transaction using your wallet or Dapp browser'
 
     return (
-      <div>
+      <>
         <Button
           {...props}
           ref={this._onRef}
@@ -225,7 +225,7 @@ export class ChainMutationButton extends Component {
           />
         </Button>
         {after}
-      </div>
+      </>
     )
   }
 }

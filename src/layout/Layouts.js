@@ -4,7 +4,7 @@ import styled from 'react-emotion'
 import Header from './Header'
 import Footer from './Footer'
 import ErrorBox from '../components/ErrorBox'
-import { getNetworkError } from '../api/web3'
+import { GlobalConsumer } from '../GlobalState'
 
 const Container = styled('main')`
   background: white;
@@ -17,12 +17,14 @@ const ContainerInner = styled('div')`
 `
 
 const DefaultLayout = ({ children }) => {
-  const networkError = getNetworkError()
-
   return (
     <Fragment>
       <Header />
-      {networkError ? <ErrorBox>{`${networkError}`}</ErrorBox> : null}
+      <GlobalConsumer>
+        {({ networkState: { networkError } }) => (
+          networkError ? <ErrorBox>{`${networkError}`}</ErrorBox> : null
+        )}
+      </GlobalConsumer>
       <Container>
         <ContainerInner>{children}</ContainerInner>
       </Container>

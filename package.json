@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@noblocknoparty/contracts": "^0.16.0",
+    "@noblocknoparty/contracts": "^1.0.0",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",
     "apollo-link": "^1.2.3",
