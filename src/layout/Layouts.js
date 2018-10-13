@@ -4,7 +4,7 @@ import styled from 'react-emotion'
 import Header from './Header'
 import Footer from './Footer'
 import ErrorBox from '../components/ErrorBox'
-import { getNetworkError } from '../api/web3'
+import { GlobalConsumer } from '../GlobalState'
 
 const Container = styled('main')`
   background: white;
@@ -17,12 +17,24 @@ export const ContainerInner = styled('div')`
 `
 
 const DefaultLayout = ({ children }) => {
-  const networkError = getNetworkError()
-
   return (
     <Fragment>
       <Header />
-      {networkError ? <ErrorBox>{`${networkError}`}</ErrorBox> : null}
+      <GlobalConsumer>
+        {({ networkState: { networkId, shouldBeOnNetwork, readOnly } }) => {
+          let content
+
+          if (shouldBeOnNetwork && networkId) {
+            content = `You are viewing events on ${shouldBeOnNetwork} but your browser is connected to a different Ethereum network.`
+          } else {
+            if (readOnly || !networkId) {
+              content = `Your browser is not connected to the Ethereum network, so you will not be able to sign in or interact with events.`
+            }
+          }
+
+          return content ? <ErrorBox>{content}</ErrorBox> : null
+        }}
+      </GlobalConsumer>
       <Container>
         <ContainerInner>{children}</ContainerInner>
       </Container>

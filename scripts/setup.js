@@ -5,6 +5,8 @@ const path = require('path')
 const fs = require('fs')
 const { argv } = require('yargs')
 
+const getGitCommit = () => spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
+
 const projectDir = path.join(__dirname, '..')
 
 // ensure env.json is valid!
@@ -25,7 +27,11 @@ if (undefined === appConfig.NUM_CONFIRMATIONS) {
 if (argv.dev) {
   appConfig.NETWORK = 'ropsten'
   appConfig.API_URL = 'https://dev.api.kickback.events'
-  appConfig.GIT_COMMIT = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
+  appConfig.GIT_COMMIT = getGitCommit()
+} else if (argv.live) {
+  appConfig.NETWORK = 'mainnet'
+  appConfig.API_URL = 'https://live.api.kickback.events'
+  appConfig.GIT_COMMIT = getGitCommit()
 }
 
 const str = JSON.stringify(appConfig, null, 2)

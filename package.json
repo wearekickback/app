@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@noblocknoparty/contracts": "^0.16.0",
+    "@noblocknoparty/contracts": "^1.0.1",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",
     "apollo-link": "^1.2.3",
@@ -29,6 +29,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.0-next.a671462c",
+    "react-tooltip": "^3.9.0",
     "truffle": "^5.0.0-beta.0",
     "web3": "^1.0.0-beta.36",
     "web3-utils": "^1.0.0-beta.36"
@@ -37,7 +38,9 @@
     "setup": "scripts/setup.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:dev": "yarn setup --dev && react-scripts build",
+    "build:release:dev": "yarn setup --dev && react-scripts build",
+    "build:release:live": "yarn setup --live && react-scripts build",
+    "build:release": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn build:release:live; else yarn build:release:dev; fi'",
     "predeploy": "cp build/index.html build/200.html",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

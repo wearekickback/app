@@ -12,7 +12,8 @@ import './globalStyles'
 
 
 window.addEventListener('load', async () => {
-  setupWeb3()
+  setupWeb3().catch(_ => {})
+
   ReactDOM.render(
     <ApolloProvider client={clientInstance}>
       <GlobalProvider>

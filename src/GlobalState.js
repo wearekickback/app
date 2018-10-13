@@ -30,7 +30,8 @@ class Provider extends Component {
   state = {
     apolloClient: this.props.client,
     currentModal: null,
-    auth: LocalStorage.getItem(AUTH) || {}
+    auth: LocalStorage.getItem(AUTH) || {},
+    networkState: {},
   }
 
   authToken () {
@@ -156,6 +157,10 @@ class Provider extends Component {
     await this.signIn({ dontShowModal: true })
   }
 
+  setNetworkState = networkState => {
+    this.setState({ networkState })
+  }
+
   render() {
     return (
       <GlobalContext.Provider
@@ -163,6 +168,7 @@ class Provider extends Component {
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
           userProfile: this.state.auth.profile,
+          networkState: this.state.networkState,
           loggedIn: this.isLoggedIn(),
           toggleModal: this.toggleModal,
           signIn: this.signIn,

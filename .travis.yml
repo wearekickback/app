@@ -5,8 +5,9 @@ cache: yarn
 branches:
   only:
     - dev
+    - master
 script:
-  - yarn build:dev
+  - yarn build:release
   - yarn predeploy
 deploy:
   skip_cleanup: true
@@ -15,6 +16,13 @@ deploy:
   domain: dev.kickback.events
   on:
     branch: dev
+deploy:
+  skip_cleanup: true
+  provider: surge
+  project: ./build/
+  domain: live.kickback.events
+  on:
+    branch: master
 notifications:
   email:
     - dev-notifications@noblockno.party

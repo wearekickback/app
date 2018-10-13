@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 
 function getButtonStyles(type) {
@@ -66,8 +66,12 @@ const ButtonContainer = styled('button')`
   ${({ type }) => getButtonStyles(type)};
 `
 
-const Button = ({ children, ...props }) => (
-  <ButtonContainer {...props}>{children}</ButtonContainer>
-)
+export default class Button extends PureComponent {
+  render () {
+    const { children, ...props } = this.props
 
-export default Button
+    return (
+      <ButtonContainer {...props}>{children}</ButtonContainer>
+    )
+  }
+}

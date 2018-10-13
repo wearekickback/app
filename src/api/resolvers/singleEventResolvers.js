@@ -124,7 +124,7 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
       try {
-        const tx = await contract.register('').send({
+        const tx = await contract.register().send({
           from: account,
           value: deposit,
           gas: 1000000
