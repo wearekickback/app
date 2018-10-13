@@ -5,6 +5,7 @@ cache: yarn
 branches:
   only:
     - dev
+    - master
 script:
   - yarn build:release
   - yarn predeploy
