@@ -141,11 +141,13 @@ class Terms extends Component {
         <p>  (a) limit or exclude any liability for death or personal injury resulting from negligence;</p>
         <p>  (b) limit or exclude any liability for fraud or fraudulent misrepresentation;</p>
         <p>  (c) limit any liabilities in any way that is not permitted under applicable law; or</p>
-        <p>  (d) exclude any liabilities that may not be excluded under applicable law.
-        17.2  The limitations and exclusions of liability set out in this Section 17 and elsewhere in these terms and conditions: </p>
+        <p>  (d) exclude any liabilities that may not be excluded under applicable law.</p>
+        <p> <strong>17.2</strong>The limitations and exclusions of liability set out in this Section 17 and elsewhere in these terms and conditions: </p>
         <ul>
         <li>(a) are subject to Section 17.1; and</li>
         <li><p>(b) govern all liabilities arising under these terms and conditions or relating to the subject matter of these terms and conditions, including liabilities arising in contract, in tort (including negligence) and for breach of statutory duty.</p>
+        </li>
+        </ul>
         <p><strong>17.3</strong> To the extent that our website and the information and services on our website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
         <p><strong>17.4</strong> We will not be liable to you in respect of any losses arising out of any event or events beyond our reasonable control.</p>
         <p><strong>17.5</strong> We will not be liable to you in respect of any business losses, including (without limitation) loss of or damage to profits, income, revenue, use, production, anticipated savings, business, contracts, commercial opportunities or goodwill.</p>
@@ -203,11 +205,6 @@ class Terms extends Component {
         <p><strong>30.1</strong> This website is owned and operated by No block no party limited.</p>
         <p><strong>30.2</strong> We are registered in England and Wales under registration number 11471109, and our registered office is at 40 Bloomsbury Way, Lower Ground Floor, London, England, WC1A 2SE.</p>
         <p><strong>30.4</strong> You can contact us by by email to hello@kickback.events.</p>
-        </li>
-        </ul>
-
-
-
 
         <h2>Refund policy</h2>
         <p>
