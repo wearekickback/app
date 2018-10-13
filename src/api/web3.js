@@ -2,9 +2,11 @@ import { Deployer } from '@noblocknoparty/contracts'
 import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
 
-import { DEPLOYER_CONTRACT_ADDRESS, NETWORK } from '../config'
+import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
 import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
+import { clientInstance } from '../graphql'
+import { NetworkIdQuery } from '../graphql/queries'
 
 let web3
 let networkState = {}
@@ -17,66 +19,77 @@ const updateGlobalState = () => {
   })
 }
 
+const getNetworkName = id => {
+  switch (id) {
+    case '1':
+      return 'Mainnet'
+    case '3':
+      return 'Ropsten'
+    default:
+      return 'Local/Private'
+  }
+}
+
+const getNetworkProviderUrl = id => {
+  switch (id) {
+    case '1':
+      return `https:/mainnet.infura.io/`
+    case '3':
+      return `https:/ropsten.infura.io/`
+    default:
+      throw new Error(`Cannot connect to unsupported network: ${id}`)
+  }
+}
+
 async function getWeb3() {
   if (!web3) {
-    networkState = {}
-
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    if (window.web3 && window.web3.currentProvider) {
-      web3 = new Web3(window.web3.currentProvider)
-      networkState.readOnly = false
-    } else {
-      console.log('No web3 instance injected. Falling back to Infura')
-      web3 = new Web3(`https://${NETWORK}.infura.io/`)
-      networkState.readOnly = true
-    }
-
     try {
-      networkState.networkId = `${await web3.eth.net.getId()}`
-    } catch (e) {
-      web3 = null
-    }
+      networkState = {}
 
-    if (networkState.networkId) {
-      switch (NETWORK) {
-        case 'ropsten': {
-          if (networkState.networkId !== '3') {
-            networkState.shouldBeOnNetwork = 'Ropsten'
-          }
-          break
-        }
-        case 'mainnet': {
-          if (networkState.networkId !== '1') {
-            networkState.shouldBeOnNetwork = 'Mainnet'
-          }
-          break
-        }
-        default:
-          break
+      const result = await clientInstance.query({ query: NetworkIdQuery })
+      if (result.error) {
+        throw new Error(result.error)
+      }
+      networkState.expectedNetworkId = result.data.networkId
+
+      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+      if (window.web3 && window.web3.currentProvider) {
+        web3 = new Web3(window.web3.currentProvider)
+        networkState.readOnly = false
+      } else {
+        console.log('No web3 instance injected. Falling back to cloud provider.')
+        web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
+        networkState.readOnly = true
       }
 
-      if (networkState.shouldBeOnNetwork) {
+      networkState.networkId = `${await web3.eth.net.getId()}`
+
+      if (networkState.networkId !== networkState.expectedNetworkId) {
+        networkState.shouldBeOnNetwork = getNetworkName(networkState.expectedNetworkId)
         web3 = null
       }
-    }
 
-    // update global state with current network state
-    updateGlobalState()
-
-    // if web3 not set then something failed
-    if (!web3) {
-      throw new Error('Error getting web3 setup')
-    }
-
-    // poll for blocks
-    setInterval(async () => {
-      try {
-        const block = await web3.eth.getBlock('latest')
-        events.emit(NEW_BLOCK, block)
-      } catch (__) {
-        /* nothing to do */
+      // if web3 not set then something failed
+      if (!web3) {
+        throw new Error('Error setting up web3')
       }
-    }, 10000)
+
+      // poll for blocks
+      setInterval(async () => {
+        try {
+          const block = await web3.eth.getBlock('latest')
+          events.emit(NEW_BLOCK, block)
+        } catch (__) {
+          /* nothing to do */
+        }
+      }, 10000)
+    } catch (err) {
+      console.warn(err)
+      web3 = null
+    } finally {
+      // update global state with current network state
+      updateGlobalState()
+    }
   }
 
   return web3
@@ -84,7 +97,7 @@ async function getWeb3() {
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
-  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkState.networkId].address
+  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkState.expectedNetworkId].address
 }
 
 export async function getTransactionReceipt(txHash) {
