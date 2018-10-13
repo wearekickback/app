@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { Link as DefaultLink } from 'react-router-dom'
 
 import { GlobalConsumer } from '../GlobalState'
-import LogoIconDefault from '../components/Icons/Logo'
+import Logo from '../components/Icons/LogoFull'
 import Button from '../components/Forms/Button'
 import ReverseResolution from '../components/ReverseResolution'
 import Avatar from '../components/User/Avatar'
@@ -26,24 +25,6 @@ const HeaderInner = styled('div')`
   align-items: center;
 `
 
-const Link = styled(DefaultLink)`
-  display: flex;
-  align-items: center;
-`
-
-const LogoIcon = styled(LogoIconDefault)`
-  margin-right: 5px;
-`
-
-const Logo = styled('h1')`
-  margin: 0;
-  font-size: 22px;
-
-  a {
-    font-family: Muli;
-    color: white;
-  }
-`
 const RightBar = styled('div')`
   display: flex;
   align-items: center;
@@ -68,12 +49,7 @@ const AccountAddress = styled('div')`
 const Header = () => (
   <HeaderContainer>
     <HeaderInner>
-      <Logo>
-        <Link to="/">
-          <LogoIcon />
-          Kickback
-        </Link>
-      </Logo>
+      <Logo />
       <RightBar>
         <GlobalConsumer>
           {({ userAddress, userProfile, loggedIn, signIn }) => {
@@ -98,7 +74,9 @@ const Header = () => (
             ) : (
               <GlobalConsumer>
                 {({ toggleModal }) => (
-                  <Button type="light" onClick={signIn}>Sign in</Button>
+                  <Button type="light" onClick={signIn}>
+                    Sign in
+                  </Button>
                 )}
               </GlobalConsumer>
             )
