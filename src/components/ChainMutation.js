@@ -165,10 +165,10 @@ export const ChainMutationResult = ({ children, result }) => {
 
 export class ChainMutationButton extends Component {
   componentDidUpdate () {
-    const { result: { loading } } = this.props
+    const { result: { loading, progress } } = this.props
 
     if (this.btn) {
-      if (loading) {
+      if (loading || progress) {
         ReactTooltip.show(findDOMNode(this.btn))
       } else {
         ReactTooltip.hide(findDOMNode(this.btn))

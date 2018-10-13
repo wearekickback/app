@@ -61,6 +61,7 @@ class SingleEventWrapper extends Component {
               query={PartyQuery}
               variables={{ address }}
               fetchPolicy="cache-and-network"
+              pollInterval={60000}
             >
               {({ data: { party } }) => {
                 // no party?
