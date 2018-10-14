@@ -9,7 +9,7 @@ class Home extends Component {
   render() {
     return (
       <>
-        <h2>All parties</h2>
+        <h2>All events</h2>
         <SafeQuery query={AllPartiesQuery}>
           {({ data: { parties } }) => {
             return parties ? (
