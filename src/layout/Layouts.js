@@ -21,11 +21,11 @@ const DefaultLayout = ({ children }) => {
     <Fragment>
       <Header />
       <GlobalConsumer>
-        {({ networkState: { networkId, shouldBeOnNetwork, readOnly } }) => {
+        {({ networkState: { networkId, expectedNetworkId, shouldBeOnNetwork, readOnly } }) => {
           let content
 
           if (shouldBeOnNetwork && networkId) {
-            content = `You are viewing events on ${shouldBeOnNetwork} but your browser is connected to a different Ethereum network.`
+            content = `You are viewing events on ${shouldBeOnNetwork} (${expectedNetworkId}) but your browser is connected to a different Ethereum network (${networkId}).`
           } else {
             if (readOnly || !networkId) {
               content = `Your browser is not connected to the Ethereum network, so you will not be able to sign in or interact with events.`

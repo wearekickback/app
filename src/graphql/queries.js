@@ -2,13 +2,12 @@ import gql from 'graphql-tag'
 
 import { ProfileFields, PartyFields } from './fragments'
 
-export const EthersQuery = gql`
-  query ethers {
-    ethers @client {
-      ethers
-    }
+export const NetworkIdQuery = gql`
+  query getNetworkId {
+    networkId: networkId
   }
 `
+
 
 export const UserProfileQuery = gql`
   ${ProfileFields}
