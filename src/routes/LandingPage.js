@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import svg from '../assets/heroBackground.svg'
+import backgroundDark from '../assets/backgroundDark.svg'
+import backgroundLight from '../assets/backgroundLight.svg'
 import Logo from '../components/Icons/LogoFull'
 import { ContainerInner } from '../layout/Layouts'
 import LaptopPng from '../assets/laptop.png'
+import { ButtonLink } from '../components/Forms/Button'
 import { ReactComponent as EventIllustration } from '../assets/eventIllustration.svg'
 import { ReactComponent as RSVPIllustration } from '../assets/rsvpIllustration.svg'
 import { ReactComponent as OrganiserIllustration } from '../assets/organiserIllustration.svg'
@@ -11,12 +13,12 @@ import { ReactComponent as ParticipantsIllustration } from '../assets/participan
 import { ReactComponent as SponsorsIllustration } from '../assets/sponsorsIllustration.svg'
 
 const Hero = styled('section')`
-  background: url(${svg});
+  background: url(${backgroundDark});
   height: 600px;
   background-size: cover;
   padding-top: 20px;
   padding: 20px 20px 0;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
 
   h3 {
     opacity: 0.75;
@@ -67,10 +69,103 @@ const Section = styled('section')`
   max-width: 1200px;
   margin: 100px auto 0;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 150px;
 `
 
 const SectionContent = styled('div')`
   max-width: 450px;
+  padding: 0 40px;
+
+  p {
+    font-family: Muli;
+    font-size: 16px;
+    color: #3d3f50;
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+`
+
+const Team = styled('section')`
+  margin-bottom: 200px;
+`
+
+const TeamInner = styled(ContainerInner)`
+  display: flex;
+  justify-content: center;
+`
+
+const Member = styled('div')`
+  margin: 0 20px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const MemberName = styled('a')`
+  font-weight: 700;
+  font-size: 18px;
+  color: #000000;
+  text-align: center;
+  line-height: 28px;
+  margin-bottom: 0;
+
+  &:hover {
+    color: #6e76ff;
+  }
+`
+
+const AvatarImg = styled('img')`
+  max-width: 100%;
+  display: block;
+`
+
+const AvatarContainer = styled('div')`
+  max-width: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+`
+
+const Avatar = ({ src }) => (
+  <AvatarContainer>
+    <AvatarImg src={src} />
+  </AvatarContainer>
+)
+
+const Bio = styled('p')`
+  font-size: 13px;
+  color: #3d3f50;
+  text-align: center;
+  line-height: 22px;
+`
+
+const CTA = styled('section')`
+  padding: 100px 0 0;
+  background: url(${backgroundLight});
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    font-family: Muli;
+    font-weight: 700;
+    font-size: 30px;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+
+  a {
+    margin-bottom: 30px;
+  }
+
+  p {
+    margin-top: 10px;
+    margin-bottom: 50px;
+    max-width: 420px;
+    text-align: center;
+  }
 `
 
 class Home extends Component {
@@ -154,6 +249,60 @@ class Home extends Component {
             </p>
           </SectionContent>
         </Section>
+        <Team>
+          <TeamInner>
+            <Member>
+              <Avatar src="https://avatars.io/twitter/makoto_inoue" />
+              <MemberName href="https://twitter.com/makoto_inoue">
+                Makoto Inoue
+              </MemberName>
+              <Bio>
+                The organiser of{' '}
+                <a href="https://www.meetup.com/london-ethereum-codeup/">
+                  London Ethereum Codeup
+                </a>{' '}
+                where he came up with the original idea of Kickback. Also works
+                at ENS as a smart contract developer.
+              </Bio>
+            </Member>
+            <Member>
+              <Avatar src="https://avatars.io/twitter/_jefflau" />
+              <MemberName href="https://twitter.com/_jefflau">
+                Jeff Lau
+              </MemberName>
+              <Bio>
+                Javascripter. Climber. Developer at{' '}
+                <a href="https://ens.domains">ENS</a>. Frontend mentor.
+                Distilling the complicated in simple ways.
+              </Bio>
+            </Member>
+            <Member>
+              <Avatar src="https://avatars.io/twitter/hiddentao" />
+              <MemberName href="https://twitter.com/hiddentao">
+                Ramesh Nair
+              </MemberName>
+              <Bio>
+                Full stack developer. Student of life. Former{' '}
+                <a href="https://ethereum.org">Ethereum</a>
+                Foundation coder.
+              </Bio>
+            </Member>
+          </TeamInner>
+        </Team>
+        <CTA>
+          <h2>Interested in hosting events on Kickback?</h2>
+          <p>
+            Once KickBack is ready, we would like to open up the platform to the
+            limited number of free event organisers.
+          </p>
+          <ButtonLink href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform">
+            Request early access
+          </ButtonLink>
+          <p>
+            Or just curious? Say hello to{' '}
+            <a href="mailto:hello@kickback.events">hello@kickback.events</a>
+          </p>
+        </CTA>
       </>
     )
   }

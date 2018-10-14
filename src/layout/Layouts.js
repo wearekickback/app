@@ -43,6 +43,11 @@ const DefaultLayout = ({ children }) => {
   )
 }
 
-export const HomePageLayout = ({ children }) => <Fragment>{children}</Fragment>
+export const HomePageLayout = ({ children }) => (
+  <Fragment>
+    {children}
+    <Footer />
+  </Fragment>
+)
 
 export default DefaultLayout
