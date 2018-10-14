@@ -17,7 +17,6 @@ let appConfig = {}
 // try loading from existing file
 try { appConfig = require(appConfigPath) } catch (_) { /* do nothing */ }
 
-appConfig.NETWORK = 'local'
 appConfig.API_URL = 'http://localhost:3001'
 
 if (undefined === appConfig.NUM_CONFIRMATIONS) {
@@ -25,11 +24,9 @@ if (undefined === appConfig.NUM_CONFIRMATIONS) {
 }
 
 if (argv.dev) {
-  appConfig.NETWORK = 'ropsten'
   appConfig.API_URL = 'https://dev.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 } else if (argv.live) {
-  appConfig.NETWORK = 'mainnet'
   appConfig.API_URL = 'https://live.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 }

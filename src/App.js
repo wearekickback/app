@@ -5,13 +5,14 @@ import {
   Switch
 } from 'react-router-dom'
 import DefaultLayout from './layout/Layouts'
-//import { HomePageLayout } from './layout/Layouts'
+import { HomePageLayout } from './layout/Layouts'
 
 import Home from './routes/Home'
 import CreatePendingEvent from './routes/CreatePendingEvent'
 import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
+import LandingPage from './routes/LandingPage'
 import Faq from './routes/Faq'
 import Privacy from './routes/Privacy'
 import Terms from './routes/Terms'
@@ -44,7 +45,13 @@ class App extends Component {
       <Fragment>
         <Router>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route
+              exact
+              path="/"
+              component={LandingPage}
+              layout={HomePageLayout}
+            />
+            <Route exact path="/events" component={Home} />
             <Route exact path="/event/:address" component={SingleEvent} />
             <Route path="/event/:address/admin" component={SingleEventAdmin} />
             <Route path="/create" component={CreatePendingEvent} />
