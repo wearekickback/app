@@ -47,11 +47,11 @@ const Links = styled('nav')`
 
 const Link = styled(DefaultLink)`
   color: white;
-  margin-right: 50px;
+  margin-right: 30px;
 
   ${mq.medium`
     margin-right: 0;
-    margin-left: 100px;
+    margin-left: 70px;
   `};
 `
 
@@ -97,6 +97,7 @@ class Footer extends Component {
             </ElevatorPitch>
             <Links>
               <Link to="/faq">FAQ</Link>
+              <Link to="/team">Team</Link>
               <Link to="/terms">Terms and conditions</Link>
               <Link to="/privacy">Privacy</Link>
             </Links>

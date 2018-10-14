@@ -13,6 +13,7 @@ import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import LandingPage from './routes/LandingPage'
+import Team from './routes/Team'
 import Faq from './routes/Faq'
 import Privacy from './routes/Privacy'
 import Terms from './routes/Terms'
@@ -61,6 +62,7 @@ class App extends Component {
               <Route path="/faq" component={Faq} />
               <Route path="/terms" component={Terms} />
               <Route path="/privacy" component={Privacy} />
+              <Route path="/team" component={Team} />
             </Switch>
           </ScrollToTop>
         </Router>

@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'react-emotion'
 
+import { ContainerInner } from '../layout/Layouts'
+import mq from '../mediaQuery'
+
 const Team = styled('section')`
   margin-bottom: 200px;
 `
@@ -61,8 +64,9 @@ const Bio = styled('p')`
   line-height: 22px;
 `
 
-const TeamDisplay = () => (
+const TeamMembers = () => (
   <Team>
+    <h1>The Kickback team</h1>
     <TeamInner>
       <Member>
         <Avatar src="https://avatars.io/twitter/makoto_inoue" />
@@ -103,4 +107,4 @@ const TeamDisplay = () => (
   </Team>
 )
 
-export default TeamDisplay
+export default TeamMembers
