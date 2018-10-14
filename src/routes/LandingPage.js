@@ -12,15 +12,19 @@ import { ReactComponent as OrganiserIllustration } from '../assets/organiserIllu
 import { ReactComponent as ParticipantsIllustration } from '../assets/participantsIllustration.svg'
 import { ReactComponent as SponsorsIllustration } from '../assets/sponsorsIllustration.svg'
 
+import mq from '../mediaQuery'
+
 const Hero = styled('section')`
   background: url(${backgroundDark});
   height: 600px;
   background-size: cover;
   padding-top: 20px;
   padding: 20px 20px 0;
-  margin-bottom: 200px;
+  margin-bottom: 50px;
 
-  h3 {
+  ${mq.medium`
+    margin-bottom: 200px;
+  `} h3 {
     opacity: 0.75;
     font-family: Muli;
     font-weight: 700;
@@ -67,10 +71,29 @@ const Laptop = styled('img')`
 const Section = styled('section')`
   display: flex;
   max-width: 1200px;
-  margin: 100px auto 0;
+  margin: 40px auto 0;
   justify-content: center;
   align-items: center;
-  margin-bottom: 150px;
+  margin-bottom: 50px;
+  flex-direction: column;
+  padding: 0 20px 0;
+  overflow: hidden;
+
+  svg {
+    order: 0;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  ${mq.medium`
+    margin: 100px auto 150px;
+    flex-direction: row;
+
+    svg {
+      order: initial;
+      margin-bottom: 0;
+    }
+  `};
 `
 
 const SectionContent = styled('div')`
@@ -84,6 +107,11 @@ const SectionContent = styled('div')`
     letter-spacing: 0;
     line-height: 24px;
   }
+
+  order: 2;
+  ${mq.medium`
+    order: initial
+  `};
 `
 
 const Team = styled('section')`
@@ -93,6 +121,12 @@ const Team = styled('section')`
 const TeamInner = styled(ContainerInner)`
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  ${mq.small`
+    flex-direction: row;
+  `};
 `
 
 const Member = styled('div')`
@@ -140,20 +174,33 @@ const Bio = styled('p')`
   line-height: 22px;
 `
 
-const CTA = styled('section')`
-  padding: 100px 0 0;
-  background: url(${backgroundLight});
-  height: 450px;
+const CTAInner = styled(ContainerInner)`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
 
+const CTA = styled('section')`
+  padding: 40px 20px 0;
+  background: url(${backgroundLight});
+  background-size: cover;
+  min-height: 450px;
+
+  ${mq.medium`
+    padding: 100px 20px 0;
+  `};
   h2 {
     font-family: Muli;
     font-weight: 700;
-    font-size: 30px;
+    font-size: 24px;
+    text-align: left;
     color: #000000;
     margin-bottom: 10px;
+
+    ${mq.medium`
+      text-align: center;
+      font-size: 30px;
+    `};
   }
 
   a {
@@ -283,25 +330,26 @@ class Home extends Component {
               </MemberName>
               <Bio>
                 Full stack developer. Student of life. Former{' '}
-                <a href="https://ethereum.org">Ethereum</a>
-                Foundation coder.
+                <a href="https://ethereum.org">Ethereum Foundation</a> coder.
               </Bio>
             </Member>
           </TeamInner>
         </Team>
         <CTA>
-          <h2>Interested in hosting events on Kickback?</h2>
-          <p>
-            Once KickBack is ready, we would like to open up the platform to the
-            limited number of free event organisers.
-          </p>
-          <ButtonLink href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform">
-            Request early access
-          </ButtonLink>
-          <p>
-            Or just curious? Say hello to{' '}
-            <a href="mailto:hello@kickback.events">hello@kickback.events</a>
-          </p>
+          <CTAInner>
+            <h2>Interested in hosting events on Kickback?</h2>
+            <p>
+              Once KickBack is ready, we would like to open up the platform to
+              the limited number of free event organisers.
+            </p>
+            <ButtonLink href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform">
+              Request early access
+            </ButtonLink>
+            <p>
+              Or just curious? Say hello to{' '}
+              <a href="mailto:hello@kickback.events">hello@kickback.events</a>
+            </p>
+          </CTAInner>
         </CTA>
       </>
     )

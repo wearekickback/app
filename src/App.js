@@ -44,18 +44,19 @@ class App extends Component {
       <Fragment>
         <Router>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route
+              exact
+              path="/"
+              component={LandingPage}
+              layout={HomePageLayout}
+            />
+            <Route exact path="/events" component={Home} />
             <Route exact path="/event/:address" component={SingleEvent} />
             <Route path="/event/:address/admin" component={SingleEventAdmin} />
             <Route path="/create" component={CreatePendingEvent} />
             <Route path="/deploy" component={DeployPendingEvent} />
             <Route path="/faq" component={Faq} />
             <Route path="/about" component={About} />
-            <Route
-              path="/landing"
-              component={LandingPage}
-              layout={HomePageLayout}
-            />
           </Switch>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />

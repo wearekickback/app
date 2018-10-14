@@ -5,6 +5,8 @@ import { H2 as DefaultH2 } from '../components/Typography/Basic'
 import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'
 import { ReactComponent as GithubIcon } from '../components/svg/github.svg'
 
+import mq from '../mediaQuery'
+
 const FooterContainer = styled('footer')`
   width: 100%;
   background-color: #6e76ff;
@@ -26,13 +28,31 @@ const Row = styled('section')`
   justify-content: space-between;
 `
 
+const MiddleRow = styled(Row)`
+  flex-direction: column;
+
+  ${mq.medium`
+    flex-direction: row;
+  `};
+`
+
 const Links = styled('nav')`
   display: flex;
+  margin-bottom: 50px;
+
+  ${mq.medium`
+  margin-bottom: 0;
+  `};
 `
 
 const Link = styled(DefaultLink)`
   color: white;
-  margin-left: 100px;
+  margin-right: 50px;
+
+  ${mq.medium`
+    margin-right: 0;
+    margin-left: 100px;
+  `};
 `
 
 const ElevatorPitch = styled('div')`
@@ -69,7 +89,7 @@ class Footer extends Component {
         <FooterInner>
           <H2>Get in touch</H2>
           <a href="mailto:hello@kickback.events">hello@kickback.events</a>
-          <Row>
+          <MiddleRow>
             <ElevatorPitch>
               Kickback helps event organisers guarantee a high participation
               rate at their events. Our service encourages attendees to treat
@@ -80,7 +100,7 @@ class Footer extends Component {
               <Link to="/team">Team</Link>
               <Link to="/faq">FAQ</Link>
             </Links>
-          </Row>
+          </MiddleRow>
           <Row>
             <Copyright>&copy; Kickback 2018</Copyright>
             <Social>
