@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
+import styled from 'react-emotion'
+
+const TermsDiv = styled('div')`
+  ul {
+    padding-left:2em;
+  }
+`
 
 class Terms extends Component {
   render() {
     return (
-      <div className="terms">
+      <TermsDiv>
         <h1>Terms and conditions for kickback.events</h1>
 
         <h2 id="1-introduction">1. Introduction</h2>
@@ -70,12 +77,12 @@ class Terms extends Component {
 
         <h2 id="9-refund-policy">9. Refund policy</h2>
         <p>
-            Kickback software requires that you commit a small amount when you RSVP to reserve your spot.
+            Kickback software requires that you commit a small payment when you RSVP to reserve your spot.
 Event attendance is determined by the event organisers or an event admin.
         </p>
 
-        <p>
-        Following the event
+        <div>
+        Following the event:
             <ul>
                 <li>
                     If the event organisers will check you in you will receive notification via email or twitter (based on your registration). Typically you have limited time window or “cooling period” (default is one week but the duration may vary) to withdraw your funds from the event smart contract. After the cooling period has passed, you acknowledge that you are not interested in retrieving your funds and the smart contract owner has the right to clear the remaining funds according to the rule specified in the smart contract.
@@ -84,7 +91,7 @@ Event attendance is determined by the event organisers or an event admin.
                     If the event organiser did not check you in, you will lose any funds you committed. These funds will be divided among the event attendees or they can be applied in other ways (charitable contribution, sponsorship of future events etc)
                 </li>
             </ul>
-        </p>
+        </div>
 
         <p>
             If you did not register a correct email or twitter address during signup process, we have no way to notify you when/whether you are able to withdraw funds. If this is the case, it is your responsibility to visit our website and confirm the status of the funds.
@@ -204,7 +211,7 @@ Event attendance is determined by the event organisers or an event admin.
         <p><strong>27.1</strong> This website is owned and operated by No block no party limited.</p>
         <p><strong>27.2</strong> We are registered in England and Wales under registration number 11471109, and our registered office is at 40 Bloomsbury Way, Lower Ground Floor, London, England, WC1A 2SE.</p>
         <p><strong>27.4</strong> You can contact us by by email to hello@kickback.events.</p>
-      </div>
+      </TermsDiv>
     )
   }
 }

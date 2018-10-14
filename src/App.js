@@ -16,6 +16,7 @@ import LandingPage from './routes/LandingPage'
 import Faq from './routes/Faq'
 import Privacy from './routes/Privacy'
 import Terms from './routes/Terms'
+import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import { SIGN_IN } from './modals'
@@ -44,22 +45,24 @@ class App extends Component {
     return (
       <Fragment>
         <Router>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={LandingPage}
-              layout={HomePageLayout}
-            />
-            <Route exact path="/events" component={Home} />
-            <Route exact path="/event/:address" component={SingleEvent} />
-            <Route path="/event/:address/admin" component={SingleEventAdmin} />
-            <Route path="/create" component={CreatePendingEvent} />
-            <Route path="/deploy" component={DeployPendingEvent} />
-            <Route path="/faq" component={Faq} />
-            <Route path="/terms" component={Terms} />
-            <Route path="/privacy" component={Privacy} />
-          </Switch>
+          <ScrollToTop>
+            <Switch>
+              <Route
+                exact
+                path="/"
+                component={LandingPage}
+                layout={HomePageLayout}
+              />
+              <Route exact path="/events" component={Home} />
+              <Route exact path="/event/:address" component={SingleEvent} />
+              <Route path="/event/:address/admin" component={SingleEventAdmin} />
+              <Route path="/create" component={CreatePendingEvent} />
+              <Route path="/deploy" component={DeployPendingEvent} />
+              <Route path="/faq" component={Faq} />
+              <Route path="/terms" component={Terms} />
+              <Route path="/privacy" component={Privacy} />
+            </Switch>
+          </ScrollToTop>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
       </Fragment>

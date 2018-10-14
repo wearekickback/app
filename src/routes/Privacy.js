@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
+import styled from 'react-emotion'
+
+const PrivacyDiv = styled('div')`
+  ul {
+    padding-left:2em;
+  }
+`
+
 
 class Privacy extends Component {
   render() {
     return (
-      <div className="privacy">
+      <PrivacyDiv>
         <h1>Privacy Policy</h1>
 
 
@@ -46,8 +54,8 @@ class Privacy extends Component {
         </ul>
 
         <h2>Use of Data</h2>
-            
-        <p>No block no party limited uses the collected data for various purposes:</p>    
+
+        <p>No block no party limited uses the collected data for various purposes:</p>
         <ul>
             <li>To provide and maintain the Service</li>
             <li>To notify you about changes to our Service</li>
@@ -84,7 +92,7 @@ class Privacy extends Component {
         <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
 
         <h3>Analytics</h3>
-        <p>We may use third-party Service Providers to monitor and analyze the use of our Service.</p>    
+        <p>We may use third-party Service Providers to monitor and analyze the use of our Service.</p>
         <ul>
                                         <li>
                 <p><strong>Mixpanel</strong></p>
@@ -115,9 +123,9 @@ class Privacy extends Component {
         <p>If you have any questions about this Privacy Policy, please contact us:</p>
         <ul>
             <li>By email: hello@kickback.events</li>
-      
+
         </ul>
-      </div>
+      </PrivacyDiv>
     )
   }
 }
