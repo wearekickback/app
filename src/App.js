@@ -13,8 +13,11 @@ import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import LandingPage from './routes/LandingPage'
+import Team from './routes/Team'
 import Faq from './routes/Faq'
-import About from './routes/About'
+import Privacy from './routes/Privacy'
+import Terms from './routes/Terms'
+import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import { SIGN_IN } from './modals'
@@ -43,21 +46,25 @@ class App extends Component {
     return (
       <Fragment>
         <Router>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={LandingPage}
-              layout={HomePageLayout}
-            />
-            <Route exact path="/events" component={Home} />
-            <Route exact path="/event/:address" component={SingleEvent} />
-            <Route path="/event/:address/admin" component={SingleEventAdmin} />
-            <Route path="/create" component={CreatePendingEvent} />
-            <Route path="/deploy" component={DeployPendingEvent} />
-            <Route path="/faq" component={Faq} />
-            <Route path="/about" component={About} />
-          </Switch>
+          <ScrollToTop>
+            <Switch>
+              <Route
+                exact
+                path="/"
+                component={LandingPage}
+                layout={HomePageLayout}
+              />
+              <Route exact path="/events" component={Home} />
+              <Route exact path="/event/:address" component={SingleEvent} />
+              <Route path="/event/:address/admin" component={SingleEventAdmin} />
+              <Route path="/create" component={CreatePendingEvent} />
+              <Route path="/deploy" component={DeployPendingEvent} />
+              <Route path="/faq" component={Faq} />
+              <Route path="/terms" component={Terms} />
+              <Route path="/privacy" component={Privacy} />
+              <Route path="/team" component={Team} />
+            </Switch>
+          </ScrollToTop>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
       </Fragment>

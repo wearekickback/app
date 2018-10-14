@@ -47,11 +47,11 @@ const Links = styled('nav')`
 
 const Link = styled(DefaultLink)`
   color: white;
-  margin-right: 50px;
+  margin-right: 30px;
 
   ${mq.medium`
     margin-right: 0;
-    margin-left: 100px;
+    margin-left: 70px;
   `};
 `
 
@@ -96,13 +96,14 @@ class Footer extends Component {
               the events they sign up for more seriously.
             </ElevatorPitch>
             <Links>
-              <Link to="/about">About</Link>
-              <Link to="/team">Team</Link>
               <Link to="/faq">FAQ</Link>
+              <Link to="/team">Team</Link>
+              <Link to="/terms">Terms and conditions</Link>
+              <Link to="/privacy">Privacy</Link>
             </Links>
           </MiddleRow>
           <Row>
-            <Copyright>&copy; Kickback 2018</Copyright>
+            <Copyright>&copy; 2018 No Block No Party Ltd</Copyright>
             <Social>
               <a href="https://github.com/noblocknoparty">
                 <GithubIcon />
