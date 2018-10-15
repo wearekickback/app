@@ -188,17 +188,22 @@ export default class SignIn extends Component {
         >
           {updateUserProfile => (
             <RefreshAuthToken>
-              {refreshAuthToken => (
-                <Button
-                  onClick={this.signInOrSignUp({
-                    refreshAuthToken,
-                    fetchUserProfileFromServer: updateUserProfile,
-                    toggleModal
-                  })}
-                >
-                  Create account
-                </Button>
-              )}
+              {refreshAuthToken =>
+                this.state[TERMS_AND_CONDITIONS] &&
+                this.state[PRIVACY_POLICY] ? (
+                  <Button
+                    onClick={this.signInOrSignUp({
+                      refreshAuthToken,
+                      fetchUserProfileFromServer: updateUserProfile,
+                      toggleModal
+                    })}
+                  >
+                    Create account
+                  </Button>
+                ) : (
+                  <Button type="disabled">Create account</Button>
+                )
+              }
             </RefreshAuthToken>
           )}
         </SafeMutation>
