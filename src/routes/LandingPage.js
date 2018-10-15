@@ -39,7 +39,8 @@ const Hero = styled('section')`
 
   h2 {
     /* Title: */
-    font-family: Muli-Bold;
+    font-family: Muli;
+    font-weight: 700;
     font-size: 34px;
     color: #ffffff;
     letter-spacing: 0;
@@ -113,7 +114,6 @@ const SectionContent = styled('div')`
     order: initial
   `};
 `
-
 
 const CTAInner = styled(ContainerInner)`
   display: flex;
