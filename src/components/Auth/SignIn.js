@@ -162,7 +162,10 @@ export default class SignIn extends Component {
             checked={!!this.state[TERMS_AND_CONDITIONS]}
             onChange={this.handleTermsCheck}
           />{' '}
-          I agree with the <a href={`/terms`}>terms and conditions</a>
+          I agree with the{' '}
+          <a href={`/terms`} target="_blank">
+            terms and conditions
+          </a>
         </p>
         <p>
           <input
@@ -171,7 +174,10 @@ export default class SignIn extends Component {
             checked={!!this.state[PRIVACY_POLICY]}
             onChange={this.handlePrivacyCheck}
           />{' '}
-          I agree with the <a href={`/privacy`}>privacy policy</a>
+          I agree with the{' '}
+          <a href={`/privacy`} target="_blank">
+            privacy policy
+          </a>
         </p>
         <p>
           <input
