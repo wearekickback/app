@@ -14,8 +14,13 @@ import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
 import RefreshAuthToken from './RefreshAuthToken'
 import { SIGN_IN } from '../../modals'
-import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } from '../../utils/legal'
+import {
+  TERMS_AND_CONDITIONS,
+  PRIVACY_POLICY,
+  MARKETING_INFO
+} from '../../utils/legal'
 import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
+import mq from '../../mediaQuery'
 
 const SignInContainer = styled('div')``
 
@@ -32,16 +37,24 @@ const H2 = styled(DefaultH2)`
 
 const Row = styled('div')`
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  flex-direction: column;
+
+  ${mq.medium`
+    flex-direction: row;
+    justify-content: space-between;
+  `};
 `
 
 const Column = styled('div')`
-  flex: 0.5;
+  width: 100%;
+
+  ${mq.medium`
+    width: 50%;
+  `};
 `
 
 const Block = styled('div')``
-
 
 const TextInput = styled(DefaultTextInput)``
 
@@ -87,19 +100,18 @@ export default class SignIn extends Component {
     ]
 
     const accepted = `${Date.now()}`
-    const legal = [
-      TERMS_AND_CONDITIONS,
-      PRIVACY_POLICY,
-      MARKETING_INFO,
-    ].reduce((m, v) => {
-      if (this.state[v]) {
-        m.push({
-          type: v,
-          accepted
-        })
-      }
-      return m
-    }, [])
+    const legal = [TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO].reduce(
+      (m, v) => {
+        if (this.state[v]) {
+          m.push({
+            type: v,
+            accepted
+          })
+        }
+        return m
+      },
+      []
+    )
 
     return (
       <FormDiv>
@@ -129,11 +141,18 @@ export default class SignIn extends Component {
         </Row>
         <Block>
           <p>
-            <strong>Please note, your payment for an event is non-refundable if:</strong>
+            <strong>
+              Please note, your payment for an event is non-refundable if:
+            </strong>
           </p>
           <ul>
-            <li>You <a href={`/faq`}>RSVP</a> to an event but then don't turn up.</li>
-            <li>You fail to withdraw your post-event payout within the <a href={`/faq`}>cooling period</a>.</li>
+            <li>
+              You <a href={`/faq`}>RSVP</a> to an event but then don't turn up.
+            </li>
+            <li>
+              You fail to withdraw your post-event payout within the{' '}
+              <a href={`/faq`}>cooling period</a>.
+            </li>
           </ul>
         </Block>
         <p>
@@ -142,7 +161,8 @@ export default class SignIn extends Component {
             value={TERMS_AND_CONDITIONS}
             checked={!!this.state[TERMS_AND_CONDITIONS]}
             onChange={this.handleTermsCheck}
-          /> I agree with the <a href={`/terms`}>terms and conditions</a>
+          />{' '}
+          I agree with the <a href={`/terms`}>terms and conditions</a>
         </p>
         <p>
           <input
@@ -150,7 +170,8 @@ export default class SignIn extends Component {
             value={PRIVACY_POLICY}
             checked={!!this.state[PRIVACY_POLICY]}
             onChange={this.handlePrivacyCheck}
-          /> I agree with the <a href={`/privacy`}>privacy policy</a>
+          />{' '}
+          I agree with the <a href={`/privacy`}>privacy policy</a>
         </p>
         <p>
           <input
@@ -158,7 +179,8 @@ export default class SignIn extends Component {
             value={MARKETING_INFO}
             checked={!!this.state[MARKETING_INFO]}
             onChange={this.handleMarketingCheck}
-          /> I am happy to receive marketing info (optional)
+          />{' '}
+          I am happy to receive marketing info (optional)
         </p>
         <SafeMutation
           mutation={UpdateUserProfile}

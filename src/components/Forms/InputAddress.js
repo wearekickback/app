@@ -11,6 +11,9 @@ const Name = styled('div')``
 const Address = styled('div')`
   font-family: 'Source Code Pro';
   color: ${({ faded }) => (faded ? '#ccc' : '#2b2b2b')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const InputAddress = ({ address }) => {

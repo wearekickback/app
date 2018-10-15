@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { GlobalConsumer } from '../../GlobalState'
-// import { Transition } from 'react-spring'
+import mq from '../../mediaQuery'
 
 class Modal extends Component {
   render() {
@@ -36,6 +36,7 @@ const ModalContainer = styled('div')`
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,7 +45,14 @@ const ModalContainer = styled('div')`
 const ModalContent = styled('div')`
   background: white;
   padding: 40px;
-  width: 50%;
+  width: 100%;
+  ${mq.medium`
+    width: 70%;
+  `};
+
+  ${mq.large`
+    width: 50%;
+  `};
 `
 
 export default Modal
