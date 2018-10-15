@@ -12,11 +12,14 @@ const resolvers = {
 
       try {
         const web3 = await getWeb3()
-        const resolver = await web3.eth.resolver(address.slice(0, 2))
-        console.log(resolver)
+        const resolver = await web3.eth.ens.resolver(
+          `${address.slice(0, 2)}.addr.reverse`
+        )
+        const name = resolver.methods.name().call()
+
         return {
           ...obj,
-          name: 'hardcoded.eth'
+          name
         }
       } catch (e) {
         return {

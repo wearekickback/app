@@ -10,7 +10,6 @@ import setupWeb3 from './api/web3'
 import { GlobalProvider } from './GlobalState'
 import './globalStyles'
 
-
 window.addEventListener('load', async () => {
   setupWeb3().catch(_ => {})
 
