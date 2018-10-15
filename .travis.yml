@@ -16,6 +16,12 @@ deploy:
     domain: dev.kickback.events
     on:
       branch: dev
+  - provider: surge
+    skip_cleanup: true
+    project: ./build/
+    domain: live.kickback.events
+    on:
+      branch: master
 notifications:
   email:
     - dev-notifications@noblockno.party
