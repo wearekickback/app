@@ -163,8 +163,6 @@ class Home extends Component {
         <Hero>
           <ContainerInner>
             <Logo />
-            <h3>BlockParty is the past. </h3>
-
             <h2>Say hello to Kickback!</h2>
             <p>
               Event no shows? No problem. Meet Kickback—an Ethereum-based event
