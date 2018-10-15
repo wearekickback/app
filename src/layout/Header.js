@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 
 import { GlobalConsumer } from '../GlobalState'
 import Logo from '../components/Icons/LogoFull'
@@ -46,11 +47,17 @@ const AccountAddress = styled('div')`
   text-overflow: ellipsis;
 `
 
+const NavLink = styled(Link)`
+  color: white;
+  margin-right: 30px;
+`
+
 const Header = () => (
   <HeaderContainer>
     <HeaderInner>
       <Logo />
       <RightBar>
+        <NavLink to="/events">Events</NavLink>
         <GlobalConsumer>
           {({ userAddress, userProfile, loggedIn, signIn }) => {
             const twitterProfile =
