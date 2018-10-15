@@ -23,8 +23,11 @@ if (undefined === appConfig.NUM_CONFIRMATIONS) {
   appConfig.NUM_CONFIRMATIONS = 1
 }
 
-if (argv.dev) {
-  appConfig.API_URL = 'https://dev.api.kickback.events'
+if (argv.ropsten) {
+  appConfig.API_URL = 'https://ropsten.api.kickback.events'
+  appConfig.GIT_COMMIT = getGitCommit()
+} else if (argv.rinkeby) {
+  appConfig.API_URL = 'https://rinkeby.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 } else if (argv.live) {
   appConfig.API_URL = 'https://live.api.kickback.events'

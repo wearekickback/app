@@ -61,6 +61,8 @@ const TextInput = styled(DefaultTextInput)``
 export default class SignIn extends Component {
   state = {
     email: '',
+    username: '',
+    realName: '',
     twitter: ''
   }
 
@@ -90,7 +92,7 @@ export default class SignIn extends Component {
   }
 
   renderSignUp(userAddress, toggleModal) {
-    const { email, twitter } = this.state
+    const { email, twitter, realName, username } = this.state
 
     const social = [
       {
@@ -121,6 +123,24 @@ export default class SignIn extends Component {
         </H2>
         <Label secondaryText="(public)">Ethereum address</Label>
         <InputAddress address={userAddress} />
+        <Row>
+          <Column>
+            <Label>Username</Label>
+            <TextInput
+              placeholder="username"
+              value={username}
+              onChange={this.handleUsernameChange}
+            />
+          </Column>
+          <Column>
+            <Label>Real name</Label>
+            <TextInput
+              placeholder="Joe Bloggs"
+              value={realName}
+              onChange={this.handleRealNameChange}
+            />
+          </Column>
+        </Row>
         <Row>
           <Column>
             <Label>Email</Label>
@@ -190,7 +210,7 @@ export default class SignIn extends Component {
         </p>
         <SafeMutation
           mutation={UpdateUserProfile}
-          variables={{ profile: { email, social, legal } }}
+          variables={{ profile: { email, social, legal, realName, username } }}
         >
           {updateUserProfile => (
             <RefreshAuthToken>
@@ -254,6 +274,18 @@ export default class SignIn extends Component {
     refreshAuthToken({ fetchUserProfileFromServer }).then(() =>
       toggleModal(SIGN_IN)
     )
+  }
+
+  handleUsernameChange = e => {
+    this.setState({
+      username: e.target.value
+    })
+  }
+
+  handleRealNameChange = e => {
+    this.setState({
+      realName: e.target.value
+    })
   }
 
   handleEmailChange = e => {
