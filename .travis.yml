@@ -10,12 +10,12 @@ script:
   - yarn build:release
   - yarn predeploy
 deploy:
-  skip_cleanup: true
-  provider: surge
-  project: ./build/
-  domain: dev.kickback.events
-  on:
-    branch: dev
+  - provider: surge
+    skip_cleanup: true
+    project: ./build/
+    domain: dev.kickback.events
+    on:
+      branch: dev
 notifications:
   email:
     - dev-notifications@noblockno.party
