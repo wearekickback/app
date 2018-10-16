@@ -90,9 +90,9 @@ class Provider extends Component {
 
       if (!dontShowModal) {
         this.showModal(SIGN_IN)
-      }
 
-      return signInPromise
+        return signInPromise
+      }
     }
   }
 
