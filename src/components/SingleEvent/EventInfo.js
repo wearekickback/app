@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import DefaultAvatar from '../User/Avatar'
@@ -99,6 +98,10 @@ const Photo = styled('img')``
 const Comments = styled('section')``
 const Comment = styled('div')``
 
+const HostUsername = styled('span')`
+  font-weight: bold;
+`
+
 class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
@@ -118,9 +121,7 @@ class EventInfo extends Component {
             ) || 'randomtwitter'}`}
           />{' '}
           <span>Hosted by</span>
-          <EtherScanLink address={address}>
-            <ReverseResolution address={party.owner.address} />
-          </EtherScanLink>
+          <HostUsername>{party.owner.username}</HostUsername>
         </Organiser>
         <Location>
           <PinIcon />
