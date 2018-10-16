@@ -18,7 +18,7 @@ const WithdrawPayoutButton = ({ address, amount, className }) => (
         onClick={withdrawPayout}
         result={result}
         className={className}
-        title={`Withdraw payout - ${amount} ETH`}
+        preContent={`Withdraw payout - ${amount} ETH`}
       />
     )}
   </ChainMutation>

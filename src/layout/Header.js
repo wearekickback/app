@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import { GlobalConsumer } from '../GlobalState'
 import Logo from '../components/Icons/LogoFull'
 import Button from '../components/Forms/Button'
-import ReverseResolution from '../components/ReverseResolution'
 import Avatar from '../components/User/Avatar'
 
 const HeaderContainer = styled('header')`
@@ -38,7 +37,7 @@ const Account = styled('div')`
   display: flex;
   align-items: center;
 `
-const AccountAddress = styled('div')`
+const Username = styled('div')`
   max-width: 100px;
   color: white;
   font-family: 'Source Code Pro';
@@ -66,9 +65,9 @@ const Header = () => (
               <>
                 {/* <Notifications>Notification</Notifications> */}
                 <Account>
-                  <AccountAddress>
-                    <ReverseResolution address={userAddress} />
-                  </AccountAddress>
+                  <Username>
+                    {userProfile.username}
+                  </Username>
                   <Avatar
                     src={`https://avatars.io/twitter/${
                       twitterProfile
