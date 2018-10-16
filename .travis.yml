@@ -7,15 +7,7 @@ branches:
     - dev
     - master
 script:
-  - yarn build:release
-  - yarn predeploy
-deploy:
-  skip_cleanup: true
-  provider: surge
-  project: ./build/
-  domain: dev.kickback.events
-  on:
-    branch: dev
+  - yarn deploy
 notifications:
   email:
     - dev-notifications@noblockno.party

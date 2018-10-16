@@ -12,7 +12,7 @@ import { UserProfileQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
-import RefreshAuthToken from './RefreshAuthToken'
+import RefreshAuthTokenButton from './RefreshAuthTokenButton'
 import { SIGN_IN } from '../../modals'
 import {
   TERMS_AND_CONDITIONS,
@@ -61,6 +61,8 @@ const TextInput = styled(DefaultTextInput)``
 export default class SignIn extends Component {
   state = {
     email: '',
+    username: '',
+    realName: '',
     twitter: ''
   }
 
@@ -90,7 +92,7 @@ export default class SignIn extends Component {
   }
 
   renderSignUp(userAddress, toggleModal) {
-    const { email, twitter } = this.state
+    const { email, twitter, realName, username } = this.state
 
     const social = [
       {
@@ -121,6 +123,24 @@ export default class SignIn extends Component {
         </H2>
         <Label secondaryText="(public)">Ethereum address</Label>
         <InputAddress address={userAddress} />
+        <Row>
+          <Column>
+            <Label>Username</Label>
+            <TextInput
+              placeholder="username"
+              value={username}
+              onChange={this.handleUsernameChange}
+            />
+          </Column>
+          <Column>
+            <Label>Real name</Label>
+            <TextInput
+              placeholder="Joe Bloggs"
+              value={realName}
+              onChange={this.handleRealNameChange}
+            />
+          </Column>
+        </Row>
         <Row>
           <Column>
             <Label>Email</Label>
@@ -190,27 +210,23 @@ export default class SignIn extends Component {
         </p>
         <SafeMutation
           mutation={UpdateUserProfile}
-          variables={{ profile: { email, social, legal } }}
+          variables={{ profile: { email, social, legal, realName, username } }}
         >
           {updateUserProfile => (
-            <RefreshAuthToken>
-              {refreshAuthToken =>
-                this.state[TERMS_AND_CONDITIONS] &&
-                this.state[PRIVACY_POLICY] ? (
-                  <Button
-                    onClick={this.signInOrSignUp({
-                      refreshAuthToken,
-                      fetchUserProfileFromServer: updateUserProfile,
-                      toggleModal
-                    })}
-                  >
-                    Create account
-                  </Button>
-                ) : (
-                  <Button type="disabled">Create account</Button>
-                )
-              }
-            </RefreshAuthToken>
+            this.state.username &&
+            this.state.realName &&
+            this.state[TERMS_AND_CONDITIONS] &&
+            this.state[PRIVACY_POLICY] ? (
+              <RefreshAuthTokenButton
+                onClick={this.signInOrSignUp({
+                  fetchUserProfileFromServer: updateUserProfile,
+                  toggleModal
+                })}
+                title='Create account'
+              />
+            ) : (
+              <Button type="disabled">Create account</Button>
+            )
           )}
         </SafeMutation>
       </FormDiv>
@@ -225,19 +241,12 @@ export default class SignIn extends Component {
         <div>{userAddress}</div>
         <SafeMutation mutation={LoginUser}>
           {loginUser => (
-            <RefreshAuthToken>
-              {refreshAuthToken => (
-                <Button
-                  onClick={this.signInOrSignUp({
-                    refreshAuthToken,
-                    fetchUserProfileFromServer: loginUser,
-                    toggleModal
-                  })}
-                >
-                  Sign in
-                </Button>
-              )}
-            </RefreshAuthToken>
+            <RefreshAuthTokenButton
+              onClick={this.signInOrSignUp({
+                fetchUserProfileFromServer: loginUser,
+                toggleModal
+              })}
+            />
           )}
         </SafeMutation>
       </FormDiv>
@@ -245,15 +254,22 @@ export default class SignIn extends Component {
   }
 
   signInOrSignUp = ({
-    refreshAuthToken,
     fetchUserProfileFromServer,
     toggleModal
-  }) => e => {
-    e.preventDefault()
+  }) => refreshAuthToken => {
+    refreshAuthToken({ fetchUserProfileFromServer }).then(() => toggleModal(SIGN_IN))
+  }
 
-    refreshAuthToken({ fetchUserProfileFromServer }).then(() =>
-      toggleModal(SIGN_IN)
-    )
+  handleUsernameChange = e => {
+    this.setState({
+      username: e.target.value
+    })
+  }
+
+  handleRealNameChange = e => {
+    this.setState({
+      realName: e.target.value
+    })
   }
 
   handleEmailChange = e => {

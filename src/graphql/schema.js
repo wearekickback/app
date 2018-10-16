@@ -66,15 +66,19 @@ const typeDefs = `
 
   type UserProfile {
     address: String!
-    created: String
-    lastLogin: String
+    username: String
+    realName: String
     social: [SocialMedia]
     email: EmailSettings
     legal: [LegalAgreement]
+    created: String
+    lastLogin: String
   }
 
   input UserProfileInput {
     email: String
+    username: String
+    realName: String
     social: [SocialMediaInput]
     legal: [LegalAgreementInput]
   }

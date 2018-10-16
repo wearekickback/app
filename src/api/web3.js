@@ -25,6 +25,8 @@ const getNetworkName = id => {
       return 'Mainnet'
     case '3':
       return 'Ropsten'
+    case '4':
+      return 'Rinkeby'
     default:
       return 'Local/Private'
   }
@@ -33,11 +35,24 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https:/mainnet.infura.io/`
+      return `https://mainnet.infura.io/`
     case '3':
-      return `https:/ropsten.infura.io/`
+      return `https://ropsten.infura.io/`
+    case '4':
+      return `https://rinkeby.infura.io/`
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
+  }
+}
+
+const isLocalNetwork = id => {
+  switch (id) {
+    case '1':
+    case '3':
+    case '4':
+      return false
+    default:
+      return true
   }
 }
 
@@ -63,9 +78,12 @@ async function getWeb3() {
       }
 
       networkState.networkId = `${await web3.eth.net.getId()}`
+      networkState.networkName = getNetworkName(networkState.networkId)
+      networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
 
       if (networkState.networkId !== networkState.expectedNetworkId) {
-        networkState.shouldBeOnNetwork = getNetworkName(networkState.expectedNetworkId)
+        networkState.wrongNetwork = true
+        networkState.expectedNetworkName = getNetworkName(networkState.expectedNetworkId)
         web3 = null
       }
 

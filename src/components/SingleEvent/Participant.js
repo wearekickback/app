@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import ReverseResolution from '../ReverseResolution'
 
 import { Mutation } from 'react-apollo'
 import { PARTICIPANT_STATUS } from '../../utils/status'
@@ -35,14 +34,28 @@ const TwitterAvatar = styled('img')`
   margin-bottom: 15px;
 `
 
-const ParticipantAddress = styled('div')`
+const ParticipantId = styled('div')`
+  margin-bottom: 10px;
+`
+
+const ParticipantUsername = styled('div')`
   max-width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-bottom: 10px;
   font-size: 12px;
   color: #3d3f50;
+  text-align: center;
+`
+
+const ParticipantRealName = styled('div')`
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  color: #ccc;
+  margin-top: 5px;
   text-align: center;
 `
 
@@ -97,9 +110,16 @@ export class Participant extends Component {
             <TwitterAvatar
               src={`https://avatars.io/twitter/${twitter}/medium`}
             />
-            <ParticipantAddress>
-              <ReverseResolution address={user.address} />
-            </ParticipantAddress>
+            <ParticipantId>
+              <ParticipantUsername>
+                {user.username}
+              </ParticipantUsername>
+              {user.realName ? (
+                <ParticipantRealName>
+                  {user.realName}
+                </ParticipantRealName>
+              ) : null}
+            </ParticipantId>
             {ended ? (
               attended ? (
                 <Status type="won">{`${

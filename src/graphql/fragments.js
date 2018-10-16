@@ -3,6 +3,8 @@ import gql from 'graphql-tag'
 export const ProfileFields = gql`
   fragment ProfileFields on UserProfile {
     address
+    realName
+    username
     lastLogin
     created
     social {

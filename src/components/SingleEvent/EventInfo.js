@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import ReverseResolution from '../ReverseResolution'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import DefaultAvatar from '../User/Avatar'
@@ -80,7 +79,9 @@ const TotalPot = styled('div')`
     margin-left: 0.5rem;
   }
 `
-const EventDescription = styled('p')``
+const EventDescription = styled('p')`
+  white-space: pre-line;
+`
 const EventWarning = styled('div')`
   font-family: Muli;
   font-weight: 500;
@@ -98,6 +99,10 @@ const PhotoContainer = styled('div')``
 const Photo = styled('img')``
 const Comments = styled('section')``
 const Comment = styled('div')``
+
+const HostUsername = styled('span')`
+  font-weight: bold;
+`
 
 class EventInfo extends Component {
   render() {
@@ -118,9 +123,7 @@ class EventInfo extends Component {
             ) || 'randomtwitter'}`}
           />{' '}
           <span>Hosted by</span>
-          <EtherScanLink address={address}>
-            <ReverseResolution address={party.owner.address} />
-          </EtherScanLink>
+          <HostUsername>{party.owner.username}</HostUsername>
         </Organiser>
         <Location>
           <PinIcon />

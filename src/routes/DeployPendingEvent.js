@@ -4,6 +4,7 @@ import styled from 'react-emotion'
 
 import ChainMutation, { ChainMutationButton } from '../components/ChainMutation'
 import { CreateParty } from '../graphql/mutations'
+import { GlobalConsumer } from '../GlobalState'
 import { extractNewPartyAddressFromTx } from '../api/utils'
 import queryString from 'query-string'
 
@@ -24,8 +25,11 @@ class DeployPendingEvent extends Component {
         <h1>Deploy pending party</h1>
         <SeedDiv>
           <p>If you wish to deploy this party with our seeding script, use:</p>
-          <pre>For local network: yarn seed:party -i {id}</pre>
-          <pre>For Ropsten network: yarn seed:party -i {id} --ropsten</pre>
+          <GlobalConsumer>
+            {({ networkState: { isLocalNetwork, networkName } }) => (
+              <pre>yarn seed:party -i {id} {isLocalNetwork ? '' : `--${networkName.toLowerCase()}`}</pre>
+            )}
+          </GlobalConsumer>
         </SeedDiv>
         <div>
           <div>id/name: {id}</div>

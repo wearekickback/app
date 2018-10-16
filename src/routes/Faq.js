@@ -9,11 +9,16 @@ class FAQ extends Component {
         <h3>Can I cancel my registration?</h3>
         <p>No</p>
         <h3>What happens if the event is canceled?</h3>
-        <p>In case the event is canceled, all registered people can withdraw their deposit. Make sure that you sign up with the correct email address so that the host can notify you.</p>
+        <p>In case the event is canceled, all registered people can withdraw their pre-committed ETH. Make sure that you sign up with the correct email address so that the host can notify you.</p>
         <h3>What is the cooling period?</h3>
         <p>
           The cooling period is a limited time window  (default is one week but the duration may vary) to withdraw your payout. After the cooling period has passed, you acknowledge that you are not interested in retrieving your funds and the event owner has the right to clear the remaining pot.
         </p>
+        <h3>I don't feel comfortable associating my profile photo to my ETH address.</h3>
+        <p>
+          The profile photo is optionail. It is associated to your twitter avatar which you provide during signup.
+        </p>
+
         <h2>For event organisers</h2>
         <h3>Can I host a private event?</h3>
         <p>
