@@ -187,9 +187,9 @@ class Home extends Component {
           <EventIllustration />
           <SectionContent>
             <p>
-              Everyone deposits a small amount of ETH when they RSVP, which is
+              Everyone commits a small amount of ETH when they RSVP, which is
               refunded after the event check-in. Any no-shows lose their
-              deposit, which can then be split amongst the attendees, donated to
+              ETH, which can then be split amongst the attendees, donated to
               charity, or applied to a future event.
             </p>
           </SectionContent>
