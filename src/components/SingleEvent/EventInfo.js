@@ -79,7 +79,9 @@ const TotalPot = styled('div')`
     margin-left: 0.5rem;
   }
 `
-const EventDescription = styled('p')``
+const EventDescription = styled('p')`
+  white-space: pre-line;
+`
 const EventWarning = styled('div')`
   font-family: Muli;
   font-weight: 500;

@@ -42,7 +42,6 @@ const EventName = styled('h3')`
 
 const EventDetails = styled('section')`
   padding: 20px;
-  white-space: pre-line;
 `
 
 class EventCard extends Component {
