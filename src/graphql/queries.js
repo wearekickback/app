@@ -4,7 +4,7 @@ import { ProfileFields, PartyFields } from './fragments'
 
 export const NetworkIdQuery = gql`
   query getNetworkId {
-    networkId: networkId
+    networkId: networkId @disableAuth
   }
 `
 

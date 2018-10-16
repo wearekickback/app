@@ -34,9 +34,10 @@ class EventParticipants extends Component {
           {participants.length > 0 ? (
             participants
               .sort((a, b) => (a.index < b.index ? -1 : 1))
-              .filter(participant =>
-                participant.user.address.toLowerCase().includes(searchTerm)
-              )
+              .filter(p => (
+                (p.user.realName || '').toLowerCase().includes(searchTerm) ||
+                (p.user.username || '').toLowerCase().includes(searchTerm)
+              ))
               .map(participant => (
                 <Participant
                   amAdmin={amAdmin}

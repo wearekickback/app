@@ -20,43 +20,52 @@ const makeError = (observer, err) => {
 
 export default () => (
   new ApolloLink((operation, forward) => {
-    // if no @auth directive then nothing further to do!
-    if (!hasDirectives(['auth'], operation.query)) {
-      return forward(operation)
-    }
+    const requireAuth = hasDirectives(['requireAuth'], operation.query)
+    const disableAuth = hasDirectives(['disableAuth'], operation.query)
 
     // get sanitized query (remove @auth directive since server won't understand it)
     let sanitizedQuery = sanitizedQueryCache[JSON.stringify(operation.query)]
     if (!sanitizedQuery) {
       // remove directives (inspired by https://github.com/apollographql/apollo-link-state/blob/master/packages/apollo-link-state/src/utils.ts)
       checkDocument(operation.query)
-      sanitizedQuery = removeDirectivesFromDocument( [{ name: 'auth' }], operation.query)
+      sanitizedQuery = removeDirectivesFromDocument(
+        [{ name: 'requireAuth' }, { name: 'disableAuth'}], 
+        operation.query
+      )
       // save to cache for next time!
       sanitizedQueryCache[JSON.stringify(operation.query)] = sanitizedQuery
     }
-
     // overwrite original query with sanitized version
     operation.query = sanitizedQuery
+
+    // disable auth for this query?
+    if (disableAuth) {
+      return forward(operation)
+    }
 
     // build handler
     return new Observable(async observer => {
       let handle
 
+      // wait until global provider is ready
       const globalProvider = await getGlobalProvider()
 
-      // if user is not logged in
-      if (!globalProvider.isLoggedIn()) {
+      // if user is not logged in and we require auth
+      if (!globalProvider.isLoggedIn() && requireAuth) {
         try {
+          // try logging in
           await globalProvider.signIn()
         } catch (err) {
           return makeError(observer, err.message)
         }
       }
 
-      // add auth headers (by this point we should have them!)
-      operation.setContext({
-        headers: buildAuthHeaders(globalProvider.authToken())
-      })
+      // add auth headers if possible
+      if (globalProvider.isLoggedIn()) {
+        operation.setContext({
+          headers: buildAuthHeaders(globalProvider.authToken())
+        })
+      }
 
       // pass request down the chain
       handle = forward(operation).subscribe({

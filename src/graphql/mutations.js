@@ -4,19 +4,19 @@ import { ProfileFields, ParticipantFields } from './fragments'
 
 export const CreateParty = gql`
   mutation createParty($id: String, $deposit: String, $limitOfParticipants: String) {
-    create: createParty(id: $id, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client @auth
+    create: createParty(id: $id, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client @requireAuth
   }
 `
 
 export const CreatePendingParty = gql`
   mutation createPendingParty($meta: PartyMetaInput!) {
-    id: createPendingParty(meta: $meta) @auth
+    id: createPendingParty(meta: $meta) @requireAuth
   }
 `
 
 export const UpdatePartyMeta = gql`
   mutation updatePartyMeta($address: String!, $meta: PartyMetaInput!) {
-    update: updatePartyMeta(address: $address, meta: $meta) @auth
+    update: updatePartyMeta(address: $address, meta: $meta) @requireAuth
   }
 `
 
@@ -38,7 +38,7 @@ export const LoginUser = gql`
   ${ProfileFields}
 
   mutation loginUser {
-    profile: loginUser @auth {
+    profile: loginUser @requireAuth {
       ...ProfileFields
     }
   }
@@ -49,7 +49,7 @@ export const LoginUserNoAuth = gql`
   ${ProfileFields}
 
   mutation loginUser {
-    profile: loginUser {
+    profile: loginUser @disableAuth {
       ...ProfileFields
     }
   }
@@ -60,7 +60,7 @@ export const UpdateUserProfile = gql`
   ${ProfileFields}
 
   mutation updateUserProfile($profile: UserProfileInput!) {
-    profile: updateUserProfile(profile: $profile) @auth {
+    profile: updateUserProfile(profile: $profile) @requireAuth {
       ...ProfileFields
     }
   }
@@ -71,7 +71,7 @@ export const MarkUserAttended = gql`
   ${ParticipantFields}
 
   mutation markUserAttended($address: String!, $participant: ParticipantInput!) {
-    updateParticipantStatus(address: $address, participant: $participant) @auth {
+    updateParticipantStatus(address: $address, participant: $participant) @requireAuth {
       ...ParticipantFields
     }
   }
@@ -81,7 +81,7 @@ export const UnmarkUserAttended = gql`
   ${ParticipantFields}
 
   mutation unmarkUserAttended($address: String!, $participant: ParticipantInput!) {
-    updateParticipantStatus(address: $address, participant: $participant) @auth {
+    updateParticipantStatus(address: $address, participant: $participant) @requireAuth {
       ...ParticipantFields
     }
   }
@@ -89,13 +89,13 @@ export const UnmarkUserAttended = gql`
 
 export const RsvpToEvent = gql`
   mutation rsvp($twitter: String, $address: String) {
-    rsvp(twitter: $twitter, address: $address) @client @auth
+    rsvp(twitter: $twitter, address: $address) @client @requireAuth
   }
 `
 
 export const Finalize = gql`
   mutation finalize($address: String, $maps: [String!]!) {
-    finalize(address: $address, maps: $maps) @client @auth
+    finalize(address: $address, maps: $maps) @client @requireAuth
   }
 `
 

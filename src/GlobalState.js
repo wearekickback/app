@@ -142,8 +142,6 @@ class Provider extends Component {
   }
 
   async componentDidMount () {
-    setProviderInstance(this)
-
     const address = await getAccount()
 
     this.setState(state => ({
@@ -155,6 +153,8 @@ class Provider extends Component {
 
     // try and sign in!
     await this.signIn({ dontShowModal: true })
+
+    setProviderInstance(this)
   }
 
   setNetworkState = networkState => {
