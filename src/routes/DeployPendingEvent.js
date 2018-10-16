@@ -4,6 +4,7 @@ import styled from 'react-emotion'
 
 import ChainMutation, { ChainMutationButton } from '../components/ChainMutation'
 import { CreateParty } from '../graphql/mutations'
+import { GlobalConsumer } from '../GlobalState'
 import { extractNewPartyAddressFromTx } from '../api/utils'
 import queryString from 'query-string'
 
