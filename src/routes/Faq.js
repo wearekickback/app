@@ -14,6 +14,11 @@ class FAQ extends Component {
         <p>
           The cooling period is a limited time window  (default is one week but the duration may vary) to withdraw your payout. After the cooling period has passed, you acknowledge that you are not interested in retrieving your funds and the event owner has the right to clear the remaining pot.
         </p>
+        <h3>I don't feel comfortable associating my profile photo to my ETH address.</h3>
+        <p>
+          The profile photo is optionail. It is associated to your twitter avatar which you provide during signup.
+        </p>
+
         <h2>For event organisers</h2>
         <h3>Can I host a private event?</h3>
         <p>
