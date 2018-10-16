@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { Link as DefaultLink } from 'react-router-dom'
+
 import backgroundDark from '../assets/backgroundDark.svg'
 import backgroundLight from '../assets/backgroundLight.svg'
 import Logo from '../components/Icons/LogoFull'
@@ -59,6 +61,17 @@ const Hero = styled('section')`
     margin: 0 auto 0;
   }
 `
+
+const TopRow = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Link = styled(DefaultLink)`
+  color: white;
+`
+
 const LaptopWrapper = styled('div')`
   max-width: 640px;
   margin: 50px auto 0;
@@ -162,7 +175,10 @@ class Home extends Component {
       <>
         <Hero>
           <ContainerInner>
-            <Logo />
+            <TopRow>
+              <Logo />
+              <Link to="/events">Events</Link>
+            </TopRow>
             <h3>BlockParty is the past. </h3>
 
             <h2>Say hello to Kickback!</h2>
