@@ -82,7 +82,8 @@ async function getWeb3() {
       networkState.isLocalNetwork = isLocalNetwork(networkId)
 
       if (networkState.networkId !== networkState.expectedNetworkId) {
-        networkState.shouldBeOnNetwork = getNetworkName(networkState.expectedNetworkId)
+        networkState.wrongNetwork = true
+        networkState.expectedNetworkName = getNetworkName(networkState.expectedNetworkId)
         web3 = null
       }
 
