@@ -15,7 +15,7 @@ export const events = new EventEmitter()
 
 const updateGlobalState = () => {
   getProvider().then(provider => {
-    provider.setNetworkState({ ...networkState })
+    provider.setNetworkState({ ...networkState, resolved: true })
   })
 }
 

@@ -21,7 +21,11 @@ const DefaultLayout = ({ children }) => {
     <Fragment>
       <Header />
       <GlobalConsumer>
-        {({ networkState: { networkId, networkName, expectedNetworkName, expectedNetworkId, wrongNetwork, readOnly } }) => {
+        {({ networkState: { resolved, networkId, networkName, expectedNetworkName, expectedNetworkId, wrongNetwork, readOnly } }) => {
+          if (!resolved) {
+            return null
+          }
+          
           let content
 
           if (wrongNetwork) {
