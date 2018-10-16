@@ -215,6 +215,8 @@ export default class SignIn extends Component {
           {updateUserProfile => (
             <RefreshAuthToken>
               {refreshAuthToken =>
+                this.state.username &&
+                this.state.realName &&
                 this.state[TERMS_AND_CONDITIONS] &&
                 this.state[PRIVACY_POLICY] ? (
                   <Button
