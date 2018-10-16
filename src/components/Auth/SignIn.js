@@ -35,26 +35,24 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
-const Row = styled('div')`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  ${mq.medium`
-    flex-direction: row;
-    justify-content: space-between;
-  `};
+const Field = styled('div')`
+  margin: 30px 0;
 `
 
-const Column = styled('div')`
+const Explanation = styled('div')`
+  color: #999;
+  font-size: 80%;
+  margin-top: 7px;
+`
+
+const TextInput = styled(DefaultTextInput)`
+  margin-bottom: 0;
   width: 100%;
 
   ${mq.medium`
-    width: 50%;
+    width: 80%;
   `};
 `
-
-const TextInput = styled(DefaultTextInput)``
 
 export default class SignIn extends Component {
   state = {
@@ -121,42 +119,55 @@ export default class SignIn extends Component {
         </H2>
         <Label>Ethereum address</Label>
         <InputAddress address={userAddress} />
-        <Row>
-          <Column>
-            <Label>Username</Label>
-            <TextInput
-              placeholder="username"
-              value={username}
-              onChange={this.handleUsernameChange}
-            />
-          </Column>
-          <Column>
-            <Label>Real name</Label>
-            <TextInput
-              placeholder="Joe Bloggs"
-              value={realName}
-              onChange={this.handleRealNameChange}
-            />
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Label optional>Email</Label>
-            <TextInput
-              placeholder="alice@gmail.com"
-              value={email}
-              onChange={this.handleEmailChange}
-            />
-          </Column>
-          <Column>
-            <Label optional>Twitter</Label>
-            <TextInput
-              placeholder="@jack"
-              value={twitter}
-              onChange={this.handleTwitterChange}
-            />
-          </Column>
-        </Row>
+        <Field>
+          <Label>Username</Label>
+          <TextInput
+            placeholder="username"
+            value={username}
+            onChange={this.handleUsernameChange}
+          />
+          <Explanation>
+            We hope this will be easier to remember than your account address (0x...)!
+          </Explanation>
+        </Field>
+        <Field>
+          <Label>Real name</Label>
+          <TextInput
+            placeholder="Joe Bloggs"
+            value={realName}
+            onChange={this.handleRealNameChange}
+          />
+          <Explanation>
+            <strong>This stays private.</strong>. We only share this with
+            organizers of the events you attend, so that they can identify
+            you on arrival.
+          </Explanation>
+        </Field>
+        <Field>
+          <Label optional>Email</Label>
+          <TextInput
+            placeholder="alice@gmail.com"
+            value={email}
+            onChange={this.handleEmailChange}
+          />
+          <Explanation>
+            This allows us to notify you of any changes to the event and
+            remind you when it's time to withdraw your payout. We don't
+            share this with anyone (not even event organizers).
+          </Explanation>
+        </Field>
+        <Field>
+          <Label optional>Twitter</Label>
+          <TextInput
+            placeholder="@jack"
+            value={twitter}
+            onChange={this.handleTwitterChange}
+          />
+          <Explanation>
+            We use this for your profile picture, and for people to contact
+            your over social media if they so wish.
+          </Explanation>
+        </Field>
         <p>
           <input
             type="checkbox"
@@ -164,10 +175,7 @@ export default class SignIn extends Component {
             checked={!!this.state[TERMS_AND_CONDITIONS]}
             onChange={this.handleTermsCheck}
           />{' '}
-          I agree with the{' '}
-          <a href={`/terms`} target="_blank">
-            terms and conditions
-          </a>
+          I agree with the <a href={`/terms`} target="_blank">terms and conditions</a>
         </p>
         <p>
           <input
