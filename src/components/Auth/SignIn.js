@@ -12,7 +12,7 @@ import { UserProfileQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
-import RefreshAuthToken from './RefreshAuthToken'
+import RefreshAuthTokenButton from './RefreshAuthTokenButton'
 import { SIGN_IN } from '../../modals'
 import {
   TERMS_AND_CONDITIONS,
@@ -213,26 +213,20 @@ export default class SignIn extends Component {
           variables={{ profile: { email, social, legal, realName, username } }}
         >
           {updateUserProfile => (
-            <RefreshAuthToken>
-              {refreshAuthToken =>
-                this.state.username &&
-                this.state.realName &&
-                this.state[TERMS_AND_CONDITIONS] &&
-                this.state[PRIVACY_POLICY] ? (
-                  <Button
-                    onClick={this.signInOrSignUp({
-                      refreshAuthToken,
-                      fetchUserProfileFromServer: updateUserProfile,
-                      toggleModal
-                    })}
-                  >
-                    Create account
-                  </Button>
-                ) : (
-                  <Button type="disabled">Create account</Button>
-                )
-              }
-            </RefreshAuthToken>
+            this.state.username &&
+            this.state.realName &&
+            this.state[TERMS_AND_CONDITIONS] &&
+            this.state[PRIVACY_POLICY] ? (
+              <RefreshAuthTokenButton
+                onClick={this.signInOrSignUp({
+                  fetchUserProfileFromServer: updateUserProfile,
+                  toggleModal
+                })}
+                title='Create account'
+              />
+            ) : (
+              <Button type="disabled">Create account</Button>
+            )
           )}
         </SafeMutation>
       </FormDiv>
@@ -247,19 +241,12 @@ export default class SignIn extends Component {
         <div>{userAddress}</div>
         <SafeMutation mutation={LoginUser}>
           {loginUser => (
-            <RefreshAuthToken>
-              {refreshAuthToken => (
-                <Button
-                  onClick={this.signInOrSignUp({
-                    refreshAuthToken,
-                    fetchUserProfileFromServer: loginUser,
-                    toggleModal
-                  })}
-                >
-                  Sign in
-                </Button>
-              )}
-            </RefreshAuthToken>
+            <RefreshAuthTokenButton
+              onClick={this.signInOrSignUp({
+                fetchUserProfileFromServer: loginUser,
+                toggleModal
+              })}
+            />
           )}
         </SafeMutation>
       </FormDiv>
@@ -267,15 +254,10 @@ export default class SignIn extends Component {
   }
 
   signInOrSignUp = ({
-    refreshAuthToken,
     fetchUserProfileFromServer,
     toggleModal
-  }) => e => {
-    e.preventDefault()
-
-    refreshAuthToken({ fetchUserProfileFromServer }).then(() =>
-      toggleModal(SIGN_IN)
-    )
+  }) => refreshAuthToken => {
+    refreshAuthToken({ fetchUserProfileFromServer }).then(() => toggleModal(SIGN_IN))
   }
 
   handleUsernameChange = e => {

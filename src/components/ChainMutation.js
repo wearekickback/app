@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { css } from 'react-emotion'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
@@ -11,6 +12,10 @@ import Button from './Forms/Button'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
+
+const tooltipStyles = css({
+  zIndex: 1
+})
 
 export default class ChainMutation extends Component {
   static propTypes = {
@@ -222,6 +227,7 @@ export class ChainMutationButton extends Component {
             event="dblclick"
             effect="solid"
             type="dark"
+            className={tooltipStyles}
           />
         </Button>
         {after}
