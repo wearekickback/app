@@ -25,6 +25,8 @@ const getNetworkName = id => {
       return 'Mainnet'
     case '3':
       return 'Ropsten'
+    case '4':
+      return 'Rinkeby'
     default:
       return 'Local/Private'
   }
@@ -33,9 +35,11 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https:/mainnet.infura.io/`
+      return `https://mainnet.infura.io/`
     case '3':
-      return `https:/ropsten.infura.io/`
+      return `https://ropsten.infura.io/`
+    case '4':
+      return `https://rinkeby.infura.io/`
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
   }
