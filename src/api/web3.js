@@ -45,6 +45,17 @@ const getNetworkProviderUrl = id => {
   }
 }
 
+const isLocalNetwork = id => {
+  switch (id) {
+    case '1':
+    case '3':
+    case '4':
+      return false
+    default:
+      return true
+  }
+}
+
 async function getWeb3() {
   if (!web3) {
     try {
@@ -67,6 +78,8 @@ async function getWeb3() {
       }
 
       networkState.networkId = `${await web3.eth.net.getId()}`
+      networkState.networkName = getNetworkName(networkState.networkId)
+      networkState.isLocalNetwork = isLocalNetwork(networkId)
 
       if (networkState.networkId !== networkState.expectedNetworkId) {
         networkState.shouldBeOnNetwork = getNetworkName(networkState.expectedNetworkId)
