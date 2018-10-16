@@ -58,7 +58,7 @@ class EventCard extends Component {
             <DepositValue value={deposit} />
             <EventName>{name}</EventName>
 
-            <Organiser>Hosted by: {owner.address}</Organiser>
+            <Organiser>Hosted by: {owner.username}</Organiser>
           </EventDetails>
         </Link>
       </EventCardContainer>

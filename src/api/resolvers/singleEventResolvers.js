@@ -126,8 +126,7 @@ const resolvers = {
       try {
         const tx = await contract.register().send({
           from: account,
-          value: deposit,
-          gas: 1000000
+          value: deposit
         })
 
         return tx
@@ -143,8 +142,7 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await contract.finalize(maps.map(m => toBN(m).toString(10))).send({
-          from: account,
-          gas: 2000000
+          from: account
         })
 
         return tx
@@ -160,8 +158,7 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await contract.withdraw().send({
-          from: account,
-          gas: 2000000
+          from: account
         })
 
         return tx
