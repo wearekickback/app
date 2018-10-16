@@ -65,7 +65,9 @@ async function getWeb3() {
       if (result.error) {
         throw new Error(result.error)
       }
+
       networkState.expectedNetworkId = result.data.networkId
+      networkState.expectedNetworkName = getNetworkName(networkState.expectedNetworkId)
 
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       if (window.web3 && window.web3.currentProvider) {
@@ -83,7 +85,6 @@ async function getWeb3() {
 
       if (networkState.networkId !== networkState.expectedNetworkId) {
         networkState.wrongNetwork = true
-        networkState.expectedNetworkName = getNetworkName(networkState.expectedNetworkId)
         web3 = null
       }
 
