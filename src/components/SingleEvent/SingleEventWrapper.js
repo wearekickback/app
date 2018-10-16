@@ -63,14 +63,18 @@ class SingleEventWrapper extends Component {
               fetchPolicy="cache-and-network"
               pollInterval={60000}
             >
-              {({ data: { party } }) => {
+              {({ data: { party }, loading }) => {
                 // no party?
                 if (!party) {
-                  return (
-                    <ErrorBox>
-                      We could not find an event at the address {address}!
-                    </ErrorBox>
-                  )
+                  if (loading) {
+                    return 'Loading ...'
+                  } else {
+                    return (
+                      <ErrorBox>
+                        We could not find an event at the address {address}!
+                      </ErrorBox>
+                    )
+                  }
                 }
 
                 // pre-calculate some stuff up here
