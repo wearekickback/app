@@ -4,6 +4,9 @@ import {
   Route as DefaultRoute,
   Switch
 } from 'react-router-dom'
+
+import { RouteAnalytics } from './components/Analytics'
+
 import DefaultLayout from './layout/Layouts'
 import { HomePageLayout } from './layout/Layouts'
 
@@ -33,9 +36,11 @@ const Route = ({
     <DefaultRoute
       {...rest}
       render={props => (
-        <Layout>
-          <Component {...props} />
-        </Layout>
+        <RouteAnalytics key={rest.path}>
+          <Layout>
+            <Component {...props} />
+          </Layout>
+        </RouteAnalytics>
       )}
     />
   )

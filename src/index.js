@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ApolloProvider } from 'react-apollo'
 
+import { setup as setupAnalytics } from './api/analytics'
 import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
@@ -11,6 +12,8 @@ import { GlobalProvider } from './GlobalState'
 import './globalStyles'
 
 window.addEventListener('load', async () => {
+  setupAnalytics()
+
   setupWeb3().catch(_ => {})
 
   ReactDOM.render(

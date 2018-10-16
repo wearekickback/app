@@ -196,7 +196,7 @@ class Home extends Component {
           <CTAInner>
             <h2>Heading to DevCon4?</h2>
             <p>RSVP on Kickback powered events now!</p>
-            <ButtonLink href="/events">Check out events</ButtonLink>
+            <ButtonLink analyticsId='See Events' href="/events">Check out events</ButtonLink>
           </CTAInner>
         </CTA>
         <Section>
@@ -267,7 +267,10 @@ class Home extends Component {
               Once KickBack is ready, we would like to open up the platform to
               the limited number of free event organisers.
             </p>
-            <ButtonLink href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform">
+            <ButtonLink
+              analyticsId='Request Early Access'
+              href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+            >
               Request early access
             </ButtonLink>
             <p>

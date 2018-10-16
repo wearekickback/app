@@ -3,6 +3,8 @@ import styled from 'react-emotion'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import Button from '../Forms/Button'
+
 const SET_LIMIT = gql`
   mutation setLimitOfParticipants($limit: String, $address: String) {
     setLimitOfParticipants(limit: $limit, address: $address) @client
@@ -17,7 +19,8 @@ const SetLimit = ({ address }) => {
         {setLimitOfParticipants => (
           <Fragment>
             <input type="text" ref={element => (input = element)} />
-            <button
+            <Button
+              analyticsId='Set Event Limit'
               onClick={() =>
                 setLimitOfParticipants({
                   variables: {
@@ -28,7 +31,7 @@ const SetLimit = ({ address }) => {
               }
             >
               Set Limit
-            </button>
+            </Button>
           </Fragment>
         )}
       </Mutation>

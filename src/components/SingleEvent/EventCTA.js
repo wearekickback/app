@@ -193,6 +193,7 @@ class EventCTA extends Component {
               >
                 {(finalize, result) => (
                   <ChainMutationButton
+                    analyticsId='Finalize Event'
                     result={result}
                     onClick={finalize}
                     toThirds

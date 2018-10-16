@@ -138,11 +138,11 @@ export class Participant extends Component {
               amAdmin && (
                 <Fragment>
                   {attended ? (
-                    <Button wide onClick={unmarkAttended}>
+                    <Button wide onClick={unmarkAttended} analyticsId='Unmark Attendee'>
                       Unmark attended
                     </Button>
                   ) : (
-                    <Button wide onClick={markAttended}>
+                    <Button wide onClick={markAttended} analyticsId='Mark Attendee'>
                       Mark attended
                     </Button>
                   )}

@@ -14,6 +14,7 @@ const RSVP = ({ address, className }) => (
   >
     {(rsvp, result) => (
       <ChainMutationButton
+        analyticsId='RSVP'
         onClick={rsvp}
         result={result}
         className={className}

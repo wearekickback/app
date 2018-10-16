@@ -48,15 +48,16 @@ class DeployPendingEvent extends Component {
               return (
                 <div>
                   <ChainMutationButton
+                    analyticsId='Deploy Event Contract'
                     result={result}
                     onClick={createParty}
-                    preContent="Deploy!"
+                    preContent="Deploy"
                     postContent="Deployed!"
                   />
                   {address ? (
                     <p>
-                      Party at {address}!{' '}
-                      <Link to={`/event/${address}`}>View party page</Link>
+                      Event at {address}!{' '}
+                      <Link to={`/event/${address}`}>View event page</Link>
                     </p>
                   ) : null}
                 </div>

@@ -81,7 +81,7 @@ const Header = () => (
             ) : (
               <GlobalConsumer>
                 {({ toggleModal }) => (
-                  <Button type="light" onClick={signIn}>
+                  <Button type="light" onClick={signIn} analyticsId='Sign In'>
                     Sign in
                   </Button>
                 )}

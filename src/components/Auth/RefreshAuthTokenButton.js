@@ -74,6 +74,7 @@ export default class RefreshAuthTokenButton extends Component {
                 <SafeMutation mutation={SignChallengeString}>
                   {signChallengeString => (
                     <Button
+                      analyticsId='Sign Message'
                       onClick={() => onClick(this.buildCallback({
                         userAddress,
                         createLoginChallenge,

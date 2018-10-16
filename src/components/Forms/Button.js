@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import styled from 'react-emotion'
 
+import { track } from '../../api/analytics'
+
 function getButtonStyles(type) {
   switch (type) {
     case 'light':
@@ -65,23 +67,52 @@ function DefaultButtonStyles() {
 }
 
 const ButtonContainer = styled('button')`
-  ${props => DefaultButtonStyles(props)} ${({ wide }) =>
-    wide ? 'width: 100%;' : ''};
+  ${props => DefaultButtonStyles(props)}
+  ${({ wide }) => wide ? 'width: 100%;' : ''};
   ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
-
   ${({ type }) => getButtonStyles(type)};
 `
 
-export const ButtonLink = styled('a')`
-  ${props => DefaultButtonStyles(props)} ${({ wide }) =>
-    wide ? 'width: 100%;' : ''};
+const Link = styled('a')`
+  ${props => DefaultButtonStyles(props)}
+  ${({ wide }) => wide ? 'width: 100%;' : ''};
   ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
 `
 
+export class ButtonLink extends PureComponent {
+  _onClick = () => {
+    track(`Click: ${this.props.analyticsId}`)
+  }
+
+  render () {
+    const { children, ...props } = this.props
+
+    return (
+      <Link onClick={this._onClick} {...props}>{children}</Link>
+    )
+  }
+}
+
+
 export default class Button extends PureComponent {
+  _onClick = () => {
+    track(`Click: ${this.props.analyticsId}`)
+
+    this.props.onClick && this.props.onClick()
+  }
+
   render() {
     const { children, ...props } = this.props
 
-    return <ButtonContainer {...props}>{children}</ButtonContainer>
+    const disabled = props.type === 'disabled'
+
+    return (
+      <ButtonContainer
+        {...props}
+        onClick={disabled ? null : this._onClick}
+      >
+        {children}
+      </ButtonContainer>
+    )
   }
 }

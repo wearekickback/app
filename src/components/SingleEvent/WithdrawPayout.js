@@ -13,7 +13,11 @@ const WithdrawPayoutButton = ({ address, amount, className }) => (
     refetchQueries={[{ query: PartyQuery, variables: { address }}]}
   >
     {(withdrawPayout, result) => (
-      <ChainMutationButton onClick={withdrawPayout} result={result} className={className}
+      <ChainMutationButton
+        analyticsId='Withdraw Payout'
+        onClick={withdrawPayout}
+        result={result}
+        className={className}
         title={`Withdraw payout - ${amount} ETH`}
       />
     )}

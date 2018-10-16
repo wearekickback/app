@@ -90,8 +90,8 @@ class Create extends Component {
         >
           {createPendingParty => (
             <div>
-              <Button onClick={createPendingParty}>
-                Create pending party
+              <Button onClick={createPendingParty} analyticsId='Create Pending Event'>
+                Create pending event
               </Button>
             </div>
           )}
@@ -109,7 +109,6 @@ class Create extends Component {
   _buildHandler = ({ createParty, createPendingParty }) => {
     return async () => {
       const result = await createPendingParty()
-      console.log(result)
       const { id } = result
       await createParty({ id })
     }

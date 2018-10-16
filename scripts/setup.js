@@ -30,6 +30,7 @@ if (argv.ropsten) {
   appConfig.API_URL = 'https://rinkeby.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 } else if (argv.live) {
+  appConfig.MIXPANEL_ID = '11a2f7a59470cdb46cb611c5d22876f2'
   appConfig.API_URL = 'https://live.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 }
