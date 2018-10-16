@@ -79,7 +79,7 @@ async function getWeb3() {
 
       networkState.networkId = `${await web3.eth.net.getId()}`
       networkState.networkName = getNetworkName(networkState.networkId)
-      networkState.isLocalNetwork = isLocalNetwork(networkId)
+      networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
 
       if (networkState.networkId !== networkState.expectedNetworkId) {
         networkState.wrongNetwork = true
