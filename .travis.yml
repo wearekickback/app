@@ -7,27 +7,7 @@ branches:
     - dev
     - master
 script:
-  - yarn build:release
-  - yarn predeploy
-deploy:
-  - provider: surge
-    skip_cleanup: true
-    project: ./build/
-    domain: ropsten.kickback.events
-    on:
-      branch: dev
-  - provider: surge
-    skip_cleanup: true
-    project: ./build/
-    domain: rinkeby.kickback.events
-    on:
-      branch: dev
-  - provider: surge
-    skip_cleanup: true
-    project: ./build/
-    domain: live.kickback.events
-    on:
-      branch: master
+  - yarn deploy
 notifications:
   email:
     - dev-notifications@noblockno.party
