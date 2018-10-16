@@ -54,8 +54,6 @@ const Column = styled('div')`
   `};
 `
 
-const Block = styled('div')``
-
 const TextInput = styled(DefaultTextInput)``
 
 export default class SignIn extends Component {
