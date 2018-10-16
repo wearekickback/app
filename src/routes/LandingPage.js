@@ -22,10 +22,8 @@ const Hero = styled('section')`
   background-size: cover;
   padding-top: 20px;
   padding: 20px 20px 0;
-  // margin-bottom: 50px;
 
   ${mq.medium`
-    // margin-bottom: 200px;
   `} h3 {
     opacity: 0.75;
     font-family: Muli;
@@ -36,7 +34,6 @@ const Hero = styled('section')`
     text-align: center;
     line-height: 42px;
     margin-bottom: 0;
-    margin-top: 50px;
   }
 
   h2 {
@@ -48,7 +45,7 @@ const Hero = styled('section')`
     letter-spacing: 0;
     text-align: center;
     line-height: 42px;
-    margin-top: 0;
+    margin-top: 150px;
   }
 
   p {
@@ -136,13 +133,18 @@ const CTAInner = styled(ContainerInner)`
 
 const CTA = styled('section')`
   padding: 40px 20px 0;
+  ${p => p.devcon && `padding: 150px 20px 0;`}
   background: url(${backgroundLight});
   background-size: cover;
   min-height: 450px;
-
-  ${mq.medium`
-    padding: 100px 20px 0;
-  `};
+  ${p =>
+    p.devcon
+      ? mq.medium`
+    padding: 150px 20px 0;
+  `
+      : mq.medium`
+  padding: 100px 20px 0;
+`};
   h2 {
     font-family: Muli;
     font-weight: 700;
@@ -190,7 +192,7 @@ class Home extends Component {
             </LaptopWrapper>
           </ContainerInner>
         </Hero>
-        <CTA>
+        <CTA devcon>
           <CTAInner>
             <h2>Heading to DevCon4?</h2>
             <p>RSVP on Kickback powered events now!</p>
