@@ -66,12 +66,12 @@ class Create extends Component {
             type="text"
             placeholder="URL to image for the event"
           /><br/>
-          <label>Deposit</label>
+          <label>Commitment</label>
           <input
             value={deposit}
             onChange={e => this.setState({ deposit: e.target.value })}
             type="text"
-            placeholder="deposits"
+            placeholder="ETH"
           /><br/>
           <label>Limit of participants</label>
           <input
