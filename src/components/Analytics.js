@@ -5,7 +5,7 @@ import { track } from '../api/analytics'
 
 class RouteAnalyticsWrapper extends Component {
   componentDidMount () {
-    track(`Route ${this.props.history.location}`)
+    track(`Route ${this.props.history.location.pathname}`)
   }
 
   render () {
