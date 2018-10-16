@@ -20,10 +20,10 @@ const Hero = styled('section')`
   background-size: cover;
   padding-top: 20px;
   padding: 20px 20px 0;
-  margin-bottom: 50px;
+  // margin-bottom: 50px;
 
   ${mq.medium`
-    margin-bottom: 200px;
+    // margin-bottom: 200px;
   `} h3 {
     opacity: 0.75;
     font-family: Muli;
@@ -174,13 +174,22 @@ class Home extends Component {
             </LaptopWrapper>
           </ContainerInner>
         </Hero>
+        <CTA>
+          <CTAInner>
+            <h2>Heading to DevCon4?</h2>
+            <p>
+              RSVP on Kickback powered events now!
+            </p>
+            <ButtonLink href="/events">Check out events</ButtonLink>
+          </CTAInner>
+        </CTA>
         <Section>
           <EventIllustration />
           <SectionContent>
             <p>
-              Everyone deposits a small amount of ETH when they RSVP, which is
+              Everyone commits a small amount of ETH when they RSVP, which is
               refunded after the event check-in. Any no-shows lose their
-              deposit, which can then be split amongst the attendees, donated to
+              ETH, which can then be split amongst the attendees, donated to
               charity, or applied to a future event.
             </p>
           </SectionContent>
