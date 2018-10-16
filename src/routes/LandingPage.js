@@ -20,10 +20,10 @@ const Hero = styled('section')`
   background-size: cover;
   padding-top: 20px;
   padding: 20px 20px 0;
-  margin-bottom: 50px;
+  // margin-bottom: 50px;
 
   ${mq.medium`
-    margin-bottom: 200px;
+    // margin-bottom: 200px;
   `} h3 {
     opacity: 0.75;
     font-family: Muli;
@@ -174,6 +174,15 @@ class Home extends Component {
             </LaptopWrapper>
           </ContainerInner>
         </Hero>
+        <CTA>
+          <CTAInner>
+            <h2>Heading to DevCon4?</h2>
+            <p>
+              RSVP on Kickback powered events now!
+            </p>
+            <ButtonLink href="/events">Check out events</ButtonLink>
+          </CTAInner>
+        </CTA>
         <Section>
           <EventIllustration />
           <SectionContent>
