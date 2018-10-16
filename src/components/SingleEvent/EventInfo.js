@@ -89,10 +89,14 @@ const EventWarning = styled('div')`
   font-size: 13px;
   color: #6e76ff;
   letter-spacing: 0;
-  text-align: center;
+  text-align: left;
   line-height: 21px;
   background: rgba(233, 234, 255, 0.5);
   border-radius: 4px;
+
+  ul {
+    margin-left: 2.5em;
+  }
 `
 const Photos = styled('section')``
 const PhotoContainer = styled('div')``
@@ -143,7 +147,12 @@ class EventInfo extends Component {
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>
         <EventWarning>
-          Please be aware that you can’t cancel once registered.
+          <strong>You cannot cancel once registered.</strong>
+          <p>Also, your payment is <strong>non-refundable</strong> if:</p>
+          <ul>
+            <li>You RSVP but then don't turn up and get marked as attended.</li>
+            <li>You fail to withdraw your post-event payout within the cooling period.</li>
+          </ul>
         </EventWarning>
         <Photos>
           <PhotoContainer>

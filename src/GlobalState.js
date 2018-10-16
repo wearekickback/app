@@ -46,7 +46,7 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  signIn = async ({ dontShowModal } = {}) => {
+  signIn = async ({ dontForceSignIn } = {}) => {
     if (this.state.loggedIn) {
       return
     }
@@ -88,7 +88,7 @@ class Provider extends Component {
         }
       }))
 
-      if (!dontShowModal) {
+      if (!dontForceSignIn) {
         this.showModal(SIGN_IN)
 
         return signInPromise
@@ -152,7 +152,7 @@ class Provider extends Component {
     }))
 
     // try and sign in!
-    await this.signIn({ dontShowModal: true })
+    await this.signIn({ dontForceSignIn: true })
 
     setProviderInstance(this)
   }

@@ -121,7 +121,7 @@ export default class SignIn extends Component {
           <Pencil />
           Create account
         </H2>
-        <Label secondaryText="(public)">Ethereum address</Label>
+        <Label>Ethereum address</Label>
         <InputAddress address={userAddress} />
         <Row>
           <Column>
@@ -143,7 +143,7 @@ export default class SignIn extends Component {
         </Row>
         <Row>
           <Column>
-            <Label>Email</Label>
+            <Label optional>Email</Label>
             <TextInput
               placeholder="alice@gmail.com"
               value={email}
@@ -151,7 +151,7 @@ export default class SignIn extends Component {
             />
           </Column>
           <Column>
-            <Label secondaryText="(optional)">Twitter</Label>
+            <Label optional>Twitter</Label>
             <TextInput
               placeholder="@jack"
               value={twitter}
@@ -159,22 +159,6 @@ export default class SignIn extends Component {
             />
           </Column>
         </Row>
-        <Block>
-          <p>
-            <strong>
-              Please note, your payment for an event is non-refundable if:
-            </strong>
-          </p>
-          <ul>
-            <li>
-              You <a href={`/faq`}>RSVP</a> to an event but then don't turn up.
-            </li>
-            <li>
-              You fail to withdraw your post-event payout within the{' '}
-              <a href={`/faq`}>cooling period</a>.
-            </li>
-          </ul>
-        </Block>
         <p>
           <input
             type="checkbox"

@@ -13,12 +13,13 @@ const LabelContainer = styled('label')`
 
 const SecondaryText = styled('span')`
   color: rgba(0, 0, 0, 0.2);
+  margin-left: 5px;
 `
 
-const Label = ({ children, secondaryText = '' }) => (
+const Label = ({ children, optional = false }) => (
   <LabelContainer>
     {children}
-    <SecondaryText>{' ' + secondaryText}</SecondaryText>
+    <SecondaryText>{optional ? '(optional)' : null}</SecondaryText>
   </LabelContainer>
 )
 
