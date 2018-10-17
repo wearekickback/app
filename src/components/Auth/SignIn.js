@@ -238,7 +238,7 @@ export default class SignIn extends Component {
     if (!realName) {
       return false
     }
-    if (!(/^[A-Za-z ]{2,48}$/.test(realName))) {
+    if (!(/^[^0-9]{2,48}$/.test(realName))) {
       return false
     }
 
