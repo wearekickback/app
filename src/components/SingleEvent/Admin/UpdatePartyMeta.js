@@ -31,7 +31,6 @@ class UpdatePartyMetaComponent extends Component {
           }
           return (
             <PartyForm
-              onCompleted={this.onCreated}
               mutation={UpdatePartyMeta}
               name={party.name}
               type="Update Party Meta"

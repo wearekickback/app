@@ -126,8 +126,10 @@ class PartyForm extends Component {
           mutation={mutation}
           resultKey="id"
           variables={variables}
-          onCompleted={({ id }) =>
-            onCompleted({ id }, deposit, limitOfParticipants)
+          onCompleted={
+            onCompleted
+              ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants)
+              : ''
           }
         >
           {mutate => (
