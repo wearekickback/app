@@ -11,6 +11,7 @@ import { UpdateUserProfile, LoginUser } from '../../graphql/mutations'
 import { UserProfileQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
+import { trimOrEmptyStringProps } from '../../utils/strings'
 import { GlobalConsumer } from '../../GlobalState'
 import RefreshAuthTokenButton from './RefreshAuthTokenButton'
 import { SIGN_IN } from '../../modals'
@@ -200,13 +201,14 @@ export default class SignIn extends Component {
         </p>
         <SafeMutation
           mutation={UpdateUserProfile}
-          variables={{ profile: { email, social, legal, realName, username } }}
+          variables={{ profile: {
+            ...trimOrEmptyStringProps({ email, realName, username }),
+            social,
+            legal,
+          } }}
         >
           {updateUserProfile => (
-            this.state.username &&
-            this.state.realName &&
-            this.state[TERMS_AND_CONDITIONS] &&
-            this.state[PRIVACY_POLICY] ? (
+            this.inputIsValid() ? (
               <RefreshAuthTokenButton
                 onClick={this.signInOrSignUp({
                   fetchUserProfileFromServer: updateUserProfile,
@@ -221,6 +223,34 @@ export default class SignIn extends Component {
         </SafeMutation>
       </FormDiv>
     )
+  }
+
+  inputIsValid () {
+    const { username, realName, [TERMS_AND_CONDITIONS]: terms, [PRIVACY_POLICY]: privacy } = this.state
+
+    if (!username) {
+      return false
+    }
+    if (!(/^[A-Za-z0-9_]{2,32}$/.test(username))) {
+      return false
+    }
+
+    if (!realName) {
+      return false
+    }
+    if (!(/^[^0-9]{2,48}$/.test(realName))) {
+      return false
+    }
+
+    if (!terms) {
+      return false
+    }
+
+    if (!privacy) {
+      return false
+    }
+
+    return true
   }
 
   renderSignIn(userAddress, toggleModal) {
