@@ -166,9 +166,8 @@ class EventCTA extends Component {
                 analyticsId='Finalize Event'
                 result={result}
                 onClick={finalize}
-                toThirds
                 preContent="Finalize and enable payouts"
-                postContent="Finalize and enable payouts"
+                postContent="Finalized!"
               />
             )}
           </ChainMutation>
