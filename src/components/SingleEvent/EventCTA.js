@@ -141,10 +141,7 @@ class EventCTA extends Component {
       party: {
         address,
         participants,
-        participantLimit,
-        deposit,
-        ended,
-        cancelled
+        ended
       },
       amAdmin
     } = this.props
@@ -205,17 +202,10 @@ class EventCTA extends Component {
   render() {
     const {
       party: {
-        address,
-        participants,
-        participantLimit,
-        deposit,
         ended,
         cancelled
-      },
-      amAdmin
+      }
     } = this.props
-
-    const totalReg = participants.length
 
     return (
       <EventCTAContainer>

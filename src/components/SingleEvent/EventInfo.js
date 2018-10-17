@@ -82,8 +82,6 @@ const TotalPot = styled('div')`
   }
 `
 
-const Deposit = styled('span')``
-
 const EventDescription = styled('p')`
   white-space: pre-line;
 `
