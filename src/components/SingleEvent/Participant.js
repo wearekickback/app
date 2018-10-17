@@ -3,7 +3,9 @@ import styled from 'react-emotion'
 
 import { Mutation } from 'react-apollo'
 import { PARTICIPANT_STATUS } from '../../utils/status'
-import { getSocial } from '../../utils/parties'
+import DefaultAvatar from '../User/Avatar'
+import TwitterAvatar from '../User/TwitterAvatar'
+
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { toEthVal } from '../../utils/units'
 import {
@@ -28,9 +30,10 @@ const ParticipantWrapper = styled('div')`
   align-items: center;
 `
 
-const TwitterAvatar = styled('img')`
+const Avatar = styled(DefaultAvatar)`
   border-radius: 50%;
   width: 61px;
+  height: 61px;
   margin-bottom: 15px;
 `
 
@@ -96,8 +99,6 @@ export class Participant extends Component {
     const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
     const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
-    const twitter = getSocial(user.social, 'twitter')
-
     const numRegistered = party.participants.length
     const numShowedUp = calculateNumAttended(party.participants)
 
@@ -107,9 +108,7 @@ export class Participant extends Component {
       <GlobalConsumer>
         {({ userAddress, loggedIn }) => (
           <ParticipantWrapper>
-            <TwitterAvatar
-              src={`https://avatars.io/twitter/${twitter}/medium`}
-            />
+             <TwitterAvatar social={user.social} avatar={Avatar} />
             <ParticipantId>
               <ParticipantUsername>
                 {user.username}

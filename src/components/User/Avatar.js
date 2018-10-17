@@ -8,10 +8,25 @@ const AvatarContainer = styled('div')`
   overflow: hidden;
 `
 
-const Avatar = ({ src, className }) => (
-  <AvatarContainer className={className}>
-    <img src={src} alt="avatar" />
-  </AvatarContainer>
-)
+const Avatar = ({ href, src, className }) => {
+  let container
+
+  if(href){
+    container = (
+      <AvatarContainer className={className}>
+        <a href={href} target="_blank"  >
+          <img src={src} alt="avatar" />
+        </a>
+      </AvatarContainer>
+    )
+  }else{
+    container = (
+      <AvatarContainer className={className}>
+        <img src={src} alt="avatar" />
+      </AvatarContainer>
+    )
+  }
+  return container
+}
 
 export default Avatar

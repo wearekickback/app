@@ -4,12 +4,13 @@ import styled from 'react-emotion'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
 import DefaultAvatar from '../User/Avatar'
+import TwitterAvatar from '../User/TwitterAvatar'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 // import Tooltip from '../Tooltip/Tooltip'
 
 import { toEthVal } from '../../utils/units'
-import { getSocial } from '../../utils/parties'
+
 
 const Date = styled('div')``
 const EventName = styled(H2)``
@@ -120,12 +121,7 @@ class EventInfo extends Component {
         </ContractAddress>
         <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
         <Organiser>
-          <Avatar
-            src={`https://avatars.io/twitter/${getSocial(
-              party.owner.social,
-              'twitter'
-            ) || 'randomtwitter'}`}
-          />{' '}
+          <TwitterAvatar social={party.owner.social} avatar={Avatar}/>
           <span>Hosted by</span>
           <HostUsername>{party.owner.username}</HostUsername>
         </Organiser>
