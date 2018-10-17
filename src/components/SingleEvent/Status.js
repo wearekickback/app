@@ -22,7 +22,7 @@ const StatusContainer = styled('div')`
   font-family: Muli;
   padding: 10px 20px;
   color: #6e76ff;
-  width: calc(100% - 120px);
+  width: 100%;
   text-align: center;
   display: flex;
   justify-content: center;

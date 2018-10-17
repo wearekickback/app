@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
+import EventFilters from './EventFilters'
 import { H3 } from '../Typography/Basic'
+import { pluralize } from '../../utils/strings'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
@@ -12,12 +14,17 @@ const EventParticipantsContainer = styled('div')`
 
 const NoParticipants = styled('div')``
 
+const Spots = styled('span')`
+  font-size: 70%;
+`
+
 class EventParticipants extends Component {
   render() {
     const {
+      handleSearch,
       search,
       party,
-      party: { participants },
+      party: { participants, participantLimit, ended },
       amAdmin
     } = this.props
 
@@ -27,9 +34,19 @@ class EventParticipants extends Component {
       return a.index < b.index ? -1 : 1
     })
 
+    let spots
+
+    if (ended) {
+      spots = `${participants.length} out of ${participantLimit} attended`
+    } else {
+      const spotsLeft = participantLimit - participants.length
+      spots = `${participants.length} going, ${spotsLeft} ${pluralize('spot', spotsLeft)} left`
+    }
+
     return (
       <Fragment>
-        <H3>Participants</H3>
+        <H3>Participants - <Spots>{spots}</Spots></H3>
+        <EventFilters handleSearch={handleSearch} />
         <EventParticipantsContainer>
           {participants.length > 0 ? (
             participants
