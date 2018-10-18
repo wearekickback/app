@@ -7,6 +7,8 @@ import DefaultAvatar from '../User/Avatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
+import EthVal from 'ethval'
+import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
 import { toEthVal } from '../../utils/units'
@@ -95,6 +97,7 @@ const TotalPot = styled('div')`
 
 const EventDescription = styled('p')`
   white-space: pre-line;
+  line-height: 1.6em;
 `
 const Photos = styled('section')``
 const PhotoContainer = styled('div')``
@@ -144,7 +147,7 @@ class EventInfo extends Component {
         </Location>
         <TotalPot>
           <EthIcon />
-          Total pot{' '}
+          Total pot:{' '}
           <span>
             {toEthVal(party.deposit)
               .mul(party.participants.length)
@@ -152,9 +155,16 @@ class EventInfo extends Component {
               .toFixed(2)}{' '}
             ETH
           </span>
-          RSVP{' '}
+          RSVP:{' '}
           <span>
             <DepositValue value={party.deposit} /> ETH
+          </span>
+          <span>
+            <strong>Cooling Period: </strong>
+            {moment
+              .duration(parseInt(party.coolingPeriod, 16), 'seconds')
+              .asDays()}{' '}
+            days
           </span>
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>
