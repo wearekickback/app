@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName } from '@noblocknoparty/validation'
+import { isEmailAddress, isUsername, isRealName, isTwitterId } from '@noblocknoparty/validation'
 
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
@@ -227,7 +227,7 @@ export default class SignIn extends Component {
   }
 
   inputIsValid () {
-    const { email, username, realName, [TERMS_AND_CONDITIONS]: terms, [PRIVACY_POLICY]: privacy } = this.state
+    const { email, twitter, username, realName, [TERMS_AND_CONDITIONS]: terms, [PRIVACY_POLICY]: privacy } = this.state
 
     if (!isUsername(username)) {
       return false
@@ -238,6 +238,10 @@ export default class SignIn extends Component {
     }
 
     if (email && !isEmailAddress(email)) {
+      return false
+    }
+
+    if (twitter && !isTwitterId(twitter)) {
       return false
     }
 
