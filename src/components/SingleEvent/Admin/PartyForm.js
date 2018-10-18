@@ -21,7 +21,7 @@ class PartyForm extends Component {
       date,
       image,
       deposit,
-      limitOfParticipants: 20
+      limitOfParticipants
     }
   }
 
@@ -50,8 +50,6 @@ class PartyForm extends Component {
     if (type === 'Update Party Meta') {
       variables.address = address
     }
-
-    console.log(variables)
 
     return (
       <div className="App">
