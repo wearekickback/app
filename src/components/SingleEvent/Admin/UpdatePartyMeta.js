@@ -45,7 +45,6 @@ class UpdatePartyMetaComponent extends Component {
       </SafeQuery>
     )
   }
-  _onCreated = ({ id }) => {}
 }
 
 export default UpdatePartyMetaComponent
