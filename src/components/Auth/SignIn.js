@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { isEmailAddress, isUsername, isRealName } from '@noblocknoparty/validation'
 
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
@@ -160,7 +161,7 @@ export default class SignIn extends Component {
         <Field>
           <Label optional>Twitter</Label>
           <TextInput
-            placeholder="@jack"
+            placeholder="jack"
             value={twitter}
             onChange={this.handleTwitterChange}
           />
@@ -226,19 +227,17 @@ export default class SignIn extends Component {
   }
 
   inputIsValid () {
-    const { username, realName, [TERMS_AND_CONDITIONS]: terms, [PRIVACY_POLICY]: privacy } = this.state
+    const { email, username, realName, [TERMS_AND_CONDITIONS]: terms, [PRIVACY_POLICY]: privacy } = this.state
 
-    if (!username) {
-      return false
-    }
-    if (!(/^[A-Za-z0-9_]{2,32}$/.test(username))) {
+    if (!isUsername(username)) {
       return false
     }
 
-    if (!realName) {
+    if (!isRealName(realName)) {
       return false
     }
-    if (!(/^[^0-9]{2,48}$/.test(realName))) {
+
+    if (email && !isEmailAddress(email)) {
       return false
     }
 
