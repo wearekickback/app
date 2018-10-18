@@ -126,11 +126,11 @@ class EventInfo extends Component {
                   <Organiser>
                     <Avatar
                       src={`https://avatars.io/twitter/${getSocial(
-                        party.owner.social,
+                        organiser.social,
                         'twitter'
                       ) || 'randomtwitter'}`}
                     />{' '}
-                    <HostUsername>{party.owner.username}</HostUsername>
+                    <HostUsername>{organiser.username}</HostUsername>
                   </Organiser>
                 </>
               )
