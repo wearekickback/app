@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
-import { H2 } from '../Typography/Basic'
+import { H2, H3 } from '../Typography/Basic'
 import DefaultAvatar from '../User/Avatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
@@ -36,17 +36,28 @@ const Avatar = styled(DefaultAvatar)`
   flex-shrink: 0;
 `
 
-const Organiser = styled('div')`
+const Organisers = styled('div')`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 
   span {
     margin-right: 5px;
   }
+`
+
+const OrganiserList = styled('div')`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`
+const Organiser = styled('div')`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
 `
 
 const PinIcon = styled(DefaultPinIcon)`
@@ -106,16 +117,27 @@ class EventInfo extends Component {
           <EtherScanLink address={address}>{address}</EtherScanLink>
         </ContractAddress>
         <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
-        <Organiser>
-          <Avatar
-            src={`https://avatars.io/twitter/${getSocial(
-              party.owner.social,
-              'twitter'
-            ) || 'randomtwitter'}`}
-          />{' '}
-          <span>Hosted by</span>
-          <HostUsername>{party.owner.username}</HostUsername>
-        </Organiser>
+        <Organisers>
+          <H3>Organisers</H3>
+          <OrganiserList>
+            {[party.owner, ...party.admins].map(organiser => {
+              return (
+                <>
+                  <Organiser>
+                    <Avatar
+                      src={`https://avatars.io/twitter/${getSocial(
+                        party.owner.social,
+                        'twitter'
+                      ) || 'randomtwitter'}`}
+                    />{' '}
+                    <HostUsername>{party.owner.username}</HostUsername>
+                  </Organiser>
+                </>
+              )
+            })}
+          </OrganiserList>
+        </Organisers>
+        <H3>Event Details</H3>
         <Location>
           <PinIcon />
           {party.location || '11 Macclesfield St, London W1D 5BW'}
@@ -131,7 +153,9 @@ class EventInfo extends Component {
             ETH
           </span>
           RSVP{' '}
-          <span><DepositValue value={party.deposit} /> ETH</span>
+          <span>
+            <DepositValue value={party.deposit} /> ETH
+          </span>
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>
         <Photos>
