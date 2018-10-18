@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import SingleEventWrapper from '../components/SingleEvent/SingleEventWrapper'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import Clear from '../components/SingleEvent/Clear'
+import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
 class SingleEvent extends Component {
   state = {
@@ -20,6 +21,7 @@ class SingleEvent extends Component {
       <Fragment>
         <SetLimit address={address} />
         <Clear address={address} />
+        <UpdatePartyMeta address={address} />
         <SingleEventWrapper
           handleSearch={this.handleSearch}
           search={this.state.search}
