@@ -4,6 +4,8 @@ import { Link as DefaultLink } from 'react-router-dom'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
 import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'
 import { ReactComponent as GithubIcon } from '../components/svg/github.svg'
+import { ReactComponent as MediumIcon } from '../components/svg/medium.svg'
+import { ReactComponent as YoutubeIcon } from '../components/svg/youtube.svg'
 
 import mq from '../mediaQuery'
 
@@ -34,6 +36,12 @@ const MiddleRow = styled(Row)`
   ${mq.medium`
     flex-direction: row;
   `};
+`
+
+const Mail = styled('a')`
+  color: white;
+  display: flex;
+  margin-bottom: 10px;
 `
 
 const Links = styled('nav')`
@@ -88,7 +96,7 @@ class Footer extends Component {
       <FooterContainer>
         <FooterInner>
           <H2>Get in touch</H2>
-          <a href="mailto:hello@kickback.events">hello@kickback.events</a>
+          <Mail href="mailto:hello@kickback.events">hello@kickback.events</Mail>
           <MiddleRow>
             <ElevatorPitch>
               Kickback helps event organisers guarantee a high participation
@@ -110,6 +118,12 @@ class Footer extends Component {
               </a>
               <a href="https://twitter.com/wearekickback" className="twitter">
                 <TwitterIcon />
+              </a>
+              <a href="https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ">
+                <YoutubeIcon />
+              </a>
+              <a href="https://medium.com/wearekickback">
+                <MediumIcon />
               </a>
             </Social>
           </Row>
