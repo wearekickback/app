@@ -1352,9 +1352,9 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-1.0.2.tgz#8cba3d265253806be9eac9df396467bc335c6736"
 
-"@noblocknoparty/validation@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@noblocknoparty/validation/-/validation-1.1.0.tgz#168cfccd7d36013936503e65051b1022438f0e50"
+"@noblocknoparty/validation@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@noblocknoparty/validation/-/validation-1.1.1.tgz#f3e826bcc8168f2345b2b463e35ec280fc1a5dd7"
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
