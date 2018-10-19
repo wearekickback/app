@@ -120,12 +120,10 @@ class EventInfo extends Component {
           <OrganiserList>
             {[party.owner, ...party.admins].map(organiser => {
               return (
-                <>
-                  <Organiser>
-                    <UserAvatar user={organiser} />
-                    <HostUsername>{organiser.username}</HostUsername>
-                  </Organiser>
-                </>
+                <Organiser key={organiser.username}>
+                  <UserAvatar user={organiser} />
+                  <HostUsername>{organiser.username}</HostUsername>
+                </Organiser>
               )
             })}
           </OrganiserList>

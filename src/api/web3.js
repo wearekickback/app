@@ -95,6 +95,8 @@ async function getWeb3() {
       // if web3 not set then something failed
       if (!web3) {
         throw new Error('Error setting up web3')
+      } else {
+        networkState.allGood = true
       }
 
       // poll for blocks
