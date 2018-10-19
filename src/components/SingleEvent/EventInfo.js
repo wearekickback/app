@@ -7,7 +7,6 @@ import DefaultAvatar from '../User/Avatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
-import EthVal from 'ethval'
 import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
