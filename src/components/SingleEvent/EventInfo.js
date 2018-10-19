@@ -205,7 +205,7 @@ class EventInfo extends Component {
           </strong>
           <span>
             {moment
-              .duration(parseInt(party.coolingPeriod, 16), 'seconds')
+              .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
               .asDays()}{' '}
             days
           </span>
