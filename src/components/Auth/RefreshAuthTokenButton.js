@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import ReactTooltip from 'react-tooltip'
-import { findDOMNode } from 'react-dom'
 
 import SafeMutation from '../SafeMutation'
 import ErrorBox from '../ErrorBox'
+import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import { CreateLoginChallenge, SignChallengeString } from '../../graphql/mutations'
 import { GlobalConsumer } from '../../GlobalState'
@@ -25,7 +24,7 @@ export default class RefreshAuthTokenButton extends Component {
 
         const { challenge: { str } } = data
 
-        ReactTooltip.show(findDOMNode(this.btn))
+        this.tooltip.show()
 
         return signChallengeString({
           variables: {
@@ -34,7 +33,7 @@ export default class RefreshAuthTokenButton extends Component {
         })
       })
       .then(({ errors, data }) => {
-        ReactTooltip.hide(findDOMNode(this.btn))
+        this.tooltip.hide()
 
         if (errors) {
           throw new Error('Failed to obtain signature!')
@@ -54,10 +53,14 @@ export default class RefreshAuthTokenButton extends Component {
 
         setUserProfile(profile)
       })
+      .catch(err => {
+        this.tooltip.hide()
+        throw err
+      })
   )
 
-  _onRef = elem => {
-    this.btn = elem
+  _onTooltipRef = elem => {
+    this.tooltip = elem
   }
 
   render() {
@@ -73,27 +76,24 @@ export default class RefreshAuthTokenButton extends Component {
               {createLoginChallenge => (
                 <SafeMutation mutation={SignChallengeString}>
                   {signChallengeString => (
-                    <Button
-                      analyticsId='Sign Message'
-                      onClick={() => onClick(this.buildCallback({
-                        userAddress,
-                        createLoginChallenge,
-                        signChallengeString,
-                        setAuthTokenFromSignature,
-                        setUserProfile,
-                        onClick,
-                      }))}
-                      ref={this._onRef}
-                      data-tip='Please sign the login message using your wallet or Dapp browser'
+                    <Tooltip
+                      text='Please sign the login message using your wallet or Dapp browser'
+                      ref={this._onTooltipRef}
                     >
-                      {title || 'Sign in'}
-                      <ReactTooltip
-                        place="top"
-                        event="dblclick"
-                        effect="solid"
-                        type="dark"
-                      />
-                    </Button>
+                      <Button
+                        analyticsId='Sign Message'
+                        onClick={() => onClick(this.buildCallback({
+                          userAddress,
+                          createLoginChallenge,
+                          signChallengeString,
+                          setAuthTokenFromSignature,
+                          setUserProfile,
+                          onClick,
+                        }))}
+                      >
+                        {title || 'Sign in'}
+                      </Button>
+                    </Tooltip>
                   )}
                 </SafeMutation>
               )}

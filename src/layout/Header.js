@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
-import ReactTooltip from 'react-tooltip'
 
 import { GlobalConsumer } from '../GlobalState'
 import Logo from '../components/Icons/LogoFull'
+import Tooltip from '../components/Tooltip'
 import Button from '../components/Forms/Button'
 import Avatar from '../components/User/Avatar'
+import { EDIT_PROFILE } from '../modals'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -37,6 +38,7 @@ const RightBar = styled('div')`
 const Account = styled('div')`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 const Username = styled('div')`
   max-width: 100px;
@@ -59,13 +61,13 @@ const Header = () => (
       <RightBar>
         <NavLink to="/events">Events</NavLink>
         <GlobalConsumer>
-          {({ userAddress, userProfile, loggedIn, signIn, signInError }) => {
+          {({ userAddress, userProfile, networkState,loggedIn, signIn, toggleModal }) => {
             const twitterProfile =
               userProfile && userProfile.social.find(s => s.type === 'twitter')
             return loggedIn ? (
               <>
                 {/* <Notifications>Notification</Notifications> */}
-                <Account>
+                <Account onClick={() => toggleModal(EDIT_PROFILE)}>
                   {userProfile ? (
                     <Username>
                       {userProfile.username}
@@ -81,22 +83,14 @@ const Header = () => (
                 </Account>
               </>
             ) : (
-              <Button
-                type="light"
-                onClick={signIn}
-                analyticsId='Sign In'
-                data-tip=''
-                data-for='sign-in-button-tooltip'
+              <Tooltip
+                text='Please ensure your browser is connected to the Ethereum network and that we can access your account address.'
+                show={!networkState.allGood}
               >
-                Sign in
-                <ReactTooltip
-                  id='sign-in-button-tooltip'
-                  getContent={() => signInError}
-                  place="bottom"
-                  effect="solid"
-                  type="dark"
-                />
-              </Button>
+                <Button type="light" onClick={signIn} analyticsId='Sign In'>
+                  Sign in
+                </Button>
+              </Tooltip>
             )
           }}
         </GlobalConsumer>

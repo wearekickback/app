@@ -122,17 +122,15 @@ class EventInfo extends Component {
           <OrganiserList>
             {[party.owner, ...party.admins].map(organiser => {
               return (
-                <>
-                  <Organiser>
-                    <Avatar
-                      src={`https://avatars.io/twitter/${getSocial(
-                        organiser.social,
-                        'twitter'
-                      ) || 'randomtwitter'}`}
-                    />{' '}
-                    <HostUsername>{organiser.username}</HostUsername>
-                  </Organiser>
-                </>
+                <Organiser key={organiser.address}>
+                  <Avatar
+                    src={`https://avatars.io/twitter/${getSocial(
+                      organiser.social,
+                      'twitter'
+                    ) || 'randomtwitter'}`}
+                  />{' '}
+                  <HostUsername>{organiser.username}</HostUsername>
+                </Organiser>
               )
             })}
           </OrganiserList>

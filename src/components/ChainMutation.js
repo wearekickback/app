@@ -1,21 +1,16 @@
 import _ from 'lodash'
-import { css } from 'react-emotion'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
-import ReactTooltip from 'react-tooltip'
 
 import { events, getTransactionReceipt } from '../api/web3'
 import SafeQuery from './SafeQuery'
+import Tooltip from './Tooltip'
 import Button from './Forms/Button'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
 
-const tooltipStyles = css({
-  zIndex: 1
-})
 
 export default class ChainMutation extends Component {
   static propTypes = {
@@ -172,17 +167,17 @@ export class ChainMutationButton extends Component {
   componentDidUpdate () {
     const { result: { loading, progress } } = this.props
 
-    if (this.btn) {
+    if (this.tooltip) {
       if (loading || progress) {
-        ReactTooltip.show(findDOMNode(this.btn))
+        this.tooltip.show()
       } else {
-        ReactTooltip.hide(findDOMNode(this.btn))
+        this.tooltip.hide()
       }
     }
   }
 
-  _onRef = elem => {
-    this.btn = elem
+  _onTooltipRef = elem => {
+    this.tooltip = elem
   }
 
   render() {
@@ -215,21 +210,14 @@ export class ChainMutationButton extends Component {
 
     return (
       <>
-        <Button
-          {...props}
-          ref={this._onRef}
-          disabled={!!(loading || progress)}
-          data-tip={tip}
-        >
-          {content}
-          <ReactTooltip
-            place="top"
-            event="dblclick"
-            effect="solid"
-            type="dark"
-            className={tooltipStyles}
-          />
-        </Button>
+        <Tooltip text={tip} ref={this._onTooltipRef}>
+          <Button
+            {...props}
+            disabled={!!(loading || progress)}
+          >
+            {content}
+          </Button>
+        </Tooltip>
         {after}
       </>
     )

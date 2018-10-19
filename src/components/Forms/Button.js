@@ -104,6 +104,8 @@ export default class Button extends PureComponent {
   render() {
     const { children, ...props } = this.props
 
+    props.type = props.disabled ? 'disabled' : props.type
+
     const disabled = props.type === 'disabled'
 
     return (
