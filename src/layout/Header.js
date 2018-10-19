@@ -6,6 +6,7 @@ import { GlobalConsumer } from '../GlobalState'
 import Logo from '../components/Icons/LogoFull'
 import Button from '../components/Forms/Button'
 import Avatar from '../components/User/Avatar'
+import { EDIT_PROFILE } from '../modals'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -36,6 +37,7 @@ const RightBar = styled('div')`
 const Account = styled('div')`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 const Username = styled('div')`
   max-width: 100px;
@@ -58,13 +60,13 @@ const Header = () => (
       <RightBar>
         <NavLink to="/events">Events</NavLink>
         <GlobalConsumer>
-          {({ userAddress, userProfile, loggedIn, signIn }) => {
+          {({ userAddress, userProfile, loggedIn, signIn, toggleModal }) => {
             const twitterProfile =
               userProfile && userProfile.social.find(s => s.type === 'twitter')
             return loggedIn ? (
               <>
                 {/* <Notifications>Notification</Notifications> */}
-                <Account>
+                <Account onClick={() => toggleModal(EDIT_PROFILE)}>
                   {userProfile ? (
                     <Username>
                       {userProfile.username}
@@ -80,13 +82,9 @@ const Header = () => (
                 </Account>
               </>
             ) : (
-              <GlobalConsumer>
-                {({ toggleModal }) => (
-                  <Button type="light" onClick={signIn} analyticsId='Sign In'>
-                    Sign in
-                  </Button>
-                )}
-              </GlobalConsumer>
+              <Button type="light" onClick={signIn} analyticsId='Sign In'>
+                Sign in
+              </Button>
             )
           }}
         </GlobalConsumer>

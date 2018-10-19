@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
-import DefaultAvatar from '../User/Avatar'
+import TwitterAvatar from '../User/TwitterAvatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
@@ -11,7 +11,7 @@ import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
 import { toEthVal } from '../../utils/units'
-import { getSocial } from '../../utils/parties'
+
 
 const Date = styled('div')``
 const EventName = styled(H2)``
@@ -28,13 +28,6 @@ const ContractAddress = styled('h3')`
 const EventImage = styled('img')`
   border-radius: 4px;
   margin-bottom: 20px;
-`
-
-const Avatar = styled(DefaultAvatar)`
-  margin-right: 10px;
-  height: 35px;
-  width: 35px;
-  flex-shrink: 0;
 `
 
 const Organisers = styled('div')`
@@ -98,6 +91,11 @@ const EventDescription = styled('p')`
   white-space: pre-line;
   line-height: 1.6em;
 `
+
+const UserAvatar = styled(TwitterAvatar)`
+  margin-right: 10px;
+`
+
 const Photos = styled('section')``
 const PhotoContainer = styled('div')``
 const Photo = styled('img')``
@@ -126,12 +124,7 @@ class EventInfo extends Component {
               return (
                 <>
                   <Organiser>
-                    <Avatar
-                      src={`https://avatars.io/twitter/${getSocial(
-                        organiser.social,
-                        'twitter'
-                      ) || 'randomtwitter'}`}
-                    />{' '}
+                    <UserAvatar user={organiser} />
                     <HostUsername>{organiser.username}</HostUsername>
                   </Organiser>
                 </>
