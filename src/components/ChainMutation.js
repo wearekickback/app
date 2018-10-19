@@ -1,21 +1,18 @@
 import _ from 'lodash'
-import { css } from 'react-emotion'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
-import ReactTooltip from 'react-tooltip'
 
+import { CANNOT_RESOLVE_ACCOUNT_ADDRESS, CANNOT_RESOLVE_CORRECT_NETWORK } from '../utils/errors'
 import { events, getTransactionReceipt } from '../api/web3'
+import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from './SafeQuery'
+import Tooltip from './Tooltip'
 import Button from './Forms/Button'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
 
-const tooltipStyles = css({
-  zIndex: 1
-})
 
 export default class ChainMutation extends Component {
   static propTypes = {
@@ -169,28 +166,34 @@ export const ChainMutationResult = ({ children, result }) => {
 }
 
 export class ChainMutationButton extends Component {
-  componentDidUpdate () {
-    const { result: { loading, progress } } = this.props
+  state = {}
 
-    if (this.btn) {
-      if (loading || progress) {
-        ReactTooltip.show(findDOMNode(this.btn))
+  componentDidUpdate () {
+    const { notReadyError } = this.state
+    const { result: { loading } } = this.props
+
+    if (this.tooltip) {
+      if (loading || notReadyError) {
+        this.tooltip.show()
       } else {
-        ReactTooltip.hide(findDOMNode(this.btn))
+        this.tooltip.hide()
       }
     }
   }
 
-  _onRef = elem => {
-    this.btn = elem
+  _onTooltipRef = elem => {
+    this.tooltip = elem
   }
 
   render() {
+    const { notReadyError } = this.state
+
     const {
       result: { error, loading, progress, data: tx },
       preContent,
       postContent,
       tooltip,
+      onClick,
       ...props
     } = this.props
 
@@ -211,27 +214,48 @@ export class ChainMutationButton extends Component {
       content = preContent
     }
 
-    const tip = tooltip || 'Please sign the created transaction using your wallet or Dapp browser'
+    const tip = notReadyError || tooltip || 'Please sign the created transaction using your wallet or Dapp browser'
 
     return (
-      <>
-        <Button
-          {...props}
-          ref={this._onRef}
-          disabled={!!(loading || progress)}
-          data-tip={tip}
-        >
-          {content}
-          <ReactTooltip
-            place="top"
-            event="dblclick"
-            effect="solid"
-            type="dark"
-            className={tooltipStyles}
-          />
-        </Button>
-        {after}
-      </>
+      <GlobalConsumer>
+        {({ networkState, reloadUserAddress }) => (
+          <>
+            <Tooltip text={tip} ref={this._onTooltipRef}>
+              {({ tooltipElement }) => (
+                <Button
+                  {...props}
+                  onClick={() => this._onClick({ networkState, reloadUserAddress, postMutation: onClick })}
+                  disabled={!!(loading || progress)}
+                >
+                  {content}
+                  {tooltipElement}
+                </Button>
+              )}
+            </Tooltip>
+            {after}
+          </>
+        )}
+      </GlobalConsumer>
     )
+  }
+
+  _onClick = ({ networkState, reloadUserAddress, postMutation }) => {
+    this.setState({ notReadyError: null }, async () => {
+      const address = await reloadUserAddress()
+
+      if (!address) {
+        return this.setState({
+          notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
+        })
+      }
+
+      if (!networkState.allGood) {
+        return this.setState({
+          notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
+        })
+      }
+
+      postMutation()
+    })
   }
 }
