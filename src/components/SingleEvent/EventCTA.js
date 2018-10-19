@@ -214,7 +214,8 @@ class EventCTA extends Component {
         </RSVPContainer>
         {ended ? (
           cancelled ? this._renderCanceled() : this._renderEnded()
-        ) : null}
+        ) : this._renderAdminCTA()}
+
       </EventCTAContainer>
     )
   }
