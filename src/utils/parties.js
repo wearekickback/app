@@ -10,9 +10,9 @@ export const amParticipant = (participants, address) =>
 export const amInAddressList = (addressList, address) =>
   addressList.find(a => addressesMatch(a, address))
 
-export const getSocial = (socials, socialType) => {
+export const getSocial = (user = {}, socialType) => {
   const { value } =
-    (socials || []).find(({ type }) => type === socialType) || {}
+    (user.social || []).find(({ type }) => type === socialType) || {}
   return value
 }
 
