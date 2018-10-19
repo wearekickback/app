@@ -170,7 +170,7 @@ export class ChainMutationButton extends Component {
 
   componentDidUpdate () {
     const { notReadyError } = this.state
-    const { result: { loading, progress } } = this.props
+    const { result: { loading } } = this.props
 
     if (this.tooltip) {
       if (loading || notReadyError) {
