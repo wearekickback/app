@@ -54,7 +54,15 @@ class Provider extends Component {
     // let's request user's account address
     const address = await getAccount()
     if (!address) {
-      return
+      this.setState({
+        signInError: 'Please ensure your browser is connected to the Ethereum network and that we can access your account address.'
+      })
+
+      return setTimeout(() => {
+        this.setState({
+          signInError: null
+        })
+      }, 5000)
     }
 
     console.debug(`Checking if user ${address} is logged in ...`)
@@ -172,6 +180,7 @@ class Provider extends Component {
           loggedIn: this.isLoggedIn(),
           toggleModal: this.toggleModal,
           signIn: this.signIn,
+          signInError: this.state.signInError,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
           setUserProfile: this.setUserProfile,

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
+import ReactTooltip from 'react-tooltip'
 
 import { GlobalConsumer } from '../GlobalState'
 import Logo from '../components/Icons/LogoFull'
@@ -58,7 +59,7 @@ const Header = () => (
       <RightBar>
         <NavLink to="/events">Events</NavLink>
         <GlobalConsumer>
-          {({ userAddress, userProfile, loggedIn, signIn }) => {
+          {({ userAddress, userProfile, loggedIn, signIn, signInError }) => {
             const twitterProfile =
               userProfile && userProfile.social.find(s => s.type === 'twitter')
             return loggedIn ? (
@@ -80,13 +81,22 @@ const Header = () => (
                 </Account>
               </>
             ) : (
-              <GlobalConsumer>
-                {({ toggleModal }) => (
-                  <Button type="light" onClick={signIn} analyticsId='Sign In'>
-                    Sign in
-                  </Button>
-                )}
-              </GlobalConsumer>
+              <Button
+                type="light"
+                onClick={signIn}
+                analyticsId='Sign In'
+                data-tip=''
+                data-for='sign-in-button-tooltip'
+              >
+                Sign in
+                <ReactTooltip
+                  id='sign-in-button-tooltip'
+                  getContent={() => signInError}
+                  place="bottom"
+                  effect="solid"
+                  type="dark"
+                />
+              </Button>
             )
           }}
         </GlobalConsumer>
@@ -94,5 +104,6 @@ const Header = () => (
     </HeaderInner>
   </HeaderContainer>
 )
+
 
 export default Header
