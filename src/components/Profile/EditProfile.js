@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
@@ -46,7 +47,7 @@ export default class SignIn extends Component {
                 renderSubmitButton={(profile, isValid) => (
                   <SafeMutation
                     mutation={UpdateUserProfile}
-                    variables={{ profile }}
+                    variables={{ profile: _.omit(profile, 'username') }}
                   >
                     {updateUserProfile => (
                       <Button

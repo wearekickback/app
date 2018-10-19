@@ -36,15 +36,7 @@ const TextInput = styled(DefaultTextInput)`
 `
 
 export default class ProfileForm extends Component {
-  state = {
-    email: '',
-    username: '',
-    realName: '',
-    twitter: '',
-    terms: undefined,
-    privacy: undefined,
-    marketing: undefined,
-  }
+  state = {}
 
   render() {
     return this.renderForm()
@@ -69,7 +61,11 @@ export default class ProfileForm extends Component {
             value={username}
             onChange={this.handleUsernameChange}
           />
-          {existingProfile ? null : (
+          {existingProfile ? (
+            <Explanation>
+              If you wish to change your username please contact us at <strong>hello@kickback.events</strong>
+            </Explanation>
+          ) : (
             <Explanation>
               We hope this will be easier to remember than your account address (0x...)!
             </Explanation>
@@ -83,7 +79,7 @@ export default class ProfileForm extends Component {
             onChange={this.handleRealNameChange}
           />
           <Explanation>
-            <strong>This stays private.</strong>. We only share this with
+            We <strong>only</strong> share this with
             organizers of the events you attend, so that they can identify
             you on arrival.
           </Explanation>
@@ -109,7 +105,7 @@ export default class ProfileForm extends Component {
             onChange={this.handleTwitterChange}
           />
           <Explanation>
-            We use this for your profile picture, and for people to contact
+            We use this for your profile picture, and for anyone to contact
             your over social media if they so wish.
           </Explanation>
         </Field>
@@ -165,9 +161,9 @@ export default class ProfileForm extends Component {
 
     return {
       username: existingProfile.username || username,
-      realName: realName || existingProfile.realName,
-      email: email || _.get(existingProfile, 'email.verified', '') || _.get(existingProfile, 'email.pending', ''),
-      twitter: twitter || _.get((existingProfile.social || []).find(({ type }) => type === 'twitter'), 'value', ''),
+      realName: realName !== undefined ? realName : existingProfile.realName,
+      email: email !== undefined  ? email : _.get(existingProfile, 'email.verified', '') || _.get(existingProfile, 'email.pending', ''),
+      twitter: twitter !== undefined ? twitter : _.get((existingProfile.social || []).find(({ type }) => type === 'twitter'), 'value', ''),
       terms: terms !== undefined ? terms : !!((existingProfile.legal || []).find(({ type, accepted }) => type === TERMS_AND_CONDITIONS && accepted)),
       privacy: privacy !== undefined ? privacy : !!((existingProfile.legal || []).find(({ type, accepted }) => type === PRIVACY_POLICY && accepted)),
       marketing: marketing !== undefined ? marketing : !!((existingProfile.legal || []).find(({ type, accepted }) => type === MARKETING_INFO && accepted)),
