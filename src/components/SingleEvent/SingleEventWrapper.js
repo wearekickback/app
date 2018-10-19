@@ -9,7 +9,6 @@ import ErrorBox from '../ErrorBox'
 import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
-import EventFilters from './EventFilters'
 import EventParticipants from './EventParticipants'
 import { GlobalConsumer } from '../../GlobalState'
 import mq from '../../mediaQuery'
@@ -114,11 +113,8 @@ class SingleEventWrapper extends Component {
                         userAddress={userAddress}
                         {...preCalculatedProps}
                       />
-                      <EventFilters
-                        handleSearch={handleSearch}
-                        {...preCalculatedProps}
-                      />
                       <EventParticipants
+                        handleSearch={handleSearch}
                         search={search}
                         party={party}
                         {...preCalculatedProps}

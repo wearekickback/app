@@ -67,14 +67,18 @@ async function getWeb3() {
       }
 
       networkState.expectedNetworkId = result.data.networkId
-      networkState.expectedNetworkName = getNetworkName(networkState.expectedNetworkId)
+      networkState.expectedNetworkName = getNetworkName(
+        networkState.expectedNetworkId
+      )
 
       // Checking if Web3 has been injected by the browser (Mist/MetaMask)
       if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
       } else {
-        console.log('No web3 instance injected. Falling back to cloud provider.')
+        console.log(
+          'No web3 instance injected. Falling back to cloud provider.'
+        )
         web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
         networkState.readOnly = true
       }
@@ -116,7 +120,10 @@ async function getWeb3() {
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
-  return DEPLOYER_CONTRACT_ADDRESS || Deployer.networks[networkState.expectedNetworkId].address
+  return (
+    DEPLOYER_CONTRACT_ADDRESS ||
+    Deployer.networks[networkState.expectedNetworkId].address
+  )
 }
 
 export async function getTransactionReceipt(txHash) {

@@ -4,9 +4,7 @@ import styled from 'react-emotion'
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
-import { pluralize } from '../../utils/strings'
 import { PARTICIPANT_STATUS } from '../../utils/status'
-import DepositValue from '../Utils/DepositValue'
 import {
   calculateFinalizeMaps,
   calculateNumAttended,
@@ -19,40 +17,60 @@ import Status, { Going } from './Status'
 const CTA = styled('div')`
   font-family: Muli;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 15px;
   color: #3d3f50;
   letter-spacing: 0;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
 `
 
-const RemainingSpots = styled('span')``
-const RSVPContainer = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-`
-const Deposit = styled('div')`
+const CTAInfo = styled('div')`
   font-family: Muli;
   font-weight: 500;
+  padding: 20px;
   font-size: 13px;
   color: #6e76ff;
   letter-spacing: 0;
-  text-align: center;
+  text-align: left;
   line-height: 21px;
-  padding: 10px 20px;
-  width: 100px;
   background: rgba(233, 234, 255, 0.5);
-  border: 1px solid rgba(233, 234, 255, 0.5);
   border-radius: 4px;
+  margin-top: 5px;
+
+  ul {
+    margin-left: 2.5em;
+  }
 `
 
+const RSVPContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`
+// const Deposit = styled('div')`
+//   font-family: Muli;
+//   font-weight: 500;
+//   font-size: 13px;
+//   color: #6e76ff;
+//   letter-spacing: 0;
+//   text-align: center;
+//   line-height: 21px;
+//   padding: 10px 20px;
+//   width: 100px;
+//   background: rgba(233, 234, 255, 0.5);
+//   border: 1px solid rgba(233, 234, 255, 0.5);
+//   border-radius: 4px;
+// `
+
 const RSVP = styled(DefaultRSVP)`
-  width: calc(100% - 120px);
+  width: 100%;
 `
 
 const AdminCTA = styled('div')`
-  margin-bottom: 20px;
+  margin-top: 10px;
 `
+
+
 
 class EventCTA extends Component {
   _renderEndedRsvp() {
@@ -85,12 +103,24 @@ class EventCTA extends Component {
   _renderActiveRsvp() {
     const {
       myParticipantEntry,
-      party: { address, participants, participantLimit }
+      party: { address, deposit, participants, participantLimit }
     } = this.props
 
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
-        return <RSVP address={address} />
+        return (
+          <>
+            <RSVP address={address} deposit={deposit} />
+            <CTAInfo>
+              <strong>You cannot cancel once registered.</strong>
+              <p>Also, your payment is <strong>non-refundable</strong> if:</p>
+              <ul>
+                <li>You RSVP but then don't turn up (or don't get marked as attended by the organizer).</li>
+                <li>You fail to withdraw your post-event payout within the cooling period.</li>
+              </ul>
+            </CTAInfo>
+          </>
+        )
       }
 
       return ''
@@ -106,31 +136,50 @@ class EventCTA extends Component {
     }
   }
 
-  _renderJoin() {
+  _renderAdminCTA() {
     const {
-      party: { participants, participantLimit }
+      party: {
+        address,
+        participants,
+        ended
+      },
+      amAdmin
     } = this.props
 
-    return (
-      <CTA>
-        Join the event!{' '}
-        <RemainingSpots>
-          {`${participants.length} going. ${participantLimit -
-            participants.length} ${pluralize(
-            'spot',
-            participantLimit - participants.length
-          )} left.`}
-        </RemainingSpots>
-      </CTA>
+    return amAdmin && (
+      <AdminCTA>
+        {!ended ? (
+          <ChainMutation
+            mutation={Finalize}
+            resultKey="finalize"
+            variables={{
+              address,
+              maps: calculateFinalizeMaps(participants)
+            }}
+            refetchQueries={[{ query: PartyQuery, variables: { address } }]}
+          >
+            {(finalize, result) => (
+              <ChainMutationButton
+                analyticsId='Finalize Event'
+                result={result}
+                onClick={finalize}
+                preContent="Finalize and enable payouts"
+                postContent="Finalized!"
+              />
+            )}
+          </ChainMutation>
+        ) : null}
+      </AdminCTA>
     )
   }
 
-  _renderEventFull() {
-    return <CTA>This event is now full.</CTA>
-  }
-
   _renderCanceled() {
-    return <CTA>This event has been cancelled.</CTA>
+    return (
+      <CTA>
+        This event has been cancelled.
+        {this._renderAdminCTA()}
+      </CTA>
+    )
   }
 
   _renderEnded() {
@@ -143,8 +192,9 @@ class EventCTA extends Component {
 
     return (
       <CTA>
-        This meetup is past. {numWent} out of {totalReg} people went to this
+        This event is over. {numWent} out of {totalReg} people went to this
         event.
+        {this._renderAdminCTA()}
       </CTA>
     )
   }
@@ -152,59 +202,19 @@ class EventCTA extends Component {
   render() {
     const {
       party: {
-        address,
-        participants,
-        participantLimit,
-        deposit,
         ended,
         cancelled
-      },
-      amAdmin
+      }
     } = this.props
-
-    const totalReg = participants.length
 
     return (
       <EventCTAContainer>
         <RSVPContainer>
-          <Deposit>
-            <DepositValue value={deposit} /> ETH
-          </Deposit>
           {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
         </RSVPContainer>
-        {ended
-          ? cancelled
-            ? this._renderCanceled()
-            : this._renderEnded()
-          : totalReg < participantLimit
-            ? this._renderJoin()
-            : this._renderEventFull()}
-        {amAdmin && (
-          <AdminCTA>
-            {!ended ? (
-              <ChainMutation
-                mutation={Finalize}
-                resultKey="finalize"
-                variables={{
-                  address,
-                  maps: calculateFinalizeMaps(participants)
-                }}
-                refetchQueries={[{ query: PartyQuery, variables: { address } }]}
-              >
-                {(finalize, result) => (
-                  <ChainMutationButton
-                    analyticsId='Finalize Event'
-                    result={result}
-                    onClick={finalize}
-                    toThirds
-                    preContent="Finalize and enable payouts"
-                    postContent="Finalize and enable payouts"
-                  />
-                )}
-              </ChainMutation>
-            ) : null}
-          </AdminCTA>
-        )}
+        {ended ? (
+          cancelled ? this._renderCanceled() : this._renderEnded()
+        ) : null}
       </EventCTAContainer>
     )
   }

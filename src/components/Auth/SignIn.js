@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { isEmailAddress, isUsername, isRealName, isTwitterId } from '@noblocknoparty/validation'
 
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
@@ -11,6 +12,7 @@ import { UpdateUserProfile, LoginUser } from '../../graphql/mutations'
 import { UserProfileQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
+import { trimOrEmptyStringProps } from '../../utils/strings'
 import { GlobalConsumer } from '../../GlobalState'
 import RefreshAuthTokenButton from './RefreshAuthTokenButton'
 import { SIGN_IN } from '../../modals'
@@ -159,7 +161,7 @@ export default class SignIn extends Component {
         <Field>
           <Label optional>Twitter</Label>
           <TextInput
-            placeholder="@jack"
+            placeholder="jack"
             value={twitter}
             onChange={this.handleTwitterChange}
           />
@@ -200,13 +202,14 @@ export default class SignIn extends Component {
         </p>
         <SafeMutation
           mutation={UpdateUserProfile}
-          variables={{ profile: { email, social, legal, realName, username } }}
+          variables={{ profile: {
+            ...trimOrEmptyStringProps({ email, realName, username }),
+            social,
+            legal,
+          } }}
         >
           {updateUserProfile => (
-            this.state.username &&
-            this.state.realName &&
-            this.state[TERMS_AND_CONDITIONS] &&
-            this.state[PRIVACY_POLICY] ? (
+            this.inputIsValid() ? (
               <RefreshAuthTokenButton
                 onClick={this.signInOrSignUp({
                   fetchUserProfileFromServer: updateUserProfile,
@@ -221,6 +224,36 @@ export default class SignIn extends Component {
         </SafeMutation>
       </FormDiv>
     )
+  }
+
+  inputIsValid () {
+    const { email, twitter, username, realName, [TERMS_AND_CONDITIONS]: terms, [PRIVACY_POLICY]: privacy } = this.state
+
+    if (!isUsername(username)) {
+      return false
+    }
+
+    if (!isRealName(realName)) {
+      return false
+    }
+
+    if (email && !isEmailAddress(email)) {
+      return false
+    }
+
+    if (twitter && !isTwitterId(twitter)) {
+      return false
+    }
+
+    if (!terms) {
+      return false
+    }
+
+    if (!privacy) {
+      return false
+    }
+
+    return true
   }
 
   renderSignIn(userAddress, toggleModal) {

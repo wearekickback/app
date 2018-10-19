@@ -65,9 +65,11 @@ const Header = () => (
               <>
                 {/* <Notifications>Notification</Notifications> */}
                 <Account>
-                  <Username>
-                    {userProfile.username}
-                  </Username>
+                  {userProfile ? (
+                    <Username>
+                      {userProfile.username}
+                    </Username>
+                  ) : null}
                   <Avatar
                     src={`https://avatars.io/twitter/${
                       twitterProfile

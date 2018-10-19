@@ -13,5 +13,16 @@ export function addressesMatch(addr1, addr2) {
 }
 
 export function statusesMatch(status1, status2) {
-  return stringsMatch(status1, status2)  
+  return stringsMatch(status1, status2)
+}
+
+export function trimOrEmpty(str) {
+  return (typeof str === 'string') ? str.trim() : ''
+}
+
+export function trimOrEmptyStringProps(stringProps) {
+  return Object.keys(stringProps).reduce((m, k) => {
+    m[k] = trimOrEmpty(stringProps[k])
+    return m
+  }, {})
 }

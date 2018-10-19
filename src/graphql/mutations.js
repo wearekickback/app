@@ -3,8 +3,16 @@ import gql from 'graphql-tag'
 import { ProfileFields, ParticipantFields } from './fragments'
 
 export const CreateParty = gql`
-  mutation createParty($id: String, $deposit: String, $limitOfParticipants: String) {
-    create: createParty(id: $id, deposit: $deposit, limitOfParticipants: $limitOfParticipants) @client @requireAuth
+  mutation createParty(
+    $id: String
+    $deposit: String
+    $limitOfParticipants: String
+  ) {
+    create: createParty(
+      id: $id
+      deposit: $deposit
+      limitOfParticipants: $limitOfParticipants
+    ) @client @requireAuth
   }
 `
 
@@ -16,7 +24,9 @@ export const CreatePendingParty = gql`
 
 export const UpdatePartyMeta = gql`
   mutation updatePartyMeta($address: String!, $meta: PartyMetaInput!) {
-    update: updatePartyMeta(address: $address, meta: $meta) @requireAuth
+    updatePartyMeta(address: $address, meta: $meta) @requireAuth {
+      name
+    }
   }
 `
 
@@ -55,7 +65,6 @@ export const LoginUserNoAuth = gql`
   }
 `
 
-
 export const UpdateUserProfile = gql`
   ${ProfileFields}
 
@@ -66,12 +75,15 @@ export const UpdateUserProfile = gql`
   }
 `
 
-
 export const MarkUserAttended = gql`
   ${ParticipantFields}
 
-  mutation markUserAttended($address: String!, $participant: ParticipantInput!) {
-    updateParticipantStatus(address: $address, participant: $participant) @requireAuth {
+  mutation markUserAttended(
+    $address: String!
+    $participant: ParticipantInput!
+  ) {
+    updateParticipantStatus(address: $address, participant: $participant)
+      @requireAuth {
       ...ParticipantFields
     }
   }
@@ -80,8 +92,12 @@ export const MarkUserAttended = gql`
 export const UnmarkUserAttended = gql`
   ${ParticipantFields}
 
-  mutation unmarkUserAttended($address: String!, $participant: ParticipantInput!) {
-    updateParticipantStatus(address: $address, participant: $participant) @requireAuth {
+  mutation unmarkUserAttended(
+    $address: String!
+    $participant: ParticipantInput!
+  ) {
+    updateParticipantStatus(address: $address, participant: $participant)
+      @requireAuth {
       ...ParticipantFields
     }
   }

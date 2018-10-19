@@ -2,10 +2,11 @@ import React from 'react'
 
 import { PartyQuery } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
+import DepositValue from '../Utils/DepositValue'
 import { RsvpToEvent } from '../../graphql/mutations'
 import { Going } from './Status'
 
-const RSVP = ({ address, className }) => (
+const RSVP = ({ address, className, deposit }) => (
   <ChainMutation
     mutation={RsvpToEvent}
     resultKey="rsvp"
@@ -18,7 +19,7 @@ const RSVP = ({ address, className }) => (
         onClick={rsvp}
         result={result}
         className={className}
-        preContent="RSVP"
+        preContent={`RSVP - ${DepositValue({ value: deposit })} ETH`}
         postContent={<Going>You are going!</Going>}
       />
     )}

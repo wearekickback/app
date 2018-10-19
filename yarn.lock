@@ -1352,6 +1352,14 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-1.0.2.tgz#8cba3d265253806be9eac9df396467bc335c6736"
 
+"@noblocknoparty/validation@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@noblocknoparty/validation/-/validation-1.1.1.tgz#f3e826bcc8168f2345b2b463e35ec280fc1a5dd7"
+  dependencies:
+    lodash.get "^4.4.2"
+    validator "^10.8.0"
+    web3-utils "^1.0.0-beta.36"
+
 "@nodelib/fs.stat@^1.0.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.2.tgz#54c5a964462be3d4d78af631363c18d6fa91ac26"
@@ -7875,6 +7883,10 @@ lodash.flattendeep@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
 
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -12035,6 +12047,10 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@^10.8.0:
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-10.8.0.tgz#8acb15a5c39411cbc8ef2be0c98c2514da4410a7"
 
 value-equal@^0.4.0:
   version "0.4.0"
