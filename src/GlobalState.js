@@ -14,10 +14,14 @@ const GlobalContext = createContext({})
 export const GlobalConsumer = GlobalContext.Consumer
 
 let setProviderInstance
-const providerPromise = new Promise(resolve => { setProviderInstance = resolve })
+const providerPromise = new Promise(resolve => {
+  setProviderInstance = resolve
+})
 
 let setSignedIn
-const signInPromise = new Promise(resolve => { setSignedIn = resolve })
+const signInPromise = new Promise(resolve => {
+  setSignedIn = resolve
+})
 
 export const getProvider = () => providerPromise
 
@@ -25,24 +29,29 @@ const AUTH = 'auth'
 const TOKEN_SECRET = 'kickback'
 const TOKEN_ALGORITHM = 'HS256'
 
-
 class Provider extends Component {
   state = {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
     networkState: {},
+    selectedFilter: null
   }
 
-  authToken () {
+  handleFilterChange = selectedFilter => {
+    this.setState({ selectedFilter })
+    console.log(`Option selected:`, selectedFilter)
+  }
+
+  authToken() {
     return this.state.auth.token
   }
 
-  apolloClient () {
+  apolloClient() {
     return this.state.apolloClient
   }
 
-  isLoggedIn () {
+  isLoggedIn() {
     return this.state.auth.loggedIn
   }
 
@@ -61,12 +70,16 @@ class Provider extends Component {
 
     try {
       const token = this.authToken()
-      const payload = jwt.verify(token, TOKEN_SECRET, { algorithm: TOKEN_ALGORITHM })
+      const payload = jwt.verify(token, TOKEN_SECRET, {
+        algorithm: TOKEN_ALGORITHM
+      })
       if (_.get(payload, 'address', '') !== address) {
         throw new Error('Token not valid for current user address')
       }
 
-      const { data: { profile } } = await this.apolloClient().mutate({
+      const {
+        data: { profile }
+      } = await this.apolloClient().mutate({
         mutation: LoginUserNoAuth,
         context: {
           headers: buildAuthHeaders(token)
@@ -77,14 +90,16 @@ class Provider extends Component {
 
       this.setUserProfile(profile)
     } catch (err) {
-      console.debug(`User ${address} is not logged and/or does not have a profile`)
+      console.debug(
+        `User ${address} is not logged and/or does not have a profile`
+      )
 
       this.setState(state => ({
         auth: {
           ...state.auth,
           token: undefined,
           profile: null,
-          loggedIn: false,
+          loggedIn: false
         }
       }))
 
@@ -99,18 +114,23 @@ class Provider extends Component {
   setUserProfile = profile => {
     console.log('Current user', profile)
 
-    this.setState(state => ({
-      auth: {
-        ...state.auth,
-        profile,
-        // need this on both this function and setUserProfile() since they can be called independently of each other
-        loggedIn: true,
-      }
-    }), /* now we resolve the promsie -> */ setSignedIn)
+    this.setState(
+      state => ({
+        auth: {
+          ...state.auth,
+          profile,
+          // need this on both this function and setUserProfile() since they can be called independently of each other
+          loggedIn: true
+        }
+      }),
+      /* now we resolve the promsie -> */ setSignedIn
+    )
   }
 
   setAuthTokenFromSignature = (address, sig) => {
-    const token = jwt.sign({ address, sig }, TOKEN_SECRET, { algorithm: TOKEN_ALGORITHM })
+    const token = jwt.sign({ address, sig }, TOKEN_SECRET, {
+      algorithm: TOKEN_ALGORITHM
+    })
 
     console.log(`New auth token: ${token}`)
 
@@ -122,7 +142,7 @@ class Provider extends Component {
         ...state.auth,
         token,
         // need this on both this function and setUserProfile() since they can be called independently of each other
-        loggedIn: true,
+        loggedIn: true
       }
     }))
   }
@@ -134,20 +154,21 @@ class Provider extends Component {
   }
 
   toggleModal = modal => {
-    this.setState(state => (
-      (state.currentModal === modal)
-        ? { currentModal: null }
-        : { currentModal: modal }
-    ))
+    this.setState(
+      state =>
+        state.currentModal === modal
+          ? { currentModal: null }
+          : { currentModal: modal }
+    )
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const address = await getAccount()
 
     this.setState(state => ({
       auth: {
         ...state.auth,
-        address,
+        address
       }
     }))
 
@@ -169,12 +190,15 @@ class Provider extends Component {
           userAddress: this.state.auth.address,
           userProfile: this.state.auth.profile,
           networkState: this.state.networkState,
+          selectedFilter: this.state.selectedFilter,
           loggedIn: this.isLoggedIn(),
           toggleModal: this.toggleModal,
+
+          handleFilterChange: this.handleFilterChange,
           signIn: this.signIn,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
-          setUserProfile: this.setUserProfile,
+          setUserProfile: this.setUserProfile
         }}
       >
         {this.props.children}

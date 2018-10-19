@@ -4,6 +4,8 @@ import Participant from './Participant'
 import EventFilters from './EventFilters'
 import { H3 } from '../Typography/Basic'
 import { pluralize } from '../../utils/strings'
+import { GlobalConsumer } from '../../GlobalState'
+import { PARTICIPANT_STATUS } from '../../utils/status'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
@@ -40,29 +42,50 @@ class EventParticipants extends Component {
       spots = `${participants.length} out of ${participantLimit} attended`
     } else {
       const spotsLeft = participantLimit - participants.length
-      spots = `${participants.length} going, ${spotsLeft} ${pluralize('spot', spotsLeft)} left`
+      spots = `${participants.length} going, ${spotsLeft} ${pluralize(
+        'spot',
+        spotsLeft
+      )} left`
     }
 
     return (
       <Fragment>
-        <H3>Participants - <Spots>{spots}</Spots></H3>
+        <H3>
+          Participants - <Spots>{spots}</Spots>
+        </H3>
         <EventFilters handleSearch={handleSearch} />
         <EventParticipantsContainer>
           {participants.length > 0 ? (
-            participants
-              .sort((a, b) => (a.index < b.index ? -1 : 1))
-              .filter(p => (
-                (p.user.realName || '').toLowerCase().includes(searchTerm) ||
-                (p.user.username || '').toLowerCase().includes(searchTerm)
-              ))
-              .map(participant => (
-                <Participant
-                  amAdmin={amAdmin}
-                  participant={participant}
-                  party={party}
-                  key={`${participant.address}${participant.index}`}
-                />
-              ))
+            <GlobalConsumer>
+              {({ selectedFilter }) =>
+                participants
+                  .sort((a, b) => (a.index < b.index ? -1 : 1))
+                  .filter(p => {
+                    console.log(selectedFilter && selectedFilter.value)
+                    if (
+                      selectedFilter &&
+                      selectedFilter.value === 'unmarked' &&
+                      p.status !== PARTICIPANT_STATUS.REGISTERED
+                    ) {
+                      return false
+                    }
+                    return (
+                      (p.user.realName || '')
+                        .toLowerCase()
+                        .includes(searchTerm) ||
+                      (p.user.username || '').toLowerCase().includes(searchTerm)
+                    )
+                  })
+                  .map(participant => (
+                    <Participant
+                      amAdmin={amAdmin}
+                      participant={participant}
+                      party={party}
+                      key={`${participant.address}${participant.index}`}
+                    />
+                  ))
+              }
+            </GlobalConsumer>
           ) : (
             <NoParticipants>No one is attending.</NoParticipants>
           )}
