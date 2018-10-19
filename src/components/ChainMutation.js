@@ -3,7 +3,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 
+import { CANNOT_RESOLVE_ACCOUNT_ADDRESS, CANNOT_RESOLVE_CORRECT_NETWORK } from '../utils/errors'
 import { events, getTransactionReceipt } from '../api/web3'
+import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from './SafeQuery'
 import Tooltip from './Tooltip'
 import Button from './Forms/Button'
@@ -164,11 +166,14 @@ export const ChainMutationResult = ({ children, result }) => {
 }
 
 export class ChainMutationButton extends Component {
+  state = {}
+
   componentDidUpdate () {
+    const { notReadyError } = this.state
     const { result: { loading, progress } } = this.props
 
     if (this.tooltip) {
-      if (loading || progress) {
+      if (loading || notReadyError) {
         this.tooltip.show()
       } else {
         this.tooltip.hide()
@@ -181,11 +186,14 @@ export class ChainMutationButton extends Component {
   }
 
   render() {
+    const { notReadyError } = this.state
+
     const {
       result: { error, loading, progress, data: tx },
       preContent,
       postContent,
       tooltip,
+      onClick,
       ...props
     } = this.props
 
@@ -206,20 +214,48 @@ export class ChainMutationButton extends Component {
       content = preContent
     }
 
-    const tip = tooltip || 'Please sign the created transaction using your wallet or Dapp browser'
+    const tip = notReadyError || tooltip || 'Please sign the created transaction using your wallet or Dapp browser'
 
     return (
-      <>
-        <Tooltip text={tip} ref={this._onTooltipRef}>
-          <Button
-            {...props}
-            disabled={!!(loading || progress)}
-          >
-            {content}
-          </Button>
-        </Tooltip>
-        {after}
-      </>
+      <GlobalConsumer>
+        {({ networkState, reloadUserAddress }) => (
+          <>
+            <Tooltip text={tip} ref={this._onTooltipRef}>
+              {({ tooltipElement }) => (
+                <Button
+                  {...props}
+                  onClick={() => this._onClick({ networkState, reloadUserAddress, postMutation: onClick })}
+                  disabled={!!(loading || progress)}
+                >
+                  {content}
+                  {tooltipElement}
+                </Button>
+              )}
+            </Tooltip>
+            {after}
+          </>
+        )}
+      </GlobalConsumer>
     )
+  }
+
+  _onClick = ({ networkState, reloadUserAddress, postMutation }) => {
+    this.setState({ notReadyError: null }, async () => {
+      const address = await reloadUserAddress()
+
+      if (!address) {
+        return this.setState({
+          notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
+        })
+      }
+
+      if (!networkState.allGood) {
+        return this.setState({
+          notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
+        })
+      }
+
+      postMutation()
+    })
   }
 }

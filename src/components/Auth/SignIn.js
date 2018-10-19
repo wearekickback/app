@@ -110,7 +110,8 @@ export default class SignIn extends Component {
   signInOrSignUp = ({
     fetchUserProfileFromServer,
     toggleModal
-  }) => refreshAuthToken => {
-    refreshAuthToken({ fetchUserProfileFromServer }).then(() => toggleModal(SIGN_IN))
+  }) => async refreshAuthToken => {
+    await refreshAuthToken({ fetchUserProfileFromServer })
+    toggleModal(SIGN_IN)
   }
 }

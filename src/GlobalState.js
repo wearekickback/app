@@ -52,17 +52,9 @@ class Provider extends Component {
     }
 
     // let's request user's account address
-    const address = await getAccount()
+    const address = await this.reloadUserAddress()
     if (!address) {
-      this.setState({
-        signInError: 'Please ensure your browser is connected to the Ethereum network and that we can access your account address.'
-      })
-
-      return setTimeout(() => {
-        this.setState({
-          signInError: null
-        })
-      }, 5000)
+      return
     }
 
     console.debug(`Checking if user ${address} is logged in ...`)
@@ -150,14 +142,7 @@ class Provider extends Component {
   }
 
   async componentDidMount () {
-    const address = await getAccount()
-
-    this.setState(state => ({
-      auth: {
-        ...state.auth,
-        address,
-      }
-    }))
+    await this.reloadUserAddress()
 
     // try and sign in!
     await this.signIn({ dontForceSignIn: true })
@@ -169,12 +154,30 @@ class Provider extends Component {
     this.setState({ networkState })
   }
 
+  reloadUserAddress = async () => {
+    const address = await getAccount()
+
+    if (address) {
+      await new Promise(resolve => {
+        this.setState(state => ({
+          auth: {
+            ...state.auth,
+            address,
+          }
+        }), resolve)
+      })
+    }
+
+    return address
+  }
+
   render() {
     return (
       <GlobalContext.Provider
         value={{
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
+          reloadUserAddress: this.reloadUserAddress,
           userProfile: this.state.auth.profile,
           networkState: this.state.networkState,
           loggedIn: this.isLoggedIn(),

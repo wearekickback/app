@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import uuid from 'uuid'
 import ReactTooltip from 'react-tooltip'
@@ -9,6 +10,10 @@ const DefaultTooltip = styled(ReactTooltip)`
 `
 
 export default class Tooltip extends Component {
+  static propTypes = {
+    children: PropTypes.func.isRequired
+  }
+
   state = {}
 
   componentDidMount () {
@@ -33,36 +38,37 @@ export default class Tooltip extends Component {
   }
 
   render () {
-    const { text, children } = this.props
-
-    const child = React.cloneElement(
-      React.Children.only(children),
-      {
-        'data-tip': text,
-        'data-for': this.id,
-        'ref': this._onRef,
-      }
-    )
+    const { text, position, children } = this.props
 
     return (
-      <div>
-        {child}
+      <>
+        {children({
+          showTooltip: this.show,
+          hideTooltip: this.hide,
+          tooltipElement: (
+            <span
+              data-tip={text}
+              data-for={this.id}
+              ref={this._onRef}
+            />
+          )
+        })}
         <DefaultTooltip
           id={this.id}
           event="dbclick"
-          place="top"
+          place={position || 'top'}
           effect="solid"
           type="dark"
         />
-      </div>
+      </>
     )
   }
 
-  show () {
+  show = () => {
     this.setState({ show: true })
   }
 
-  hide () {
+  hide = () => {
     this.setState({ show: false })
   }
 }
