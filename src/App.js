@@ -23,8 +23,8 @@ import Terms from './routes/Terms'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
-// import EditProfile from './components/Profile/EditProfile'
-import { SIGN_IN /*EDIT_PROFILE */ } from './modals'
+import EditProfile from './components/Profile/EditProfile'
+import { SIGN_IN, EDIT_PROFILE } from './modals'
 
 import './App.css'
 
@@ -73,10 +73,10 @@ class App extends Component {
           </ScrollToTop>
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
+        <Modal name={EDIT_PROFILE} component={EditProfile} />
       </Fragment>
     )
   }
-  // <Modal name={EDIT_PROFILE} component={EditProfile} />
 }
 
 export default App

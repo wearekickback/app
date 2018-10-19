@@ -13,3 +13,7 @@ export const ensureInArray = (array, key, entry, updateExisting = false) => {
 
   return ret
 }
+
+export const ensureNotInArray = (array, key, entry) => {
+  return (array || []).filter(v => v[key] !== entry[key])
+}

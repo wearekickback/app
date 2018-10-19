@@ -3,11 +3,12 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { isEmailAddress, isUsername, isRealName, isTwitterId } from '@noblocknoparty/validation'
 
+import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import { trimOrEmptyStringProps } from '../../utils/strings'
-import { ensureInArray } from '../../utils/arrays'
+import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
 import {
   TERMS_AND_CONDITIONS,
   PRIVACY_POLICY,
@@ -40,9 +41,9 @@ export default class ProfileForm extends Component {
     username: '',
     realName: '',
     twitter: '',
-    terms: false,
-    privacy: false,
-    marketing: false,
+    terms: undefined,
+    privacy: undefined,
+    marketing: undefined,
   }
 
   render() {
@@ -112,27 +113,31 @@ export default class ProfileForm extends Component {
             your over social media if they so wish.
           </Explanation>
         </Field>
-        <p>
-          <input
-            type="checkbox"
-            value={TERMS_AND_CONDITIONS}
-            checked={terms}
-            onChange={this.handleTermsCheck}
-          />{' '}
-          I agree with the <a href={`/terms`} target="_blank">terms and conditions</a>
-        </p>
-        <p>
-          <input
-            type="checkbox"
-            value={PRIVACY_POLICY}
-            checked={privacy}
-            onChange={this.handlePrivacyCheck}
-          />{' '}
-          I agree with the{' '}
-          <a href={`/privacy`} target="_blank">
-            privacy policy
-          </a>
-        </p>
+        {existingProfile ? null : (
+          <p>
+            <input
+              type="checkbox"
+              value={TERMS_AND_CONDITIONS}
+              checked={terms}
+              onChange={this.handleTermsCheck}
+            />{' '}
+            I agree with the <a href={`/terms`} target="_blank">terms and conditions</a>
+          </p>
+        )}
+        {existingProfile ? null : (
+          <p>
+            <input
+              type="checkbox"
+              value={PRIVACY_POLICY}
+              checked={privacy}
+              onChange={this.handlePrivacyCheck}
+            />{' '}
+            I agree with the{' '}
+            <a href={`/privacy`} target="_blank">
+              privacy policy
+            </a>
+          </p>
+        )}
         <p>
           <input
             type="checkbox"
@@ -153,9 +158,9 @@ export default class ProfileForm extends Component {
       twitter,
       username,
       realName,
-      [TERMS_AND_CONDITIONS]: terms,
-      [PRIVACY_POLICY]: privacy,
-      [MARKETING_INFO]: marketing,
+      terms,
+      privacy,
+      marketing,
     } = this.state
 
     return {
@@ -163,9 +168,9 @@ export default class ProfileForm extends Component {
       realName: realName || existingProfile.realName,
       email: email || _.get(existingProfile, 'email.verified', '') || _.get(existingProfile, 'email.pending', ''),
       twitter: twitter || _.get((existingProfile.social || []).find(({ type }) => type === 'twitter'), 'value', ''),
-      terms: terms || !!((existingProfile.legal || []).find(({ type, accepted }) => type === TERMS_AND_CONDITIONS && accepted)),
-      privacy: privacy || !!((existingProfile.legal || []).find(({ type, accepted }) => type === PRIVACY_POLICY && accepted)),
-      marketing: marketing || !!((existingProfile.legal || []).find(({ type, accepted }) => type === MARKETING_INFO && accepted)),
+      terms: terms !== undefined ? terms : !!((existingProfile.legal || []).find(({ type, accepted }) => type === TERMS_AND_CONDITIONS && accepted)),
+      privacy: privacy !== undefined ? privacy : !!((existingProfile.legal || []).find(({ type, accepted }) => type === PRIVACY_POLICY && accepted)),
+      marketing: marketing !== undefined ? marketing : !!((existingProfile.legal || []).find(({ type, accepted }) => type === MARKETING_INFO && accepted)),
     }
   }
 
@@ -182,9 +187,10 @@ export default class ProfileForm extends Component {
       marketing,
     } = values
 
-    const social = ensureInArray(existingProfile.social, 'type', { type: 'twitter', value: twitter }, true)
+    let social = (existingProfile.social || []).map(v => removeTypename(v))
+    social = ensureInArray(social, 'type', { type: 'twitter', value: twitter }, true)
 
-    let legal = existingProfile.legal || []
+    let legal = (existingProfile.legal || []).map(v => removeTypename(v))
     if (terms) {
       legal = ensureInArray(legal, 'type', { type: TERMS_AND_CONDITIONS, accepted: `${Date.now()}` }, false)
     }
@@ -193,6 +199,8 @@ export default class ProfileForm extends Component {
     }
     if (marketing) {
       legal = ensureInArray(legal, 'type', { type: MARKETING_INFO, accepted: `${Date.now()}` }, false)
+    } else {
+      legal = ensureNotInArray(legal, 'type', { type: MARKETING_INFO })
     }
 
     return {
@@ -258,19 +266,19 @@ export default class ProfileForm extends Component {
 
   handleTermsCheck = e => {
     this.setState({
-      [TERMS_AND_CONDITIONS]: e.target.checked
+      terms: e.target.checked
     })
   }
 
   handlePrivacyCheck = e => {
     this.setState({
-      [PRIVACY_POLICY]: e.target.checked
+      privacy: e.target.checked
     })
   }
 
   handleMarketingCheck = e => {
     this.setState({
-      [MARKETING_INFO]: e.target.checked
+      marketing: e.target.checked
     })
   }
 }
