@@ -22,7 +22,7 @@ import Button from '../Forms/Button'
 // `
 
 const ParticipantWrapper = styled('div')`
-  height: 150px;
+  height: ${p => (p.amAdmin ? '170px' : '120px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,18 +106,14 @@ export class Participant extends Component {
     return (
       <GlobalConsumer>
         {({ userAddress, loggedIn }) => (
-          <ParticipantWrapper>
+          <ParticipantWrapper amAdmin={amAdmin}>
             <TwitterAvatar
               src={`https://avatars.io/twitter/${twitter}/medium`}
             />
             <ParticipantId>
-              <ParticipantUsername>
-                {user.username}
-              </ParticipantUsername>
+              <ParticipantUsername>{user.username}</ParticipantUsername>
               {user.realName ? (
-                <ParticipantRealName>
-                  {user.realName}
-                </ParticipantRealName>
+                <ParticipantRealName>{user.realName}</ParticipantRealName>
               ) : null}
             </ParticipantId>
             {ended ? (
@@ -138,11 +134,19 @@ export class Participant extends Component {
               amAdmin && (
                 <Fragment>
                   {attended ? (
-                    <Button wide onClick={unmarkAttended} analyticsId='Unmark Attendee'>
+                    <Button
+                      wide
+                      onClick={unmarkAttended}
+                      analyticsId="Unmark Attendee"
+                    >
                       Unmark attended
                     </Button>
                   ) : (
-                    <Button wide onClick={markAttended} analyticsId='Mark Attendee'>
+                    <Button
+                      wide
+                      onClick={markAttended}
+                      analyticsId="Mark Attendee"
+                    >
                       Mark attended
                     </Button>
                   )}
