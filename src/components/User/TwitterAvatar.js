@@ -1,16 +1,26 @@
 import React from 'react'
-import { getSocial } from '../../utils/parties'
+import styled from 'react-emotion'
 
-const TwitterAvatar = ({ social, avatar }) => {
-  console.log('social', social)
-  const avatarId = getSocial(social,'twitter')
+import { getSocial } from '../../utils/parties'
+import DefaultAvatar from './Avatar'
+
+const Avatar = styled(DefaultAvatar)`
+  height: 35px;
+  width: 35px;
+  flex-shrink: 0;
+`
+
+const TwitterAvatar = ({ className, user }) => {
+  const avatarId = getSocial(user, 'twitter')
   const avatarUrl = `https://avatars.io/twitter/${avatarId || 'randomtwitter+12345'}/medium`
-  let props = { src: avatarUrl}
+
+  let props = { src: avatarUrl }
+
   if(avatarId){
     props.href = `https://twitter.com/${avatarId}`
   }
-  const Avatar = avatar
-  return <Avatar {...props} />  
+
+  return <Avatar className={className} {...props} />
 }
 
 export default TwitterAvatar

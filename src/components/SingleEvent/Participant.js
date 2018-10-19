@@ -3,7 +3,6 @@ import styled from 'react-emotion'
 
 import { Mutation } from 'react-apollo'
 import { PARTICIPANT_STATUS } from '../../utils/status'
-import DefaultAvatar from '../User/Avatar'
 import TwitterAvatar from '../User/TwitterAvatar'
 
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
@@ -28,13 +27,6 @@ const ParticipantWrapper = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const Avatar = styled(DefaultAvatar)`
-  border-radius: 50%;
-  width: 61px;
-  height: 61px;
-  margin-bottom: 15px;
 `
 
 const ParticipantId = styled('div')`
@@ -108,7 +100,7 @@ export class Participant extends Component {
       <GlobalConsumer>
         {({ userAddress, loggedIn }) => (
           <ParticipantWrapper>
-             <TwitterAvatar social={user.social} avatar={Avatar} />
+             <TwitterAvatar user={user} />
             <ParticipantId>
               <ParticipantUsername>
                 {user.username}

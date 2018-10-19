@@ -3,7 +3,6 @@ import styled from 'react-emotion'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2 } from '../Typography/Basic'
-import DefaultAvatar from '../User/Avatar'
 import TwitterAvatar from '../User/TwitterAvatar'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
@@ -27,13 +26,6 @@ const ContractAddress = styled('h3')`
 const EventImage = styled('img')`
   border-radius: 4px;
   margin-bottom: 20px;
-`
-
-const Avatar = styled(DefaultAvatar)`
-  margin-right: 10px;
-  height: 35px;
-  width: 35px;
-  flex-shrink: 0;
 `
 
 const Organiser = styled('div')`
@@ -99,6 +91,11 @@ const EventWarning = styled('div')`
     margin-left: 2.5em;
   }
 `
+
+const UserAvatar = styled(TwitterAvatar)`
+  margin-right: 10px;
+`
+
 const Photos = styled('section')``
 const PhotoContainer = styled('div')``
 const Photo = styled('img')``
@@ -121,7 +118,7 @@ class EventInfo extends Component {
         </ContractAddress>
         <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
         <Organiser>
-          <TwitterAvatar social={party.owner.social} avatar={Avatar}/>
+          <UserAvatar user={party.owner} />
           <span>Hosted by</span>
           <HostUsername>{party.owner.username}</HostUsername>
         </Organiser>
