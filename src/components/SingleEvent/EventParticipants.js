@@ -18,6 +18,8 @@ const Spots = styled('span')`
   font-size: 70%;
 `
 
+
+
 class EventParticipants extends Component {
   render() {
     const {
@@ -53,7 +55,8 @@ class EventParticipants extends Component {
               .sort((a, b) => (a.index < b.index ? -1 : 1))
               .filter(p => (
                 (p.user.realName || '').toLowerCase().includes(searchTerm) ||
-                (p.user.username || '').toLowerCase().includes(searchTerm)
+                (p.user.username || '').toLowerCase().includes(searchTerm) ||
+                (amAdmin && p.user.address).includes(searchTerm)
               ))
               .map(participant => (
                 <Participant
