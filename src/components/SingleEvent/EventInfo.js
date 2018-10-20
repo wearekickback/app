@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
-import DefaultAvatar from '../User/Avatar'
+import TwitterAvatar from '../User/TwitterAvatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
+import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
+import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
 import { toEthVal } from '../../utils/units'
-import { getSocial } from '../../utils/parties'
+
 
 const Date = styled('div')``
 const EventName = styled(H2)``
@@ -27,13 +30,6 @@ const ContractAddress = styled('h3')`
 const EventImage = styled('img')`
   border-radius: 4px;
   margin-bottom: 20px;
-`
-
-const Avatar = styled(DefaultAvatar)`
-  margin-right: 10px;
-  height: 35px;
-  width: 35px;
-  flex-shrink: 0;
 `
 
 const Organisers = styled('div')`
@@ -60,6 +56,25 @@ const Organiser = styled('div')`
   margin-right: 10px;
 `
 
+const Link = styled(DefaultHashLink)`
+  display: flex;
+  margin-top: 2px;
+`
+
+const Pot = styled('div')`
+  display: flex;
+  flex-direction: column;
+`
+
+const Deposit = styled('div')`
+  display: flex;
+`
+
+const InfoIcon = styled(DefaultInfoIcon)`
+  margin-right: 5px;
+  margin-left: 5px;
+`
+
 const PinIcon = styled(DefaultPinIcon)`
   margin-right: 10px;
 `
@@ -75,27 +90,42 @@ const Location = styled('div')`
   line-height: 21px;
 `
 const EthIcon = styled(DefaultEthIcon)`
+  margin-top: 5px;
   margin-right: 10px;
 `
 const TotalPot = styled('div')`
   font-family: Muli;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
   color: #3d3f50;
   text-align: left;
   line-height: 21px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+
+  strong {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+
   span {
-    font-weight: 400;
-    margin-left: 0.5rem;
-    margin-right: 1.5rem;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
   }
 `
 
 const EventDescription = styled('p')`
   white-space: pre-line;
+  line-height: 1.6em;
 `
+
+const UserAvatar = styled(TwitterAvatar)`
+  margin-right: 10px;
+`
+
 const Photos = styled('section')``
 const PhotoContainer = styled('div')``
 const Photo = styled('img')``
@@ -122,17 +152,10 @@ class EventInfo extends Component {
           <OrganiserList>
             {[party.owner, ...party.admins].map(organiser => {
               return (
-                <>
-                  <Organiser>
-                    <Avatar
-                      src={`https://avatars.io/twitter/${getSocial(
-                        organiser.social,
-                        'twitter'
-                      ) || 'randomtwitter'}`}
-                    />{' '}
-                    <HostUsername>{organiser.username}</HostUsername>
-                  </Organiser>
-                </>
+                <Organiser key={organiser.username}>
+                  <UserAvatar user={organiser} />
+                  <HostUsername>{organiser.username}</HostUsername>
+                </Organiser>
               )
             })}
           </OrganiserList>
@@ -144,17 +167,38 @@ class EventInfo extends Component {
         </Location>
         <TotalPot>
           <EthIcon />
-          Total pot{' '}
+
+          <Pot>
+            <TotalPot>
+              <strong>Pot: </strong>
+              <span>
+                {toEthVal(party.deposit)
+                  .mul(party.participants.length)
+                  .toEth()
+                  .toFixed(2)}{' '}
+                ETH
+              </span>
+            </TotalPot>
+            <Deposit>
+              <strong>RSVP: </strong>
+              <span>
+                <DepositValue value={party.deposit} /> ETH
+              </span>
+            </Deposit>
+          </Pot>
+
+          <strong>
+            Cooling Period{' '}
+            <Link to="/faq#cooling">
+              <InfoIcon />
+            </Link>
+            :{' '}
+          </strong>
           <span>
-            {toEthVal(party.deposit)
-              .mul(party.participants.length)
-              .toEth()
-              .toFixed(2)}{' '}
-            ETH
-          </span>
-          RSVP{' '}
-          <span>
-            <DepositValue value={party.deposit} /> ETH
+            {moment
+              .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+              .asDays()}{' '}
+            days
           </span>
         </TotalPot>
         <EventDescription>{party.description}</EventDescription>

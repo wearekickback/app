@@ -1352,9 +1352,9 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@noblocknoparty/contracts/-/contracts-1.0.2.tgz#8cba3d265253806be9eac9df396467bc335c6736"
 
-"@noblocknoparty/validation@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@noblocknoparty/validation/-/validation-1.1.1.tgz#f3e826bcc8168f2345b2b463e35ec280fc1a5dd7"
+"@noblocknoparty/shared@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@noblocknoparty/shared/-/shared-1.3.0.tgz#97e2a08343acbcfda4ad720e8a077865770136b3"
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
@@ -5301,9 +5301,9 @@ ethjs-unit@0.1.6:
     bn.js "4.11.6"
     number-to-bn "1.7.0"
 
-ethval@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/ethval/-/ethval-1.0.7.tgz#597cac2bd10659b72239f049402d20ab644a9aa0"
+ethval@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ethval/-/ethval-1.3.0.tgz#292cb628d04d60bdda7f289bdec79a3b71da06d9"
   dependencies:
     decimal.js "^10.0.1"
     web3-utils "^1.0.0-beta.36"
@@ -8381,6 +8381,10 @@ mock-fs@^4.1.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.7.0.tgz#9f17e219cacb8094f4010e0a8c38589e2b33c299"
 
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
 moniker@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/moniker/-/moniker-0.1.2.tgz#872dfba575dcea8fa04a5135b13d5f24beccc97e"
@@ -9929,6 +9933,12 @@ react-router-dom@^4.3.1:
     prop-types "^15.6.1"
     react-router "^4.3.1"
     warning "^4.0.1"
+
+react-router-hash-link@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-router-hash-link/-/react-router-hash-link-1.2.0.tgz#ce824cc5f0502ce9b0686bb6dd9c08659b24094c"
+  dependencies:
+    prop-types "^15.6.0"
 
 react-router@^4.3.1:
   version "4.3.1"
