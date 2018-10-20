@@ -16,6 +16,7 @@ class Create extends Component {
       </>
     )
   }
+
   _onCreated = ({ id }, deposit, limitOfParticipants) => {
     this.props.history.push(
       `/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`
