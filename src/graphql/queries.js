@@ -49,16 +49,16 @@ export const ReverseRecordQuery = gql`
 `
 
 export const QRSupportedQuery = gql`
-  query scanQRCodeSupported($address: String) {
-    scanQRCodeSupported(address: $address) @client {
+  query scanQRCodeSupported {
+    scanQRCodeSupported @client {
       supported
     }
   }
 `
 
 export const QRQuery = gql`
-  query scanQRCode($address: String) {
-    scanQRCode(address: $address) @client {
+  query scanQRCode {
+    scanQRCode @client {
       address
     }
   }
