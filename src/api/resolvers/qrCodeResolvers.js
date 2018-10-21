@@ -3,7 +3,7 @@ export const defaults = {}
 
 const resolvers = {
   Query: {
-    async scanQRCodeSupported(_, { address }) {
+    async scanQRCodeSupported() {
       let supported = false;
       const web3 = await getWeb3()
       if(web3.currentProvider.scanQRCode){
@@ -17,7 +17,7 @@ const resolvers = {
   },
   
   Mutation: {
-    async scanQRCode(_, { }) {
+    async scanQRCode() {
       const web3 = await getWeb3()
       try {
         const data = await web3.currentProvider.scanQRCode()

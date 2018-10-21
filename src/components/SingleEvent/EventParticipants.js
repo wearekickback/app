@@ -30,6 +30,7 @@ class EventParticipants extends Component {
   render() {
     const {
       handleSearch,
+      setSearchTerm,
       searchTerm,
       party,
       party: { participants, participantLimit, ended },
@@ -69,9 +70,9 @@ class EventParticipants extends Component {
                             <Button 
                               onClick={ (() => {
                               scanQRCode().then((result)=>{
-                                this.props.setSearchTerm(result.data.scanQRCode.address)
+                                setSearchTerm(result.data.scanQRCode.address)
                               })
-                            }).bind(this) }>Scan QRCode</Button>
+                            }) }>Scan QRCode</Button>
                           </QRCodeContainer>
                         )}  
                       </SafeMutation>          
