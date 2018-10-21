@@ -18,19 +18,25 @@ const Spots = styled('span')`
   font-size: 70%;
 `
 
-
-
 class EventParticipants extends Component {
+  state = {}
+  _qrcode(event){
+    this.props.setSearchTerm('0x6d8bd81fc3838469a95e28e7f2813cd2764d1461')
+    console.log('qrcode!')
+    return false
+  }
+
   render() {
     const {
       handleSearch,
-      search,
+      setSearchTerm,
+      searchTerm,
       party,
       party: { participants, participantLimit, ended },
       amAdmin
     } = this.props
 
-    const searchTerm = search.toLowerCase()
+    const lowerSearch = searchTerm.toLowerCase()
 
     participants.sort((a, b) => {
       return a.index < b.index ? -1 : 1
@@ -49,14 +55,16 @@ class EventParticipants extends Component {
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
         <EventFilters handleSearch={handleSearch} />
+        <div onClick={this._qrcode.bind(this)} value='makoto' >Scan QRCode</div>
+
         <EventParticipantsContainer>
           {participants.length > 0 ? (
             participants
               .sort((a, b) => (a.index < b.index ? -1 : 1))
               .filter(p => (
-                (p.user.realName || '').toLowerCase().includes(searchTerm) ||
-                (p.user.username || '').toLowerCase().includes(searchTerm) ||
-                (amAdmin && p.user.address).includes(searchTerm)
+                (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
+                (p.user.username || '').toLowerCase().includes(lowerSearch) ||
+                (amAdmin && p.user.address).includes(lowerSearch)
               ))
               .map(participant => (
                 <Participant

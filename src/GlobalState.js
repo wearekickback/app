@@ -32,6 +32,7 @@ class Provider extends Component {
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
     networkState: {},
+    searchTerm: ''
   }
 
   authToken () {
@@ -154,6 +155,15 @@ class Provider extends Component {
     this.setState({ networkState })
   }
 
+  handleSearch = event => {
+    this.setSearchTerm(event.target.value)  
+  }
+
+  setSearchTerm = searchTerm => {
+    console.log('searchTerm', searchTerm)
+    this.setState({ searchTerm })
+  }
+
   reloadUserAddress = async () => {
     const address = await getAccount()
 
@@ -167,9 +177,10 @@ class Provider extends Component {
         }), resolve)
       })
     }
-
     return address
   }
+
+  
 
   render() {
     return (
@@ -187,6 +198,9 @@ class Provider extends Component {
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
           setUserProfile: this.setUserProfile,
+          searchTerm:this.state.searchTerm,
+          setSearchTerm:this.setSearchTerm,
+          handleSearch: this.handleSearch
         }}
       >
         {this.props.children}
