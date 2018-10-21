@@ -160,7 +160,6 @@ class Provider extends Component {
   }
 
   setSearchTerm = searchTerm => {
-    console.log('searchTerm', searchTerm)
     this.setState({ searchTerm })
   }
 
@@ -177,10 +176,9 @@ class Provider extends Component {
         }), resolve)
       })
     }
+
     return address
   }
-
-  
 
   render() {
     return (

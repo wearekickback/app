@@ -23,7 +23,7 @@ import Button from '../Forms/Button'
 // `
 
 const ParticipantWrapper = styled('div')`
-  height: ${p => (p.amAdmin ? '170px' : '0px')};
+  height: ${p => (p.amAdmin ? '170px' : '120px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,14 +34,14 @@ const ParticipantId = styled('div')`
 `
 
 const ParticipantAddress = styled('div')`
-max-width: 100%;
-overflow: hidden;
-white-space: nowrap;
-text-overflow: ellipsis;
-font-size: 10px;
-color: #ccc;
-margin-top: 5px;
-text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  color: #ccc;
+  margin-top: 5px;
+  text-align: center;
 `
 
 const ParticipantUsername = styled('div')`

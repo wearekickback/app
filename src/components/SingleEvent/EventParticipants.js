@@ -56,7 +56,7 @@ class EventParticipants extends Component {
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
         <EventFilters handleSearch={handleSearch} />
-        {true? (
+        {amAdmin? (
           <SafeQuery
                 query={QRSupportedQuery}
                 variables={{ address: '1' }}
@@ -79,7 +79,7 @@ class EventParticipants extends Component {
                       </SafeMutation>          
                     )
                   } else {
-                    return <div>QRCode scanning not supported</div>
+                    return <QRCodeContainer>QRCode scanning not supported on your wallet. Try Status.im</QRCodeContainer>
                   }
                 }}
           </SafeQuery>
@@ -91,7 +91,6 @@ class EventParticipants extends Component {
               .filter(p => (
                 (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
                 (p.user.username || '').toLowerCase().includes(lowerSearch) || 
-                (console.log('admin', amAdmin, p.user.address, lowerSearch, p.user.address.includes(lowerSearch)) && true) || 
                 (true && p.user.address.includes(lowerSearch))
               ))
               .map(participant => (
