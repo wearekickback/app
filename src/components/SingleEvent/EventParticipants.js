@@ -30,7 +30,6 @@ class EventParticipants extends Component {
   render() {
     const {
       handleSearch,
-      setSearchTerm,
       searchTerm,
       party,
       party: { participants, participantLimit, ended },
