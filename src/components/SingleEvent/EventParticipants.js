@@ -27,6 +27,11 @@ const Spots = styled('span')`
 `
 
 class EventParticipants extends Component {
+  _scan(client, QRQuery, setSearchTerm){
+    client.query({query:QRQuery}).then((result)=>{
+      setSearchTerm(result.data.scanQRCode.address)
+    })
+  }
   render() {
     const {
       handleSearch,
@@ -68,11 +73,10 @@ class EventParticipants extends Component {
                         { client => (
                           <QRCodeContainer>
                             <Button 
-                              onClick={ (() => {
-                              client.query({query:QRQuery}).then((result)=>{
-                                setSearchTerm(result.data.scanQRCode.address)
-                              })
-                            }) }>Scan QRCode</Button>
+                              onClick={
+                                this._scan(client, scanQRCode, setSearchTerm)
+                              }
+                            >Scan QRCode</Button>
                           </QRCodeContainer>
                         )}  
                       </ApolloConsumer>          
