@@ -13,10 +13,7 @@ const resolvers = {
         supported:supported,
         __typename: 'QRCodeSupported'
       }
-    }
-  },
-  
-  Mutation: {
+    },
     async scanQRCode() {
       const web3 = await getWeb3()
       try {

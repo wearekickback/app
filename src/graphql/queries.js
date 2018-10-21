@@ -55,3 +55,11 @@ export const QRSupportedQuery = gql`
     }
   }
 `
+
+export const QRQuery = gql`
+  query scanQRCode($address: String) {
+    scanQRCode(address: $address) @client {
+      address
+    }
+  }
+`

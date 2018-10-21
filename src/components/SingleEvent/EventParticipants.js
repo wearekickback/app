@@ -3,9 +3,9 @@ import styled from 'react-emotion'
 import Button from '../Forms/Button'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
-import { ScanQRCode } from '../../graphql/mutations'
-import { QRSupportedQuery } from '../../graphql/queries'
-import SafeMutation from '../SafeMutation'
+import { QRSupportedQuery,  QRQuery} from '../../graphql/queries'
+import { ApolloConsumer } from 'react-apollo';
+
 import SafeQuery from '../SafeQuery'
 
 import { H3 } from '../Typography/Basic'
@@ -64,18 +64,18 @@ class EventParticipants extends Component {
                 {result => {
                   if (result.data.scanQRCodeSupported && result.data.scanQRCodeSupported.supported) {
                     return(
-                      <SafeMutation mutation={ScanQRCode}>
-                        {scanQRCode => (
+                      <ApolloConsumer>
+                        { client => (
                           <QRCodeContainer>
                             <Button 
                               onClick={ (() => {
-                              scanQRCode().then((result)=>{
+                              client.query({query:QRQuery}).then((result)=>{
                                 setSearchTerm(result.data.scanQRCode.address)
                               })
                             }) }>Scan QRCode</Button>
                           </QRCodeContainer>
                         )}  
-                      </SafeMutation>          
+                      </ApolloConsumer>          
                     )
                   } else {
                     return <QRCodeContainer>QRCode scanning not supported on your wallet. Try Status.im</QRCodeContainer>
