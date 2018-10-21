@@ -29,7 +29,10 @@ const Spots = styled('span')`
 class EventParticipants extends Component {
   _scan(client, QRQuery, setSearchTerm){
     client.query({query:QRQuery}).then((result)=>{
-      setSearchTerm(result.data.scanQRCode.address)
+      const code = _.get(result, 'data.scanQRCode.address')
+      if (code) {
+        setSearchTerm(code)
+      }
     })
   }
   render() {
