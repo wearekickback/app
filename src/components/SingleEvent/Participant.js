@@ -1,16 +1,13 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
+import { PARTICIPANT_STATUS, calculateNumAttended } from '@noblocknoparty/shared'
 
 import { Mutation } from 'react-apollo'
-import { PARTICIPANT_STATUS } from '../../utils/status'
 import TwitterAvatar from '../User/TwitterAvatar'
 
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { toEthVal } from '../../utils/units'
-import {
-  calculateWinningShare,
-  calculateNumAttended
-} from '../../utils/parties'
+import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'

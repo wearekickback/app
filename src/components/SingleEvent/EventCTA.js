@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { PARTICIPANT_STATUS, calculateFinalizeMaps, calculateNumAttended } from '@noblocknoparty/shared'
 
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
-import { PARTICIPANT_STATUS } from '../../utils/status'
-import {
-  calculateFinalizeMaps,
-  calculateNumAttended,
-  calculateWinningShare
-} from '../../utils/parties'
+import { calculateWinningShare } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
