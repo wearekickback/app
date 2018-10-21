@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import Button from '../Forms/Button'
+import { pluralize } from '@noblocknoparty/shared'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
 import { QRSupportedQuery,  QRQuery} from '../../graphql/queries'
@@ -9,7 +10,6 @@ import { ApolloConsumer } from 'react-apollo';
 import SafeQuery from '../SafeQuery'
 
 import { H3 } from '../Typography/Basic'
-import { pluralize } from '../../utils/strings'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;

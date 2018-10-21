@@ -1,20 +1,17 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName, isTwitterId } from '@noblocknoparty/validation'
+import { isEmailAddress, isUsername, isRealName, isTwitterId, trimOrEmptyStringProps, LEGAL } from '@noblocknoparty/shared'
 
 import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
-import { trimOrEmptyStringProps } from '../../utils/strings'
 import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
-import {
-  TERMS_AND_CONDITIONS,
-  PRIVACY_POLICY,
-  MARKETING_INFO
-} from '../../utils/legal'
 import mq from '../../mediaQuery'
+
+const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
+
 
 const Field = styled('div')`
   margin: 30px 0;
