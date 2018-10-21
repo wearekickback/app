@@ -52,7 +52,7 @@
     "deploy:dev": "yarn deploy:ropsten && yarn deploy:rinkeby",
     "deploy:branch": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn deploy:live; elif [ \"$TRAVIS_BRANCH\" = \"dev\" ]; then yarn deploy:dev; fi'",
     "deploy:pr": "echo 'PR branch'",
-    "deploy": "/bin/sh -c 'if [ \"$TRAVIS_PULL_REQUEST\" != \"false\" ]; then yarn deploy:branch; else yarn deploy:pr; fi",
+    "deploy": "/bin/sh -c 'if [ \"$TRAVIS_PULL_REQUEST\" != \"false\" ]; then yarn deploy:branch; else yarn deploy:pr; fi'",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
