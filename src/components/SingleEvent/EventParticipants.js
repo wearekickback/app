@@ -70,7 +70,6 @@ class EventParticipants extends Component {
                             <Button 
                               onClick={ (() => {
                               scanQRCode().then((result)=>{
-                                if(result.data && result.data.scanQRCode.address)
                                 this.props.setSearchTerm(result.data.scanQRCode.address)
                               })
                             }).bind(this) }>Scan QRCode</Button>
