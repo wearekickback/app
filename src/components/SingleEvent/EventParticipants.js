@@ -78,7 +78,7 @@ class EventParticipants extends Component {
                       </ApolloConsumer>          
                     )
                   } else {
-                    return <QRCodeContainer>QRCode scanning not supported on your wallet. Try Status.im</QRCodeContainer>
+                    return null
                   }
                 }}
           </SafeQuery>
