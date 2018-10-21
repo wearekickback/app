@@ -114,7 +114,7 @@ export default class ProfileForm extends Component {
               checked={terms}
               onChange={this.handleTermsCheck}
             />{' '}
-            I agree with the <a href={`/terms`} target="_blank">terms and conditions</a>
+            I agree with the <a href={`/terms`} target="_blank" rel="noopener noreferrer">terms and conditions</a>
           </p>
         )}
         {existingProfile ? null : (
@@ -126,7 +126,7 @@ export default class ProfileForm extends Component {
               onChange={this.handlePrivacyCheck}
             />{' '}
             I agree with the{' '}
-            <a href={`/privacy`} target="_blank">
+            <a href={`/privacy`} target="_blank" rel="noopener noreferrer">
               privacy policy
             </a>
           </p>
