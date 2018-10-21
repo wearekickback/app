@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
+import Button from '../Forms/Button'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
 import { ScanQRCode } from '../../graphql/mutations'
@@ -16,7 +17,9 @@ const EventParticipantsContainer = styled('div')`
   grid-gap: 20px;
   margin-bottom: 40px;
 `
-
+const QRCodeContainer = styled('div')`
+  margin-bottom: 20px;
+`
 const NoParticipants = styled('div')``
 
 const Spots = styled('span')`
@@ -24,13 +27,6 @@ const Spots = styled('span')`
 `
 
 class EventParticipants extends Component {
-  state = {}
-  _qrcode(event){
-    this.props.setSearchTerm('0x6d8bd81fc3838469a95e28e7f2813cd2764d1461')
-    console.log('qrcode!')
-    return false
-  }
-
   render() {
     const {
       handleSearch,
@@ -60,39 +56,43 @@ class EventParticipants extends Component {
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
         <EventFilters handleSearch={handleSearch} />
-        <SafeQuery
-              query={QRSupportedQuery}
-              variables={{ address: '1' }}
-            >
-              {result => {
-                if (result.data.scanQRCodeSupported && result.data.scanQRCodeSupported.supported) {
-                  return(
-                    <SafeMutation mutation={ScanQRCode}>
-                      {scanQRCode => (
-                        <div onClick={ (() => {
-                          scanQRCode().then((result)=>{
-                            if(result.data && result.data.scanQRCode.address)
-                            this.props.setSearchTerm(result.data.scanQRCode.address)
-                          })
-                        }).bind(this) }>Scan QRCode</div>
-                      )}
-                    </SafeMutation>          
-                  )
-
-                } else {
-                  return <div>QRCode scanning not supported</div>
-                }
-              }}
-        </SafeQuery>
-
+        {true? (
+          <SafeQuery
+                query={QRSupportedQuery}
+                variables={{ address: '1' }}
+              >
+                {result => {
+                  if (result.data.scanQRCodeSupported && result.data.scanQRCodeSupported.supported) {
+                    return(
+                      <SafeMutation mutation={ScanQRCode}>
+                        {scanQRCode => (
+                          <QRCodeContainer>
+                            <Button 
+                              onClick={ (() => {
+                              scanQRCode().then((result)=>{
+                                if(result.data && result.data.scanQRCode.address)
+                                this.props.setSearchTerm(result.data.scanQRCode.address)
+                              })
+                            }).bind(this) }>Scan QRCode</Button>
+                          </QRCodeContainer>
+                        )}  
+                      </SafeMutation>          
+                    )
+                  } else {
+                    return <div>QRCode scanning not supported</div>
+                  }
+                }}
+          </SafeQuery>
+        ) : null}
         <EventParticipantsContainer>
-          {participants.length > 0 ? (
+          { participants.length > 0 ? (
             participants
               .sort((a, b) => (a.index < b.index ? -1 : 1))
               .filter(p => (
                 (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
-                (p.user.username || '').toLowerCase().includes(lowerSearch) ||
-                (amAdmin && p.user.address).includes(lowerSearch)
+                (p.user.username || '').toLowerCase().includes(lowerSearch) || 
+                (console.log('admin', amAdmin, p.user.address, lowerSearch, p.user.address.includes(lowerSearch)) && true) || 
+                (true && p.user.address.includes(lowerSearch))
               ))
               .map(participant => (
                 <Participant
