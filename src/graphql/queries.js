@@ -47,3 +47,11 @@ export const ReverseRecordQuery = gql`
     }
   }
 `
+
+export const QRSupportedQuery = gql`
+  query scanQRCodeSupported($address: String) {
+    scanQRCodeSupported(address: $address) @client {
+      supported
+    }
+  }
+`

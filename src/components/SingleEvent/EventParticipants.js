@@ -2,6 +2,11 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
+import { ScanQRCode } from '../../graphql/mutations'
+import { QRSupportedQuery } from '../../graphql/queries'
+import SafeMutation from '../SafeMutation'
+import SafeQuery from '../SafeQuery'
+
 import { H3 } from '../Typography/Basic'
 import { pluralize } from '../../utils/strings'
 
@@ -55,7 +60,30 @@ class EventParticipants extends Component {
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
         <EventFilters handleSearch={handleSearch} />
-        <div onClick={this._qrcode.bind(this)} value='makoto' >Scan QRCode</div>
+        <SafeQuery
+              query={QRSupportedQuery}
+              variables={{ address: '1' }}
+            >
+              {result => {
+                if (result.data.scanQRCodeSupported && result.data.scanQRCodeSupported.supported) {
+                  return(
+                    <SafeMutation mutation={ScanQRCode}>
+                      {scanQRCode => (
+                        <div onClick={ (() => {
+                          scanQRCode().then((result)=>{
+                            if(result.data && result.data.scanQRCode.address)
+                            this.props.setSearchTerm(result.data.scanQRCode.address)
+                          })
+                        }).bind(this) }>Scan QRCode</div>
+                      )}
+                    </SafeMutation>          
+                  )
+
+                } else {
+                  return <div>QRCode scanning not supported</div>
+                }
+              }}
+        </SafeQuery>
 
         <EventParticipantsContainer>
           {participants.length > 0 ? (

@@ -120,3 +120,11 @@ export const WithdrawPayout = gql`
     withdrawPayout(address: $address) @client
   }
 `
+
+export const ScanQRCode = gql`
+mutation scanQRCode($address: String) {
+    scanQRCode(address: $address) @client {
+      address
+    }
+  }
+`
