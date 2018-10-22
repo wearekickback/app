@@ -17,8 +17,8 @@ export const CreateParty = gql`
 `
 
 export const CreatePendingParty = gql`
-  mutation createPendingParty($meta: PartyMetaInput!) {
-    id: createPendingParty(meta: $meta) @requireAuth
+  mutation createPendingParty($meta: PartyMetaInput!, $password: String) {
+    id: createPendingParty(meta: $meta, password: $password) @requireAuth
   }
 `
 
