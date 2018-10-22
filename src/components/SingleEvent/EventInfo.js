@@ -14,7 +14,6 @@ import moment from 'moment'
 
 import { toEthVal } from '../../utils/units'
 
-
 const Date = styled('div')``
 const EventName = styled(H2)``
 const ContractAddress = styled('h3')`
@@ -77,6 +76,7 @@ const InfoIcon = styled(DefaultInfoIcon)`
 
 const PinIcon = styled(DefaultPinIcon)`
   margin-right: 10px;
+  flex-shrink: 0;
 `
 
 const Location = styled('div')`
