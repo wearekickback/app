@@ -6,6 +6,7 @@ import Participant from './Participant'
 import EventFilters from './EventFilters'
 import { QRSupportedQuery,  QRQuery} from '../../graphql/queries'
 import { ApolloConsumer } from 'react-apollo';
+import _ from 'lodash'
 
 import SafeQuery from '../SafeQuery'
 
@@ -27,7 +28,7 @@ const Spots = styled('span')`
 `
 
 class EventParticipants extends Component {
-  _scan(client, QRQuery, setSearchTerm){
+  _scan(client, setSearchTerm){
     client.query({query:QRQuery}).then((result)=>{
       const code = _.get(result, 'data.scanQRCode.address')
       if (code) {
@@ -77,7 +78,7 @@ class EventParticipants extends Component {
                           <QRCodeContainer>
                             <Button 
                               onClick={
-                                this._scan(client, scanQRCode, setSearchTerm)
+                                this._scan(client, setSearchTerm)
                               }
                             >Scan QRCode</Button>
                           </QRCodeContainer>
