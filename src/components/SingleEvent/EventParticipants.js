@@ -78,7 +78,7 @@ class EventParticipants extends Component {
                           <QRCodeContainer>
                             <Button 
                               onClick={
-                                this._scan(client, setSearchTerm)
+                                this._scan.bind(this, client, setSearchTerm)
                               }
                             >Scan QRCode</Button>
                           </QRCodeContainer>

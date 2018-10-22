@@ -9,7 +9,6 @@ const resolvers = {
         supported:!!web3.currentProvider.scanQRCode,
         __typename: 'QRCodeSupported'
       }
-      return !!web3.currentProvider.scanQRCode
     },
     async scanQRCode() {
       const web3 = await getWeb3()
