@@ -44,7 +44,9 @@ const Account = styled('div')`
 const Username = styled('div')`
   max-width: 100px;
   color: white;
-  font-family: 'Source Code Pro';
+  font-family: 'Muli';
+  margin-right: 5px;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,7 +58,7 @@ const NavLink = styled(Link)`
 `
 
 export default class Header extends PureComponent {
-  render () {
+  render() {
     return (
       <HeaderContainer>
         <HeaderInner>
@@ -64,17 +66,23 @@ export default class Header extends PureComponent {
           <RightBar>
             <NavLink to="/events">Events</NavLink>
             <GlobalConsumer>
-              {({ reloadUserAddress, userProfile, networkState, loggedIn, signIn, toggleModal }) => {
+              {({
+                reloadUserAddress,
+                userProfile,
+                networkState,
+                loggedIn,
+                signIn,
+                toggleModal
+              }) => {
                 const twitterProfile =
-                  userProfile && userProfile.social.find(s => s.type === 'twitter')
+                  userProfile &&
+                  userProfile.social.find(s => s.type === 'twitter')
                 return loggedIn ? (
                   <>
                     {/* <Notifications>Notification</Notifications> */}
                     <Account onClick={() => toggleModal(EDIT_PROFILE)}>
                       {userProfile ? (
-                        <Username>
-                          {userProfile.username}
-                        </Username>
+                        <Username>{userProfile.username}</Username>
                       ) : null}
                       <Avatar
                         src={`https://avatars.io/twitter/${
@@ -86,12 +94,21 @@ export default class Header extends PureComponent {
                     </Account>
                   </>
                 ) : (
-                  <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position='left'>
+                  <Tooltip
+                    text={CANNOT_RESOLVE_ACCOUNT_ADDRESS}
+                    position="left"
+                  >
                     {({ tooltipElement, showTooltip, hideTooltip }) => (
                       <Button
                         type="light"
-                        onClick={this._signIn({ showTooltip, hideTooltip, signIn, reloadUserAddress, networkState })}
-                        analyticsId='Sign In'
+                        onClick={this._signIn({
+                          showTooltip,
+                          hideTooltip,
+                          signIn,
+                          reloadUserAddress,
+                          networkState
+                        })}
+                        analyticsId="Sign In"
                       >
                         {tooltipElement}
                         Sign in
@@ -107,7 +124,13 @@ export default class Header extends PureComponent {
     )
   }
 
-  _signIn = ({ showTooltip, hideTooltip, signIn, networkState, reloadUserAddress }) => async () => {
+  _signIn = ({
+    showTooltip,
+    hideTooltip,
+    signIn,
+    networkState,
+    reloadUserAddress
+  }) => async () => {
     hideTooltip()
 
     const address = await reloadUserAddress()
