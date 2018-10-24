@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import { PARTICIPANT_STATUS, calculateNumAttended } from '@noblocknoparty/shared'
+import {
+  PARTICIPANT_STATUS,
+  calculateNumAttended
+} from '@noblocknoparty/shared'
 
 import { Mutation } from 'react-apollo'
-import TwitterAvatar from '../User/TwitterAvatar'
+import DefaultTwitterAvatar from '../User/TwitterAvatar'
 
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { toEthVal } from '../../utils/units'
@@ -20,7 +23,7 @@ import Button from '../Forms/Button'
 // `
 
 const ParticipantWrapper = styled('div')`
-  height: ${p => (p.amAdmin ? '170px' : '120px')};
+  height: ${p => (p.amAdmin ? '170px' : '100px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,6 +52,12 @@ const ParticipantUsername = styled('div')`
   font-size: 12px;
   color: #3d3f50;
   text-align: center;
+`
+
+const TwitterAvatar = styled(DefaultTwitterAvatar)`
+  width: 60px;
+  height: 60px;
+  margin-bottom: 5px;
 `
 
 const ParticipantRealName = styled('div')`
@@ -108,7 +117,7 @@ export class Participant extends Component {
       <GlobalConsumer>
         {({ userAddress, loggedIn }) => (
           <ParticipantWrapper amAdmin={amAdmin}>
-             <TwitterAvatar user={user} />
+            <TwitterAvatar user={user} />
             <ParticipantId>
               <ParticipantUsername>{user.username}</ParticipantUsername>
               {amAdmin && user.realName ? (
