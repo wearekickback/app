@@ -46,7 +46,7 @@ class SingleEventWrapper extends Component {
     return (
       <SingleEventContainer>
         <GlobalConsumer>
-          {({ userAddress, handleSearch, setSearchTerm, searchTerm }) => (
+          {({ userAddress }) => (
             <SafeQuery
               query={PartyQuery}
               variables={{ address }}
@@ -104,9 +104,6 @@ class SingleEventWrapper extends Component {
                         {...preCalculatedProps}
                       />
                       <EventParticipants
-                        handleSearch={handleSearch}
-                        setSearchTerm={setSearchTerm}
-                        searchTerm={searchTerm}
                         party={party}
                         {...preCalculatedProps}
                       />

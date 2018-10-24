@@ -31,8 +31,7 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    networkState: {},
-    searchTerm: ''
+    networkState: {}
   }
 
   authToken () {
@@ -155,14 +154,6 @@ class Provider extends Component {
     this.setState({ networkState })
   }
 
-  handleSearch = event => {
-    this.setSearchTerm(event.target.value)  
-  }
-
-  setSearchTerm = searchTerm => {
-    this.setState({ searchTerm })
-  }
-
   reloadUserAddress = async () => {
     const address = await getAccount()
 
@@ -195,10 +186,7 @@ class Provider extends Component {
           signInError: this.state.signInError,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
-          setUserProfile: this.setUserProfile,
-          searchTerm:this.state.searchTerm,
-          setSearchTerm:this.setSearchTerm,
-          handleSearch: this.handleSearch
+          setUserProfile: this.setUserProfile
         }}
       >
         {this.props.children}

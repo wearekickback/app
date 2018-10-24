@@ -6,22 +6,18 @@ import { GlobalConsumer } from '../../GlobalState'
 
 class EventFilters extends Component {
   render() {
-    const { handleSearch } = this.props
+    const { handleSearch, search } = this.props
     return (
-      <GlobalConsumer>
-          {({ searchTerm }) => (
-            <EventFiltersContainer>
-              <Search
-                type="text"
-                Icon={SearchIcon}
-                onChange={handleSearch}
-                value={searchTerm}
-                placeholder="Search for names or addresses"
-                wide
-              />
-            </EventFiltersContainer>
-          )}
-      </GlobalConsumer>      
+      <EventFiltersContainer>
+        <Search
+          type="text"
+          Icon={SearchIcon}
+          onChange={handleSearch}
+          value={search}
+          placeholder="Search for names or addresses"
+          wide
+        />
+      </EventFiltersContainer>
     )
   }
 }

@@ -28,25 +28,32 @@ const Spots = styled('span')`
 `
 
 class EventParticipants extends Component {
-  _scan(client, setSearchTerm){
+  state = {
+    search: ''
+  }
+
+  handleSearch = event => {
+    this.setState({
+      search: event.target.value
+    })
+  }
+
+  _scan(client){
     client.query({query:QRQuery}).then((result)=>{
       const code = _.get(result, 'data.scanQRCode.address')
       if (code) {
-        setSearchTerm(code)
+        this.setState({search: code})
       }
     })
   }
   render() {
     const {
-      handleSearch,
-      setSearchTerm,
-      searchTerm,
       party,
       party: { participants, participantLimit, ended },
       amAdmin
     } = this.props
 
-    const lowerSearch = searchTerm.toLowerCase()
+    const lowerSearch = this.state.search.toLowerCase()
 
     participants.sort((a, b) => {
       return a.index < b.index ? -1 : 1
@@ -64,7 +71,7 @@ class EventParticipants extends Component {
     return (
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
-        <EventFilters handleSearch={handleSearch} />
+        <EventFilters handleSearch={this.handleSearch} search={this.state.search } />
         {amAdmin? (
           <SafeQuery
                 query={QRSupportedQuery}
@@ -78,7 +85,7 @@ class EventParticipants extends Component {
                           <QRCodeContainer>
                             <Button 
                               onClick={
-                                this._scan.bind(this, client, setSearchTerm)
+                                this._scan.bind(this, client)
                               }
                             >Scan QRCode</Button>
                           </QRCodeContainer>
