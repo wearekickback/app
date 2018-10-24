@@ -1,20 +1,17 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName, isTwitterId } from '@noblocknoparty/shared'
+import { isEmailAddress, isUsername, isRealName, isTwitterId, trimOrEmptyStringProps, LEGAL } from '@noblocknoparty/shared'
 
 import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
-import { trimOrEmptyStringProps } from '../../utils/strings'
 import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
-import {
-  TERMS_AND_CONDITIONS,
-  PRIVACY_POLICY,
-  MARKETING_INFO
-} from '../../utils/legal'
 import mq from '../../mediaQuery'
+
+const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
+
 
 const Field = styled('div')`
   margin: 30px 0;
@@ -117,7 +114,7 @@ export default class ProfileForm extends Component {
               checked={terms}
               onChange={this.handleTermsCheck}
             />{' '}
-            I agree with the <a href={`/terms`} target="_blank">terms and conditions</a>
+            I agree with the <a href={`/terms`} target="_blank" rel="noopener noreferrer">terms and conditions</a>
           </p>
         )}
         {existingProfile ? null : (
@@ -129,7 +126,7 @@ export default class ProfileForm extends Component {
               onChange={this.handlePrivacyCheck}
             />{' '}
             I agree with the{' '}
-            <a href={`/privacy`} target="_blank">
+            <a href={`/privacy`} target="_blank" rel="noopener noreferrer">
               privacy policy
             </a>
           </p>

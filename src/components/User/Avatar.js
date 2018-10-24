@@ -14,7 +14,7 @@ const Avatar = ({ href, src, className }) => {
   if(href){
     container = (
       <AvatarContainer className={className}>
-        <a href={href} target="_blank"  >
+        <a href={href} target="_blank" rel="noopener noreferrer" >
           <img src={src} alt="avatar" />
         </a>
       </AvatarContainer>

@@ -40,11 +40,14 @@ class PartyForm extends Component {
       type = 'Create Pending Party',
       onCompleted,
       mutation,
-      address
+      address,
+      children,
+      variables: extraVariables = {},
     } = this.props
 
     const variables = {
-      meta: { name, description, location, date, image }
+      meta: { name, description, location, date, image },
+      ...extraVariables
     }
 
     if (type === 'Update Party Meta') {
@@ -119,6 +122,8 @@ class PartyForm extends Component {
             </>
           )}
         </div>
+
+        {children}
 
         <SafeMutation
           mutation={mutation}
