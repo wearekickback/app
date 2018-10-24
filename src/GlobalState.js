@@ -162,20 +162,8 @@ class Provider extends Component {
     )
   }
 
-<<<<<<< HEAD
   async componentDidMount() {
-    const address = await getAccount()
-
-    this.setState(state => ({
-      auth: {
-        ...state.auth,
-        address
-      }
-    }))
-=======
-  async componentDidMount () {
     await this.reloadUserAddress()
->>>>>>> 378a0dac0bc73998c0eaf00646814bb4a10f33a8
 
     // try and sign in!
     await this.signIn({ dontForceSignIn: true })
@@ -192,12 +180,15 @@ class Provider extends Component {
 
     if (address) {
       await new Promise(resolve => {
-        this.setState(state => ({
-          auth: {
-            ...state.auth,
-            address,
-          }
-        }), resolve)
+        this.setState(
+          state => ({
+            auth: {
+              ...state.auth,
+              address
+            }
+          }),
+          resolve
+        )
       })
     }
 

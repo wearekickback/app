@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import { pluralize } from '@noblocknoparty/shared'
+import { pluralize, PARTICIPANT_STATUS } from '@noblocknoparty/shared'
 
 import Participant from './Participant'
 import EventFilters from './EventFilters'
 import { H3 } from '../Typography/Basic'
+import { GlobalConsumer } from '../../GlobalState'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
