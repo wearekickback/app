@@ -84,7 +84,11 @@ const resolvers = {
 
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
-      return web3.eth.personal.sign(challengeString, address)
+      const signature = await web3.eth.personal.sign(challengeString, address)
+
+      console.log(`Signature: ${signature}`)
+
+      return signature
     }
   }
 }
