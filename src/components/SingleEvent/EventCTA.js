@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import {
+  PARTICIPANT_STATUS,
+  calculateFinalizeMaps,
+  calculateNumAttended
+} from '@noblocknoparty/shared'
 
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
-import { PARTICIPANT_STATUS } from '../../utils/status'
-import {
-  calculateFinalizeMaps,
-  calculateNumAttended,
-  calculateWinningShare
-} from '../../utils/parties'
+import { calculateWinningShare } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
@@ -34,7 +34,7 @@ const CTAInfo = styled('div')`
   line-height: 21px;
   background: rgba(233, 234, 255, 0.5);
   border-radius: 4px;
-  margin-top: 5px;
+  margin-top: 20px;
 
   ul {
     margin-left: 2.5em;
@@ -69,8 +69,6 @@ const RSVP = styled(DefaultRSVP)`
 const AdminCTA = styled('div')`
   margin-top: 10px;
 `
-
-
 
 class EventCTA extends Component {
   _renderEndedRsvp() {
@@ -113,10 +111,18 @@ class EventCTA extends Component {
             <RSVP address={address} deposit={deposit} />
             <CTAInfo>
               <strong>You cannot cancel once registered.</strong>
-              <p>Also, your payment is <strong>non-refundable</strong> if:</p>
+              <p>
+                Also, your payment is <strong>non-refundable</strong> if:
+              </p>
               <ul>
-                <li>You RSVP but then don't turn up (or don't get marked as attended by the organizer).</li>
-                <li>You fail to withdraw your post-event payout within the cooling period.</li>
+                <li>
+                  You RSVP but then don't turn up (or don't get marked as
+                  attended by the organizer).
+                </li>
+                <li>
+                  You fail to withdraw your post-event payout within the cooling
+                  period.
+                </li>
               </ul>
             </CTAInfo>
           </>
@@ -138,38 +144,36 @@ class EventCTA extends Component {
 
   _renderAdminCTA() {
     const {
-      party: {
-        address,
-        participants,
-        ended
-      },
+      party: { address, participants, ended },
       amAdmin
     } = this.props
 
-    return amAdmin && (
-      <AdminCTA>
-        {!ended ? (
-          <ChainMutation
-            mutation={Finalize}
-            resultKey="finalize"
-            variables={{
-              address,
-              maps: calculateFinalizeMaps(participants)
-            }}
-            refetchQueries={[{ query: PartyQuery, variables: { address } }]}
-          >
-            {(finalize, result) => (
-              <ChainMutationButton
-                analyticsId='Finalize Event'
-                result={result}
-                onClick={finalize}
-                preContent="Finalize and enable payouts"
-                postContent="Finalized!"
-              />
-            )}
-          </ChainMutation>
-        ) : null}
-      </AdminCTA>
+    return (
+      amAdmin && (
+        <AdminCTA>
+          {!ended ? (
+            <ChainMutation
+              mutation={Finalize}
+              resultKey="finalize"
+              variables={{
+                address,
+                maps: calculateFinalizeMaps(participants)
+              }}
+              refetchQueries={[{ query: PartyQuery, variables: { address } }]}
+            >
+              {(finalize, result) => (
+                <ChainMutationButton
+                  analyticsId="Finalize Event"
+                  result={result}
+                  onClick={finalize}
+                  preContent="Finalize and enable payouts"
+                  postContent="Finalized!"
+                />
+              )}
+            </ChainMutation>
+          ) : null}
+        </AdminCTA>
+      )
     )
   }
 
@@ -201,10 +205,7 @@ class EventCTA extends Component {
 
   render() {
     const {
-      party: {
-        ended,
-        cancelled
-      }
+      party: { ended, cancelled }
     } = this.props
 
     return (
@@ -212,9 +213,11 @@ class EventCTA extends Component {
         <RSVPContainer>
           {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
         </RSVPContainer>
-        {ended ? (
-          cancelled ? this._renderCanceled() : this._renderEnded()
-        ) : null}
+        {ended
+          ? cancelled
+            ? this._renderCanceled()
+            : this._renderEnded()
+          : this._renderAdminCTA()}
       </EventCTAContainer>
     )
   }

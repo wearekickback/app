@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
+import {
+  PARTICIPANT_STATUS,
+  calculateNumAttended
+} from '@noblocknoparty/shared'
 
 import { Mutation } from 'react-apollo'
-import { PARTICIPANT_STATUS } from '../../utils/status'
-import { getSocial } from '../../utils/parties'
+import DefaultTwitterAvatar from '../User/TwitterAvatar'
+
 import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
 import { toEthVal } from '../../utils/units'
-import {
-  calculateWinningShare,
-  calculateNumAttended
-} from '../../utils/parties'
+import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -22,16 +23,10 @@ import Button from '../Forms/Button'
 // `
 
 const ParticipantWrapper = styled('div')`
-  height: 150px;
+  height: ${p => (p.amAdmin ? '170px' : '100px')};
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const TwitterAvatar = styled('img')`
-  border-radius: 50%;
-  width: 61px;
-  margin-bottom: 15px;
 `
 
 const ParticipantId = styled('div')`
@@ -46,6 +41,12 @@ const ParticipantUsername = styled('div')`
   font-size: 12px;
   color: #3d3f50;
   text-align: center;
+`
+
+const TwitterAvatar = styled(DefaultTwitterAvatar)`
+  width: 60px;
+  height: 60px;
+  margin-bottom: 5px;
 `
 
 const ParticipantRealName = styled('div')`
@@ -96,8 +97,6 @@ export class Participant extends Component {
     const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
     const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
-    const twitter = getSocial(user.social, 'twitter')
-
     const numRegistered = party.participants.length
     const numShowedUp = calculateNumAttended(party.participants)
 
@@ -106,18 +105,12 @@ export class Participant extends Component {
     return (
       <GlobalConsumer>
         {({ userAddress, loggedIn }) => (
-          <ParticipantWrapper>
-            <TwitterAvatar
-              src={`https://avatars.io/twitter/${twitter}/medium`}
-            />
+          <ParticipantWrapper amAdmin={amAdmin}>
+            <TwitterAvatar user={user} />
             <ParticipantId>
-              <ParticipantUsername>
-                {user.username}
-              </ParticipantUsername>
+              <ParticipantUsername>{user.username}</ParticipantUsername>
               {user.realName ? (
-                <ParticipantRealName>
-                  {user.realName}
-                </ParticipantRealName>
+                <ParticipantRealName>{user.realName}</ParticipantRealName>
               ) : null}
             </ParticipantId>
             {ended ? (
@@ -138,11 +131,19 @@ export class Participant extends Component {
               amAdmin && (
                 <Fragment>
                   {attended ? (
-                    <Button wide onClick={unmarkAttended} analyticsId='Unmark Attendee'>
+                    <Button
+                      wide
+                      onClick={unmarkAttended}
+                      analyticsId="Unmark Attendee"
+                    >
                       Unmark attended
                     </Button>
                   ) : (
-                    <Button wide onClick={markAttended} analyticsId='Mark Attendee'>
+                    <Button
+                      wide
+                      onClick={markAttended}
+                      analyticsId="Mark Attendee"
+                    >
                       Mark attended
                     </Button>
                   )}
