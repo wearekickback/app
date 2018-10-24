@@ -3,7 +3,10 @@ export const defaults = {}
 
 const resolvers = {
   Query: {
-    async scanQRCodeSupported() {
+export const QRSupportedQuery = gql`
+  query scanQRCodeSupported {
+    supported: scanQRCodeSupported @client
+  }
       const web3 = await getWeb3()
       return {
         supported:!!web3.currentProvider.scanQRCode,
