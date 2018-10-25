@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import Select, { components } from 'react-select'
+import Select from 'react-select'
 // import { ReactComponent as Arrow } from '../svg/arrowDown.svg'
 
 const SelectContainer = styled('div')``
@@ -47,7 +47,6 @@ const styles = {
 
 class SelectWrapper extends Component {
   render() {
-    const { options } = this.props
     return (
       <SelectContainer>
         <Select
