@@ -1,14 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import Button from '../Forms/Button'
+
 import { pluralize } from '@noblocknoparty/shared'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
-import { QRSupportedQuery,  QRQuery} from '../../graphql/queries'
-import { ApolloConsumer } from 'react-apollo';
-import _ from 'lodash'
-
-import SafeQuery from '../SafeQuery'
 
 import { H3 } from '../Typography/Basic'
 
@@ -17,9 +12,6 @@ const EventParticipantsContainer = styled('div')`
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 20px;
   margin-bottom: 40px;
-`
-const QRCodeContainer = styled('div')`
-  margin-bottom: 20px;
 `
 const NoParticipants = styled('div')``
 
@@ -38,14 +30,6 @@ class EventParticipants extends Component {
     })
   }
 
-  _scan(client){
-    client.query({query:QRQuery}).then((result)=>{
-      const code = _.get(result, 'data.scanQRCode.address')
-      if (code) {
-        this.setState({search: code})
-      }
-    })
-  }
   render() {
     const {
       party,
@@ -71,41 +55,19 @@ class EventParticipants extends Component {
     return (
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
-        <EventFilters handleSearch={this.handleSearch} search={this.state.search } />
-        {amAdmin? (
-          <SafeQuery
-                query={QRSupportedQuery}
-                variables={{ address: '1' }}
-              >
-                {result => {
-                  if (result.data.scanQRCodeSupported && result.data.scanQRCodeSupported.supported) {
-                    return(
-                      <ApolloConsumer>
-                        { client => (
-                          <QRCodeContainer>
-                            <Button 
-                              onClick={
-                                this._scan.bind(this, client)
-                              }
-                            >Scan QRCode</Button>
-                          </QRCodeContainer>
-                        )}  
-                      </ApolloConsumer>          
-                    )
-                  } else {
-                    return null
-                  }
-                }}
-          </SafeQuery>
-        ) : null}
+        <EventFilters
+          handleSearch={this.handleSearch}
+          search={this.state.search }
+          enableQrCodeScanner={amAdmin}
+        />
         <EventParticipantsContainer>
           { participants.length > 0 ? (
             participants
               .sort((a, b) => (a.index < b.index ? -1 : 1))
               .filter(p => (
                 (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
-                (p.user.username || '').toLowerCase().includes(lowerSearch) || 
-                (true && p.user.address.includes(lowerSearch))
+                (p.user.username || '').toLowerCase().includes(lowerSearch) ||
+                p.user.address.toLowerCase().includes(lowerSearch)
               ))
               .map(participant => (
                 <Participant

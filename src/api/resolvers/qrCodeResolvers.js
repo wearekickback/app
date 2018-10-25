@@ -5,19 +5,13 @@ const resolvers = {
   Query: {
     async scanQRCodeSupported() {
       const web3 = await getWeb3()
-      return {
-        supported:!!web3.currentProvider.scanQRCode,
-        __typename: 'QRCodeSupported'
-      }
+      return !!web3.currentProvider.scanQRCode
     },
     async scanQRCode() {
       const web3 = await getWeb3()
       try {
         const data = await web3.currentProvider.scanQRCode()
-        return {
-          address: data,
-          __typename: 'QRCode'
-        }
+        return data
       } catch (err) {
         throw new Error(`Failed to scan QR code`)
       }
