@@ -40,7 +40,12 @@ const RightContainer = styled('div')`
 
 class SingleEventWrapper extends Component {
   state = {
-    search: ''
+    search: '',
+    selectedFilter: null
+  }
+
+  handleFilterChange = selectedFilter => {
+    this.setState({ selectedFilter })
   }
 
   handleSearch = event => {
@@ -50,7 +55,8 @@ class SingleEventWrapper extends Component {
   }
 
   render() {
-    const { address, handleSearch, search } = this.props
+    const { address } = this.props
+    const { search, selectedFilter } = this.state
 
     return (
       <SingleEventContainer>
@@ -114,7 +120,9 @@ class SingleEventWrapper extends Component {
                         {...preCalculatedProps}
                       />
                       <EventParticipants
-                        handleSearch={handleSearch}
+                        handleSearch={this.handleSearch}
+                        handleFilterChange={this.handleFilterChange}
+                        selectedFilter={this.state.selectedFilter}
                         search={search}
                         party={party}
                         {...preCalculatedProps}

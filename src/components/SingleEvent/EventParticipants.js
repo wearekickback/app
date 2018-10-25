@@ -25,6 +25,8 @@ class EventParticipants extends Component {
     const {
       handleSearch,
       search,
+      handleFilterChange,
+      selectedFilter,
       party,
       party: { participants, participantLimit, ended },
       amAdmin
@@ -53,47 +55,44 @@ class EventParticipants extends Component {
         <H3>
           Participants - <Spots>{spots}</Spots>
         </H3>
-        <EventFilters handleSearch={handleSearch} />
+        <EventFilters
+          handleSearch={handleSearch}
+          handleFilterChange={handleFilterChange}
+        />
         <EventParticipantsContainer>
           {participants.length > 0 ? (
-            <GlobalConsumer>
-              {({ selectedFilter }) =>
-                participants
-                  .sort((a, b) => (a.index < b.index ? -1 : 1))
-                  .filter(p => {
-                    //TODO: allow this to handle multiple filters
-                    if (
-                      selectedFilter &&
-                      selectedFilter.value === 'unmarked' &&
-                      p.status !== PARTICIPANT_STATUS.REGISTERED
-                    ) {
-                      return false
-                    }
+            participants
+              .sort((a, b) => (a.index < b.index ? -1 : 1))
+              .filter(p => {
+                //TODO: allow this to handle multiple filters
+                if (
+                  selectedFilter &&
+                  selectedFilter.value === 'unmarked' &&
+                  p.status !== PARTICIPANT_STATUS.REGISTERED
+                ) {
+                  return false
+                }
 
-                    if (
-                      selectedFilter &&
-                      selectedFilter.value === 'marked' &&
-                      p.status === PARTICIPANT_STATUS.REGISTERED
-                    ) {
-                      return false
-                    }
-                    return (
-                      (p.user.realName || '')
-                        .toLowerCase()
-                        .includes(searchTerm) ||
-                      (p.user.username || '').toLowerCase().includes(searchTerm)
-                    )
-                  })
-                  .map(participant => (
-                    <Participant
-                      amAdmin={amAdmin}
-                      participant={participant}
-                      party={party}
-                      key={`${participant.address}${participant.index}`}
-                    />
-                  ))
-              }
-            </GlobalConsumer>
+                if (
+                  selectedFilter &&
+                  selectedFilter.value === 'marked' &&
+                  p.status === PARTICIPANT_STATUS.REGISTERED
+                ) {
+                  return false
+                }
+                return (
+                  (p.user.realName || '').toLowerCase().includes(searchTerm) ||
+                  (p.user.username || '').toLowerCase().includes(searchTerm)
+                )
+              })
+              .map(participant => (
+                <Participant
+                  amAdmin={amAdmin}
+                  participant={participant}
+                  party={party}
+                  key={`${participant.address}${participant.index}`}
+                />
+              ))
           ) : (
             <NoParticipants>No one is attending.</NoParticipants>
           )}

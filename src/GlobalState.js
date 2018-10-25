@@ -34,13 +34,7 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    networkState: {},
-    selectedFilter: null
-  }
-
-  handleFilterChange = selectedFilter => {
-    this.setState({ selectedFilter })
-    console.log(`Option selected:`, selectedFilter)
+    networkState: {}
   }
 
   authToken() {
