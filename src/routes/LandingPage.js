@@ -205,8 +205,7 @@ class Home extends Component {
             <p>
               Everyone commits a small amount of ETH when they RSVP, which is
               refunded after the event check-in. Any no-shows lose their ETH,
-              which can then be split amongst the attendees, donated to charity,
-              or applied to a future event.
+              which can then be split amongst the attendees.
             </p>
           </SectionContent>
         </Section>
