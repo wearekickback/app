@@ -26,7 +26,7 @@ class EventParticipants extends Component {
 
   handleSearch = search => {
     this.setState({
-      search
+      search: search || ''
     })
   }
 

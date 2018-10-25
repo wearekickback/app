@@ -118,6 +118,24 @@ const resolvers = {
   },
 
   Mutation: {
+    async addAdmins(_, { address, userAddresses }) {
+      console.log(`Adding admins:\n${userAddresses.join('\n')}`)
+
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      try {
+        const tx = await contract.grant(userAddresses).send({
+          from: account
+        })
+
+        return tx
+      } catch (err) {
+        console.error(err)
+
+        throw new Error(`Failed to add admin`)
+      }
+    },
     async rsvp(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -173,7 +191,9 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.setLimitOfParticipants(limit).send({ from: account })
+        const tx = await contract.setLimitOfParticipants(limit).send({ from: account })
+
+        return tx
       } catch (e) {
         console.log(e)
         return null
@@ -184,7 +204,9 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.clear().send({ from: account })
+        const tx = await contract.clear().send({ from: account })
+
+        return tx
       } catch (e) {
         console.log(e)
         return null
