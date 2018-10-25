@@ -54,11 +54,7 @@ class SingleEvent extends Component {
                     <UpdatePartyMeta address={address} />
                     {isOwner ? <AddAdmin address={address} /> : null}
                     <Separator />
-                    <SingleEventWrapper
-                      handleSearch={this.handleSearch}
-                      search={this.state.search}
-                      address={address}
-                    />
+                    <SingleEventWrapper address={address} />
                   </>
                 )
               }}
