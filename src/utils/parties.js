@@ -1,9 +1,19 @@
+import _ from 'lodash'
 import { addressesMatch } from '@noblocknoparty/shared'
 
 import { toEthVal } from './units'
 
-export const amParticipant = (participants, address) =>
-  participants.find(a => addressesMatch(a.user.address, address))
+export const getMyParticipantEntry = (party, address) =>
+  _.get(party, 'participants', []).find(a => addressesMatch(_.get(a, 'user.address', ''), address))
+
+export const amOwner = (party, address) => addressesMatch(
+  _.get(party, 'owner.address', ''),
+  address
+)
+
+export const amAdmin = (party, address) => amOwner(party, address) || (
+  address && amInAddressList(_.get(party, 'admins', []).map(a => a.address), address)
+)
 
 export const amInAddressList = (addressList, address) =>
   addressList.find(a => addressesMatch(a, address))

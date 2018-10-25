@@ -1,9 +1,7 @@
-import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import { addressesMatch } from '@noblocknoparty/shared'
 
-import { amInAddressList } from '../../utils/parties'
+import { amOwner, amAdmin, getMyParticipantEntry } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import ErrorBox from '../ErrorBox'
 import SafeQuery from '../SafeQuery'
@@ -39,24 +37,8 @@ const RightContainer = styled('div')`
 `
 
 class SingleEventWrapper extends Component {
-  state = {
-    search: '',
-    selectedFilter: null
-  }
-
-  handleFilterChange = selectedFilter => {
-    this.setState({ selectedFilter })
-  }
-
-  handleSearch = event => {
-    this.setState({
-      search: event.target.value
-    })
-  }
-
   render() {
     const { address } = this.props
-    const { search, selectedFilter } = this.state
 
     return (
       <SingleEventContainer>
@@ -81,27 +63,12 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
-                  amOwner: addressesMatch(
-                    _.get(party, 'owner.address', ''),
-                    userAddress
-                  ),
-                  myParticipantEntry:
-                    userAddress &&
-                    _.get(party, 'participants', []).find(a =>
-                      addressesMatch(_.get(a, 'user.address', ''), userAddress)
-                    )
+                  amOwner: amOwner(party, userAddress),
+                  amAdmin: amAdmin(party, userAddress),
+                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
-
-                preCalculatedProps.amAdmin =
-                  preCalculatedProps.amOwner ||
-                  (userAddress &&
-                    amInAddressList(
-                      _.get(party, 'admins', []).map(a => a.address),
-                      userAddress
-                    ))
 
                 return (
                   <Fragment>
@@ -120,10 +87,6 @@ class SingleEventWrapper extends Component {
                         {...preCalculatedProps}
                       />
                       <EventParticipants
-                        handleSearch={this.handleSearch}
-                        handleFilterChange={this.handleFilterChange}
-                        selectedFilter={this.state.selectedFilter}
-                        search={search}
                         party={party}
                         {...preCalculatedProps}
                       />

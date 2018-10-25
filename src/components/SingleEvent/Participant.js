@@ -33,6 +33,17 @@ const ParticipantId = styled('div')`
   margin-bottom: 10px;
 `
 
+const ParticipantAddress = styled('div')`
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  color: #ccc;
+  margin-top: 5px;
+  text-align: center;
+`
+
 const ParticipantUsername = styled('div')`
   max-width: 100%;
   overflow: hidden;
@@ -109,8 +120,11 @@ export class Participant extends Component {
             <TwitterAvatar user={user} />
             <ParticipantId>
               <ParticipantUsername>{user.username}</ParticipantUsername>
-              {user.realName ? (
+              {amAdmin && user.realName ? (
                 <ParticipantRealName>{user.realName}</ParticipantRealName>
+              ) : null}
+              {amAdmin ? (
+                <ParticipantAddress>{user.address.slice(0,5) + '...'}</ParticipantAddress>
               ) : null}
             </ParticipantId>
             {ended ? (
