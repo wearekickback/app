@@ -8,7 +8,6 @@ export const NetworkIdQuery = gql`
   }
 `
 
-
 export const UserProfileQuery = gql`
   ${ProfileFields}
 
@@ -24,6 +23,16 @@ export const PartyQuery = gql`
 
   query getParty($address: String!) {
     party(address: $address) {
+      ...PartyFields
+    }
+  }
+`
+
+export const PartyVerboseQuery = gql`
+  ${PartyFields}
+
+  query getPartyVerbose($address: String!) {
+    partyVerbose(address: $address) {
       ...PartyFields
     }
   }
