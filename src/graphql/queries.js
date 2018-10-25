@@ -62,3 +62,15 @@ export const ReverseRecordQuery = gql`
     }
   }
 `
+
+export const QRSupportedQuery = gql`
+  query scanQRCodeSupported {
+    supported: scanQRCodeSupported @client
+  }
+`
+
+export const QRQuery = gql`
+  query scanQRCode {
+    qrCode: scanQRCode @client
+  }
+`
