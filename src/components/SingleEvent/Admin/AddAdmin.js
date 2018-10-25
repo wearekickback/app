@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
-import { AddPartyAdmin } from '../../../graphql/mutations'
+import { AddPartyAdmins } from '../../../graphql/mutations'
 import { PartyQuery } from '../../../graphql/queries'
 
 
@@ -14,30 +14,34 @@ class AddAdmin extends Component {
 
   render () {
     const { address } = this.props
-    const { userAddress } = this.state
+    const { userAddresses } = this.state
 
     return (
       <ChainMutation
-        mutation={AddPartyAdmin}
-        resultKey="addAdmin"
-        variables={{ address, userAddress }}
+        mutation={AddPartyAdmins}
+        resultKey="addAdmins"
+        variables={{
+          address,
+          userAddresses: (userAddresses || '').split("\n").map(s => s.trim()),
+         }}
         refetchQueries={[{ query: PartyQuery, variables: { address } }]}
-        onCompleted={() => this.setState({ userAddress: null })}
+        onCompleted={() => this.setState({ userAddresses: null })}
       >
         {(mutate, result) => (
           <Form>
             <label>User:</label>
-            <input
-              value={userAddress}
-              onChange={e => this.setState({ userAddress: e.target.value })}
+            <textarea
+              onChange={e => this.setState({ userAddresses: e.target.value })}
               type="text"
-              placeholder="0x..."
-            />
+              placeholder="0x... (one per line)"
+            >
+              {userAddresses}
+            </textarea>
             <ChainMutationButton
-              analyticsId='AddAdmin'
+              analyticsId='AddAdmins'
               onClick={mutate}
               result={result}
-              preContent='Add admin'
+              preContent='Add admins'
             />
           </Form>
         )}

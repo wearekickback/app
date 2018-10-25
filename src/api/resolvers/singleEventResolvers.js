@@ -118,12 +118,14 @@ const resolvers = {
   },
 
   Mutation: {
-    async addAdmin(_, { address, userAddress }) {
+    async addAdmins(_, { address, userAddresses }) {
+      console.log(`Adding admins:\n${userAddresses.join('\n')}`)
+
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.grant([ userAddress]).send({
+        const tx = await contract.grant(userAddresses).send({
           from: account
         })
 
