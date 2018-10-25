@@ -198,11 +198,9 @@ class Provider extends Component {
           reloadUserAddress: this.reloadUserAddress,
           userProfile: this.state.auth.profile,
           networkState: this.state.networkState,
-          selectedFilter: this.state.selectedFilter,
           loggedIn: this.isLoggedIn(),
           toggleModal: this.toggleModal,
 
-          handleFilterChange: this.handleFilterChange,
           signIn: this.signIn,
           signInError: this.state.signInError,
           showModal: this.showModal,

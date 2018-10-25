@@ -24,6 +24,7 @@ class EventFilters extends Component {
               onChange={handleFilterChange}
               placeholder="Choose"
               options={[
+                { label: 'All', value: 'all' },
                 { label: 'Not marked attended', value: 'unmarked' },
                 { label: 'Marked attended', value: 'marked' }
               ]}
