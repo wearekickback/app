@@ -69,6 +69,14 @@ class EventParticipants extends Component {
                     ) {
                       return false
                     }
+
+                    if (
+                      selectedFilter &&
+                      selectedFilter.value === 'marked' &&
+                      p.status === PARTICIPANT_STATUS.REGISTERED
+                    ) {
+                      return false
+                    }
                     return (
                       (p.user.realName || '')
                         .toLowerCase()

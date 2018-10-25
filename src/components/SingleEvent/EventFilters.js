@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+
 import { Search } from '../Forms/TextInput'
+import Label from '../Forms/Label'
+import Select from '../Forms/Select'
 import { ReactComponent as SearchIcon } from '../svg/Search.svg'
-import Select from 'react-select'
 import { GlobalConsumer } from '../../GlobalState'
 
-const Filter = styled('div')``
+const Filter = styled('div')`
+  width: 200px;
+  margin-bottom: 20px;
+`
 
 class EventFilters extends Component {
   render() {
@@ -13,11 +18,16 @@ class EventFilters extends Component {
     return (
       <EventFiltersContainer>
         <Filter>
+          <Label>Filters</Label>
           <GlobalConsumer>
             {({ handleFilterChange }) => (
               <Select
                 onChange={handleFilterChange}
-                options={[{ label: 'Unmarked', value: 'unmarked' }]}
+                placeholder="Choose"
+                options={[
+                  { label: 'Not marked attended', value: 'unmarked' },
+                  { label: 'Marked attended', value: 'marked' }
+                ]}
               />
             )}
           </GlobalConsumer>
