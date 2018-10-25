@@ -39,7 +39,7 @@ export default class SignIn extends Component {
               variables={{ address: userAddress }}
             >
               {result => {
-                const hasProfile = !!_.get(result, 'data.profile.social.length')
+                const hasProfile = !!_.get(result, 'data.profile.username')
 
                 if (hasProfile) {
                   return this.renderSignIn(userAddress, toggleModal)
