@@ -33,6 +33,10 @@ const TableList = styled('div')`
   flex-direction: column;
 `
 
+const DownloadButton = styled(Button)`
+  margin-bottom: 20px;
+`
+
 const cells = [
   { label: 'Real Name', value: 'realName' },
   { label: 'Address', value: 'address' },
@@ -147,14 +151,14 @@ class SingleEventWrapper extends Component {
 
                 return (
                   <TableList>
-                    <Button
+                    <DownloadButton
                       onClick={() => {
                         const html = document.querySelector('table').outerHTML
                         this.exportTableToCSV(html, 'event.csv')
                       }}
                     >
                       Download as CSV
-                    </Button>
+                    </DownloadButton>
                     <EventFilters handleSearch={handleSearch} />
                     <Table>
                       <Tbody>
