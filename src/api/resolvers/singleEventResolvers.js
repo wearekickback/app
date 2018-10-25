@@ -123,9 +123,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.grant([ userAddress]).send({
+        const tx = await contract.grant([ userAddress]).send({
           from: account
         })
+
+        return tx
       } catch (err) {
         console.error(err)
 
@@ -138,10 +140,12 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
       try {
-        return contract.register().send({
+        const tx = await contract.register().send({
           from: account,
           value: deposit
         })
+
+        return tx
       } catch (err) {
         console.error(err)
 
@@ -153,9 +157,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.finalize(maps.map(m => toBN(m).toString(10))).send({
+        const tx = await contract.finalize(maps.map(m => toBN(m).toString(10))).send({
           from: account
         })
+
+        return tx
       } catch (err) {
         console.error(err)
 
@@ -167,9 +173,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.withdraw().send({
+        const tx = await contract.withdraw().send({
           from: account
         })
+
+        return tx
       } catch (err) {
         console.error(err)
 
@@ -181,7 +189,9 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.setLimitOfParticipants(limit).send({ from: account })
+        const tx = await contract.setLimitOfParticipants(limit).send({ from: account })
+
+        return tx
       } catch (e) {
         console.log(e)
         return null
@@ -192,7 +202,9 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.clear().send({ from: account })
+        const tx = await contract.clear().send({ from: account })
+
+        return tx
       } catch (e) {
         console.log(e)
         return null
