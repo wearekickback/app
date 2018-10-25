@@ -5,16 +5,6 @@ import Clear from '../components/SingleEvent/Clear'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
 class SingleEvent extends Component {
-  state = {
-    search: ''
-  }
-
-  handleSearch = event => {
-    this.setState({
-      search: event.target.value
-    })
-  }
-
   render() {
     const { address } = this.props.match.params
     return (
@@ -23,8 +13,6 @@ class SingleEvent extends Component {
         <Clear address={address} />
         <UpdatePartyMeta address={address} />
         <SingleEventWrapper
-          handleSearch={this.handleSearch}
-          search={this.state.search}
           address={address}
         />
       </Fragment>

@@ -39,18 +39,9 @@ const RightContainer = styled('div')`
 `
 
 class SingleEventWrapper extends Component {
-  state = {
-    search: ''
-  }
-
-  handleSearch = event => {
-    this.setState({
-      search: event.target.value
-    })
-  }
 
   render() {
-    const { address, handleSearch, search } = this.props
+    const { address } = this.props
 
     return (
       <SingleEventContainer>
@@ -75,7 +66,6 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
                   amOwner: addressesMatch(
@@ -114,8 +104,6 @@ class SingleEventWrapper extends Component {
                         {...preCalculatedProps}
                       />
                       <EventParticipants
-                        handleSearch={handleSearch}
-                        search={search}
                         party={party}
                         {...preCalculatedProps}
                       />
