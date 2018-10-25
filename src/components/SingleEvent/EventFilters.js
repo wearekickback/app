@@ -50,7 +50,7 @@ class EventFilters extends Component {
           <SafeQuery query={QRSupportedQuery}>
             {({ data = {} }) => {
               if (data) {
-                window.alert(data)
+                window.alert(JSON.stringify(data))
               }
               const { supported } = data
               return supported ? (
