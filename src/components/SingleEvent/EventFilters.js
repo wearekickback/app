@@ -19,7 +19,10 @@ class EventFilters extends Component {
   _scan = client => () => {
     this.setState({ scanError: null }, async () => {
       try {
-        const { error, data = {} } = await client.query({ query: QRQuery })
+        const { error, data = {} } = await client.query({
+          query: QRQuery,
+          fetchPolicy: 'no-cache', 
+        })
 
         if (error) {
           throw error
