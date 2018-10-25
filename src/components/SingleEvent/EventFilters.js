@@ -48,8 +48,10 @@ class EventFilters extends Component {
         />
         {enableQrCodeScanner ? (
           <SafeQuery query={QRSupportedQuery}>
-            {({ data: { supported } = {} }) => (
-              (!supported) ? (
+            {({ data = {} }) => {
+              window.alert(data)
+              const { supported } = data
+              return supported ? (
                 <ApolloConsumer>
                   {client => (
                     <QRCodeContainer>
@@ -59,7 +61,7 @@ class EventFilters extends Component {
                   )}
                 </ApolloConsumer>
               ) : null
-            )}
+            }}
           </SafeQuery>
         ) : null}
 
