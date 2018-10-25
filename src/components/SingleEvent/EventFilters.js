@@ -49,7 +49,9 @@ class EventFilters extends Component {
         {enableQrCodeScanner ? (
           <SafeQuery query={QRSupportedQuery}>
             {({ data = {} }) => {
-              window.alert(data)
+              if (data) {
+                window.alert(data)
+              }
               const { supported } = data
               return supported ? (
                 <ApolloConsumer>
