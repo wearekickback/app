@@ -25,16 +25,6 @@ const Separator = styled('hr')`
 `
 
 class SingleEvent extends Component {
-  state = {
-    search: ''
-  }
-
-  handleSearch = event => {
-    this.setState({
-      search: event.target.value
-    })
-  }
-
   render() {
     const { address } = this.props.match.params
     return (

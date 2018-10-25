@@ -31,7 +31,7 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    networkState: {},
+    networkState: {}
   }
 
   authToken () {
@@ -186,7 +186,7 @@ class Provider extends Component {
           signInError: this.state.signInError,
           showModal: this.showModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
-          setUserProfile: this.setUserProfile,
+          setUserProfile: this.setUserProfile
         }}
       >
         {this.props.children}
