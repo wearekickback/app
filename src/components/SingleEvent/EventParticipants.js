@@ -61,7 +61,7 @@ class EventParticipants extends Component {
                 participants
                   .sort((a, b) => (a.index < b.index ? -1 : 1))
                   .filter(p => {
-                    console.log(selectedFilter && selectedFilter.value)
+                    //TODO: allow this to handle multiple filters
                     if (
                       selectedFilter &&
                       selectedFilter.value === 'unmarked' &&
