@@ -59,6 +59,7 @@ class EventParticipants extends Component {
           handleSearch={handleSearch}
           handleFilterChange={handleFilterChange}
           amAdmin={amAdmin}
+          ended={ended}
         />
         <EventParticipantsContainer>
           {participants.length > 0 ? (

@@ -14,23 +14,24 @@ const Filter = styled('div')`
 
 class EventFilters extends Component {
   render() {
-    const { handleSearch, handleFilterChange, amAdmin } = this.props
+    const { handleSearch, handleFilterChange, amAdmin, party } = this.props
     return (
       <EventFiltersContainer>
-        {amAdmin && (
-          <Filter>
-            <Label>Filters</Label>
-            <Select
-              onChange={handleFilterChange}
-              placeholder="Choose"
-              options={[
-                { label: 'All', value: 'all' },
-                { label: 'Not marked attended', value: 'unmarked' },
-                { label: 'Marked attended', value: 'marked' }
-              ]}
-            />
-          </Filter>
-        )}
+        {amAdmin &&
+          !ended(
+            <Filter>
+              <Label>Filters</Label>
+              <Select
+                onChange={handleFilterChange}
+                placeholder="Choose"
+                options={[
+                  { label: 'All', value: 'all' },
+                  { label: 'Not marked attended', value: 'unmarked' },
+                  { label: 'Marked attended', value: 'marked' }
+                ]}
+              />
+            </Filter>
+          )}
 
         <Search
           type="text"
