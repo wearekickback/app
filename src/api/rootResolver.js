@@ -8,6 +8,7 @@ import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
+import qrCodeResolvers, { defaults as qrCodeDefaults } from './resolvers/qrCodeResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -89,8 +90,6 @@ const resolvers = {
   }
 }
 
-const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults)
-
-export default merge(resolvers, singleEventResolvers, ensResolvers)
-
+const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults, qrCodeDefaults)
+export default merge(resolvers, singleEventResolvers, ensResolvers, qrCodeResolvers)
 export { defaults }
