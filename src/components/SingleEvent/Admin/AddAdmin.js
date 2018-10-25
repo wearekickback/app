@@ -31,6 +31,7 @@ class AddAdmin extends Component {
           <Form>
             <label>User:</label>
             <textarea
+              rows="5"
               onChange={e => this.setState({ userAddresses: e.target.value })}
               type="text"
               placeholder="0x... (one per line)"
