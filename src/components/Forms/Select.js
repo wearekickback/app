@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import Select from 'react-select'
+// TODO: add Arrow component
 // import { ReactComponent as Arrow } from '../svg/arrowDown.svg'
 
 const SelectContainer = styled('div')``
 
+// TODO: add Arrow component
 // const DropdownIndicator = props => {
 //   return (
 //     components.DropdownIndicator && (
@@ -20,24 +22,20 @@ const styles = {
     ...styles,
     borderRadius: 4,
     border: isFocused ? '1px solid #6E76FF' : '1px solid #6E76FF',
-    // backgroundColor: 'white',
-    // textTransform: 'uppercase',
-    // fontWeight: '700',
     fontSize: '14px'
-    // color: '#2B2B2B',
-    // letterSpacing: '0.5px'
   }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     return {
       ...styles,
+      // TODO: add focus styles
       // backgroundColor: isDisabled ? null : isSelected ? 'blue' : null
+      // letterSpacing: '0.5px',
+      // color: isDisabled ? '#ccc' : isSelected ? 'black' : '#ccc',
+      // cursor: isDisabled ? 'not-allowed' : 'default'
       color: isDisabled ? null : isSelected ? '#ffffff' : null,
       backgroundColor: isDisabled ? null : isSelected ? '#6E76FF' : null,
       cursor: isFocused ? 'pointer' : 'inherit',
       fontSize: '14px'
-      // letterSpacing: '0.5px',
-      // color: isDisabled ? '#ccc' : isSelected ? 'black' : '#ccc',
-      // cursor: isDisabled ? 'not-allowed' : 'default'
     }
   },
   input: styles => ({ ...styles }),
@@ -50,6 +48,7 @@ class SelectWrapper extends Component {
     return (
       <SelectContainer>
         <Select
+          // TODO: add arrow SVG component
           // components={{ DropdownIndicator }}
           styles={styles}
           {...this.props}
