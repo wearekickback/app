@@ -13,7 +13,7 @@ class FAQ extends Component {
         refunded after the event check-in. Any no-shows lose their ETH,
           which can then be split amongst the attendees.
 
-        To see the demo, please check out our <a hrfe='https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ'>Youtube channel</a>.
+        To see the demo, please check out our <a href='https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ'>Youtube channel</a>.
 
         </p>
         <h3>Can I cancel my registration?</h3>
