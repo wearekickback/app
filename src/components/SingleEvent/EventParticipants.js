@@ -24,9 +24,9 @@ class EventParticipants extends Component {
     search: ''
   }
 
-  handleSearch = event => {
+  handleSearch = search => {
     this.setState({
-      search: event.target.value
+      search
     })
   }
 

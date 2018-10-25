@@ -20,6 +20,7 @@ class EventFilters extends Component {
     this.setState({ scanError: null }, async () => {
       try {
         const { error, data = {} } = await client.query({ query: QRQuery })
+
         if (error) {
           throw error
         }
@@ -33,16 +34,20 @@ class EventFilters extends Component {
     })
   }
 
+  _onSearch = event => {
+    this.props.handleSearch(event.target.value)
+  }
+
   render() {
     const { scanError } = this.state
-    const { handleSearch, search, enableQrCodeScanner } = this.props
+    const { search, enableQrCodeScanner } = this.props
 
     return (
       <EventFiltersContainer>
         <Search
           type="text"
           Icon={SearchIcon}
-          onChange={handleSearch}
+          onChange={this._onSearch}
           value={search}
           placeholder="Search for names or addresses"
           wide

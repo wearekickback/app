@@ -11,7 +11,6 @@ const resolvers = {
       const web3 = await getWeb3()
       try {
         const data = await web3.currentProvider.scanQRCode()
-        window.alert(data)
         return data
       } catch (err) {
         throw new Error(`Failed to scan QR code`)
