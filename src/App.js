@@ -78,7 +78,7 @@ class App extends Component {
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
         <Modal name={EDIT_PROFILE} component={EditProfile} />
-        <Modal name={CONFIRM_TRANSACTION} />
+        <Modal small name={CONFIRM_TRANSACTION} />
       </Fragment>
     )
   }
