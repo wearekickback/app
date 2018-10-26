@@ -132,7 +132,7 @@ class PartyForm extends Component {
           onCompleted={
             onCompleted
               ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants)
-              : ''
+              : null
           }
         >
           {mutate => (
