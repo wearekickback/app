@@ -189,10 +189,11 @@ class SingleEventWrapper extends Component {
                                     if (cell.value === 'email') {
                                       return (
                                         <TD>
-                                          {participant.user.email &&
-                                          participant.user.email.verified
+                                          {participant.user.email
                                             ? participant.user.email.verified
-                                            : participant.user.email.pending}
+                                              ? participant.user.email.verified
+                                              : participant.user.email.pending
+                                            : 'no email provided'}
                                         </TD>
                                       )
                                     }
