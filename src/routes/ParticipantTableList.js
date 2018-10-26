@@ -43,6 +43,20 @@ const cells = [
   { label: 'Email', value: 'email' }
 ]
 
+function getEmail(email) {
+  if (email === null) {
+    return null
+  }
+
+  if (email.verified) {
+    return email.verified
+  } else if (email.pending) {
+    return email.pending
+  } else {
+    return null
+  }
+}
+
 class SingleEventWrapper extends Component {
   state = {
     search: ''
@@ -192,13 +206,7 @@ class SingleEventWrapper extends Component {
                                     if (cell.value === 'email') {
                                       return (
                                         <TD>
-                                          {participant.user.email
-                                            ? participant.user.email.verified
-                                              ? participant.user.email.verified
-                                              : participant.user.email.pending
-                                                ? participant.user.email.pending
-                                                : null
-                                            : null}
+                                          {getEmail(participant.user.email)}
                                         </TD>
                                       )
                                     }
