@@ -73,11 +73,15 @@ export default class ChainMutation extends Component {
   }
 
   _onCompleted = async result => {
-    const { resultKey } = this.props
+    const { resultKey, onCompleted } = this.props
 
     const tx = result[resultKey]
 
     await this._updateState(tx, tx.blockNumber)
+
+    if (onCompleted) {
+      onCompleted(result)
+    }
   }
 
   _renderWithSuccessQuery = content => {

@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import { pluralize } from '@noblocknoparty/shared'
 
+import { pluralize } from '@noblocknoparty/shared'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
+
 import { H3 } from '../Typography/Basic'
 
 const EventParticipantsContainer = styled('div')`
@@ -12,7 +13,6 @@ const EventParticipantsContainer = styled('div')`
   grid-gap: 20px;
   margin-bottom: 40px;
 `
-
 const NoParticipants = styled('div')``
 
 const Spots = styled('span')`
@@ -20,16 +20,24 @@ const Spots = styled('span')`
 `
 
 class EventParticipants extends Component {
+  state = {
+    search: ''
+  }
+
+  handleSearch = search => {
+    this.setState({
+      search: search || ''
+    })
+  }
+
   render() {
     const {
-      handleSearch,
-      search,
       party,
       party: { participants, participantLimit, ended },
       amAdmin
     } = this.props
 
-    const searchTerm = search.toLowerCase()
+    const lowerSearch = this.state.search.toLowerCase()
 
     participants.sort((a, b) => {
       return a.index < b.index ? -1 : 1
@@ -47,14 +55,19 @@ class EventParticipants extends Component {
     return (
       <Fragment>
         <H3>Participants - <Spots>{spots}</Spots></H3>
-        <EventFilters handleSearch={handleSearch} />
+        <EventFilters
+          handleSearch={this.handleSearch}
+          search={this.state.search }
+          enableQrCodeScanner={amAdmin}
+        />
         <EventParticipantsContainer>
-          {participants.length > 0 ? (
+          { participants.length > 0 ? (
             participants
               .sort((a, b) => (a.index < b.index ? -1 : 1))
               .filter(p => (
-                (p.user.realName || '').toLowerCase().includes(searchTerm) ||
-                (p.user.username || '').toLowerCase().includes(searchTerm)
+                (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
+                (p.user.username || '').toLowerCase().includes(lowerSearch) ||
+                p.user.address.toLowerCase().includes(lowerSearch)
               ))
               .map(participant => (
                 <Participant
