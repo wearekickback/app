@@ -4,11 +4,7 @@ import SingleEventWrapper from '../components/SingleEvent/SingleEventWrapper'
 class SingleEvent extends Component {
   render() {
     const { address } = this.props.match.params
-    return (
-      <SingleEventWrapper
-        address={address}
-      />
-    )
+    return <SingleEventWrapper address={address} />
   }
 }
 
