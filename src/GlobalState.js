@@ -98,7 +98,7 @@ class Provider extends Component {
       }))
 
       if (!dontForceSignIn) {
-        this.showModal(SIGN_IN)
+        this.showModal({ name: SIGN_IN })
 
         return signInPromise
       }
@@ -150,7 +150,7 @@ class Provider extends Component {
   toggleModal = modal => {
     this.setState(
       state =>
-        state.currentModal === modal
+        state.currentModal && state.currentModal.name === modal.name
           ? { currentModal: null }
           : { currentModal: modal }
     )

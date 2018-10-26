@@ -4,13 +4,13 @@ import { GlobalConsumer } from '../../GlobalState'
 
 class ToggleModal extends Component {
   render() {
-    const { className, children, modalName } = this.props
+    const { className, children, modalName, modalRender } = this.props
     return (
       <GlobalConsumer>
         {({ toggleModal }) => (
           <ToggleModalContainer
             className={className}
-            onClick={() => toggleModal(modalName)}
+            onClick={() => toggleModal(modalName, modalRender)}
           >
             {children}
           </ToggleModalContainer>
