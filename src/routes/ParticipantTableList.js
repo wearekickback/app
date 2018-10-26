@@ -48,9 +48,9 @@ class SingleEventWrapper extends Component {
     search: ''
   }
 
-  handleSearch = event => {
+  handleSearch = value => {
     this.setState({
-      search: event.target.value
+      search: value
     })
   }
 
