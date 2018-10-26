@@ -24,7 +24,8 @@ import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import EditProfile from './components/Profile/EditProfile'
-import { SIGN_IN, EDIT_PROFILE } from './modals'
+import ConfirmModal from './components/ConfirmModal'
+import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
 
 import './App.css'
 
@@ -62,7 +63,10 @@ class App extends Component {
               />
               <Route exact path="/events" component={Home} />
               <Route exact path="/event/:address" component={SingleEvent} />
-              <Route path="/event/:address/admin" component={SingleEventAdmin} />
+              <Route
+                path="/event/:address/admin"
+                component={SingleEventAdmin}
+              />
               <Route path="/create" component={CreatePendingEvent} />
               <Route path="/deploy" component={DeployPendingEvent} />
               <Route path="/faq" component={Faq} />
@@ -74,6 +78,7 @@ class App extends Component {
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
         <Modal name={EDIT_PROFILE} component={EditProfile} />
+        <Modal name={CONFIRM_TRANSACTION} />
       </Fragment>
     )
   }

@@ -13,6 +13,9 @@ import { calculateWinningShare } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
+import { CONFIRM_TRANSACTION } from '../../modals'
 
 const CTA = styled('div')`
   font-family: Muli;
@@ -150,29 +153,49 @@ class EventCTA extends Component {
 
     return (
       amAdmin && (
-        <AdminCTA>
-          {!ended ? (
-            <ChainMutation
-              mutation={Finalize}
-              resultKey="finalize"
-              variables={{
-                address,
-                maps: calculateFinalizeMaps(participants)
-              }}
-              refetchQueries={[{ query: PartyQuery, variables: { address } }]}
-            >
-              {(finalize, result) => (
-                <ChainMutationButton
-                  analyticsId="Finalize Event"
-                  result={result}
-                  onClick={finalize}
-                  preContent="Finalize and enable payouts"
-                  postContent="Finalized!"
-                />
-              )}
-            </ChainMutation>
-          ) : null}
-        </AdminCTA>
+        <GlobalConsumer>
+          {({ toggleModal }) => {
+            return (
+              <AdminCTA>
+                {!ended ? (
+                  <>
+                    <Button
+                      onClick={() => {
+                        toggleModal({
+                          name: CONFIRM_TRANSACTION,
+                          render: () => <div>rendering</div>
+                        })
+                      }}
+                    >
+                      Finalize
+                    </Button>
+                    <ChainMutation
+                      mutation={Finalize}
+                      resultKey="finalize"
+                      variables={{
+                        address,
+                        maps: calculateFinalizeMaps(participants)
+                      }}
+                      refetchQueries={[
+                        { query: PartyQuery, variables: { address } }
+                      ]}
+                    >
+                      {(finalize, result) => (
+                        <ChainMutationButton
+                          analyticsId="Finalize Event"
+                          result={result}
+                          onClick={finalize}
+                          preContent="Finalize and enable payouts"
+                          postContent="Finalized!"
+                        />
+                      )}
+                    </ChainMutation>
+                  </>
+                ) : null}
+              </AdminCTA>
+            )
+          }}
+        </GlobalConsumer>
       )
     )
   }
