@@ -203,15 +203,15 @@ class SingleEventWrapper extends Component {
                                   })}
                                   <TD>
                                     {participant.user.legal &&
-                                    participant.user.legal[0].accepted.length >
-                                      0
+                                    participant.user.legal[0] &&
+                                    participant.user.legal[0].accepted > 0
                                       ? 'accepted'
                                       : 'denied'}
                                   </TD>
                                   <TD>
-                                    {participant.user.legal[2] &&
-                                    participant.user.legal[2].accepted.length >
-                                      0
+                                    {participant.user.legal &&
+                                    participant.user.legal[2] &&
+                                    participant.user.legal[2].accepted
                                       ? 'accepted'
                                       : 'denied'}
                                   </TD>
