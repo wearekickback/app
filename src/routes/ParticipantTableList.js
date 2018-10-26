@@ -112,9 +112,8 @@ class SingleEventWrapper extends Component {
               fetchPolicy="cache-and-network"
               pollInterval={60000}
             >
-              {({ data: { partyVerbose: party }, loading, error }) => {
+              {({ data: { partyAdminView: party }, loading, error }) => {
                 // no party?
-                console.log(error)
                 if (!party) {
                   if (loading) {
                     return 'Loading ...'

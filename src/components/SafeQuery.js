@@ -27,7 +27,6 @@ export default class SafeQuery extends Component {
         {result => {
           // if it's a polling refetch call then we still have the data from before
           // so check that this isn't the case
-          console.log(result)
           if (!result.data) {
             const { error } = result
             if (error) return renderError(result)
