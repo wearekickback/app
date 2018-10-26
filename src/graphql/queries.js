@@ -28,11 +28,11 @@ export const PartyQuery = gql`
   }
 `
 
-export const PartyVerboseQuery = gql`
+export const PartyAdminViewQuery = gql`
   ${PartyFields}
 
-  query getPartyVerbose($address: String!) {
-    partyVerbose(address: $address) {
+  query getPartyAdminView($address: String!) {
+    partyAdminView(address: $address) {
       ...PartyFields
     }
   }

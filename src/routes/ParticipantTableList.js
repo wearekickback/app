@@ -4,7 +4,7 @@ import styled from 'react-emotion'
 import { addressesMatch } from '@noblocknoparty/shared'
 
 import { amInAddressList } from '../utils/parties'
-import { PartyVerboseQuery } from '../graphql/queries'
+import { PartyAdminViewQuery } from '../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../components/Table'
 import Button from '../components/Forms/Button'
@@ -107,7 +107,7 @@ class SingleEventWrapper extends Component {
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery
-              query={PartyVerboseQuery}
+              query={PartyAdminViewQuery}
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}
