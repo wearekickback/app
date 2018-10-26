@@ -174,6 +174,9 @@ class SingleEventWrapper extends Component {
                             .sort((a, b) => (a.index < b.index ? -1 : 1))
                             .filter(
                               p =>
+                                (p.user.address || '')
+                                  .toLowerCase()
+                                  .includes(search) ||
                                 (p.user.realName || '')
                                   .toLowerCase()
                                   .includes(search) ||
