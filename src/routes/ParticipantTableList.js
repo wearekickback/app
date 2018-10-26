@@ -193,7 +193,9 @@ class SingleEventWrapper extends Component {
                                             ? participant.user.email.verified
                                               ? participant.user.email.verified
                                               : participant.user.email.pending
-                                            : 'no email provided'}
+                                                ? participant.user.email.pending
+                                                : null
+                                            : null}
                                         </TD>
                                       )
                                     }
@@ -204,7 +206,7 @@ class SingleEventWrapper extends Component {
                                   <TD>
                                     {participant.user.legal &&
                                     participant.user.legal[0] &&
-                                    participant.user.legal[0].accepted > 0
+                                    participant.user.legal[0].accepted
                                       ? 'accepted'
                                       : 'denied'}
                                   </TD>
