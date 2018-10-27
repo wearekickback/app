@@ -37,7 +37,6 @@ const RightContainer = styled('div')`
 `
 
 class SingleEventWrapper extends Component {
-
   render() {
     const { address } = this.props
 
@@ -68,7 +67,7 @@ class SingleEventWrapper extends Component {
                 const preCalculatedProps = {
                   amOwner: amOwner(party, userAddress),
                   amAdmin: amAdmin(party, userAddress),
-                  myParticipantEntry: getMyParticipantEntry(party, userAddress),
+                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
 
                 return (

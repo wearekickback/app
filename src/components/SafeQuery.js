@@ -10,10 +10,10 @@ import {
 
 export default class SafeQuery extends Component {
   static propTypes = {
-    children: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired
   }
 
-  render () {
+  render() {
     const {
       children,
       isLoading = DEFAULT_IS_LOADING,

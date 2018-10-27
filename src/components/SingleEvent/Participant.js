@@ -155,6 +155,7 @@ export class Participant extends Component {
                   ) : (
                     <Button
                       wide
+                      type="hollow"
                       onClick={markAttended}
                       analyticsId="Mark Attendee"
                     >
