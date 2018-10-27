@@ -15,6 +15,7 @@ import CreatePendingEvent from './routes/CreatePendingEvent'
 import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
+import ParticipantTableList from './routes/ParticipantTableList'
 import LandingPage from './routes/LandingPage'
 import Team from './routes/Team'
 import Faq from './routes/Faq'
@@ -64,7 +65,12 @@ class App extends Component {
               <Route exact path="/event/:address" component={SingleEvent} />
               <Route
                 path="/event/:address/admin"
+                exact
                 component={SingleEventAdmin}
+              />
+              <Route
+                path="/event/:address/admin/list"
+                component={ParticipantTableList}
               />
               <Route path="/create" component={CreatePendingEvent} />
               <Route path="/deploy" component={DeployPendingEvent} />
