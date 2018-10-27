@@ -24,7 +24,6 @@ import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import EditProfile from './components/Profile/EditProfile'
-import ConfirmModal from './components/ConfirmModal'
 import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
 
 import './App.css'
