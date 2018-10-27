@@ -25,7 +25,7 @@ import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import EditProfile from './components/Profile/EditProfile'
-import { SIGN_IN, EDIT_PROFILE } from './modals'
+import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
 
 import './App.css'
 
@@ -81,8 +81,9 @@ class App extends Component {
             </Switch>
           </ScrollToTop>
         </Router>
-        <Modal name={SIGN_IN} component={SignIn} />
+        <Modal small name={SIGN_IN} component={SignIn} />
         <Modal name={EDIT_PROFILE} component={EditProfile} />
+        <Modal small name={CONFIRM_TRANSACTION} />
       </Fragment>
     )
   }
