@@ -90,8 +90,7 @@ export default class ProfileForm extends Component {
           />
           <Explanation>
             This allows us to notify you of any changes to the event and
-            remind you when it's time to withdraw your payout. We don't
-            share this with anyone (not even event organizers).
+            remind you when it's time to withdraw your payout.
           </Explanation>
         </Field>
         <Field>
