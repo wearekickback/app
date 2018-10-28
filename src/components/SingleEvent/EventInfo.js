@@ -37,15 +37,13 @@ const Organisers = styled('div')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-bottom: 50px;
-
-  span {
-    margin-right: 5px;
-  }
+  margin-bottom: 40px;
 `
 
 const OrganiserList = styled('div')`
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   width: 100%;
 `
@@ -53,6 +51,7 @@ const Organiser = styled('div')`
   display: flex;
   align-items: center;
   margin-right: 10px;
+  margin-bottom: 10px;
 `
 
 const Link = styled(DefaultHashLink)`
@@ -150,7 +149,7 @@ class EventInfo extends Component {
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>
-            {[party.owner, ...party.admins].map(organiser => {
+            {[party.owner, party.owner, party.owner, party.owner, party.owner, party.owner, ...party.admins].map(organiser => {
               return (
                 <Organiser key={organiser.username}>
                   <UserAvatar user={organiser} />
