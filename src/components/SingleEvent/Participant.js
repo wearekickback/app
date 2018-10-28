@@ -30,7 +30,7 @@ const TickContainer = styled('div')`
 
 const Tick = () => (
   <TickContainer>
-    <img src={tick} />
+    <img alt="tick" src={tick} />
   </TickContainer>
 )
 
