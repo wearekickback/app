@@ -57,8 +57,6 @@ class EventCard extends Component {
             <Date>{date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
             <DepositValue value={deposit} />
             <EventName>{name}</EventName>
-
-            <Organiser>Hosted by: {owner.username}</Organiser>
           </EventDetails>
         </Link>
       </EventCardContainer>
