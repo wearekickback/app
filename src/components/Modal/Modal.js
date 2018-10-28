@@ -73,7 +73,6 @@ const ModalContent = styled('div')`
     p.small &&
     `
     width: auto;
-    height: auto;
   `};
 `
 
