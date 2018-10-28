@@ -17,12 +17,6 @@ const EventCardContainer = styled('li')`
 `
 const EventImage = styled('img')``
 
-const Organiser = styled('div')`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
-
 const Date = styled('div')`
   font-family: Muli;
   font-weight: 400;
@@ -47,7 +41,7 @@ const EventDetails = styled('section')`
 class EventCard extends Component {
   render() {
     const { party } = this.props
-    const { address, image, deposit, date, name, owner } = party
+    const { address, image, deposit, date, name } = party
 
     return (
       <EventCardContainer>
