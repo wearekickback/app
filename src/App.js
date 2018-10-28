@@ -81,7 +81,7 @@ class App extends Component {
             </Switch>
           </ScrollToTop>
         </Router>
-        <Modal small name={SIGN_IN} component={SignIn} />
+        <Modal name={SIGN_IN} component={SignIn} />
         <Modal name={EDIT_PROFILE} component={EditProfile} />
         <Modal small name={CONFIRM_TRANSACTION} />
       </Fragment>
