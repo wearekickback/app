@@ -70,10 +70,12 @@ const ModalContent = styled('div')`
   `};
 
   ${p =>
-    p.small &&
-    `
+    p.small
+      ? `
+    height: auto;
     width: auto;
-  `};
+  `
+      : null};
 `
 
 export default Modal
