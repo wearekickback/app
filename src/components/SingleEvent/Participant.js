@@ -13,6 +13,7 @@ import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
+import tick from '../svg/tick.svg'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
 // const ParticipantName = styled('div')`
@@ -22,8 +23,19 @@ import Button from '../Forms/Button'
 //   text-align: center;
 // `
 
+const TickContainer = styled('div')`
+  width: 12px;
+  margin-left: 3px;
+`
+
+const Tick = () => (
+  <TickContainer>
+    <img alt="tick" src={tick} />
+  </TickContainer>
+)
+
 const ParticipantWrapper = styled('div')`
-  height: ${p => (p.amAdmin ? '170px' : '100px')};
+  height: ${p => (p.amAdmin ? '170px' : '120px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,13 +96,24 @@ const Status = styled('div')`
           color: #6E76FF;
           background-color: #F4F5FF;
         `
+      case 'marked':
+        return `
+          color: #6e76ff;
+          background-color: rgba(233, 234, 255, 0.5);
+          border: 1px solid rgba(233, 234, 255, 0.5);
+        `
       default:
-        return ``
+        return `
+          color: #ccc;
+          background-color: rgba(233, 234, 255, 0.5);
+          border: 1px solid rgba(233, 234, 255, 0.5);
+        `
     }
   }} font-size: 12px;
   padding: 5px;
   border-radius: 4px;
   text-align: center;
+  display: flex;
 `
 
 export class Participant extends Component {
@@ -124,7 +147,9 @@ export class Participant extends Component {
                 <ParticipantRealName>{user.realName}</ParticipantRealName>
               ) : null}
               {amAdmin ? (
-                <ParticipantAddress>{user.address.slice(0,5) + '...'}</ParticipantAddress>
+                <ParticipantAddress>
+                  {user.address.slice(0, 5) + '...'}
+                </ParticipantAddress>
               ) : null}
             </ParticipantId>
             {ended ? (
@@ -141,29 +166,37 @@ export class Participant extends Component {
                   ETH
                 </Status>
               )
+            ) : amAdmin ? (
+              <Fragment>
+                {attended ? (
+                  <Button
+                    wide
+                    onClick={unmarkAttended}
+                    analyticsId="Unmark Attendee"
+                  >
+                    Unmark attended
+                  </Button>
+                ) : (
+                  <Button
+                    wide
+                    type="hollow"
+                    onClick={markAttended}
+                    analyticsId="Mark Attendee"
+                  >
+                    Mark attended
+                  </Button>
+                )}
+              </Fragment>
             ) : (
-              amAdmin && (
-                <Fragment>
-                  {attended ? (
-                    <Button
-                      wide
-                      onClick={unmarkAttended}
-                      analyticsId="Unmark Attendee"
-                    >
-                      Unmark attended
-                    </Button>
-                  ) : (
-                    <Button
-                      wide
-                      type="hollow"
-                      onClick={markAttended}
-                      analyticsId="Mark Attendee"
-                    >
-                      Mark attended
-                    </Button>
-                  )}
-                </Fragment>
-              )
+              <Fragment>
+                {attended ? (
+                  <Status type="marked">
+                    Marked attended <Tick />
+                  </Status>
+                ) : (
+                  <Status>Not marked attended</Status>
+                )}
+              </Fragment>
             )}
           </ParticipantWrapper>
         )}
