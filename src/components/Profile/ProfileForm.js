@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName, isTwitterId, trimOrEmptyStringProps, LEGAL } from '@noblocknoparty/shared'
+import { isEmailAddress, isUsername, isRealName, isTwitterId, sanitizeTwitterId, trimOrEmptyStringProps, LEGAL } from '@noblocknoparty/shared'
 
 import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
@@ -90,8 +90,7 @@ export default class ProfileForm extends Component {
           />
           <Explanation>
             This allows us to notify you of any changes to the event and
-            remind you when it's time to withdraw your payout. We don't
-            share this with anyone (not even event organizers).
+            remind you when it's time to withdraw your payout.
           </Explanation>
         </Field>
         <Field>
@@ -181,7 +180,7 @@ export default class ProfileForm extends Component {
     } = values
 
     let social = (existingProfile.social || []).map(v => removeTypename(v))
-    social = ensureInArray(social, 'type', { type: 'twitter', value: twitter }, true)
+    social = ensureInArray(social, 'type', { type: 'twitter', value: sanitizeTwitterId(twitter) }, true)
 
     let legal = (existingProfile.legal || []).map(v => removeTypename(v))
     if (terms) {
@@ -218,7 +217,7 @@ export default class ProfileForm extends Component {
       return false
     }
 
-    if (twitter && !isTwitterId(twitter)) {
+    if (twitter && !isTwitterId(sanitizeTwitterId(twitter))) {
       return false
     }
 
