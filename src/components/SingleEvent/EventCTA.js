@@ -9,7 +9,10 @@ import {
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
-import { calculateWinningShare } from '../../utils/parties'
+import {
+  calculateWinningShare,
+  getParticipantsMarkedAttended
+} from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
@@ -51,6 +54,7 @@ const RSVPContainer = styled('div')`
   justify-content: space-between;
   margin-bottom: 20px;
 `
+
 // const Deposit = styled('div')`
 //   font-family: Muli;
 //   font-weight: 500;
@@ -72,7 +76,11 @@ const RSVP = styled(DefaultRSVP)`
 
 const AdminCTA = styled('div')`
   margin-top: 10px;
+  display: flex;
+  align-items: center;
 `
+
+const MarkAttended = styled('div')``
 
 class EventCTA extends Component {
   _renderEndedRsvp() {
@@ -240,7 +248,7 @@ class EventCTA extends Component {
 
   render() {
     const {
-      party: { ended, cancelled }
+      party: { ended, cancelled, participants }
     } = this.props
 
     return (
@@ -253,6 +261,11 @@ class EventCTA extends Component {
             ? this._renderCanceled()
             : this._renderEnded()
           : this._renderAdminCTA()}
+        <MarkAttended>
+          {`${getParticipantsMarkedAttended(participants)}/${
+            participants.length
+          } have been marked attended`}{' '}
+        </MarkAttended>
       </EventCTAContainer>
     )
   }
