@@ -38,9 +38,10 @@ const DownloadButton = styled(Button)`
 `
 
 const cells = [
-  { label: 'Real Name', value: 'realName' },
-  { label: 'Address', value: 'address' },
-  { label: 'Email', value: 'email' }
+  { label: 'Real Name', value: 'user.realName' },
+  { label: 'Address', value: 'user.address' },
+  { label: 'Email', value: 'user.email' },
+  { label: 'Status', value: 'status' }
 ]
 
 function getEmail(email) {
@@ -203,7 +204,7 @@ class SingleEventWrapper extends Component {
                                 <TR />
                                 <TR>
                                   {cells.map(cell => {
-                                    if (cell.value === 'email') {
+                                    if (cell.label === 'Email') {
                                       return (
                                         <TD>
                                           {getEmail(participant.user.email)}
@@ -211,7 +212,7 @@ class SingleEventWrapper extends Component {
                                       )
                                     }
                                     return (
-                                      <TD>{participant.user[cell.value]}</TD>
+                                      <TD>{_.get(participant, cell.value)}</TD>
                                     )
                                   })}
                                   <TD>
