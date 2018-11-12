@@ -90,6 +90,9 @@ Event attendance is determined by the event organisers or an event admin.
                 <li>
                     If the event organiser did not check you in, you will lose any funds you committed. These funds will be divided among the event attendees or they can be applied in other ways (charitable contribution, sponsorship of future events etc)
                 </li>
+                <li>
+                    We are not liable to any disputes about your attendance status. It is the event organizer's discretion to decide whether you are considered attended to the event or not.
+                </li>
             </ul>
         </div>
 
