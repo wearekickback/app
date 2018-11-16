@@ -166,7 +166,7 @@ export async function getAccount() {
         return accounts[0]
       } catch (error) {
         console.warn('Did not allow app to access dapp browser')
-        throw new Error(error)
+        throw error
       }
     }
   } catch (_) {
