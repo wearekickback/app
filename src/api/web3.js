@@ -10,7 +10,6 @@ import { NetworkIdQuery } from '../graphql/queries'
 
 let web3
 let networkState = {}
-let enabled = false
 
 export const events = new EventEmitter()
 
@@ -96,7 +95,7 @@ async function getWeb3() {
 
       // if web3 not set then something failed
       if (!web3) {
-        //throw new Error('Error setting up web3')
+        throw new Error('Error setting up web3')
       } else {
         networkState.allGood = true
       }
@@ -161,7 +160,7 @@ export async function getAccount() {
 
     if (accounts.length > 0) {
       return accounts[0]
-    } else if (!enabled) {
+    } else {
       try {
         const accounts = await window.ethereum.enable()
         return accounts[0]
