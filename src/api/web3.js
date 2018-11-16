@@ -73,9 +73,7 @@ async function getWeb3() {
       )
 
       if (window.ethereum) {
-        console.log('here')
         web3 = new Web3(window.ethereum)
-        console.log(web3)
       } else if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
