@@ -82,7 +82,7 @@ export default class ProfileForm extends Component {
           </Explanation>
         </Field>
         <Field>
-          <Label optional>Email</Label>
+          <Label>Email</Label>
           <TextInput
             placeholder="alice@gmail.com"
             value={email}
@@ -90,7 +90,8 @@ export default class ProfileForm extends Component {
           />
           <Explanation>
             This allows us to notify you of any changes to the event and
-            remind you when it's time to withdraw your payout.
+            remind you when it's time to withdraw your payout. We do not share
+            this with anyone.
           </Explanation>
         </Field>
         <Field>
@@ -213,7 +214,7 @@ export default class ProfileForm extends Component {
       return false
     }
 
-    if (email && !isEmailAddress(email)) {
+    if (!isEmailAddress(email)) {
       return false
     }
 
