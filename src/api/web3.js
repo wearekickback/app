@@ -71,8 +71,9 @@ async function getWeb3() {
         networkState.expectedNetworkId
       )
 
-      // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-      if (window.web3 && window.web3.currentProvider) {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum)
+      } else if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
       } else {
@@ -156,7 +157,18 @@ export async function getAccount() {
   try {
     const web3 = await getWeb3()
     const accounts = await web3.eth.getAccounts()
-    return accounts[0]
+
+    if (accounts.length > 0) {
+      return accounts[0]
+    } else {
+      try {
+        const accounts = await window.ethereum.enable()
+        return accounts[0]
+      } catch (error) {
+        console.warn('Did not allow app to access dapp browser')
+        throw error
+      }
+    }
   } catch (_) {
     return null
   }
