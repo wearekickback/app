@@ -10,7 +10,6 @@ import { NetworkIdQuery } from '../graphql/queries'
 
 let web3
 let networkState = {}
-let requested
 
 export const events = new EventEmitter()
 
