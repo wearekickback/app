@@ -5,6 +5,7 @@ import {
   calculateFinalizeMaps,
   calculateNumAttended
 } from '@noblocknoparty/shared'
+import { toEthVal } from '../../utils/units'
 
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
@@ -83,6 +84,11 @@ const AdminCTA = styled('div')`
 const MarkAttended = styled('div')``
 
 class EventCTA extends Component {
+  _renderCleared() {
+    return (
+      <Status>This event is over and all the funds have been cleared</Status>
+    )
+  }
   _renderEndedRsvp() {
     const {
       myParticipantEntry,
@@ -248,13 +254,24 @@ class EventCTA extends Component {
 
   render() {
     const {
-      party: { ended, cancelled, participants }
+      party: { ended, cancelled, participants, balance }
     } = this.props
+
+    const cleared =
+      balance &&
+      toEthVal(balance)
+        .toEth()
+        .toNumber() === 0 &&
+      ended
 
     return (
       <EventCTAContainer>
         <RSVPContainer>
-          {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
+          {!cleared
+            ? ended
+              ? this._renderEndedRsvp()
+              : this._renderActiveRsvp()
+            : this._renderCleared()}
         </RSVPContainer>
         {ended
           ? cancelled
