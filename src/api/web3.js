@@ -10,7 +10,7 @@ import { NetworkIdQuery } from '../graphql/queries'
 
 let web3
 let networkState = {}
-let requested
+let enabled = false
 
 export const events = new EventEmitter()
 
@@ -73,15 +73,9 @@ async function getWeb3() {
       )
 
       if (window.ethereum) {
+        console.log('here')
         web3 = new Web3(window.ethereum)
-        try {
-          window.ethereum.enable().then(() => {
-            web3 = new Web3(window.web3.currentProvider)
-            networkState.readOnly = false
-          })
-        } catch (error) {
-          console.warn('Did allow app to access dapp browser')
-        }
+        console.log(web3)
       } else if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
@@ -104,7 +98,7 @@ async function getWeb3() {
 
       // if web3 not set then something failed
       if (!web3) {
-        throw new Error('Error setting up web3')
+        //throw new Error('Error setting up web3')
       } else {
         networkState.allGood = true
       }
@@ -166,7 +160,17 @@ export async function getAccount() {
   try {
     const web3 = await getWeb3()
     const accounts = await web3.eth.getAccounts()
-    return accounts[0]
+
+    if (accounts.length > 0) {
+      return accounts[0]
+    } else if (!enabled) {
+      try {
+        const accounts = await window.ethereum.enable()
+        return accounts[0]
+      } catch (error) {
+        console.warn('Did not allow app to access dapp browser')
+      }
+    }
   } catch (_) {
     return null
   }
