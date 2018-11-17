@@ -18,6 +18,11 @@ const resolvers = {
     date: party => party.date || null,
     location: party => party.location_text || null,
 
+    async balance({ address }) {
+      const web3 = await getWeb3()
+      return web3.eth.getBalance(address)
+    },
+
     async owner({ contract }) {
       return contract.owner().call()
     },
@@ -114,7 +119,7 @@ const resolvers = {
         __rawContract: contract,
         __typename: 'Party'
       }
-    },
+    }
   },
 
   Mutation: {
@@ -159,9 +164,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.finalize(maps.map(m => toBN(m).toString(10))).send({
-          from: account
-        })
+        const tx = await contract
+          .finalize(maps.map(m => toBN(m).toString(10)))
+          .send({
+            from: account
+          })
 
         return tx
       } catch (err) {
@@ -191,7 +198,9 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.setLimitOfParticipants(limit).send({ from: account })
+        const tx = await contract
+          .setLimitOfParticipants(limit)
+          .send({ from: account })
 
         return tx
       } catch (e) {
@@ -211,7 +220,7 @@ const resolvers = {
         console.log(e)
         return null
       }
-    },
+    }
   }
 }
 
