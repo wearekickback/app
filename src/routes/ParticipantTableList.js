@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { addressesMatch } from '@noblocknoparty/shared'
+import { addressesMatch } from '@wearekickback/shared'
 
 import { amInAddressList } from '../utils/parties'
 import { PartyAdminViewQuery } from '../graphql/queries'

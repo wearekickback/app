@@ -40,7 +40,7 @@ export const PartyFields = gql`
 
   fragment PartyFields on Party {
     address
-    balance @client
+    balance
     name
     description
     date

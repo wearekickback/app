@@ -1,6 +1,6 @@
 import { toBN } from 'web3-utils'
 import getWeb3, { getAccount } from '../web3'
-import { Conference } from '@noblocknoparty/contracts'
+import { Conference } from '@wearekickback/contracts'
 import events from '../../fixtures/events.json'
 
 const abi = Conference.abi

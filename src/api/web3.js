@@ -1,4 +1,4 @@
-import { Deployer } from '@noblocknoparty/contracts'
+import { Deployer } from '@wearekickback/contracts'
 import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
 

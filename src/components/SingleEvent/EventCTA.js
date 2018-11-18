@@ -4,7 +4,7 @@ import {
   PARTICIPANT_STATUS,
   calculateFinalizeMaps,
   calculateNumAttended
-} from '@noblocknoparty/shared'
+} from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
 
 import DefaultRSVP from './RSVP'

@@ -33,9 +33,9 @@ class Create extends Component {
     )
   }
 
-  _onCreated = ({ id }, deposit, limitOfParticipants) => {
+  _onCreated = ({ id }, deposit, limitOfParticipants, coolingPeriod) => {
     this.props.history.push(
-      `/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`
+      `/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}&coolingPeriod=${coolingPeriod}`
     )
   }
 }

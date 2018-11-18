@@ -16,7 +16,7 @@ const SeedDiv = styled('div')`
 
 class DeployPendingEvent extends Component {
   render() {
-    const { id, deposit, limitOfParticipants } = queryString.parse(
+    const { id, deposit, limitOfParticipants, coolingPeriod } = queryString.parse(
       this.props.location.search
     )
 
@@ -37,10 +37,11 @@ class DeployPendingEvent extends Component {
                   <div>id/name: {id}</div>
                   <div>deposit: {deposit}</div>
                   <div>limitOfParticipants: {limitOfParticipants}</div>
+                  <div>coolingPeriod: {coolingPeriod}</div>
                   <ChainMutation
                     mutation={CreateParty}
                     resultKey="create"
-                    variables={{ id, deposit, limitOfParticipants }}
+                    variables={{ id, deposit, limitOfParticipants, coolingPeriod }}
                   >
                     {(createParty, result) => {
                       const address = result.data

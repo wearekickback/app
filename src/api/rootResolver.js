@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import { Deployer } from '@noblocknoparty/contracts'
+import { Deployer } from '@wearekickback/contracts'
 
 import eventsList from '../fixtures/events.json'
 import getWeb3, { getAccount, getEvents, getDeployerAddress } from './web3'
@@ -48,7 +48,7 @@ const resolvers = {
     async createParty(_, args) {
       console.log(`Deploying party`, args)
 
-      const { id, deposit, limitOfParticipants } = args
+      const { id, deposit, limitOfParticipants, coolingPeriod } = args
 
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -56,6 +56,8 @@ const resolvers = {
       const deployerAddress = await getDeployerAddress()
 
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
+
+      console.log(deployerAddress)
 
       try {
         const tx = await contract.methods
@@ -65,7 +67,7 @@ const resolvers = {
               .toWei()
               .toString(16),
             toEthVal(limitOfParticipants).toString(16),
-            toEthVal(60 * 60 * 24 * 7).toString(16)
+            toEthVal(coolingPeriod).toString(16)
           )
           .send({
             gas: 4000000,
