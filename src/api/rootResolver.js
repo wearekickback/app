@@ -57,8 +57,6 @@ const resolvers = {
 
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
 
-      console.log(deployerAddress)
-
       try {
         const tx = await contract.methods
           .deploy(
