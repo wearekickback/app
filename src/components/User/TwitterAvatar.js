@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
-import { getSocialId } from '@noblocknoparty/shared'
+import { getSocialId } from '@wearekickback/shared'
 
 import DefaultAvatar from './Avatar'
 
