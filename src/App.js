@@ -10,7 +10,7 @@ import { RouteAnalytics } from './components/Analytics'
 import DefaultLayout from './layout/Layouts'
 import { HomePageLayout } from './layout/Layouts'
 
-import Home from './routes/Home'
+import AllEvents from './routes/AllEvents'
 import CreatePendingEvent from './routes/CreatePendingEvent'
 import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
@@ -61,7 +61,7 @@ class App extends Component {
                 component={LandingPage}
                 layout={HomePageLayout}
               />
-              <Route exact path="/events" component={Home} />
+              <Route exact path="/events" component={AllEvents} />
               <Route exact path="/event/:address" component={SingleEvent} />
               <Route
                 path="/event/:address/admin"

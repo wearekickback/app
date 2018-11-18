@@ -49,6 +49,7 @@ class SingleEventWrapper extends Component {
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}
+              keepExistingResultDuringRefetch={true}
             >
               {({ data: { party }, loading }) => {
                 // no party?
