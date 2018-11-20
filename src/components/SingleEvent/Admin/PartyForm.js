@@ -12,6 +12,7 @@ class PartyForm extends Component {
       date = '',
       image = '',
       deposit = '0.02',
+      coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
     this.state = {
@@ -21,6 +22,7 @@ class PartyForm extends Component {
       date,
       image,
       deposit,
+      coolingPeriod,
       limitOfParticipants
     }
   }
@@ -33,18 +35,22 @@ class PartyForm extends Component {
       date,
       image,
       deposit,
-      limitOfParticipants
+      limitOfParticipants,
+      coolingPeriod
     } = this.state
 
     const {
       type = 'Create Pending Party',
       onCompleted,
       mutation,
-      address
+      address,
+      children,
+      variables: extraVariables = {},
     } = this.props
 
     const variables = {
-      meta: { name, description, location, date, image }
+      meta: { name, description, location, date, image },
+      ...extraVariables
     }
 
     if (type === 'Update Party Meta') {
@@ -116,9 +122,20 @@ class PartyForm extends Component {
                 placeholder="number of participants"
               />
               <br />
+              <label>Cooling period</label>
+              <input
+                value={coolingPeriod}
+                onChange={e =>
+                  this.setState({ coolingPeriod: 0 < parseInt(e.target.value) ? e.target.value : '1' })
+                }
+                type="text"
+                placeholder="Cooling period in seconds"
+              />
             </>
           )}
         </div>
+
+        {children}
 
         <SafeMutation
           mutation={mutation}
@@ -126,8 +143,8 @@ class PartyForm extends Component {
           variables={variables}
           onCompleted={
             onCompleted
-              ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants)
-              : ''
+              ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants, coolingPeriod)
+              : null
           }
         >
           {mutate => (

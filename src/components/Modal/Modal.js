@@ -5,25 +5,37 @@ import mq from '../../mediaQuery'
 
 class Modal extends Component {
   render() {
-    const { name, children, component: Component } = this.props
+    const { small, name, children, component: Component } = this.props
     return (
       <GlobalConsumer>
-        {({ currentModal, toggleModal }) =>
-          name === currentModal && (
-            <ModalContainer
-              show={name === currentModal}
-              onClick={event => {
-                event.stopPropagation()
-                toggleModal(name)
-              }}
-            >
-              <ModalContent onClick={event => event.stopPropagation()}>
-                <Component name={name} />
-                {children}
-              </ModalContent>
-            </ModalContainer>
-          )
-        }
+        {({ currentModal, toggleModal }) => {
+          if (!currentModal) {
+            return null
+          }
+          if (name === currentModal.name) {
+            return (
+              <ModalContainer
+                show={name === currentModal.name}
+                onClick={event => {
+                  event.stopPropagation()
+                  toggleModal({ name })
+                }}
+              >
+                <ModalContent
+                  onClick={event => event.stopPropagation()}
+                  small={small}
+                >
+                  {Component ? (
+                    <Component name={name} />
+                  ) : currentModal.render ? (
+                    currentModal.render({ ...this.props, toggleModal })
+                  ) : null}
+                  {children}
+                </ModalContent>
+              </ModalContainer>
+            )
+          }
+        }}
       </GlobalConsumer>
     )
   }
@@ -56,6 +68,14 @@ const ModalContent = styled('div')`
   ${mq.large`
     width: 50%;
   `};
+
+  ${p =>
+    p.small
+      ? `
+    height: auto;
+    width: auto;
+  `
+      : null};
 `
 
 export default Modal

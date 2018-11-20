@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import {
+  PARTICIPANT_STATUS,
+  calculateFinalizeMaps,
+  calculateNumAttended
+} from '@wearekickback/shared'
+import { toEthVal } from '../../utils/units'
 
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
-import { PARTICIPANT_STATUS } from '../../utils/status'
 import {
-  calculateFinalizeMaps,
-  calculateNumAttended,
-  calculateWinningShare
+  calculateWinningShare,
+  getParticipantsMarkedAttended
 } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
+import { CONFIRM_TRANSACTION } from '../../modals'
+import ConfirmModal from '../ConfirmModal'
 
 const CTA = styled('div')`
   font-family: Muli;
@@ -34,7 +42,7 @@ const CTAInfo = styled('div')`
   line-height: 21px;
   background: rgba(233, 234, 255, 0.5);
   border-radius: 4px;
-  margin-top: 5px;
+  margin-top: 20px;
 
   ul {
     margin-left: 2.5em;
@@ -47,6 +55,7 @@ const RSVPContainer = styled('div')`
   justify-content: space-between;
   margin-bottom: 20px;
 `
+
 // const Deposit = styled('div')`
 //   font-family: Muli;
 //   font-weight: 500;
@@ -68,11 +77,18 @@ const RSVP = styled(DefaultRSVP)`
 
 const AdminCTA = styled('div')`
   margin-top: 10px;
+  display: flex;
+  align-items: center;
 `
 
-
+const MarkAttended = styled('div')``
 
 class EventCTA extends Component {
+  _renderCleared() {
+    return (
+      <Status>This event is over and all the funds have been cleared</Status>
+    )
+  }
   _renderEndedRsvp() {
     const {
       myParticipantEntry,
@@ -113,10 +129,18 @@ class EventCTA extends Component {
             <RSVP address={address} deposit={deposit} />
             <CTAInfo>
               <strong>You cannot cancel once registered.</strong>
-              <p>Also, your payment is <strong>non-refundable</strong> if:</p>
+              <p>
+                Also, your payment is <strong>non-refundable</strong> if:
+              </p>
               <ul>
-                <li>You RSVP but then don't turn up (or don't get marked as attended by the organizer).</li>
-                <li>You fail to withdraw your post-event payout within the cooling period.</li>
+                <li>
+                  You RSVP but then don't turn up (or don't get marked as
+                  attended by the organizer).
+                </li>
+                <li>
+                  You fail to withdraw your post-event payout within the cooling
+                  period.
+                </li>
               </ul>
             </CTAInfo>
           </>
@@ -138,38 +162,67 @@ class EventCTA extends Component {
 
   _renderAdminCTA() {
     const {
-      party: {
-        address,
-        participants,
-        ended
-      },
+      party: { address, participants, ended },
       amAdmin
     } = this.props
 
-    return amAdmin && (
-      <AdminCTA>
-        {!ended ? (
-          <ChainMutation
-            mutation={Finalize}
-            resultKey="finalize"
-            variables={{
-              address,
-              maps: calculateFinalizeMaps(participants)
-            }}
-            refetchQueries={[{ query: PartyQuery, variables: { address } }]}
-          >
-            {(finalize, result) => (
-              <ChainMutationButton
-                analyticsId='Finalize Event'
-                result={result}
-                onClick={finalize}
-                preContent="Finalize and enable payouts"
-                postContent="Finalized!"
-              />
-            )}
-          </ChainMutation>
-        ) : null}
-      </AdminCTA>
+    return (
+      amAdmin && (
+        <GlobalConsumer>
+          {({ toggleModal }) => {
+            return (
+              <AdminCTA>
+                {!ended ? (
+                  <>
+                    <Button
+                      onClick={() => {
+                        toggleModal({
+                          name: CONFIRM_TRANSACTION,
+                          render: () => (
+                            <ConfirmModal
+                              message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
+                              mutationComponent={
+                                <ChainMutation
+                                  mutation={Finalize}
+                                  resultKey="finalize"
+                                  variables={{
+                                    address,
+                                    maps: calculateFinalizeMaps(participants)
+                                  }}
+                                  refetchQueries={[
+                                    {
+                                      query: PartyQuery,
+                                      variables: { address }
+                                    }
+                                  ]}
+                                >
+                                  {(finalize, result) => (
+                                    <ChainMutationButton
+                                      analyticsId="Finalize Event"
+                                      result={result}
+                                      onClick={finalize}
+                                      preContent="Finalize and enable payouts"
+                                      postContent="Finalized!"
+                                    />
+                                  )}
+                                </ChainMutation>
+                              }
+                            >
+                              rendering
+                            </ConfirmModal>
+                          )
+                        })
+                      }}
+                    >
+                      Finalize
+                    </Button>
+                  </>
+                ) : null}
+              </AdminCTA>
+            )
+          }}
+        </GlobalConsumer>
+      )
     )
   }
 
@@ -200,22 +253,36 @@ class EventCTA extends Component {
   }
 
   render() {
-    const {
-      party: {
-        ended,
-        cancelled
-      }
+    let {
+      party: { ended, cancelled, participants, balance }
     } = this.props
+
+    const cleared =
+      balance &&
+      toEthVal(balance)
+        .toEth()
+        .toNumber() === 0 &&
+      ended
 
     return (
       <EventCTAContainer>
         <RSVPContainer>
-          {ended ? this._renderEndedRsvp() : this._renderActiveRsvp()}
+          {!cleared
+            ? ended
+              ? this._renderEndedRsvp()
+              : this._renderActiveRsvp()
+            : this._renderCleared()}
         </RSVPContainer>
-        {ended ? (
-          cancelled ? this._renderCanceled() : this._renderEnded()
-        ) : this._renderAdminCTA()}
-
+        {ended
+          ? cancelled
+            ? this._renderCanceled()
+            : this._renderEnded()
+          : this._renderAdminCTA()}
+        <MarkAttended>
+          {`${getParticipantsMarkedAttended(participants)}/${
+            participants.length
+          } have been marked attended`}{' '}
+        </MarkAttended>
       </EventCTAContainer>
     )
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { getSocialId } from '@wearekickback/shared'
 
-import { getSocial } from '../../utils/parties'
 import DefaultAvatar from './Avatar'
 
 const Avatar = styled(DefaultAvatar)`
@@ -11,7 +11,7 @@ const Avatar = styled(DefaultAvatar)`
 `
 
 const TwitterAvatar = ({ className, user }) => {
-  const avatarId = getSocial(user, 'twitter')
+  const avatarId = getSocialId(user, 'twitter')
   const avatarUrl = `https://avatars.io/twitter/${avatarId || 'randomtwitter+12345'}/medium`
 
   let props = { src: avatarUrl }

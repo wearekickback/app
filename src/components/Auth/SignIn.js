@@ -27,7 +27,6 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
-
 export default class SignIn extends Component {
   render() {
     return (
@@ -39,7 +38,7 @@ export default class SignIn extends Component {
               variables={{ address: userAddress }}
             >
               {result => {
-                const hasProfile = !!_.get(result, 'data.profile.social.length')
+                const hasProfile = !!_.get(result, 'data.profile.username')
 
                 if (hasProfile) {
                   return this.renderSignIn(userAddress, toggleModal)
@@ -64,23 +63,20 @@ export default class SignIn extends Component {
         <ProfileForm
           userAddress={userAddress}
           renderSubmitButton={(profile, isValid) => (
-            <SafeMutation
-              mutation={UpdateUserProfile}
-              variables={{ profile }}
-            >
-              {updateUserProfile => (
+            <SafeMutation mutation={UpdateUserProfile} variables={{ profile }}>
+              {updateUserProfile =>
                 isValid ? (
                   <RefreshAuthTokenButton
                     onClick={this.signInOrSignUp({
                       fetchUserProfileFromServer: updateUserProfile,
                       toggleModal
                     })}
-                    title='Create account'
+                    title="Create account"
                   />
                 ) : (
                   <Button type="disabled">Create account</Button>
                 )
-              )}
+              }
             </SafeMutation>
           )}
         />
@@ -112,6 +108,6 @@ export default class SignIn extends Component {
     toggleModal
   }) => async refreshAuthToken => {
     await refreshAuthToken({ fetchUserProfileFromServer })
-    toggleModal(SIGN_IN)
+    toggleModal({ name: SIGN_IN })
   }
 }

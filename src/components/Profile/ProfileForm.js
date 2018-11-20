@@ -1,20 +1,17 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName, isTwitterId } from '@noblocknoparty/shared'
+import { isEmailAddress, isUsername, isRealName, isTwitterId, sanitizeTwitterId, trimOrEmptyStringProps, LEGAL } from '@wearekickback/shared'
 
 import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
-import { trimOrEmptyStringProps } from '../../utils/strings'
 import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
-import {
-  TERMS_AND_CONDITIONS,
-  PRIVACY_POLICY,
-  MARKETING_INFO
-} from '../../utils/legal'
 import mq from '../../mediaQuery'
+
+const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
+
 
 const Field = styled('div')`
   margin: 30px 0;
@@ -85,7 +82,7 @@ export default class ProfileForm extends Component {
           </Explanation>
         </Field>
         <Field>
-          <Label optional>Email</Label>
+          <Label>Email</Label>
           <TextInput
             placeholder="alice@gmail.com"
             value={email}
@@ -93,8 +90,8 @@ export default class ProfileForm extends Component {
           />
           <Explanation>
             This allows us to notify you of any changes to the event and
-            remind you when it's time to withdraw your payout. We don't
-            share this with anyone (not even event organizers).
+            remind you when it's time to withdraw your payout. We do not share
+            this with anyone.
           </Explanation>
         </Field>
         <Field>
@@ -117,7 +114,7 @@ export default class ProfileForm extends Component {
               checked={terms}
               onChange={this.handleTermsCheck}
             />{' '}
-            I agree with the <a href={`/terms`} target="_blank">terms and conditions</a>
+            I agree with the <a href={`/terms`} target="_blank" rel="noopener noreferrer">terms and conditions</a>
           </p>
         )}
         {existingProfile ? null : (
@@ -129,7 +126,7 @@ export default class ProfileForm extends Component {
               onChange={this.handlePrivacyCheck}
             />{' '}
             I agree with the{' '}
-            <a href={`/privacy`} target="_blank">
+            <a href={`/privacy`} target="_blank" rel="noopener noreferrer">
               privacy policy
             </a>
           </p>
@@ -184,7 +181,7 @@ export default class ProfileForm extends Component {
     } = values
 
     let social = (existingProfile.social || []).map(v => removeTypename(v))
-    social = ensureInArray(social, 'type', { type: 'twitter', value: twitter }, true)
+    social = ensureInArray(social, 'type', { type: 'twitter', value: sanitizeTwitterId(twitter) }, true)
 
     let legal = (existingProfile.legal || []).map(v => removeTypename(v))
     if (terms) {
@@ -217,11 +214,11 @@ export default class ProfileForm extends Component {
       return false
     }
 
-    if (email && !isEmailAddress(email)) {
+    if (!isEmailAddress(email)) {
       return false
     }
 
-    if (twitter && !isTwitterId(twitter)) {
+    if (twitter && !isTwitterId(sanitizeTwitterId(twitter))) {
       return false
     }
 

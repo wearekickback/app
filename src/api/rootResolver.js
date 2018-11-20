@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import { Deployer } from '@noblocknoparty/contracts'
+import { Deployer } from '@wearekickback/contracts'
 
 import eventsList from '../fixtures/events.json'
 import getWeb3, { getAccount, getEvents, getDeployerAddress } from './web3'
@@ -8,6 +8,7 @@ import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
+import qrCodeResolvers, { defaults as qrCodeDefaults } from './resolvers/qrCodeResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -47,7 +48,7 @@ const resolvers = {
     async createParty(_, args) {
       console.log(`Deploying party`, args)
 
-      const { id, deposit, limitOfParticipants } = args
+      const { id, deposit, limitOfParticipants, coolingPeriod } = args
 
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -64,7 +65,7 @@ const resolvers = {
               .toWei()
               .toString(16),
             toEthVal(limitOfParticipants).toString(16),
-            toEthVal(60 * 60 * 24 * 7).toString(16)
+            toEthVal(coolingPeriod).toString(16)
           )
           .send({
             gas: 4000000,
@@ -89,8 +90,6 @@ const resolvers = {
   }
 }
 
-const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults)
-
-export default merge(resolvers, singleEventResolvers, ensResolvers)
-
+const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults, qrCodeDefaults)
+export default merge(resolvers, singleEventResolvers, ensResolvers, qrCodeResolvers)
 export { defaults }

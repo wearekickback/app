@@ -1,4 +1,4 @@
-import { events } from '@noblocknoparty/contracts'
+import { events } from '@wearekickback/contracts'
 import { parseLog } from 'ethereum-event-logs'
 
 export const extractNewPartyAddressFromTx = tx => {

@@ -14,7 +14,6 @@ import moment from 'moment'
 
 import { toEthVal } from '../../utils/units'
 
-
 const Date = styled('div')``
 const EventName = styled(H2)``
 const ContractAddress = styled('h3')`
@@ -38,15 +37,13 @@ const Organisers = styled('div')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-bottom: 50px;
-
-  span {
-    margin-right: 5px;
-  }
+  margin-bottom: 40px;
 `
 
 const OrganiserList = styled('div')`
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   width: 100%;
 `
@@ -54,6 +51,7 @@ const Organiser = styled('div')`
   display: flex;
   align-items: center;
   margin-right: 10px;
+  margin-bottom: 10px;
 `
 
 const Link = styled(DefaultHashLink)`
@@ -77,6 +75,7 @@ const InfoIcon = styled(DefaultInfoIcon)`
 
 const PinIcon = styled(DefaultPinIcon)`
   margin-right: 10px;
+  flex-shrink: 0;
 `
 
 const Location = styled('div')`

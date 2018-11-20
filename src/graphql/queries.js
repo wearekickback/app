@@ -8,7 +8,6 @@ export const NetworkIdQuery = gql`
   }
 `
 
-
 export const UserProfileQuery = gql`
   ${ProfileFields}
 
@@ -29,6 +28,31 @@ export const PartyQuery = gql`
   }
 `
 
+export const PartyAdminViewQuery = gql`
+  ${PartyFields}
+
+  query getPartyAdminView($address: String!) {
+    partyAdminView(address: $address) {
+      ...PartyFields
+    }
+  }
+`
+
+export const PartyAdminsQuery = gql`
+  ${ProfileFields}
+
+  query getPartyAdmins($address: String!) {
+    party(address: $address) {
+      owner {
+        ...ProfileFields
+      }
+      admins {
+        ...ProfileFields
+      }
+    }
+  }
+`
+
 export const AllPartiesQuery = gql`
   ${PartyFields}
 
@@ -45,5 +69,17 @@ export const ReverseRecordQuery = gql`
       name
       address
     }
+  }
+`
+
+export const QRSupportedQuery = gql`
+  query scanQRCodeSupported {
+    supported: scanQRCodeSupported @client
+  }
+`
+
+export const QRQuery = gql`
+  query scanQRCode {
+    qrCode: scanQRCode @client
   }
 `

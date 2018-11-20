@@ -10,11 +10,12 @@ import { RouteAnalytics } from './components/Analytics'
 import DefaultLayout from './layout/Layouts'
 import { HomePageLayout } from './layout/Layouts'
 
-import Home from './routes/Home'
+import AllEvents from './routes/AllEvents'
 import CreatePendingEvent from './routes/CreatePendingEvent'
 import DeployPendingEvent from './routes/DeployPendingEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
+import ParticipantTableList from './routes/ParticipantTableList'
 import LandingPage from './routes/LandingPage'
 import Team from './routes/Team'
 import Faq from './routes/Faq'
@@ -24,7 +25,7 @@ import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import EditProfile from './components/Profile/EditProfile'
-import { SIGN_IN, EDIT_PROFILE } from './modals'
+import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
 
 import './App.css'
 
@@ -60,9 +61,17 @@ class App extends Component {
                 component={LandingPage}
                 layout={HomePageLayout}
               />
-              <Route exact path="/events" component={Home} />
+              <Route exact path="/events" component={AllEvents} />
               <Route exact path="/event/:address" component={SingleEvent} />
-              <Route path="/event/:address/admin" component={SingleEventAdmin} />
+              <Route
+                path="/event/:address/admin"
+                exact
+                component={SingleEventAdmin}
+              />
+              <Route
+                path="/event/:address/admin/list"
+                component={ParticipantTableList}
+              />
               <Route path="/create" component={CreatePendingEvent} />
               <Route path="/deploy" component={DeployPendingEvent} />
               <Route path="/faq" component={Faq} />
@@ -74,6 +83,7 @@ class App extends Component {
         </Router>
         <Modal name={SIGN_IN} component={SignIn} />
         <Modal name={EDIT_PROFILE} component={EditProfile} />
+        <Modal small name={CONFIRM_TRANSACTION} />
       </Fragment>
     )
   }

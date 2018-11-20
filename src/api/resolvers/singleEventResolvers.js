@@ -1,6 +1,6 @@
 import { toBN } from 'web3-utils'
 import getWeb3, { getAccount } from '../web3'
-import { Conference } from '@noblocknoparty/contracts'
+import { Conference } from '@wearekickback/contracts'
 import events from '../../fixtures/events.json'
 
 const abi = Conference.abi
@@ -17,6 +17,11 @@ const resolvers = {
     description: party => party.description_text || null,
     date: party => party.date || null,
     location: party => party.location_text || null,
+
+    async balance({ address }) {
+      const web3 = await getWeb3()
+      return web3.eth.getBalance(address)
+    },
 
     async owner({ contract }) {
       return contract.owner().call()
@@ -114,10 +119,28 @@ const resolvers = {
         __rawContract: contract,
         __typename: 'Party'
       }
-    },
+    }
   },
 
   Mutation: {
+    async addAdmins(_, { address, userAddresses }) {
+      console.log(`Adding admins:\n${userAddresses.join('\n')}`)
+
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      try {
+        const tx = await contract.grant(userAddresses).send({
+          from: account
+        })
+
+        return tx
+      } catch (err) {
+        console.error(err)
+
+        throw new Error(`Failed to add admin`)
+      }
+    },
     async rsvp(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -141,9 +164,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.finalize(maps.map(m => toBN(m).toString(10))).send({
-          from: account
-        })
+        const tx = await contract
+          .finalize(maps.map(m => toBN(m).toString(10)))
+          .send({
+            from: account
+          })
 
         return tx
       } catch (err) {
@@ -173,7 +198,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.setLimitOfParticipants(limit).send({ from: account })
+        const tx = await contract
+          .setLimitOfParticipants(limit)
+          .send({ from: account })
+
+        return tx
       } catch (e) {
         console.log(e)
         return null
@@ -184,12 +213,14 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        return contract.clear().send({ from: account })
+        const tx = await contract.clear().send({ from: account })
+
+        return tx
       } catch (e) {
         console.log(e)
         return null
       }
-    },
+    }
   }
 }
 

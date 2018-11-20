@@ -5,30 +5,38 @@ import PartyForm from '../components/SingleEvent/Admin/PartyForm'
 import { CreatePendingParty } from '../graphql/mutations'
 
 class Create extends Component {
+  state = {
+    password: ''
+  }
+
   render() {
+    const { password } = this.state
+
     return (
       <>
         <h1>Create a new party</h1>
         <PartyForm
           onCompleted={this._onCreated}
           mutation={CreatePendingParty}
-        />
+          variables={{ password }}
+        >
+          <p>
+            <label>SECRET PASSWORD:</label>
+            <input
+              value={password}
+              onChange={e => this.setState({ password: e.target.value })}
+              type="password"
+            />
+          </p>
+        </PartyForm>
       </>
     )
   }
 
-  _onCreated = ({ id }, deposit, limitOfParticipants) => {
+  _onCreated = ({ id }, deposit, limitOfParticipants, coolingPeriod) => {
     this.props.history.push(
-      `/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}`
+      `/deploy?id=${id}&deposit=${deposit}&limitOfParticipants=${limitOfParticipants}&coolingPeriod=${coolingPeriod}`
     )
-  }
-
-  _buildHandler = ({ createParty, createPendingParty }) => {
-    return async () => {
-      const result = await createPendingParty()
-      const { id } = result
-      await createParty({ id })
-    }
   }
 }
 

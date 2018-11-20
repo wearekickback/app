@@ -7,18 +7,20 @@ export const CreateParty = gql`
     $id: String
     $deposit: String
     $limitOfParticipants: String
+    $coolingPeriod: String
   ) {
     create: createParty(
       id: $id
       deposit: $deposit
       limitOfParticipants: $limitOfParticipants
+      coolingPeriod: $coolingPeriod
     ) @client @requireAuth
   }
 `
 
 export const CreatePendingParty = gql`
-  mutation createPendingParty($meta: PartyMetaInput!) {
-    id: createPendingParty(meta: $meta) @requireAuth
+  mutation createPendingParty($meta: PartyMetaInput!, $password: String) {
+    id: createPendingParty(meta: $meta, password: $password) @requireAuth
   }
 `
 
@@ -106,6 +108,12 @@ export const UnmarkUserAttended = gql`
 export const RsvpToEvent = gql`
   mutation rsvp($twitter: String, $address: String) {
     rsvp(twitter: $twitter, address: $address) @client @requireAuth
+  }
+`
+
+export const AddPartyAdmins = gql`
+  mutation addAdmins($address: String, $userAddresses: [String]) {
+    addAdmins(address: $address, userAddresses: $userAddresses) @client @requireAuth
   }
 `
 

@@ -1,9 +1,7 @@
-import _ from 'lodash'
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
-import { addressesMatch } from '../../utils/strings'
-import { amInAddressList } from '../../utils/parties'
+import { amOwner, amAdmin, getMyParticipantEntry } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import ErrorBox from '../ErrorBox'
 import SafeQuery from '../SafeQuery'
@@ -39,18 +37,8 @@ const RightContainer = styled('div')`
 `
 
 class SingleEventWrapper extends Component {
-  state = {
-    search: ''
-  }
-
-  handleSearch = event => {
-    this.setState({
-      search: event.target.value
-    })
-  }
-
   render() {
-    const { address, handleSearch, search } = this.props
+    const { address } = this.props
 
     return (
       <SingleEventContainer>
@@ -61,6 +49,7 @@ class SingleEventWrapper extends Component {
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}
+              keepExistingResultDuringRefetch={true}
             >
               {({ data: { party }, loading }) => {
                 // no party?
@@ -75,27 +64,12 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
-                  amOwner: addressesMatch(
-                    _.get(party, 'owner.address', ''),
-                    userAddress
-                  ),
-                  myParticipantEntry:
-                    userAddress &&
-                    _.get(party, 'participants', []).find(a =>
-                      addressesMatch(_.get(a, 'user.address', ''), userAddress)
-                    )
+                  amOwner: amOwner(party, userAddress),
+                  amAdmin: amAdmin(party, userAddress),
+                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
-
-                preCalculatedProps.amAdmin =
-                  preCalculatedProps.amOwner ||
-                  (userAddress &&
-                    amInAddressList(
-                      _.get(party, 'admins', []).map(a => a.address),
-                      userAddress
-                    ))
 
                 return (
                   <Fragment>
@@ -114,8 +88,6 @@ class SingleEventWrapper extends Component {
                         {...preCalculatedProps}
                       />
                       <EventParticipants
-                        handleSearch={handleSearch}
-                        search={search}
                         party={party}
                         {...preCalculatedProps}
                       />
