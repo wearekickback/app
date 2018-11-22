@@ -91,7 +91,6 @@ const resolvers = {
       const address = await getAccount()
       const unlocked = isTesting()
       console.log(`Ask user ${address} to sign: ${challengeString}`)
-      console.log(unlocked)
 
       return !unlocked
         ? web3.eth.personal.sign(challengeString, address)

@@ -16,7 +16,7 @@ import { SIGN_IN } from '../../modals'
 
 const SignInContainer = styled('div')``
 
-const FormDiv = styled('div')``
+const Form = styled('form')``
 
 const Pencil = styled(DefaultPencil)`
   margin-right: 10px;
@@ -55,7 +55,7 @@ export default class SignIn extends Component {
 
   renderSignUp(userAddress, toggleModal) {
     return (
-      <FormDiv>
+      <Form>
         <H2>
           <Pencil />
           Create account
@@ -80,13 +80,13 @@ export default class SignIn extends Component {
             </SafeMutation>
           )}
         />
-      </FormDiv>
+      </Form>
     )
   }
 
   renderSignIn(userAddress, toggleModal) {
     return (
-      <FormDiv>
+      <Form data-testid="sign-in-modal" onSubmit={e => e.preventDefault()}>
         <H2>Sign in</H2>
         <div>{userAddress}</div>
         <SafeMutation mutation={LoginUser}>
@@ -99,7 +99,7 @@ export default class SignIn extends Component {
             />
           )}
         </SafeMutation>
-      </FormDiv>
+      </Form>
     )
   }
 

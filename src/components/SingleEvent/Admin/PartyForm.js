@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
+import styled from 'react-emotion'
+
 import SafeMutation from '../../SafeMutation'
 import Button from '../../Forms/Button'
+
+const Form = styled('form')``
 
 class PartyForm extends Component {
   constructor(props) {
@@ -45,7 +49,7 @@ class PartyForm extends Component {
       mutation,
       address,
       children,
-      variables: extraVariables = {},
+      variables: extraVariables = {}
     } = this.props
 
     const variables = {
@@ -58,18 +62,20 @@ class PartyForm extends Component {
     }
 
     return (
-      <div className="App">
+      <Form onSubmit={e => e.preventDefault()}>
         <div>
-          <label>Name</label>
+          <label for="eventName">Name</label>
           <input
+            id="eventName"
             value={name}
             onChange={e => this.setState({ name: e.target.value })}
             type="text"
             placeholder="Name of the event"
           />
           <br />
-          <label>Description</label>
+          <label for="description">Description</label>
           <textarea
+            id="description"
             value={description}
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
@@ -78,24 +84,27 @@ class PartyForm extends Component {
             {description}
           </textarea>
           <br />
-          <label>Location</label>
+          <label for="location">Location</label>
           <input
+            id="location"
             value={location}
             onChange={e => this.setState({ location: e.target.value })}
             type="text"
             placeholder="Location of the event"
           />
           <br />
-          <label>Dates</label>
+          <label for="date">Dates</label>
           <input
+            id="date"
             value={date}
             onChange={e => this.setState({ date: e.target.value })}
             type="text"
             placeholder="Dates of the event"
           />
           <br />
-          <label>Image</label>
+          <label for="image">Image</label>
           <input
+            id="image"
             value={image}
             onChange={e => this.setState({ image: e.target.value })}
             type="text"
@@ -104,16 +113,18 @@ class PartyForm extends Component {
           <br />
           {type === 'Create Pending Party' && (
             <>
-              <label>Commitment</label>
+              <label for="commitment">Commitment</label>
               <input
+                id="commitment"
                 value={deposit}
                 onChange={e => this.setState({ deposit: e.target.value })}
                 type="text"
                 placeholder="ETH"
               />
               <br />
-              <label>Limit of participants</label>
+              <label for="limit">Limit of participants</label>
               <input
+                id="limit"
                 value={limitOfParticipants}
                 onChange={e =>
                   this.setState({ limitOfParticipants: e.target.value })
@@ -122,11 +133,15 @@ class PartyForm extends Component {
                 placeholder="number of participants"
               />
               <br />
-              <label>Cooling period</label>
+              <label for="coolingPeriod">Cooling period</label>
               <input
+                id="coolingPeriod"
                 value={coolingPeriod}
                 onChange={e =>
-                  this.setState({ coolingPeriod: 0 < parseInt(e.target.value) ? e.target.value : '1' })
+                  this.setState({
+                    coolingPeriod:
+                      0 < parseInt(e.target.value) ? e.target.value : '1'
+                  })
                 }
                 type="text"
                 placeholder="Cooling period in seconds"
@@ -143,7 +158,13 @@ class PartyForm extends Component {
           variables={variables}
           onCompleted={
             onCompleted
-              ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants, coolingPeriod)
+              ? ({ id }) =>
+                  onCompleted(
+                    { id },
+                    deposit,
+                    limitOfParticipants,
+                    coolingPeriod
+                  )
               : null
           }
         >
@@ -155,7 +176,7 @@ class PartyForm extends Component {
             </div>
           )}
         </SafeMutation>
-      </div>
+      </Form>
     )
   }
 }
