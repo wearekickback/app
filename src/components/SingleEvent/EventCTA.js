@@ -134,7 +134,7 @@ class EventCTA extends Component {
               </p>
               <ul>
                 <li>
-                  You RSVP but then don't turn up (or don't get marked as
+                  You RSVP but then don't turn up in time (or don't get marked as
                   attended by the organizer).
                 </li>
                 <li>
