@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import {
   PARTICIPANT_STATUS,
   calculateNumAttended
-} from '@noblocknoparty/shared'
+} from '@wearekickback/shared'
 
 import { Mutation } from 'react-apollo'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
