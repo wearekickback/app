@@ -31,7 +31,7 @@ const exec = (cmdline, options = {}) => {
 const cleanFolder = () => exec(`rm -rf ${contractsDirName}`)
 
 cleanFolder()
-exec(`git clone -b ${pkgVersion} https://github.com/noblocknoparty/contracts ./${contractsDirName}`)
+exec(`git clone -b ${pkgVersion} https://github.com/wearekickback/contracts ./${contractsDirName}`)
 
 const contractsDir = path.join(projectDir, contractsDirName)
 
