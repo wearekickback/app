@@ -80,7 +80,9 @@ export default class Header extends PureComponent {
                 return loggedIn ? (
                   <>
                     {/* <Notifications>Notification</Notifications> */}
-                    <Account onClick={() => toggleModal(EDIT_PROFILE)}>
+                    <Account
+                      onClick={() => toggleModal({ name: EDIT_PROFILE })}
+                    >
                       {userProfile ? (
                         <Username>{userProfile.username}</Username>
                       ) : null}

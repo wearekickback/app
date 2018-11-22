@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
-import { pluralize, PARTICIPANT_STATUS } from '@noblocknoparty/shared'
+import { pluralize, PARTICIPANT_STATUS } from '@wearekickback/shared'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
 
@@ -53,10 +53,10 @@ class EventParticipants extends Component {
     let spots
 
     if (ended) {
-      spots = `${participants.length} out of ${participantLimit} attended`
+      spots = null
     } else {
       const spotsLeft = participantLimit - participants.length
-      spots = `${participants.length} going, ${spotsLeft} ${pluralize(
+      spots = `- ${participants.length} going, ${spotsLeft} ${pluralize(
         'spot',
         spotsLeft
       )} left`
@@ -65,7 +65,7 @@ class EventParticipants extends Component {
     return (
       <Fragment>
         <H3>
-          Participants - <Spots>{spots}</Spots>
+          Participants <Spots>{spots}</Spots>
         </H3>
         <EventFilters
           handleSearch={this.handleSearch}

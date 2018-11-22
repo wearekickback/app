@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@noblocknoparty/contracts": "^1.0.2",
-    "@noblocknoparty/shared": "^1.5.1",
+    "@wearekickback/contracts": "^1.1.3",
+    "@wearekickback/shared": "^1.6.0",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",
     "apollo-link": "^1.2.3",
