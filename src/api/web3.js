@@ -10,8 +10,11 @@ import { NetworkIdQuery } from '../graphql/queries'
 
 let web3
 let networkState = {}
+let testing = false
 
 export const events = new EventEmitter()
+
+export const isTesting = () => testing
 
 const updateGlobalState = () => {
   getProvider().then(provider => {
@@ -70,18 +73,37 @@ async function getWeb3() {
       networkState.expectedNetworkName = getNetworkName(
         networkState.expectedNetworkId
       )
-
       if (window.ethereum) {
         web3 = new Web3(window.ethereum)
       } else if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
       } else {
-        console.log(
-          'No web3 instance injected. Falling back to cloud provider.'
-        )
-        web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
-        networkState.readOnly = true
+        //local node
+        const url = 'http://localhost:8545'
+
+        try {
+          await fetch(url)
+          console.log('local node active')
+          testing = true
+          web3 = new Web3(new Web3.providers.HttpProvider(url))
+        } catch (error) {
+          if (
+            error.readyState === 4 &&
+            (error.status === 400 || error.status === 200)
+          ) {
+            // the endpoint is active
+            console.log('Success')
+          } else {
+            console.log(
+              'No web3 instance injected. Falling back to cloud provider.'
+            )
+            web3 = new Web3(
+              getNetworkProviderUrl(networkState.expectedNetworkId)
+            )
+            networkState.readOnly = true
+          }
+        }
       }
 
       networkState.networkId = `${await web3.eth.net.getId()}`

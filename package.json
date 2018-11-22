@@ -11,7 +11,7 @@
     "apollo-link-http": "^1.5.5",
     "apollo-link-state": "^0.4.1",
     "apollo-utilities": "^1.0.21",
-    "cypress": "^3.1.0",
+    "cross-fetch": "^2.2.3",
     "decimal.js": "^10.0.1",
     "emotion": "^9.2.6",
     "es6-promisify": "^6.0.0",
@@ -56,6 +56,7 @@
     "deploy:pr": "yarn build:release:rinkeby && scripts/deployTravisBuildToSurge.sh",
     "deploy": "/bin/sh -c 'if [ \"$TRAVIS_PULL_REQUEST\" = \"false\" ]; then yarn deploy:branch; else yarn deploy:pr; fi'",
     "test": "react-scripts test --env=jsdom",
+    "cypress:open": "cypress open",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
@@ -65,6 +66,8 @@
     "@storybook/addon-links": "^3.4.11",
     "@storybook/react": "^3.4.11",
     "babel-plugin-macros": "^2.4.2",
+    "cypress": "^3.1.2",
+    "cypress-testing-library": "^2.3.3",
     "ganache-cli": "^6.1.8",
     "surge": "^0.20.1",
     "yargs": "^12.0.2"

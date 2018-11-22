@@ -2,13 +2,20 @@ import merge from 'lodash/merge'
 import { Deployer } from '@wearekickback/contracts'
 
 import eventsList from '../fixtures/events.json'
-import getWeb3, { getAccount, getEvents, getDeployerAddress } from './web3'
+import getWeb3, {
+  getAccount,
+  getEvents,
+  getDeployerAddress,
+  isTesting
+} from './web3'
 import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
-import qrCodeResolvers, { defaults as qrCodeDefaults } from './resolvers/qrCodeResolvers'
+import qrCodeResolvers, {
+  defaults as qrCodeDefaults
+} from './resolvers/qrCodeResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -82,14 +89,27 @@ const resolvers = {
     async signChallengeString(_, { challengeString }) {
       const web3 = await getWeb3()
       const address = await getAccount()
-
+      const unlocked = isTesting()
       console.log(`Ask user ${address} to sign: ${challengeString}`)
+      console.log(unlocked)
 
-      return web3.eth.personal.sign(challengeString, address)
+      return !unlocked
+        ? web3.eth.personal.sign(challengeString, address)
+        : web3.eth.sign(challengeString, address)
     }
   }
 }
 
-const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults, qrCodeDefaults)
-export default merge(resolvers, singleEventResolvers, ensResolvers, qrCodeResolvers)
+const defaults = merge(
+  rootDefaults,
+  singleEventDefaults,
+  ensDefaults,
+  qrCodeDefaults
+)
+export default merge(
+  resolvers,
+  singleEventResolvers,
+  ensResolvers,
+  qrCodeResolvers
+)
 export { defaults }
