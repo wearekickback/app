@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { addressesMatch, PARTICIPANT_STATUS } from '@noblocknoparty/shared'
+import { addressesMatch, PARTICIPANT_STATUS } from '@wearekickback/shared'
 
 import { toEthVal } from './units'
 

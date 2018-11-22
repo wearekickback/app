@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName, isTwitterId, sanitizeTwitterId, trimOrEmptyStringProps, LEGAL } from '@noblocknoparty/shared'
+import { isEmailAddress, isUsername, isRealName, isTwitterId, sanitizeTwitterId, trimOrEmptyStringProps, LEGAL } from '@wearekickback/shared'
 
 import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
