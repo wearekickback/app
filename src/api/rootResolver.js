@@ -89,7 +89,7 @@ const resolvers = {
     async signChallengeString(_, { challengeString }) {
       const web3 = await getWeb3()
       const address = await getAccount()
-      const unlocked = isTesting()
+      const unlocked = isLocalEndpoint()
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
       return !unlocked

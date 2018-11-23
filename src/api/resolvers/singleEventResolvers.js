@@ -152,7 +152,6 @@ const resolvers = {
           value: deposit,
           gas: 120000
         })
-        console.log(tx)
         return tx
       } catch (err) {
         console.error(err)
@@ -169,7 +168,6 @@ const resolvers = {
           .finalize(maps.map(m => toBN(m).toString(10)))
           .estimateGas()
 
-        console.log(gas)
         const tx = await contract
           .finalize(maps.map(m => toBN(m).toString(10)))
           .send({

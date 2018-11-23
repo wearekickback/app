@@ -10,11 +10,11 @@ import { NetworkIdQuery } from '../graphql/queries'
 
 let web3
 let networkState = {}
-let testing = false
+let localEndpoint = false
 
 export const events = new EventEmitter()
 
-export const isTesting = () => testing
+export const isLocalEndpoint = () => localEndpoint
 
 const updateGlobalState = () => {
   getProvider().then(provider => {

@@ -70,6 +70,7 @@ describe('Admin create, RSVP and finalise', async () => {
   })
 })
 
+//TODO: Create a secont event other users can RSVP for
 // describe('User logged in', () => {
 //   it('Navigate to event page and click rsvp', async () => {
 //     stubTracking()
