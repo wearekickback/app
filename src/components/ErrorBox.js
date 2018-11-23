@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'react-emotion'
+import React from "react"
+import styled from "react-emotion"
 
-const ErrorDiv = styled('div')`
+const ErrorDiv = styled("div")`
   width: 100%;
   background: #f00;
   color: #fff;

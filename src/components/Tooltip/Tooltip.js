@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'react-emotion'
-import { ReactComponent as Bubble } from './Info.svg'
+import React from "react"
+import styled from "react-emotion"
+import { ReactComponent as Bubble } from "./Info.svg"
 
-const TooltipContainer = styled('div')`
+const TooltipContainer = styled("div")`
   position: relative;
   &:hover .text {
     z-index: 1;
@@ -10,7 +10,7 @@ const TooltipContainer = styled('div')`
   }
 `
 
-const Text = styled('div')`
+const Text = styled("div")`
   position: absolute;
   border-radius: 4px;
   display: none;

@@ -1,4 +1,4 @@
-import getWeb3 from '../web3'
+import getWeb3 from "../web3"
 export const defaults = {}
 
 const resolvers = {

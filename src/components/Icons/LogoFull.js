@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'react-emotion'
-import { Link as DefaultLink } from 'react-router-dom'
+import React from "react"
+import styled from "react-emotion"
+import { Link as DefaultLink } from "react-router-dom"
 
-import LogoIconDefault from './Logo'
+import LogoIconDefault from "./Logo"
 
 const Link = styled(DefaultLink)`
   display: flex;
@@ -13,7 +13,7 @@ const LogoIcon = styled(LogoIconDefault)`
   margin-right: 5px;
 `
 
-const LogoContainer = styled('h1')`
+const LogoContainer = styled("h1")`
   margin: 0;
   font-size: 22px;
 

@@ -1,8 +1,8 @@
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { withClientState } from 'apollo-link-state'
+import { ApolloClient } from "apollo-client"
+import { InMemoryCache } from "apollo-cache-inmemory"
+import { withClientState } from "apollo-link-state"
 const cache = new InMemoryCache(window.__APOLLO_STATE__)
-const merge = require('lodash/merge')
+const merge = require("lodash/merge")
 
 const typeDefs = ``
 
@@ -11,12 +11,12 @@ const defaultResolvers = {
     getReverseRecord: (_, { address }) => {
       const obj = {
         address,
-        __typename: 'ReverseRecord'
+        __typename: "ReverseRecord"
       }
 
       return {
         ...obj,
-        name: 'vitalik.eth'
+        name: "vitalik.eth"
       }
     }
   }

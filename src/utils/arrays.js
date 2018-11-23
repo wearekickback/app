@@ -1,5 +1,5 @@
 export const ensureInArray = (array, key, entry, updateExisting = false) => {
-  let ret = [ ...(array || []) ]
+  let ret = [...(array || [])]
 
   const existing = ret.findIndex(v => v[key] === entry[key])
 

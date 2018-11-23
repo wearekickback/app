@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import styled from 'react-emotion'
-import Select from 'react-select'
+import React, { Component } from "react"
+import styled from "react-emotion"
+import Select from "react-select"
 // TODO: add Arrow component
 // import { ReactComponent as Arrow } from '../svg/arrowDown.svg'
 
-const SelectContainer = styled('div')``
+const SelectContainer = styled("div")``
 
 // TODO: add Arrow component
 // const DropdownIndicator = props => {
@@ -21,8 +21,8 @@ const styles = {
   control: (styles, { isFocused }) => ({
     ...styles,
     borderRadius: 4,
-    border: isFocused ? '1px solid #6E76FF' : '1px solid #6E76FF',
-    fontSize: '14px'
+    border: isFocused ? "1px solid #6E76FF" : "1px solid #6E76FF",
+    fontSize: "14px"
   }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     return {
@@ -32,10 +32,10 @@ const styles = {
       // letterSpacing: '0.5px',
       // color: isDisabled ? '#ccc' : isSelected ? 'black' : '#ccc',
       // cursor: isDisabled ? 'not-allowed' : 'default'
-      color: isDisabled ? null : isSelected ? '#ffffff' : null,
-      backgroundColor: isDisabled ? null : isSelected ? '#6E76FF' : null,
-      cursor: isFocused ? 'pointer' : 'inherit',
-      fontSize: '14px'
+      color: isDisabled ? null : isSelected ? "#ffffff" : null,
+      backgroundColor: isDisabled ? null : isSelected ? "#6E76FF" : null,
+      cursor: isFocused ? "pointer" : "inherit",
+      fontSize: "14px"
     }
   },
   input: styles => ({ ...styles }),

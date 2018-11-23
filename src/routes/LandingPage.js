@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import styled from 'react-emotion'
-import { Link as DefaultLink } from 'react-router-dom'
+import React, { Component } from "react"
+import styled from "react-emotion"
+import { Link as DefaultLink } from "react-router-dom"
 
-import backgroundDark from '../assets/backgroundDark.svg'
-import backgroundLight from '../assets/backgroundLight.svg'
-import Logo from '../components/Icons/LogoFull'
-import { ContainerInner } from '../layout/Layouts'
-import LaptopPng from '../assets/laptop.png'
-import { ButtonLink } from '../components/Forms/Button'
-import { ReactComponent as EventIllustration } from '../assets/eventIllustration.svg'
-import { ReactComponent as RSVPIllustration } from '../assets/rsvpIllustration.svg'
-import { ReactComponent as OrganiserIllustration } from '../assets/organiserIllustration.svg'
-import { ReactComponent as ParticipantsIllustration } from '../assets/participantsIllustration.svg'
-import { ReactComponent as SponsorsIllustration } from '../assets/sponsorsIllustration.svg'
+import backgroundDark from "../assets/backgroundDark.svg"
+import backgroundLight from "../assets/backgroundLight.svg"
+import Logo from "../components/Icons/LogoFull"
+import { ContainerInner } from "../layout/Layouts"
+import LaptopPng from "../assets/laptop.png"
+import { ButtonLink } from "../components/Forms/Button"
+import { ReactComponent as EventIllustration } from "../assets/eventIllustration.svg"
+import { ReactComponent as RSVPIllustration } from "../assets/rsvpIllustration.svg"
+import { ReactComponent as OrganiserIllustration } from "../assets/organiserIllustration.svg"
+import { ReactComponent as ParticipantsIllustration } from "../assets/participantsIllustration.svg"
+import { ReactComponent as SponsorsIllustration } from "../assets/sponsorsIllustration.svg"
 
-import mq from '../mediaQuery'
+import mq from "../mediaQuery"
 
-const Hero = styled('section')`
+const Hero = styled("section")`
   background: url(${backgroundDark});
   height: 600px;
   background-size: cover;
@@ -59,7 +59,7 @@ const Hero = styled('section')`
   }
 `
 
-const TopRow = styled('div')`
+const TopRow = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -69,17 +69,17 @@ const Link = styled(DefaultLink)`
   color: white;
 `
 
-const LaptopWrapper = styled('div')`
+const LaptopWrapper = styled("div")`
   max-width: 640px;
   margin: 50px auto 0;
 `
 
-const Laptop = styled('img')`
+const Laptop = styled("img")`
   width: 100%;
   display: block;
 `
 
-const Section = styled('section')`
+const Section = styled("section")`
   display: flex;
   max-width: 1200px;
   margin: 40px auto 0;
@@ -107,7 +107,7 @@ const Section = styled('section')`
   `};
 `
 
-const SectionContent = styled('div')`
+const SectionContent = styled("div")`
   max-width: 450px;
   padding: 0 40px;
 
@@ -131,7 +131,7 @@ const CTAInner = styled(ContainerInner)`
   align-items: center;
 `
 
-const CTA = styled('section')`
+const CTA = styled("section")`
   padding: 40px 20px 0;
   ${p => p.devcon && `padding: 150px 20px 0;`}
   background: url(${backgroundLight});
@@ -196,7 +196,9 @@ class Home extends Component {
           <CTAInner>
             <h2>Heading to DevCon4?</h2>
             <p>RSVP on Kickback powered events now!</p>
-            <ButtonLink analyticsId='See Events' href="/events">Check out events</ButtonLink>
+            <ButtonLink analyticsId="See Events" href="/events">
+              Check out events
+            </ButtonLink>
           </CTAInner>
         </CTA>
         <Section>
@@ -267,13 +269,13 @@ class Home extends Component {
               the limited number of free event organisers.
             </p>
             <ButtonLink
-              analyticsId='Request Early Access'
+              analyticsId="Request Early Access"
               href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
             >
               Request early access
             </ButtonLink>
             <p>
-              Or just curious? Say hello to{' '}
+              Or just curious? Say hello to{" "}
               <a href="mailto:hello@kickback.events">hello@kickback.events</a>
             </p>
           </CTAInner>

@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
-import SafeMutation from '../../SafeMutation'
-import Button from '../../Forms/Button'
+import React, { Component } from "react"
+import SafeMutation from "../../SafeMutation"
+import Button from "../../Forms/Button"
 
 class PartyForm extends Component {
   constructor(props) {
     super(props)
     const {
-      name = '',
-      description = '',
-      location = '',
-      date = '',
-      image = '',
-      deposit = '0.02',
+      name = "",
+      description = "",
+      location = "",
+      date = "",
+      image = "",
+      deposit = "0.02",
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
@@ -40,12 +40,12 @@ class PartyForm extends Component {
     } = this.state
 
     const {
-      type = 'Create Pending Party',
+      type = "Create Pending Party",
       onCompleted,
       mutation,
       address,
       children,
-      variables: extraVariables = {},
+      variables: extraVariables = {}
     } = this.props
 
     const variables = {
@@ -53,7 +53,7 @@ class PartyForm extends Component {
       ...extraVariables
     }
 
-    if (type === 'Update Party Meta') {
+    if (type === "Update Party Meta") {
       variables.address = address
     }
 
@@ -102,7 +102,7 @@ class PartyForm extends Component {
             placeholder="URL to image for the event"
           />
           <br />
-          {type === 'Create Pending Party' && (
+          {type === "Create Pending Party" && (
             <>
               <label>Commitment</label>
               <input
@@ -116,7 +116,9 @@ class PartyForm extends Component {
               <input
                 value={limitOfParticipants}
                 onChange={e =>
-                  this.setState({ limitOfParticipants: e.target.value })
+                  this.setState({
+                    limitOfParticipants: e.target.value
+                  })
                 }
                 type="text"
                 placeholder="number of participants"
@@ -126,7 +128,10 @@ class PartyForm extends Component {
               <input
                 value={coolingPeriod}
                 onChange={e =>
-                  this.setState({ coolingPeriod: 0 < parseInt(e.target.value) ? e.target.value : '1' })
+                  this.setState({
+                    coolingPeriod:
+                      0 < parseInt(e.target.value) ? e.target.value : "1"
+                  })
                 }
                 type="text"
                 placeholder="Cooling period in seconds"
@@ -143,7 +148,13 @@ class PartyForm extends Component {
           variables={variables}
           onCompleted={
             onCompleted
-              ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants, coolingPeriod)
+              ? ({ id }) =>
+                  onCompleted(
+                    { id },
+                    deposit,
+                    limitOfParticipants,
+                    coolingPeriod
+                  )
               : null
           }
         >

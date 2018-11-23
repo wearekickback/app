@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
-import styled from 'react-emotion'
+import React, { PureComponent } from "react"
+import styled from "react-emotion"
 
-import { track } from '../../api/analytics'
+import { track } from "../../api/analytics"
 
 function getButtonStyles(type) {
   switch (type) {
-    case 'light':
+    case "light":
       return `
         color: #6e76ff;
         background-color: white;
@@ -13,7 +13,7 @@ function getButtonStyles(type) {
           background-color:rgba(233,234,255,0.75);
         }
       `
-    case 'hollow':
+    case "hollow":
       return `
         color: #5D64DE;
         background-color: transparent;
@@ -21,7 +21,7 @@ function getButtonStyles(type) {
           background-color:rgba(233,234,255,0.75);
         }
       `
-    case 'disabled':
+    case "disabled":
       return `
         color: #BCBDC5;
         background-color: #EDEEF4;
@@ -34,7 +34,7 @@ function getButtonStyles(type) {
         }
       `
     default:
-      return ''
+      return ""
   }
 }
 
@@ -66,17 +66,17 @@ function DefaultButtonStyles() {
   `
 }
 
-const ButtonContainer = styled('button')`
+const ButtonContainer = styled("button")`
   ${props => DefaultButtonStyles(props)}
-  ${({ wide }) => wide ? 'width: 100%;' : ''};
-  ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
+  ${({ wide }) => (wide ? "width: 100%;" : "")};
+  ${({ twoThirds }) => (twoThirds ? "width: 66%;" : "")};
   ${({ type }) => getButtonStyles(type)};
 `
 
-const Link = styled('a')`
+const Link = styled("a")`
   ${props => DefaultButtonStyles(props)}
-  ${({ wide }) => wide ? 'width: 100%;' : ''};
-  ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
+  ${({ wide }) => (wide ? "width: 100%;" : "")};
+  ${({ twoThirds }) => (twoThirds ? "width: 66%;" : "")};
 `
 
 export class ButtonLink extends PureComponent {
@@ -84,15 +84,16 @@ export class ButtonLink extends PureComponent {
     track(`Click: ${this.props.analyticsId}`)
   }
 
-  render () {
+  render() {
     const { children, ...props } = this.props
 
     return (
-      <Link onClick={this._onClick} {...props}>{children}</Link>
+      <Link onClick={this._onClick} {...props}>
+        {children}
+      </Link>
     )
   }
 }
-
 
 export default class Button extends PureComponent {
   _onClick = () => {
@@ -104,15 +105,12 @@ export default class Button extends PureComponent {
   render() {
     const { children, ...props } = this.props
 
-    props.type = props.disabled ? 'disabled' : props.type
+    props.type = props.disabled ? "disabled" : props.type
 
-    const disabled = props.type === 'disabled'
+    const disabled = props.type === "disabled"
 
     return (
-      <ButtonContainer
-        {...props}
-        onClick={disabled ? null : this._onClick}
-      >
+      <ButtonContainer {...props} onClick={disabled ? null : this._onClick}>
         {children}
       </ButtonContainer>
     )

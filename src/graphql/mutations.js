@@ -1,6 +1,6 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag"
 
-import { ProfileFields, ParticipantFields } from './fragments'
+import { ProfileFields, ParticipantFields } from "./fragments"
 
 export const CreateParty = gql`
   mutation createParty(
@@ -113,7 +113,9 @@ export const RsvpToEvent = gql`
 
 export const AddPartyAdmins = gql`
   mutation addAdmins($address: String, $userAddresses: [String]) {
-    addAdmins(address: $address, userAddresses: $userAddresses) @client @requireAuth
+    addAdmins(address: $address, userAddresses: $userAddresses)
+      @client
+      @requireAuth
   }
 `
 

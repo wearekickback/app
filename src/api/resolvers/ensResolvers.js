@@ -1,4 +1,4 @@
-import getWeb3 from '../web3'
+import getWeb3 from "../web3"
 
 export const defaults = {}
 
@@ -7,7 +7,7 @@ const resolvers = {
     getReverseRecord: async (_, { address }) => {
       const obj = {
         address,
-        __typename: 'ReverseRecord'
+        __typename: "ReverseRecord"
       }
 
       try {

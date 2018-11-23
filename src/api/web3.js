@@ -1,12 +1,12 @@
-import { Deployer } from '@wearekickback/contracts'
-import Web3 from 'web3'
-import EventEmitter from 'eventemitter3'
+import { Deployer } from "@wearekickback/contracts"
+import Web3 from "web3"
+import EventEmitter from "eventemitter3"
 
-import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
-import { getProvider } from '../GlobalState'
-import { NEW_BLOCK } from '../utils/events'
-import { clientInstance } from '../graphql'
-import { NetworkIdQuery } from '../graphql/queries'
+import { DEPLOYER_CONTRACT_ADDRESS } from "../config"
+import { getProvider } from "../GlobalState"
+import { NEW_BLOCK } from "../utils/events"
+import { clientInstance } from "../graphql"
+import { NetworkIdQuery } from "../graphql/queries"
 
 let web3
 let networkState = {}
@@ -21,24 +21,24 @@ const updateGlobalState = () => {
 
 const getNetworkName = id => {
   switch (id) {
-    case '1':
-      return 'Mainnet'
-    case '3':
-      return 'Ropsten'
-    case '4':
-      return 'Rinkeby'
+    case "1":
+      return "Mainnet"
+    case "3":
+      return "Ropsten"
+    case "4":
+      return "Rinkeby"
     default:
-      return 'Local/Private'
+      return "Local/Private"
   }
 }
 
 const getNetworkProviderUrl = id => {
   switch (id) {
-    case '1':
+    case "1":
       return `https://mainnet.infura.io/`
-    case '3':
+    case "3":
       return `https://ropsten.infura.io/`
-    case '4':
+    case "4":
       return `https://rinkeby.infura.io/`
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
@@ -47,9 +47,9 @@ const getNetworkProviderUrl = id => {
 
 const isLocalNetwork = id => {
   switch (id) {
-    case '1':
-    case '3':
-    case '4':
+    case "1":
+    case "3":
+    case "4":
       return false
     default:
       return true
@@ -61,7 +61,9 @@ async function getWeb3() {
     try {
       networkState = {}
 
-      const result = await clientInstance.query({ query: NetworkIdQuery })
+      const result = await clientInstance.query({
+        query: NetworkIdQuery
+      })
       if (result.error) {
         throw new Error(result.error)
       }
@@ -78,7 +80,7 @@ async function getWeb3() {
         networkState.readOnly = false
       } else {
         console.log(
-          'No web3 instance injected. Falling back to cloud provider.'
+          "No web3 instance injected. Falling back to cloud provider."
         )
         web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
         networkState.readOnly = true
@@ -95,7 +97,7 @@ async function getWeb3() {
 
       // if web3 not set then something failed
       if (!web3) {
-        throw new Error('Error setting up web3')
+        throw new Error("Error setting up web3")
       } else {
         networkState.allGood = true
       }
@@ -103,7 +105,7 @@ async function getWeb3() {
       // poll for blocks
       setInterval(async () => {
         try {
-          const block = await web3.eth.getBlock('latest')
+          const block = await web3.eth.getBlock("latest")
           events.emit(NEW_BLOCK, block)
         } catch (__) {
           /* nothing to do */
@@ -142,7 +144,7 @@ export async function getEvents(address, abi) {
   return new Promise(function(resolve, reject) {
     const Contract = window.web3.eth.contract(abi)
     const instance = Contract.at(address)
-    const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
+    const events = instance.allEvents({ fromBlock: 0, toBlock: "latest" })
     events.get(function(error, result) {
       if (error) {
         reject(error)
@@ -165,7 +167,7 @@ export async function getAccount() {
         const accounts = await window.ethereum.enable()
         return accounts[0]
       } catch (error) {
-        console.warn('Did not allow app to access dapp browser')
+        console.warn("Did not allow app to access dapp browser")
         throw error
       }
     }

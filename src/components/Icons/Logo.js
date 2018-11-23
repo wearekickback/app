@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'react-emotion'
+import React from "react"
+import styled from "react-emotion"
 
-const SVG = styled('svg')`
+const SVG = styled("svg")`
   width: 40px;
   margin-left: -5px;
 `

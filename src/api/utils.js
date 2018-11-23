@@ -1,5 +1,5 @@
-import { events } from '@wearekickback/contracts'
-import { parseLog } from 'ethereum-event-logs'
+import { events } from "@wearekickback/contracts"
+import { parseLog } from "ethereum-event-logs"
 
 export const extractNewPartyAddressFromTx = tx => {
   // coerce events into logs if available

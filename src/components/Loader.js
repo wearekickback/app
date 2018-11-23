@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'react-emotion'
+import React from "react"
+import styled from "react-emotion"
 
-const LoaderContainer = styled('div')`
+const LoaderContainer = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,8 +10,8 @@ const LoaderContainer = styled('div')`
 const LoaderWrapper = ({ large }) => (
   <LoaderContainer>
     <svg
-      width={large ? '80' : '40'}
-      height={large ? '80' : '40'}
+      width={large ? "80" : "40"}
+      height={large ? "80" : "40"}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid"

@@ -1,21 +1,21 @@
-import { ApolloConsumer } from 'react-apollo'
-import React, { Component } from 'react'
-import styled from 'react-emotion'
+import { ApolloConsumer } from "react-apollo"
+import React, { Component } from "react"
+import styled from "react-emotion"
 
-import { QRSupportedQuery, QRQuery } from '../../graphql/queries'
+import { QRSupportedQuery, QRQuery } from "../../graphql/queries"
 
-import Button from '../Forms/Button'
-import ErrorBox from '../ErrorBox'
-import { Search } from '../Forms/TextInput'
-import Label from '../Forms/Label'
-import Select from '../Forms/Select'
-import { ReactComponent as SearchIcon } from '../svg/Search.svg'
-import SafeQuery from '../SafeQuery'
+import Button from "../Forms/Button"
+import ErrorBox from "../ErrorBox"
+import { Search } from "../Forms/TextInput"
+import Label from "../Forms/Label"
+import Select from "../Forms/Select"
+import { ReactComponent as SearchIcon } from "../svg/Search.svg"
+import SafeQuery from "../SafeQuery"
 
-const QRCodeContainer = styled('div')`
+const QRCodeContainer = styled("div")`
   margin-bottom: 20px;
 `
-const Filter = styled('div')`
+const Filter = styled("div")`
   width: 200px;
   margin-bottom: 20px;
 `
@@ -28,7 +28,7 @@ class EventFilters extends Component {
       try {
         const { error, data = {} } = await client.query({
           query: QRQuery,
-          fetchPolicy: 'no-cache'
+          fetchPolicy: "no-cache"
         })
 
         if (error) {
@@ -60,21 +60,23 @@ class EventFilters extends Component {
 
     return (
       <EventFiltersContainer>
-        {amAdmin &&
-          !ended && (
-            <Filter>
-              <Label>Filters</Label>
-              <Select
-                onChange={handleFilterChange}
-                placeholder="Choose"
-                options={[
-                  { label: 'All', value: 'all' },
-                  { label: 'Not marked attended', value: 'unmarked' },
-                  { label: 'Marked attended', value: 'marked' }
-                ]}
-              />
-            </Filter>
-          )}
+        {amAdmin && !ended && (
+          <Filter>
+            <Label>Filters</Label>
+            <Select
+              onChange={handleFilterChange}
+              placeholder="Choose"
+              options={[
+                { label: "All", value: "all" },
+                {
+                  label: "Not marked attended",
+                  value: "unmarked"
+                },
+                { label: "Marked attended", value: "marked" }
+              ]}
+            />
+          </Filter>
+        )}
 
         <Search
           type="text"
@@ -105,6 +107,6 @@ class EventFilters extends Component {
   }
 }
 
-const EventFiltersContainer = styled('div')``
+const EventFiltersContainer = styled("div")``
 
 export default EventFilters

@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { Component } from "react"
+import { withRouter } from "react-router-dom"
 
-import PartyForm from '../components/SingleEvent/Admin/PartyForm'
-import { CreatePendingParty } from '../graphql/mutations'
+import PartyForm from "../components/SingleEvent/Admin/PartyForm"
+import { CreatePendingParty } from "../graphql/mutations"
 
 class Create extends Component {
   state = {
-    password: ''
+    password: ""
   }
 
   render() {

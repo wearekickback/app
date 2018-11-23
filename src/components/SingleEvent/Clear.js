@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'react-emotion'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
+import React from "react"
+import styled from "react-emotion"
+import { Mutation } from "react-apollo"
+import gql from "graphql-tag"
 
-import Button from '../Forms/Button'
+import Button from "../Forms/Button"
 
 const CLEAR = gql`
   mutation clear($address: String) {
@@ -19,11 +19,15 @@ const Clear = ({ address }) => (
         address
       }}
     >
-      {clear => <Button analyticsId='Clear Event Pot' onClick={clear}>Clear</Button>}
+      {clear => (
+        <Button analyticsId="Clear Event Pot" onClick={clear}>
+          Clear
+        </Button>
+      )}
     </Mutation>
   </ClearContainer>
 )
 
-const ClearContainer = styled('div')``
+const ClearContainer = styled("div")``
 
 export default Clear

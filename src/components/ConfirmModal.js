@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-import styled from 'react-emotion'
-import Button from '../components/Forms/Button'
-import { GlobalConsumer } from '../GlobalState'
+import React, { Component } from "react"
+import styled from "react-emotion"
+import Button from "../components/Forms/Button"
+import { GlobalConsumer } from "../GlobalState"
 
-const ConfirmModalContainer = styled('div')`
+const ConfirmModalContainer = styled("div")`
   display: flex;
   flex-direction: column;
   justify-content: center;
 `
 
-const Buttons = styled('div')`
+const Buttons = styled("div")`
   display: flex;
   justify-content: flex-end;
 `
 
-const Message = styled('div')`
+const Message = styled("div")`
   margin-bottom: 20px;
   line-height: 1.6em;
 `
@@ -38,10 +38,10 @@ class ConfirmModal extends Component {
 
             <Buttons>
               <Cancel
-                onClick={() => toggleModal({ name: 'CONFIRM_TRANSACTION' })}
+                onClick={() => toggleModal({ name: "CONFIRM_TRANSACTION" })}
                 type="hollow"
               >
-                {this.state.mutationStarted ? 'Close' : 'Cancel'}
+                {this.state.mutationStarted ? "Close" : "Cancel"}
               </Cancel>
               {mutationComponent ? (
                 <div onClick={this.startMutation}>{mutationComponent}</div>

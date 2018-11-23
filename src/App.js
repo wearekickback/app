@@ -1,33 +1,33 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from "react"
 import {
   BrowserRouter as Router,
   Route as DefaultRoute,
   Switch
-} from 'react-router-dom'
+} from "react-router-dom"
 
-import { RouteAnalytics } from './components/Analytics'
+import { RouteAnalytics } from "./components/Analytics"
 
-import DefaultLayout from './layout/Layouts'
-import { HomePageLayout } from './layout/Layouts'
+import DefaultLayout from "./layout/Layouts"
+import { HomePageLayout } from "./layout/Layouts"
 
-import AllEvents from './routes/AllEvents'
-import CreatePendingEvent from './routes/CreatePendingEvent'
-import DeployPendingEvent from './routes/DeployPendingEvent'
-import SingleEvent from './routes/SingleEvent'
-import SingleEventAdmin from './routes/SingleEventAdmin'
-import ParticipantTableList from './routes/ParticipantTableList'
-import LandingPage from './routes/LandingPage'
-import Team from './routes/Team'
-import Faq from './routes/Faq'
-import Privacy from './routes/Privacy'
-import Terms from './routes/Terms'
-import ScrollToTop from './components/ScrollToTop'
-import Modal from './components/Modal/Modal'
-import SignIn from './components/Auth/SignIn'
-import EditProfile from './components/Profile/EditProfile'
-import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
+import AllEvents from "./routes/AllEvents"
+import CreatePendingEvent from "./routes/CreatePendingEvent"
+import DeployPendingEvent from "./routes/DeployPendingEvent"
+import SingleEvent from "./routes/SingleEvent"
+import SingleEventAdmin from "./routes/SingleEventAdmin"
+import ParticipantTableList from "./routes/ParticipantTableList"
+import LandingPage from "./routes/LandingPage"
+import Team from "./routes/Team"
+import Faq from "./routes/Faq"
+import Privacy from "./routes/Privacy"
+import Terms from "./routes/Terms"
+import ScrollToTop from "./components/ScrollToTop"
+import Modal from "./components/Modal/Modal"
+import SignIn from "./components/Auth/SignIn"
+import EditProfile from "./components/Profile/EditProfile"
+import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from "./modals"
 
-import './App.css'
+import "./App.css"
 
 const Route = ({
   component: Component,

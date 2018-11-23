@@ -1,7 +1,7 @@
-import { toBN } from 'web3-utils'
-import getWeb3, { getAccount } from '../web3'
-import { Conference } from '@wearekickback/contracts'
-import events from '../../fixtures/events.json'
+import { toBN } from "web3-utils"
+import getWeb3, { getAccount } from "../web3"
+import { Conference } from "@wearekickback/contracts"
+import events from "../../fixtures/events.json"
 
 const abi = Conference.abi
 
@@ -98,7 +98,7 @@ const resolvers = {
               address: arr.addr,
               attended: arr.attended,
               paid: arr.paid,
-              __typename: 'Participant'
+              __typename: "Participant"
             }
           })
       )
@@ -117,14 +117,14 @@ const resolvers = {
         contract: contract.methods,
         ...eventFixture,
         __rawContract: contract,
-        __typename: 'Party'
+        __typename: "Party"
       }
     }
   },
 
   Mutation: {
     async addAdmins(_, { address, userAddresses }) {
-      console.log(`Adding admins:\n${userAddresses.join('\n')}`)
+      console.log(`Adding admins:\n${userAddresses.join("\n")}`)
 
       const web3 = await getWeb3()
       const account = await getAccount()

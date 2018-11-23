@@ -1,9 +1,9 @@
-import _ from 'lodash'
+import _ from "lodash"
 
 const mappings = {
-  Party: ['address'],
-  Participant: ['user.address'],
-  SocialMedia: ['type','value'],
+  Party: ["address"],
+  Participant: ["user.address"],
+  SocialMedia: ["type", "value"]
 }
 
 export const dataIdFromObject = o => {
@@ -12,7 +12,7 @@ export const dataIdFromObject = o => {
   let id
   const mapProps = mappings[type]
   if (mapProps) {
-    id = mapProps.reduce((str, p) => `${str}${_.get(o, p, '')}`, '')
+    id = mapProps.reduce((str, p) => `${str}${_.get(o, p, "")}`, "")
   } else {
     id = JSON.stringify(o)
   }

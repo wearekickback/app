@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
-import uuid from 'uuid'
-import ReactTooltip from 'react-tooltip'
-import styled from 'react-emotion'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { findDOMNode } from "react-dom"
+import uuid from "uuid"
+import ReactTooltip from "react-tooltip"
+import styled from "react-emotion"
 
 const DefaultTooltip = styled(ReactTooltip)`
   z-index: 1;
@@ -16,12 +16,12 @@ export default class Tooltip extends Component {
 
   state = {}
 
-  componentDidMount () {
+  componentDidMount() {
     this.id = uuid()
     this.componentDidUpdate()
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (!this.elem) {
       return
     }
@@ -37,7 +37,7 @@ export default class Tooltip extends Component {
     this.elem = e
   }
 
-  render () {
+  render() {
     const { text, position, children } = this.props
 
     return (
@@ -46,17 +46,13 @@ export default class Tooltip extends Component {
           showTooltip: this.show,
           hideTooltip: this.hide,
           tooltipElement: (
-            <span
-              data-tip={text}
-              data-for={this.id}
-              ref={this._onRef}
-            />
+            <span data-tip={text} data-for={this.id} ref={this._onRef} />
           )
         })}
         <DefaultTooltip
           id={this.id}
           event="dbclick"
-          place={position || 'top'}
+          place={position || "top"}
           effect="solid"
           type="dark"
         />
