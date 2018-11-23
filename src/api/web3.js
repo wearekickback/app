@@ -85,7 +85,7 @@ async function getWeb3() {
         try {
           await fetch(url)
           console.log('local node active')
-          testing = true
+          localEndpoint = true
           web3 = new Web3(new Web3.providers.HttpProvider(url))
         } catch (error) {
           if (

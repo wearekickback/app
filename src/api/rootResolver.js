@@ -6,7 +6,7 @@ import getWeb3, {
   getAccount,
   getEvents,
   getDeployerAddress,
-  isTesting
+  isLocalEndpoint
 } from './web3'
 import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
