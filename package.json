@@ -42,6 +42,7 @@
   },
   "scripts": {
     "setup": "scripts/setup.js",
+    "seedParty": "node scripts/seedParty.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "postbuild": "cp build/index.html build/200.html",
@@ -69,6 +70,7 @@
     "cypress": "^3.1.2",
     "cypress-testing-library": "^2.3.3",
     "ganache-cli": "^6.1.8",
+    "graphql-request": "^1.8.2",
     "surge": "^0.20.1",
     "yargs": "^12.0.2"
   },
