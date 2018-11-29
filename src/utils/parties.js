@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { addressesMatch, PARTICIPANT_STATUS } from '@noblocknoparty/shared'
+import { addressesMatch, PARTICIPANT_STATUS } from '@wearekickback/shared'
 
 import { toEthVal } from './units'
 
@@ -10,7 +10,11 @@ export const getMyParticipantEntry = (party, address) =>
 
 export const getParticipantsMarkedAttended = participants =>
   participants.reduce(
-    (a, c) => (c.status === PARTICIPANT_STATUS.SHOWED_UP ? a + 1 : a),
+    (a, c) =>
+      c.status === PARTICIPANT_STATUS.SHOWED_UP ||
+      c.status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+        ? a + 1
+        : a,
     0
   )
 

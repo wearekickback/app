@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
-import { pluralize, PARTICIPANT_STATUS } from '@noblocknoparty/shared'
+import { pluralize, PARTICIPANT_STATUS } from '@wearekickback/shared'
 import Participant from './Participant'
 import EventFilters from './EventFilters'
 
