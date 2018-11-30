@@ -66,6 +66,7 @@ class DummyParty {
 
   async deploy() {
     await this.deployNewParty()
+    return this
   }
 
   async createPendingParty() {
@@ -125,18 +126,18 @@ class DummyParty {
       from: this.owner
     })
 
-    this.deposit = await this.party.methods.deposit().call()
     const newPartyAddress = extractNewPartyAddressFromTx(tx)
 
     console.log(`Deployed new party at address: ${newPartyAddress}`)
     this.party = new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
+    this.deposit = await this.party.methods.deposit().call()
 
     return this.party
   }
 
-  async rsvp(account) {
-    const deposit = await this.party.methods.deposit().call()
-    await this.party.methods.register().send({
+  async _rsvp(account) {
+    const deposit = this.deposit
+    const tx = await this.party.methods.register().send({
       from: account,
       gas: 120000,
       value: deposit
@@ -146,16 +147,12 @@ class DummyParty {
         this.party._address
       }`
     )
+
+    return Promise.resolve(tx)
   }
 
-  massRSVP(...accounts) {
-    return accounts.map(account => {
-      this.party.methods.register().send({
-        from: account,
-        gas: 120000,
-        value: deposit
-      })
-    })
+  async rsvp(...accounts) {
+    return Promise.all(accounts.map(account => this._rsvp(account)))
   }
 }
 
@@ -165,18 +162,18 @@ async function seed() {
   const web3 = new Web3(provider)
   const accounts = await web3.eth.getAccounts()
 
-  const party1 = new DummyParty(web3, accounts[0], {
+  const party1 = await new DummyParty(web3, accounts[0], {
     name: 'Super duper'
-  })
-  await party1.deploy()
-  await party1.rsvp(accounts[1])
-  await party1.rsvp(accounts[2])
+  }).deploy()
 
-  const party2 = new DummyParty(web3, accounts[0], {
+  await party1.rsvp(accounts[1], accounts[2])
+
+  const party2 = await new DummyParty(web3, accounts[0], {
     name: 'Super duper 2'
-  })
-  await party2.deploy()
-  Promise.all([party2.rsvp(accounts[1]), party2.rsvp(accounts[2])])
+  }).deploy()
+
+  await party2.rsvp(accounts[1], accounts[2])
+  return
 }
 
 seed().then(() => {
