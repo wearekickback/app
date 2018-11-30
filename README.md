@@ -14,3 +14,18 @@ Please read [our full setup guide](https://github.com/noblocknoparty/docs/blob/m
 - Fill in event detail and press "Submit"
 - Once transaction is complete, then get `deployedAddress` from the event.
 - Go to http://localhost:3000/party/$address to see if newly created event is shown.
+
+**Automated E2E tests with cypress**
+Make sure the locally environment is up and running with local contract, ganache and serverr.
+
+Run the seeding script to deploy some seed parties
+
+```bash
+$ yarn run seedParty
+```
+
+```bash
+$ yarn run cypress:open
+```
+
+Seed script must be re-run to test again.
