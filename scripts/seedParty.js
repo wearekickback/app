@@ -4,9 +4,12 @@ const gqlr = require('graphql-request')
 const { GraphQLClient } = gqlr
 const EthVal = require('ethval')
 const {
-  Deployer: { abi }
+  Deployer: { abi: DeployerABI },
+  Conference: { abi: ConferenceABI }
 } = require('@wearekickback/contracts')
 const { DEPLOYER_CONTRACT_ADDRESS } = require('../src/config')
+const { parseLog } = require('ethereum-event-logs')
+const { events } = require('@wearekickback/contracts')
 
 const PendingParty = `
   mutation createPendingParty($meta: PartyMetaInput!, $password: String) {
@@ -46,83 +49,145 @@ const LoginUserNoAuth = `
   }
 `
 
-async function init() {
-  const endpoint = 'http://localhost:3001/graphql'
-  const ethereumEndpoint = 'http://localhost:8545'
-
-  // create graphql client
-
-  let client = new GraphQLClient(endpoint, { headers: {} })
-  const provider = new Web3.providers.HttpProvider(ethereumEndpoint)
-  const web3 = new Web3(provider)
-  const accounts = await web3.eth.getAccounts()
-  const tokens = []
-
-  //request signMessage from server
-
-  function requestChallenge(address) {
-    return client.request(LoginChallenge, { address })
+const extractNewPartyAddressFromTx = tx => {
+  // coerce events into logs if available
+  if (tx.events) {
+    tx.logs = Object.values(tx.events).map(a => {
+      a.topics = a.raw.topics
+      a.data = a.raw.data
+      return a
+    })
   }
+  const [event] = parseLog(tx.logs || [], [events.NewParty])
+  return event ? event.args.deployedAddress : null
+}
 
-  async function sign(challengeString, _address) {
-    return web3.eth.sign(challengeString, _address)
-  }
-
-  const { createLoginChallenge } = await requestChallenge(accounts[0])
-
-  const signature = await sign(createLoginChallenge.str, accounts[0])
-
-  const AUTH = 'auth'
-  const TOKEN_SECRET = 'kickback'
-  const TOKEN_ALGORITHM = 'HS256'
-
-  const token = jwt.sign(
-    { address: accounts[0], sig: signature },
-    TOKEN_SECRET,
+class DummyParty {
+  constructor(
+    web3,
+    owner,
     {
-      algorithm: TOKEN_ALGORITHM
-    }
-  )
-
-  console.log(token)
-
-  client = new GraphQLClient(endpoint, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-
-  const user = await client.request(LoginUserNoAuth)
-
-  const { id } = await client.request(PendingParty, {
-    meta: {
-      name: 'Awesome Party',
-      description: 'description',
-      date: '25th December',
-      location: 'Some location',
-      image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUk7ni2PYcBZ_qXOLriROqyiiZRGiCMfKnkdx_I1gTOVf3FPGQ'
+      name = 'Awesome Party',
+      description = 'description',
+      date = '25th December',
+      location = 'Some location',
+      image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUk7ni2PYcBZ_qXOLriROqyiiZRGiCMfKnkdx_I1gTOVf3FPGQ'
     },
-    password: ''
-  })
+    endpoint = 'http://localhost:3001/graphql'
+  ) {
+    this.endpoint = endpoint
+    this.web3 = web3
+    this.client = new GraphQLClient(endpoint, { headers: {} })
+    this.owner = owner
+    this.meta = {
+      name,
+      description,
+      date,
+      location,
+      image
+    }
+  }
 
-  const deployer = new web3.eth.Contract(abi, DEPLOYER_CONTRACT_ADDRESS)
+  async deploy() {
+    await this.deployNewParty()
+  }
 
-  const tx = await deployer.methods
-    .deploy(
+  async createPendingParty() {
+    const { id } = await this.client.request(PendingParty, {
+      meta: this.meta,
+      password: ''
+    })
+
+    return id
+  }
+
+  async getToken(account) {
+    const requestChallenge = address => {
+      return this.client.request(LoginChallenge, { address })
+    }
+    const { createLoginChallenge } = await requestChallenge(account)
+
+    const signature = await this.web3.eth.sign(
+      createLoginChallenge.str,
+      account
+    )
+
+    const TOKEN_SECRET = 'kickback'
+    const TOKEN_ALGORITHM = 'HS256'
+
+    const token = jwt.sign({ address: account, sig: signature }, TOKEN_SECRET, {
+      algorithm: TOKEN_ALGORITHM
+    })
+
+    return token
+  }
+
+  async deployNewParty() {
+    console.log('owner', this.owner)
+    const token = await this.getToken(this.owner)
+    this.client = new GraphQLClient(this.endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    //await this.client.request(LoginUserNoAuth)
+
+    const id = await this.createPendingParty()
+
+    const deployer = new this.web3.eth.Contract(
+      DeployerABI,
+      DEPLOYER_CONTRACT_ADDRESS
+    )
+
+    const args = [
       id,
       new EthVal(0.02, 'eth').toWei().toString(16),
       new EthVal(100).toString(16),
       new EthVal(1).toString(16)
-    )
-    .send({
+    ]
+
+    console.log(args)
+
+    const tx = await deployer.methods.deploy(...args).send({
       gas: 4000000,
-      from: accounts[0]
+      from: this.owner
     })
 
-  console.log(tx)
+    const newPartyAddress = extractNewPartyAddressFromTx(tx)
+    this.party = new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
+    return this.party
+  }
 
-  //use token to mutate and create a new party
+  async rsvp(account) {
+    const deposit = await this.party.methods.deposit().call()
+    return this.party.methods.register().send({
+      from: account,
+      gas: 120000,
+      value: deposit
+    })
+  }
 }
 
-init()
+async function seed() {
+  const ethereumEndpoint = 'http://localhost:8545'
+  const provider = new Web3.providers.HttpProvider(ethereumEndpoint)
+  const web3 = new Web3(provider)
+  const accounts = await web3.eth.getAccounts()
+
+  const party1 = new DummyParty(web3, accounts[0], {
+    name: 'Party 2'
+  })
+  await party1.deploy()
+  await party1.rsvp(accounts[1])
+  await party1.rsvp(accounts[2])
+
+  const party2 = new DummyParty(web3, accounts[0], {
+    name: 'Party 3'
+  })
+  await party2.deploy()
+  await party2.rsvp(accounts[1])
+  await party2.rsvp(accounts[2])
+}
+
+seed()
