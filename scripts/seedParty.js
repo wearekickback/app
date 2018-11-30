@@ -123,7 +123,6 @@ class DummyParty {
   }
 
   async deployNewParty() {
-    console.log('owner', this.owner)
     const token = await this.getToken(this.owner)
     this.client = new GraphQLClient(this.endpoint, {
       headers: {
@@ -147,25 +146,30 @@ class DummyParty {
       new EthVal(1).toString(16)
     ]
 
-    console.log(args)
-
     const tx = await deployer.methods.deploy(...args).send({
       gas: 4000000,
       from: this.owner
     })
-
     const newPartyAddress = extractNewPartyAddressFromTx(tx)
+
+    console.log(`Deployed new party at address: ${newPartyAddress}`)
     this.party = new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
+
     return this.party
   }
 
   async rsvp(account) {
     const deposit = await this.party.methods.deposit().call()
-    return this.party.methods.register().send({
+    await this.party.methods.register().send({
       from: account,
       gas: 120000,
       value: deposit
     })
+    console.log(
+      `New rsvp ${account} at party '${this.meta.name}'at address: ${
+        this.party._address
+      }`
+    )
   }
 }
 
@@ -176,14 +180,14 @@ async function seed() {
   const accounts = await web3.eth.getAccounts()
 
   const party1 = new DummyParty(web3, accounts[0], {
-    name: 'Party 2'
+    name: 'Super duper'
   })
   await party1.deploy()
   await party1.rsvp(accounts[1])
   await party1.rsvp(accounts[2])
 
   const party2 = new DummyParty(web3, accounts[0], {
-    name: 'Party 3'
+    name: 'Super duper 2'
   })
   await party2.deploy()
   await party2.rsvp(accounts[1])
