@@ -12,14 +12,26 @@ function stubTracking() {
   })
 }
 
+function signIn() {
+  cy.getByTestId('sign-in-modal').within(() => {
+    cy.getByText('Sign in', { exact: false }).should('exist')
+    cy.getByTestId('sign-in-button').click()
+  })
+}
+
+function finalise() {
+  cy.queryByText('Finalize', { exact: false }).click()
+  cy.queryByText('Finalize and enable payouts', { exact: false }).click()
+}
+
 beforeEach(() => {
   stubTracking()
 })
 
-const CONFIRMATION_TIME = 12000
+const CONFIRMATION_TIME = 15000
 
-describe('Admin create, RSVP and finalise', async () => {
-  it('Admin create, RSVP and finalise', async () => {
+describe('Admin create, RSVP and finalise', () => {
+  it('Admin create, RSVP and finalise', () => {
     cy.visit('http://localhost:3000/create')
 
     // Fill in form
@@ -42,14 +54,10 @@ describe('Admin create, RSVP and finalise', async () => {
       )
     // Deploy pending event to server //
     cy.getByText('Create Pending Party').click()
-    cy.getByTestId('sign-in-modal').within(() => {
-      cy.getByText('Sign in', { exact: false }).should('exist')
-      cy.getByTestId('sign-in-button').click()
-    })
+    signIn()
     // Deploy to network //
     cy.getByText('Deploy').click()
-    cy.wait(CONFIRMATION_TIME)
-    cy.getByText('View event page').click()
+    cy.getByText('View event page', { timeout: CONFIRMATION_TIME }).click()
 
     // Assert information exists //
     cy.getByText('Super awesome event').should('exist')
@@ -58,31 +66,44 @@ describe('Admin create, RSVP and finalise', async () => {
     cy.getByText('12 September 2020').should('exist')
 
     cy.queryByText('RSVP -', { exact: false }).click()
-    cy.wait(CONFIRMATION_TIME)
-    cy.queryByText('1 going', { exact: false })
+    cy.queryByText('1 going', { exact: false, timeout: CONFIRMATION_TIME })
 
     // Finalise Event //
     cy.queryByText('Finalize', { exact: false }).click()
     cy.queryByText('Finalize and enable payouts', { exact: false }).click()
-    cy.wait(CONFIRMATION_TIME)
 
-    cy.getByText('Finalized').should('exist')
+    cy.getByText('Finalized', { timeout: CONFIRMATION_TIME }).should('exist')
   })
 })
 
-//TODO: Create a secont event other users can RSVP for
-// describe('User logged in', () => {
-//   it('Navigate to event page and click rsvp', async () => {
-//     stubTracking()
-//     cy.visit('http://localhost:3000')
-//     cy.getByText('Say hello to Kickback!').should('exist')
-//     cy.queryByText('Events').click()
-//     cy.url().should('include', '/events')
-//     cy.get('li:first-child a').then(event => {
-//       event.click()
-//     })
-//     cy.url().should('include', '/event')
-//     cy.queryByText('RSVP -', { exact: false }).click()
-//     cy.queryByText('Please ensure your browser is connected')
-//   })
-// })
+describe('Party with 2 people, one mark attended, one not', () => {
+  it('Admin create, RSVP and finalise', async () => {
+    cy.visit('http://localhost:3000/')
+    cy.getByText('Events').click()
+    cy.getByText('Super duper').click()
+
+    //TODO: expect there to be 2 participants
+
+    //Get Attendee box
+    cy.queryByText('makoto')
+      .parent()
+      .parent()
+      .within(container => {
+        cy.getByText('Mark Attended', {
+          container,
+          exact: false
+        }).click()
+      })
+
+    //TODO: expect there to be one marked attended
+
+    signIn()
+    finalise()
+    cy.getByText('Finalized', {
+      timeout: CONFIRMATION_TIME,
+      exact: false
+    }).should('exist')
+
+    //TODO: assert on payouts displayed are correct
+  })
+})
