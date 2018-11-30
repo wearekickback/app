@@ -25,30 +25,6 @@ const LoginChallenge = `
   }
 `
 
-const LoginUserNoAuth = `
-  mutation loginUser {
-    profile: loginUser {
-      address
-      realName
-      username
-      lastLogin
-      created
-      social {
-        type
-        value
-      }
-      email {
-        verified
-        pending
-      }
-      legal {
-        type
-        accepted
-      }
-    }
-  }
-`
-
 const extractNewPartyAddressFromTx = tx => {
   // coerce events into logs if available
   if (tx.events) {
@@ -130,8 +106,6 @@ class DummyParty {
       }
     })
 
-    //await this.client.request(LoginUserNoAuth)
-
     const id = await this.createPendingParty()
 
     const deployer = new this.web3.eth.Contract(
@@ -150,6 +124,8 @@ class DummyParty {
       gas: 4000000,
       from: this.owner
     })
+
+    this.deposit = await this.party.methods.deposit().call()
     const newPartyAddress = extractNewPartyAddressFromTx(tx)
 
     console.log(`Deployed new party at address: ${newPartyAddress}`)
@@ -171,6 +147,16 @@ class DummyParty {
       }`
     )
   }
+
+  massRSVP(...accounts) {
+    return accounts.map(account => {
+      this.party.methods.register().send({
+        from: account,
+        gas: 120000,
+        value: deposit
+      })
+    })
+  }
 }
 
 async function seed() {
@@ -190,8 +176,10 @@ async function seed() {
     name: 'Super duper 2'
   })
   await party2.deploy()
-  await party2.rsvp(accounts[1])
-  await party2.rsvp(accounts[2])
+  Promise.all([party2.rsvp(accounts[1]), party2.rsvp(accounts[2])])
 }
 
-seed()
+seed().then(() => {
+  console.log('Seeding parties complete!')
+  console.log('Ready to run cypress tests')
+})
