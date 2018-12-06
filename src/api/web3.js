@@ -80,28 +80,28 @@ async function getWeb3() {
         networkState.readOnly = false
       } else {
         //local node
-        const url = 'http://localhost:8545'
-
         try {
-          await fetch(url)
-          console.log('local node active')
-          localEndpoint = true
-          web3 = new Web3(new Web3.providers.HttpProvider(url))
+          await fetch('http://localhost:8545')
         } catch (error) {
           if (
-            error.readyState === 4 &&
-            (error.status === 400 || error.status === 200)
-          ) {
-            // the endpoint is active
-            console.log('Success')
-          } else {
-            console.log(
-              'No web3 instance injected. Falling back to cloud provider.'
+            !(
+              error.readyState !== 4 &&
+              (error.status === 400 || error.status === 200)
             )
+          ) {
+            localEndpoint = true
+            web3 = new Web3(new Web3.providers.HttpProvider(url))
+          } else {
             web3 = new Web3(
               getNetworkProviderUrl(networkState.expectedNetworkId)
             )
             networkState.readOnly = true
+          }
+        } finally {
+          if (web3) {
+            console.log('Success: Local node active')
+          } else {
+            console.log('Falling back to cloud provider.')
           }
         }
       }
