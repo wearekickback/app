@@ -54,6 +54,8 @@
     "deploy:branch": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn deploy:live; elif [ \"$TRAVIS_BRANCH\" = \"dev\" ]; then yarn deploy:dev; fi'",
     "deploy:pr": "yarn build:release:rinkeby && scripts/deployTravisBuildToSurge.sh",
     "deploy": "/bin/sh -c 'if [ \"$TRAVIS_PULL_REQUEST\" = \"false\" ]; then yarn deploy:branch; else yarn deploy:pr; fi'",
+    "precommit": "lint-staged",
+    "pretty": "prettier --write --tab-width 2 --no-semi --single-quote \t \"src/**/*.js\"",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
@@ -65,8 +67,17 @@
     "@storybook/react": "^3.4.11",
     "babel-plugin-macros": "^2.4.2",
     "ganache-cli": "^6.1.8",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.2",
     "surge": "^0.20.1",
     "yargs": "^12.0.2"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run pretty",
+      "git add"
+    ]
   },
   "browserslist": {
     "development": [

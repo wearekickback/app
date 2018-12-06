@@ -13,7 +13,8 @@ const Link = styled('a')`
 const EtherScanLink = ({ address, tx, children }) => (
   <GlobalConsumer>
     {({ networkState: { expectedNetworkName, expectedNetworkId } }) => {
-      const prefix = ('1' === expectedNetworkId) ? '' : `${expectedNetworkName.toLowerCase()}.`
+      const prefix =
+        '1' === expectedNetworkId ? '' : `${expectedNetworkName.toLowerCase()}.`
 
       let link
       if (address) {

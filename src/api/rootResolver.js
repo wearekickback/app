@@ -8,7 +8,9 @@ import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
-import qrCodeResolvers, { defaults as qrCodeDefaults } from './resolvers/qrCodeResolvers'
+import qrCodeResolvers, {
+  defaults as qrCodeDefaults
+} from './resolvers/qrCodeResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -30,7 +32,10 @@ const resolvers = {
       }
     },
     async parties() {
-      return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
+      return eventsList.map(event => ({
+        ...event,
+        __typename: 'PartyMeta'
+      }))
     },
     async events() {
       const deployerAddress = await getDeployerAddress()
@@ -90,6 +95,16 @@ const resolvers = {
   }
 }
 
-const defaults = merge(rootDefaults, singleEventDefaults, ensDefaults, qrCodeDefaults)
-export default merge(resolvers, singleEventResolvers, ensResolvers, qrCodeResolvers)
+const defaults = merge(
+  rootDefaults,
+  singleEventDefaults,
+  ensDefaults,
+  qrCodeDefaults
+)
+export default merge(
+  resolvers,
+  singleEventResolvers,
+  ensResolvers,
+  qrCodeResolvers
+)
 export { defaults }

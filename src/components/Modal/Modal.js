@@ -28,7 +28,10 @@ class Modal extends Component {
                   {Component ? (
                     <Component name={name} />
                   ) : currentModal.render ? (
-                    currentModal.render({ ...this.props, toggleModal })
+                    currentModal.render({
+                      ...this.props,
+                      toggleModal
+                    })
                   ) : null}
                   {children}
                 </ModalContent>

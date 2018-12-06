@@ -78,19 +78,17 @@ const TeamMembers = () => (
           <a href="https://www.meetup.com/london-ethereum-codeup/">
             London Ethereum Codeup
           </a>{' '}
-          where he came up with the original idea of Kickback. Also works
-          at ENS as a smart contract developer.
+          where he came up with the original idea of Kickback. Also works at ENS
+          as a smart contract developer.
         </Bio>
       </Member>
       <Member>
         <Avatar src="https://avatars.io/twitter/_jefflau" />
-        <MemberName href="https://twitter.com/_jefflau">
-          Jeff Lau
-        </MemberName>
+        <MemberName href="https://twitter.com/_jefflau">Jeff Lau</MemberName>
         <Bio>
           Javascripter. Climber. Developer at{' '}
-          <a href="https://ens.domains">ENS</a>. Frontend mentor.
-          Distilling the complicated in simple ways.
+          <a href="https://ens.domains">ENS</a>. Frontend mentor. Distilling the
+          complicated in simple ways.
         </Bio>
       </Member>
       <Member>

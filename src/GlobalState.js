@@ -148,11 +148,10 @@ class Provider extends Component {
   }
 
   toggleModal = modal => {
-    this.setState(
-      state =>
-        state.currentModal && state.currentModal.name === modal.name
-          ? { currentModal: null }
-          : { currentModal: modal }
+    this.setState(state =>
+      state.currentModal && state.currentModal.name === modal.name
+        ? { currentModal: null }
+        : { currentModal: modal }
     )
   }
 

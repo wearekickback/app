@@ -61,7 +61,9 @@ async function getWeb3() {
     try {
       networkState = {}
 
-      const result = await clientInstance.query({ query: NetworkIdQuery })
+      const result = await clientInstance.query({
+        query: NetworkIdQuery
+      })
       if (result.error) {
         throw new Error(result.error)
       }

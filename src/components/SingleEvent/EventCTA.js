@@ -134,8 +134,8 @@ class EventCTA extends Component {
               </p>
               <ul>
                 <li>
-                  You RSVP but then don't turn up in time (or don't get marked as
-                  attended by the organizer).
+                  You RSVP but then don't turn up in time (or don't get marked
+                  as attended by the organizer).
                 </li>
                 <li>
                   You fail to withdraw your post-event payout within the cooling
@@ -192,7 +192,9 @@ class EventCTA extends Component {
                                   refetchQueries={[
                                     {
                                       query: PartyQuery,
-                                      variables: { address }
+                                      variables: {
+                                        address
+                                      }
                                     }
                                   ]}
                                 >

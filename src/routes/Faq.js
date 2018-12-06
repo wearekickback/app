@@ -9,12 +9,14 @@ class FAQ extends Component {
 
         <h3>How does Kickback work?</h3>
         <p>
-        Everyone commits a small amount of ETH when they RSVP, which is
-        refunded after the event check-in. Any no-shows lose their ETH,
-          which can then be split amongst the attendees.
-
-        To see the demo, please check out our <a href='https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ'>Youtube channel</a>.
-
+          Everyone commits a small amount of ETH when they RSVP, which is
+          refunded after the event check-in. Any no-shows lose their ETH, which
+          can then be split amongst the attendees. To see the demo, please check
+          out our{' '}
+          <a href="https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ">
+            Youtube channel
+          </a>
+          .
         </p>
         <h3>Can I cancel my registration?</h3>
         <p>No</p>
