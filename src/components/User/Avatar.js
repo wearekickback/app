@@ -11,15 +11,15 @@ const AvatarContainer = styled('div')`
 const Avatar = ({ href, src, className }) => {
   let container
 
-  if(href){
+  if (href) {
     container = (
       <AvatarContainer className={className}>
-        <a href={href} target="_blank" rel="noopener noreferrer" >
+        <a href={href} target="_blank" rel="noopener noreferrer">
           <img src={src} alt="avatar" />
         </a>
       </AvatarContainer>
     )
-  }else{
+  } else {
     container = (
       <AvatarContainer className={className}>
         <img src={src} alt="avatar" />

@@ -113,7 +113,7 @@ class Footer extends Component {
           <Row>
             <Copyright>&copy; 2018 No Block No Party Ltd</Copyright>
             <Social>
-              <a href="https://github.com/noblocknoparty">
+              <a href="https://github.com/wearekickback">
                 <GithubIcon />
               </a>
               <a href="https://twitter.com/wearekickback" className="twitter">

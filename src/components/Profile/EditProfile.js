@@ -47,11 +47,17 @@ export default class SignIn extends Component {
                 renderSubmitButton={(profile, isValid) => (
                   <SafeMutation
                     mutation={UpdateUserProfile}
-                    variables={{ profile: _.omit(profile, 'username') }}
+                    variables={{
+                      profile: _.omit(profile, 'username')
+                    }}
                   >
                     {updateUserProfile => (
                       <Button
-                        onClick={this.submit({ updateUserProfile, setUserProfile, toggleModal })}
+                        onClick={this.submit({
+                          updateUserProfile,
+                          setUserProfile,
+                          toggleModal
+                        })}
                         disabled={!isValid}
                       >
                         Save changes

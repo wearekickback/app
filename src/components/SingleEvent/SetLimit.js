@@ -20,7 +20,7 @@ const SetLimit = ({ address }) => {
           <Fragment>
             <input type="text" ref={element => (input = element)} />
             <Button
-              analyticsId='Set Event Limit'
+              analyticsId="Set Event Limit"
               onClick={() =>
                 setLimitOfParticipants({
                   variables: {

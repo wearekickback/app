@@ -29,8 +29,8 @@ class SingleEvent extends Component {
     const { address } = this.props.match.params
     return (
       <GlobalConsumer>
-        {({ userAddress }) => (
-          (!userAddress) ? (
+        {({ userAddress }) =>
+          !userAddress ? (
             <ErrorBox>You need to be logged-in to view this page</ErrorBox>
           ) : (
             <SafeQuery
@@ -43,12 +43,19 @@ class SingleEvent extends Component {
                 const isAdmin = amAdmin(party, userAddress)
 
                 if (!isAdmin) {
-                  return <ErrorBox>You need to be an admin to view this page</ErrorBox>
+                  return (
+                    <ErrorBox>
+                      You need to be an admin to view this page
+                    </ErrorBox>
+                  )
                 }
 
                 return (
                   <>
-                    <AdminIntro>These are the administrative functions for this event. Please be careful!</AdminIntro>
+                    <AdminIntro>
+                      These are the administrative functions for this event.
+                      Please be careful!
+                    </AdminIntro>
                     <SetLimit address={address} />
                     <Clear address={address} />
                     <UpdatePartyMeta address={address} />
@@ -60,7 +67,7 @@ class SingleEvent extends Component {
               }}
             </SafeQuery>
           )
-        )}
+        }
       </GlobalConsumer>
     )
   }

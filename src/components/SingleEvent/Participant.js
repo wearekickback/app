@@ -1,9 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
-import {
-  PARTICIPANT_STATUS,
-  calculateNumAttended
-} from '@wearekickback/shared'
+import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
 import { Mutation } from 'react-apollo'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'

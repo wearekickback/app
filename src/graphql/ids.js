@@ -3,7 +3,7 @@ import _ from 'lodash'
 const mappings = {
   Party: ['address'],
   Participant: ['user.address'],
-  SocialMedia: ['type','value'],
+  SocialMedia: ['type', 'value']
 }
 
 export const dataIdFromObject = o => {

@@ -194,9 +194,13 @@ class Home extends Component {
         </Hero>
         <CTA devcon>
           <CTAInner>
-            <h2>Heading to DevCon4?</h2>
-            <p>RSVP on Kickback powered events now!</p>
-            <ButtonLink analyticsId='See Events' href="/events">Check out events</ButtonLink>
+            <h2>Interested in trying out?</h2>
+            <p>
+              We are still in private beta but have a few events already listed
+            </p>
+            <ButtonLink analyticsId="See Events" href="/events">
+              Browse events
+            </ButtonLink>
           </CTAInner>
         </CTA>
         <Section>
@@ -267,7 +271,7 @@ class Home extends Component {
               the limited number of free event organisers.
             </p>
             <ButtonLink
-              analyticsId='Request Early Access'
+              analyticsId="Request Early Access"
               href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
             >
               Request early access

@@ -16,12 +16,12 @@ export default class Tooltip extends Component {
 
   state = {}
 
-  componentDidMount () {
+  componentDidMount() {
     this.id = uuid()
     this.componentDidUpdate()
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (!this.elem) {
       return
     }
@@ -37,7 +37,7 @@ export default class Tooltip extends Component {
     this.elem = e
   }
 
-  render () {
+  render() {
     const { text, position, children } = this.props
 
     return (
@@ -46,11 +46,7 @@ export default class Tooltip extends Component {
           showTooltip: this.show,
           hideTooltip: this.hide,
           tooltipElement: (
-            <span
-              data-tip={text}
-              data-for={this.id}
-              ref={this._onRef}
-            />
+            <span data-tip={text} data-for={this.id} ref={this._onRef} />
           )
         })}
         <DefaultTooltip

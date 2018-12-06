@@ -127,7 +127,9 @@ class PartyForm extends Component {
                 id="limit"
                 value={limitOfParticipants}
                 onChange={e =>
-                  this.setState({ limitOfParticipants: e.target.value })
+                  this.setState({
+                    limitOfParticipants: e.target.value
+                  })
                 }
                 type="text"
                 placeholder="number of participants"

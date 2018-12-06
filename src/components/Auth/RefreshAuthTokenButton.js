@@ -30,7 +30,9 @@ export default class RefreshAuthTokenButton extends Component {
         throw new Error('Unable to obtain user ethereum address')
       }
 
-      const result1 = await createLoginChallenge({ variables: { address } })
+      const result1 = await createLoginChallenge({
+        variables: { address }
+      })
 
       if (result1.errors) {
         throw new Error('Failed to obtain login challenge!')

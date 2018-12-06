@@ -113,7 +113,9 @@ export const RsvpToEvent = gql`
 
 export const AddPartyAdmins = gql`
   mutation addAdmins($address: String, $userAddresses: [String]) {
-    addAdmins(address: $address, userAddresses: $userAddresses) @client @requireAuth
+    addAdmins(address: $address, userAddresses: $userAddresses)
+      @client
+      @requireAuth
   }
 `
 

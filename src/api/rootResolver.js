@@ -37,7 +37,10 @@ const resolvers = {
       }
     },
     async parties() {
-      return eventsList.map(event => ({ ...event, __typename: 'PartyMeta' }))
+      return eventsList.map(event => ({
+        ...event,
+        __typename: 'PartyMeta'
+      }))
     },
     async events() {
       const deployerAddress = await getDeployerAddress()

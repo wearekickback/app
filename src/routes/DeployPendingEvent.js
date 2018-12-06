@@ -16,22 +16,31 @@ const SeedDiv = styled('div')`
 
 class DeployPendingEvent extends Component {
   render() {
-    const { id, deposit, limitOfParticipants, coolingPeriod } = queryString.parse(
-      this.props.location.search
-    )
+    const {
+      id,
+      deposit,
+      limitOfParticipants,
+      coolingPeriod
+    } = queryString.parse(this.props.location.search)
 
     return (
       <div className="App">
         <GlobalConsumer>
-          {({ networkState: { isLocalNetwork, networkName, resolved } }) => (
-            (!resolved) ? (
+          {({ networkState: { isLocalNetwork, networkName, resolved } }) =>
+            !resolved ? (
               <p>Loading...</p>
             ) : (
               <>
                 <h1>Deploy pending party</h1>
                 <SeedDiv>
-                  <p>If you wish to deploy this party with our seeding script, use:</p>
-                  <pre>yarn seed:party -i {id} {isLocalNetwork ? '' : `--${networkName.toLowerCase()}`}</pre>
+                  <p>
+                    If you wish to deploy this party with our seeding script,
+                    use:
+                  </p>
+                  <pre>
+                    yarn seed:party -i {id}{' '}
+                    {isLocalNetwork ? '' : `--${networkName.toLowerCase()}`}
+                  </pre>
                 </SeedDiv>
                 <div>
                   <div>id/name: {id}</div>
@@ -41,7 +50,12 @@ class DeployPendingEvent extends Component {
                   <ChainMutation
                     mutation={CreateParty}
                     resultKey="create"
-                    variables={{ id, deposit, limitOfParticipants, coolingPeriod }}
+                    variables={{
+                      id,
+                      deposit,
+                      limitOfParticipants,
+                      coolingPeriod
+                    }}
                   >
                     {(createParty, result) => {
                       const address = result.data
@@ -51,7 +65,7 @@ class DeployPendingEvent extends Component {
                       return (
                         <div>
                           <ChainMutationButton
-                            analyticsId='Deploy Event Contract'
+                            analyticsId="Deploy Event Contract"
                             result={result}
                             onClick={createParty}
                             preContent="Deploy"
@@ -60,7 +74,9 @@ class DeployPendingEvent extends Component {
                           {address ? (
                             <p>
                               Event at {address}!{' '}
-                              <Link to={`/event/${address}`}>View event page</Link>
+                              <Link to={`/event/${address}`}>
+                                View event page
+                              </Link>
                             </p>
                           ) : null}
                         </div>
@@ -70,7 +86,7 @@ class DeployPendingEvent extends Component {
                 </div>
               </>
             )
-          )}
+          }
         </GlobalConsumer>
       </div>
     )

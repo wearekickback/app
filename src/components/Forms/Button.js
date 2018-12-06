@@ -67,15 +67,15 @@ function DefaultButtonStyles() {
 }
 
 const ButtonContainer = styled('button')`
-  ${props => DefaultButtonStyles(props)}
-  ${({ wide }) => wide ? 'width: 100%;' : ''};
+  ${props => DefaultButtonStyles(props)} ${({ wide }) =>
+    wide ? 'width: 100%;' : ''};
   ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
   ${({ type }) => getButtonStyles(type)};
 `
 
 const Link = styled('a')`
-  ${props => DefaultButtonStyles(props)}
-  ${({ wide }) => wide ? 'width: 100%;' : ''};
+  ${props => DefaultButtonStyles(props)} ${({ wide }) =>
+    wide ? 'width: 100%;' : ''};
   ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
 `
 
@@ -84,15 +84,16 @@ export class ButtonLink extends PureComponent {
     track(`Click: ${this.props.analyticsId}`)
   }
 
-  render () {
+  render() {
     const { children, ...props } = this.props
 
     return (
-      <Link onClick={this._onClick} {...props}>{children}</Link>
+      <Link onClick={this._onClick} {...props}>
+        {children}
+      </Link>
     )
   }
 }
-
 
 export default class Button extends PureComponent {
   _onClick = () => {
@@ -109,10 +110,7 @@ export default class Button extends PureComponent {
     const disabled = props.type === 'disabled'
 
     return (
-      <ButtonContainer
-        {...props}
-        onClick={disabled ? null : this._onClick}
-      >
+      <ButtonContainer {...props} onClick={disabled ? null : this._onClick}>
         {children}
       </ButtonContainer>
     )

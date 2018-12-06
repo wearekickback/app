@@ -19,7 +19,11 @@ const Clear = ({ address }) => (
         address
       }}
     >
-      {clear => <Button analyticsId='Clear Event Pot' onClick={clear}>Clear</Button>}
+      {clear => (
+        <Button analyticsId="Clear Event Pot" onClick={clear}>
+          Clear
+        </Button>
+      )}
     </Mutation>
   </ClearContainer>
 )
