@@ -115,7 +115,7 @@ class SingleEventWrapper extends Component {
   render() {
     const { search } = this.state
     const { handleSearch } = this
-    const { address } = this.props.match.params
+    const { address } = this.props
 
     return (
       <SingleEventContainer>

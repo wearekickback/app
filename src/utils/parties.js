@@ -35,3 +35,15 @@ export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
     .div(numAttended)
     .toEth()
     .toFixed(3)
+
+export const getDayAndTimeFromDate = dateAsString => {
+  const date = new Date(parseInt(dateAsString))
+  const hours = date.getHours() * 60 * 60 * 1000
+  const minutes = date.getMinutes() * 60 * 1000
+  const day = date.setHours(0, 0, 0, 0)
+  return [day, hours + minutes]
+}
+
+export const getDateFromDayAndTime = (day, time) => {
+  return new Date(day).setHours(0, 0, 0, 0) + time
+}

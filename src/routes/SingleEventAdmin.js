@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { Route, Link } from 'react-router-dom'
 
+import ParticipantTableList from './ParticipantTableList'
 import ErrorBox from '../components/ErrorBox'
 import { PartyAdminsQuery } from '../graphql/queries'
 import { amOwner, amAdmin } from '../utils/parties'
 import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
-import SingleEventWrapper from '../components/SingleEvent/SingleEventWrapper'
 import SetLimit from '../components/SingleEvent/SetLimit'
 import Clear from '../components/SingleEvent/Clear'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
@@ -23,6 +24,10 @@ const Separator = styled('hr')`
   border-width: 3px;
   margin: 20px 0;
 `
+
+const Sidebar = styled('div')``
+
+const ToggleLink = styled(Link)``
 
 class SingleEvent extends Component {
   render() {
@@ -52,16 +57,36 @@ class SingleEvent extends Component {
 
                 return (
                   <>
-                    <AdminIntro>
-                      These are the administrative functions for this event.
-                      Please be careful!
-                    </AdminIntro>
-                    <SetLimit address={address} />
-                    <Clear address={address} />
-                    <UpdatePartyMeta address={address} />
-                    {isOwner ? <AddAdmin address={address} /> : null}
-                    <Separator />
-                    <SingleEventWrapper address={address} />
+                    <Sidebar>
+                      <ToggleLink to={`/event/${address}/admin`}>
+                        Participants
+                      </ToggleLink>
+                      <ToggleLink to={`/event/${address}/admin/edit`}>
+                        Edit Details
+                      </ToggleLink>
+                    </Sidebar>
+                    <Route
+                      path={`/event/${address}/admin`}
+                      exact
+                      render={() => <ParticipantTableList address={address} />}
+                    />
+                    <Route
+                      path={`/event/${address}/admin/edit`}
+                      exact
+                      render={() => (
+                        <>
+                          <AdminIntro>
+                            These are the administrative functions for this
+                            event. Please be careful!
+                          </AdminIntro>
+                          <UpdatePartyMeta address={address} />
+                          <SetLimit address={address} />
+                          <Clear address={address} />
+                          {isOwner ? <AddAdmin address={address} /> : null}
+                          <Separator />
+                        </>
+                      )}
+                    />
                   </>
                 )
               }}

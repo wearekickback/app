@@ -26,6 +26,7 @@
     "query-string": "^6.2.0",
     "react": "^16.4.2",
     "react-apollo": "^2.2.4",
+    "react-day-picker": "^7.2.4",
     "react-dom": "^16.4.2",
     "react-emotion": "^9.2.6",
     "react-router": "^4.3.1",

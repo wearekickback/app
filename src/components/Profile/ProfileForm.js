@@ -33,10 +33,6 @@ const Explanation = styled('div')`
 const TextInput = styled(DefaultTextInput)`
   margin-bottom: 0;
   width: 100%;
-
-  ${mq.medium`
-    width: 80%;
-  `};
 `
 
 export default class ProfileForm extends Component {

@@ -1,6 +1,22 @@
 import React, { Component } from 'react'
+import styled from 'react-emotion'
+import DayPickerInput from 'react-day-picker/DayPickerInput'
+import 'react-day-picker/lib/style.css'
+
+import {
+  getDayAndTimeFromDate,
+  getDateFromDayAndTime
+} from '../../../utils/parties'
+
 import SafeMutation from '../../SafeMutation'
 import Button from '../../Forms/Button'
+import TextInput from '../../Forms/TextInput'
+import TextArea from '../../Forms/TextArea'
+import Label from '../../Forms/Label'
+import { H2 } from '../../Typography/Basic'
+
+const PartyFormContainer = styled('div')``
+const PartyFormContent = styled('div')``
 
 class PartyForm extends Component {
   constructor(props) {
@@ -9,17 +25,21 @@ class PartyForm extends Component {
       name = '',
       description = '',
       location = '',
-      date = '',
+      date = `${new Date().getTime()}`,
       image = '',
       deposit = '0.02',
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
+
+    const [day, time] = getDayAndTimeFromDate(date)
+
     this.state = {
       name,
       description,
       location,
-      date,
+      day: new Date(day),
+      time,
       image,
       deposit,
       coolingPeriod,
@@ -32,7 +52,8 @@ class PartyForm extends Component {
       name,
       description,
       location,
-      date,
+      day,
+      time,
       image,
       deposit,
       limitOfParticipants,
@@ -48,6 +69,8 @@ class PartyForm extends Component {
       variables: extraVariables = {}
     } = this.props
 
+    const date = `${getDateFromDayAndTime(day, time)}`
+
     const variables = {
       meta: { name, description, location, date, image },
       ...extraVariables
@@ -58,62 +81,62 @@ class PartyForm extends Component {
     }
 
     return (
-      <div className="App">
-        <div>
-          <label>Name</label>
-          <input
+      <PartyFormContainer>
+        <H2>Event Details</H2>
+        <PartyFormContent>
+          <Label>Event Name</Label>
+          <TextInput
             value={name}
             onChange={e => this.setState({ name: e.target.value })}
             type="text"
             placeholder="Name of the event"
           />
-          <br />
-          <label>Description</label>
-          <textarea
+          <Label>Description</Label>
+          <TextArea
             value={description}
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
             placeholder="Description of the event"
           >
             {description}
-          </textarea>
-          <br />
-          <label>Location</label>
-          <input
+          </TextArea>
+          <Label>Location</Label>
+          <TextInput
             value={location}
             onChange={e => this.setState({ location: e.target.value })}
             type="text"
             placeholder="Location of the event"
           />
-          <br />
-          <label>Dates</label>
-          <input
-            value={date}
-            onChange={e => this.setState({ date: e.target.value })}
-            type="text"
-            placeholder="Dates of the event"
+          <Label>Date</Label>
+          <DayPickerInput
+            value={day}
+            onDayChange={day => this.setState({ day })}
           />
-          <br />
-          <label>Image</label>
-          <input
+          <Label>Time</Label>
+          <TextInput
+            value={time}
+            onChange={e => this.setState({ time: e.target.value })}
+            type="text"
+            placeholder="Time"
+          />
+          <Label>Image</Label>
+          <TextInput
             value={image}
             onChange={e => this.setState({ image: e.target.value })}
             type="text"
             placeholder="URL to image for the event"
           />
-          <br />
           {type === 'Create Pending Party' && (
             <>
-              <label>Commitment</label>
-              <input
+              <Label>Commitment</Label>
+              <TextInput
                 value={deposit}
                 onChange={e => this.setState({ deposit: e.target.value })}
                 type="text"
                 placeholder="ETH"
               />
-              <br />
-              <label>Limit of participants</label>
-              <input
+              <Label>Limit of participants</Label>
+              <TextInput
                 value={limitOfParticipants}
                 onChange={e =>
                   this.setState({
@@ -123,9 +146,8 @@ class PartyForm extends Component {
                 type="text"
                 placeholder="number of participants"
               />
-              <br />
-              <label>Cooling period</label>
-              <input
+              <Label>Cooling period</Label>
+              <TextInput
                 value={coolingPeriod}
                 onChange={e =>
                   this.setState({
@@ -138,7 +160,7 @@ class PartyForm extends Component {
               />
             </>
           )}
-        </div>
+        </PartyFormContent>
 
         {children}
 
@@ -159,14 +181,12 @@ class PartyForm extends Component {
           }
         >
           {mutate => (
-            <div>
-              <Button onClick={mutate} analyticsId={type}>
-                {type}
-              </Button>
-            </div>
+            <Button onClick={mutate} analyticsId={type}>
+              {type}
+            </Button>
           )}
         </SafeMutation>
-      </div>
+      </PartyFormContainer>
     )
   }
 }
