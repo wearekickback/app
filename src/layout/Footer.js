@@ -1,21 +1,21 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
-import { Link as DefaultLink } from "react-router-dom"
-import { H2 as DefaultH2 } from "../components/Typography/Basic"
-import { ReactComponent as TwitterIcon } from "../components/svg/twitter.svg"
-import { ReactComponent as GithubIcon } from "../components/svg/github.svg"
-import { ReactComponent as MediumIcon } from "../components/svg/medium.svg"
-import { ReactComponent as YoutubeIcon } from "../components/svg/youtube.svg"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
+import { Link as DefaultLink } from 'react-router-dom'
+import { H2 as DefaultH2 } from '../components/Typography/Basic'
+import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'
+import { ReactComponent as GithubIcon } from '../components/svg/github.svg'
+import { ReactComponent as MediumIcon } from '../components/svg/medium.svg'
+import { ReactComponent as YoutubeIcon } from '../components/svg/youtube.svg'
 
-import mq from "../mediaQuery"
+import mq from '../mediaQuery'
 
-const FooterContainer = styled("footer")`
+const FooterContainer = styled('footer')`
   width: 100%;
   background-color: #6e76ff;
   padding: 20px;
 `
 
-const FooterInner = styled("div")`
+const FooterInner = styled('div')`
   max-width: 1200px;
 
   margin: 0 auto 0;
@@ -25,7 +25,7 @@ const H2 = styled(DefaultH2)`
   color: white;
 `
 
-const Row = styled("section")`
+const Row = styled('section')`
   display: flex;
   justify-content: space-between;
 `
@@ -38,13 +38,13 @@ const MiddleRow = styled(Row)`
   `};
 `
 
-const Mail = styled("a")`
+const Mail = styled('a')`
   color: white;
   display: flex;
   margin-bottom: 10px;
 `
 
-const Links = styled("nav")`
+const Links = styled('nav')`
   display: flex;
   margin-bottom: 50px;
 
@@ -63,7 +63,7 @@ const Link = styled(DefaultLink)`
   `};
 `
 
-const ElevatorPitch = styled("div")`
+const ElevatorPitch = styled('div')`
   color: white;
   max-width: 450px;
   font-size: 14px;
@@ -72,7 +72,7 @@ const ElevatorPitch = styled("div")`
   margin-bottom: 50px;
 `
 
-const Social = styled("div")`
+const Social = styled('div')`
   display: flex;
   align-items: center;
   a {
@@ -85,7 +85,7 @@ const Social = styled("div")`
   }
 `
 
-const Copyright = styled("div")`
+const Copyright = styled('div')`
   color: white;
   font-weight: 300;
 `

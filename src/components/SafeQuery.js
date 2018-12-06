@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { Query } from "react-apollo"
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Query } from 'react-apollo'
 
 import {
   DEFAULT_IS_LOADING,
   DEFAULT_RENDER_ERROR,
   DEFAULT_RENDER_LOADING
-} from "./SafeMutation"
+} from './SafeMutation'
 
 export default class SafeQuery extends Component {
   static propTypes = {

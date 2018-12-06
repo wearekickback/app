@@ -1,20 +1,20 @@
-import _ from "lodash"
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { Mutation } from "react-apollo"
+import _ from 'lodash'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Mutation } from 'react-apollo'
 
 import {
   CANNOT_RESOLVE_ACCOUNT_ADDRESS,
   CANNOT_RESOLVE_CORRECT_NETWORK
-} from "../utils/errors"
-import { events, getTransactionReceipt } from "../api/web3"
-import { GlobalConsumer } from "../GlobalState"
-import SafeQuery from "./SafeQuery"
-import Tooltip from "./Tooltip"
-import Button from "./Forms/Button"
-import ErrorBox from "./ErrorBox"
-import { NEW_BLOCK } from "../utils/events"
-import { NUM_CONFIRMATIONS } from "../config"
+} from '../utils/errors'
+import { events, getTransactionReceipt } from '../api/web3'
+import { GlobalConsumer } from '../GlobalState'
+import SafeQuery from './SafeQuery'
+import Tooltip from './Tooltip'
+import Button from './Forms/Button'
+import ErrorBox from './ErrorBox'
+import { NEW_BLOCK } from '../utils/events'
+import { NUM_CONFIRMATIONS } from '../config'
 
 export default class ChainMutation extends Component {
   static propTypes = {
@@ -45,7 +45,7 @@ export default class ChainMutation extends Component {
     let error
     if (!stillLoading) {
       const real = await getTransactionReceipt(tx.transactionHash)
-      error = _.get(real, "status") ? undefined : new Error("Transaction error")
+      error = _.get(real, 'status') ? undefined : new Error('Transaction error')
     }
 
     this.setState({
@@ -213,7 +213,7 @@ export class ChainMutationButton extends Component {
     } else if (progress) {
       content = <div>Awaiting confirmation ({progress.percentComplete} %)</div>
     } else if (!loading && tx) {
-      content = postContent || "Confirmed!"
+      content = postContent || 'Confirmed!'
     } else {
       content = preContent
     }
@@ -221,7 +221,7 @@ export class ChainMutationButton extends Component {
     const tip =
       notReadyError ||
       tooltip ||
-      "Please sign the created transaction using your wallet or Dapp browser"
+      'Please sign the created transaction using your wallet or Dapp browser'
 
     return (
       <GlobalConsumer>

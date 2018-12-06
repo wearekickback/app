@@ -1,9 +1,9 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { findDOMNode } from "react-dom"
-import uuid from "uuid"
-import ReactTooltip from "react-tooltip"
-import styled from "react-emotion"
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { findDOMNode } from 'react-dom'
+import uuid from 'uuid'
+import ReactTooltip from 'react-tooltip'
+import styled from 'react-emotion'
 
 const DefaultTooltip = styled(ReactTooltip)`
   z-index: 1;
@@ -52,7 +52,7 @@ export default class Tooltip extends Component {
         <DefaultTooltip
           id={this.id}
           event="dbclick"
-          place={position || "top"}
+          place={position || 'top'}
           effect="solid"
           type="dark"
         />

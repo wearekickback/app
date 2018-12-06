@@ -1,27 +1,27 @@
-import React, { Component, Fragment } from "react"
-import styled from "react-emotion"
+import React, { Component, Fragment } from 'react'
+import styled from 'react-emotion'
 
-import { pluralize, PARTICIPANT_STATUS } from "@wearekickback/shared"
-import Participant from "./Participant"
-import EventFilters from "./EventFilters"
+import { pluralize, PARTICIPANT_STATUS } from '@wearekickback/shared'
+import Participant from './Participant'
+import EventFilters from './EventFilters'
 
-import { H3 } from "../Typography/Basic"
+import { H3 } from '../Typography/Basic'
 
-const EventParticipantsContainer = styled("div")`
+const EventParticipantsContainer = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   grid-gap: 20px;
   margin-bottom: 40px;
 `
-const NoParticipants = styled("div")``
+const NoParticipants = styled('div')``
 
-const Spots = styled("span")`
+const Spots = styled('span')`
   font-size: 70%;
 `
 
 class EventParticipants extends Component {
   state = {
-    search: "",
+    search: '',
     selectedFilter: null
   }
 
@@ -31,7 +31,7 @@ class EventParticipants extends Component {
 
   handleSearch = search => {
     this.setState({
-      search: search || ""
+      search: search || ''
     })
   }
 
@@ -57,7 +57,7 @@ class EventParticipants extends Component {
     } else {
       const spotsLeft = participantLimit - participants.length
       spots = `- ${participants.length} going, ${spotsLeft} ${pluralize(
-        "spot",
+        'spot',
         spotsLeft
       )} left`
     }
@@ -83,7 +83,7 @@ class EventParticipants extends Component {
                 //TODO: allow this to handle multiple filters
                 if (
                   selectedFilter &&
-                  selectedFilter.value === "unmarked" &&
+                  selectedFilter.value === 'unmarked' &&
                   p.status !== PARTICIPANT_STATUS.REGISTERED
                 ) {
                   return false
@@ -91,14 +91,14 @@ class EventParticipants extends Component {
 
                 if (
                   selectedFilter &&
-                  selectedFilter.value === "marked" &&
+                  selectedFilter.value === 'marked' &&
                   p.status === PARTICIPANT_STATUS.REGISTERED
                 ) {
                   return false
                 }
                 return (
-                  (p.user.realName || "").toLowerCase().includes(lowerSearch) ||
-                  (p.user.username || "").toLowerCase().includes(lowerSearch) ||
+                  (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
+                  (p.user.username || '').toLowerCase().includes(lowerSearch) ||
                   p.user.address.toLowerCase().includes(lowerSearch)
                 )
               })

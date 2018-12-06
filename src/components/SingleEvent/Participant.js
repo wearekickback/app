@@ -1,16 +1,16 @@
-import React, { Component, Fragment } from "react"
-import styled from "react-emotion"
-import { PARTICIPANT_STATUS, calculateNumAttended } from "@wearekickback/shared"
+import React, { Component, Fragment } from 'react'
+import styled from 'react-emotion'
+import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
-import { Mutation } from "react-apollo"
-import DefaultTwitterAvatar from "../User/TwitterAvatar"
+import { Mutation } from 'react-apollo'
+import DefaultTwitterAvatar from '../User/TwitterAvatar'
 
-import { MarkUserAttended, UnmarkUserAttended } from "../../graphql/mutations"
-import { toEthVal } from "../../utils/units"
-import { calculateWinningShare } from "../../utils/parties"
-import { GlobalConsumer } from "../../GlobalState"
-import Button from "../Forms/Button"
-import tick from "../svg/tick.svg"
+import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
+import { toEthVal } from '../../utils/units'
+import { calculateWinningShare } from '../../utils/parties'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
+import tick from '../svg/tick.svg'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
 // const ParticipantName = styled('div')`
@@ -20,7 +20,7 @@ import tick from "../svg/tick.svg"
 //   text-align: center;
 // `
 
-const TickContainer = styled("div")`
+const TickContainer = styled('div')`
   width: 12px;
   margin-left: 3px;
 `
@@ -31,18 +31,18 @@ const Tick = () => (
   </TickContainer>
 )
 
-const ParticipantWrapper = styled("div")`
-  height: ${p => (p.amAdmin ? "170px" : "120px")};
+const ParticipantWrapper = styled('div')`
+  height: ${p => (p.amAdmin ? '170px' : '120px')};
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 
-const ParticipantId = styled("div")`
+const ParticipantId = styled('div')`
   margin-bottom: 10px;
 `
 
-const ParticipantAddress = styled("div")`
+const ParticipantAddress = styled('div')`
   max-width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -53,7 +53,7 @@ const ParticipantAddress = styled("div")`
   text-align: center;
 `
 
-const ParticipantUsername = styled("div")`
+const ParticipantUsername = styled('div')`
   max-width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -69,7 +69,7 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
   margin-bottom: 5px;
 `
 
-const ParticipantRealName = styled("div")`
+const ParticipantRealName = styled('div')`
   max-width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -80,20 +80,20 @@ const ParticipantRealName = styled("div")`
   text-align: center;
 `
 
-const Status = styled("div")`
+const Status = styled('div')`
   ${({ type }) => {
     switch (type) {
-      case "won":
+      case 'won':
         return `
           color: #5cca94;
           background-color: #e7f7ef;
         `
-      case "lost":
+      case 'lost':
         return `
           color: #6E76FF;
           background-color: #F4F5FF;
         `
-      case "marked":
+      case 'marked':
         return `
           color: #6e76ff;
           background-color: rgba(233, 234, 255, 0.5);
@@ -145,21 +145,21 @@ export class Participant extends Component {
               ) : null}
               {amAdmin ? (
                 <ParticipantAddress>
-                  {user.address.slice(0, 5) + "..."}
+                  {user.address.slice(0, 5) + '...'}
                 </ParticipantAddress>
               ) : null}
             </ParticipantId>
             {ended ? (
               attended ? (
                 <Status type="won">{`${
-                  withdrawn ? " Withdrew" : "Won"
+                  withdrawn ? ' Withdrew' : 'Won'
                 } ${payout} ETH `}</Status>
               ) : (
                 <Status type="lost">
-                  Lost{" "}
+                  Lost{' '}
                   {toEthVal(deposit)
                     .toEth()
-                    .toString()}{" "}
+                    .toString()}{' '}
                   ETH
                 </Status>
               )

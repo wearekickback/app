@@ -1,4 +1,4 @@
-import { toEthVal } from "../../utils/units"
+import { toEthVal } from '../../utils/units'
 
 const DepositValue = ({ value }) =>
   toEthVal(value)

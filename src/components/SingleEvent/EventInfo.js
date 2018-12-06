@@ -1,22 +1,22 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
-import { HashLink as DefaultHashLink } from "react-router-hash-link"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
+import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
-import EtherScanLink from "../ExternalLinks/EtherScanLink"
-import { H2, H3 } from "../Typography/Basic"
-import TwitterAvatar from "../User/TwitterAvatar"
-import DepositValue from "../Utils/DepositValue"
-import { ReactComponent as DefaultEthIcon } from "../svg/Ethereum.svg"
-import { ReactComponent as DefaultPinIcon } from "../svg/Pin.svg"
-import { ReactComponent as DefaultInfoIcon } from "../svg/info.svg"
-import moment from "moment"
+import EtherScanLink from '../ExternalLinks/EtherScanLink'
+import { H2, H3 } from '../Typography/Basic'
+import TwitterAvatar from '../User/TwitterAvatar'
+import DepositValue from '../Utils/DepositValue'
+import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
+import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
+import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
+import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
-import { toEthVal } from "../../utils/units"
+import { toEthVal } from '../../utils/units'
 
-const Date = styled("div")``
+const Date = styled('div')``
 const EventName = styled(H2)``
-const ContractAddress = styled("h3")`
+const ContractAddress = styled('h3')`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -26,12 +26,12 @@ const ContractAddress = styled("h3")`
   color: #6e76ff;
   letter-spacing: 0;
 `
-const EventImage = styled("img")`
+const EventImage = styled('img')`
   border-radius: 4px;
   margin-bottom: 20px;
 `
 
-const Organisers = styled("div")`
+const Organisers = styled('div')`
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -40,14 +40,14 @@ const Organisers = styled("div")`
   margin-bottom: 40px;
 `
 
-const OrganiserList = styled("div")`
+const OrganiserList = styled('div')`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
 `
-const Organiser = styled("div")`
+const Organiser = styled('div')`
   display: flex;
   align-items: center;
   margin-right: 10px;
@@ -59,12 +59,12 @@ const Link = styled(DefaultHashLink)`
   margin-top: 2px;
 `
 
-const Pot = styled("div")`
+const Pot = styled('div')`
   display: flex;
   flex-direction: column;
 `
 
-const Deposit = styled("div")`
+const Deposit = styled('div')`
   display: flex;
 `
 
@@ -78,7 +78,7 @@ const PinIcon = styled(DefaultPinIcon)`
   flex-shrink: 0;
 `
 
-const Location = styled("div")`
+const Location = styled('div')`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
@@ -92,7 +92,7 @@ const EthIcon = styled(DefaultEthIcon)`
   margin-top: 5px;
   margin-right: 10px;
 `
-const TotalPot = styled("div")`
+const TotalPot = styled('div')`
   font-family: Muli;
   font-weight: 400;
   font-size: 14px;
@@ -116,7 +116,7 @@ const TotalPot = styled("div")`
   }
 `
 
-const EventDescription = styled("p")`
+const EventDescription = styled('p')`
   white-space: pre-line;
   line-height: 1.6em;
 `
@@ -125,13 +125,13 @@ const UserAvatar = styled(TwitterAvatar)`
   margin-right: 10px;
 `
 
-const Photos = styled("section")``
-const PhotoContainer = styled("div")``
-const Photo = styled("img")``
-const Comments = styled("section")``
-const Comment = styled("div")``
+const Photos = styled('section')``
+const PhotoContainer = styled('div')``
+const Photo = styled('img')``
+const Comments = styled('section')``
+const Comment = styled('div')``
 
-const HostUsername = styled("span")`
+const HostUsername = styled('span')`
   font-weight: bold;
 `
 
@@ -140,12 +140,12 @@ class EventInfo extends Component {
     const { party, address, className } = this.props
     return (
       <EventInfoContainer className={className}>
-        <Date>{party.date || "Tuesday, 23rd Sep, 2018 9:00 PM"}</Date>
+        <Date>{party.date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
         </ContractAddress>
-        <EventImage src={party.image || "https://placeimg.com/640/480/tech"} />
+        <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>
@@ -162,7 +162,7 @@ class EventInfo extends Component {
         <H3>Event Details</H3>
         <Location>
           <PinIcon />
-          {party.location || "11 Macclesfield St, London W1D 5BW"}
+          {party.location || '11 Macclesfield St, London W1D 5BW'}
         </Location>
         <TotalPot>
           <EthIcon />
@@ -174,7 +174,7 @@ class EventInfo extends Component {
                 {toEthVal(party.deposit)
                   .mul(party.participants.length)
                   .toEth()
-                  .toFixed(2)}{" "}
+                  .toFixed(2)}{' '}
                 ETH
               </span>
             </TotalPot>
@@ -187,16 +187,16 @@ class EventInfo extends Component {
           </Pot>
 
           <strong>
-            Cooling Period{" "}
+            Cooling Period{' '}
             <Link to="/faq#cooling">
               <InfoIcon />
             </Link>
-            :{" "}
+            :{' '}
           </strong>
           <span>
             {moment
-              .duration(toEthVal(party.coolingPeriod).toNumber(), "seconds")
-              .asDays()}{" "}
+              .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+              .asDays()}{' '}
             days
           </span>
         </TotalPot>
@@ -214,6 +214,6 @@ class EventInfo extends Component {
   }
 }
 
-const EventInfoContainer = styled("div")``
+const EventInfoContainer = styled('div')``
 
 export default EventInfo

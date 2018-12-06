@@ -1,7 +1,7 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 
-import SafeQuery from "./SafeQuery"
-import { ReverseRecordQuery } from "../graphql/queries"
+import SafeQuery from './SafeQuery'
+import { ReverseRecordQuery } from '../graphql/queries'
 
 class ReverseResolution extends Component {
   render() {

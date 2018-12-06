@@ -1,19 +1,19 @@
-import _ from "lodash"
-import React, { Component } from "react"
-import styled from "react-emotion"
+import _ from 'lodash'
+import React, { Component } from 'react'
+import styled from 'react-emotion'
 
-import Button from "../Forms/Button"
-import { H2 as DefaultH2 } from "../Typography/Basic"
-import ProfileForm from "./ProfileForm"
-import { UpdateUserProfile } from "../../graphql/mutations"
-import SafeMutation from "../SafeMutation"
-import { GlobalConsumer } from "../../GlobalState"
-import { EDIT_PROFILE } from "../../modals"
-import { ReactComponent as DefaultPencil } from "../svg/Pencil.svg"
+import Button from '../Forms/Button'
+import { H2 as DefaultH2 } from '../Typography/Basic'
+import ProfileForm from './ProfileForm'
+import { UpdateUserProfile } from '../../graphql/mutations'
+import SafeMutation from '../SafeMutation'
+import { GlobalConsumer } from '../../GlobalState'
+import { EDIT_PROFILE } from '../../modals'
+import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
 
-const Container = styled("div")``
+const Container = styled('div')``
 
-const FormDiv = styled("div")``
+const FormDiv = styled('div')``
 
 const Pencil = styled(DefaultPencil)`
   margin-right: 10px;
@@ -26,9 +26,9 @@ const H2 = styled(DefaultH2)`
 
 export default class SignIn extends Component {
   state = {
-    email: "",
-    realName: "",
-    twitter: ""
+    email: '',
+    realName: '',
+    twitter: ''
   }
 
   render() {
@@ -48,7 +48,7 @@ export default class SignIn extends Component {
                   <SafeMutation
                     mutation={UpdateUserProfile}
                     variables={{
-                      profile: _.omit(profile, "username")
+                      profile: _.omit(profile, 'username')
                     }}
                   >
                     {updateUserProfile => (

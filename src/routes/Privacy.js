@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
 
-const PrivacyDiv = styled("div")`
+const PrivacyDiv = styled('div')`
   ul {
     padding-left: 2em;
   }
@@ -208,14 +208,14 @@ class Privacy extends Component {
             <p>
               You can prevent Mixpanel from using your information for analytics
               purposes by opting-out. To opt-out of Mixpanel service, please
-              visit this page:{" "}
+              visit this page:{' '}
               <a href="https://mixpanel.com/optout/">
                 https://mixpanel.com/optout/
               </a>
             </p>
             <p>
               For more information on what type of information Mixpanel
-              collects, please visit the Terms of Use page of Mixpanel:{" "}
+              collects, please visit the Terms of Use page of Mixpanel:{' '}
               <a href="https://mixpanel.com/terms/">
                 https://mixpanel.com/terms/
               </a>

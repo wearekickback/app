@@ -1,8 +1,8 @@
-import React from "react"
+import React from 'react'
 
-import { PartyQuery } from "../../graphql/queries"
-import ChainMutation, { ChainMutationButton } from "../ChainMutation"
-import { WithdrawPayout } from "../../graphql/mutations"
+import { PartyQuery } from '../../graphql/queries'
+import ChainMutation, { ChainMutationButton } from '../ChainMutation'
+import { WithdrawPayout } from '../../graphql/mutations'
 
 const WithdrawPayoutButton = ({ address, amount, className }) => (
   <ChainMutation

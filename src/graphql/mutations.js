@@ -1,6 +1,6 @@
-import gql from "graphql-tag"
+import gql from 'graphql-tag'
 
-import { ProfileFields, ParticipantFields } from "./fragments"
+import { ProfileFields, ParticipantFields } from './fragments'
 
 export const CreateParty = gql`
   mutation createParty(

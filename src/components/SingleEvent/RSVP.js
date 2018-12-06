@@ -1,10 +1,10 @@
-import React from "react"
+import React from 'react'
 
-import { PartyQuery } from "../../graphql/queries"
-import ChainMutation, { ChainMutationButton } from "../ChainMutation"
-import DepositValue from "../Utils/DepositValue"
-import { RsvpToEvent } from "../../graphql/mutations"
-import { Going } from "./Status"
+import { PartyQuery } from '../../graphql/queries'
+import ChainMutation, { ChainMutationButton } from '../ChainMutation'
+import DepositValue from '../Utils/DepositValue'
+import { RsvpToEvent } from '../../graphql/mutations'
+import { Going } from './Status'
 
 const RSVP = ({ address, className, deposit }) => (
   <ChainMutation

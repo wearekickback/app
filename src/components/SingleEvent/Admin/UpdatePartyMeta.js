@@ -1,10 +1,10 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 
-import PartyForm from "./PartyForm"
-import { UpdatePartyMeta } from "../../../graphql/mutations"
-import { PartyQuery } from "../../../graphql/queries"
-import ErrorBox from "../../ErrorBox"
-import SafeQuery from "../../SafeQuery"
+import PartyForm from './PartyForm'
+import { UpdatePartyMeta } from '../../../graphql/mutations'
+import { PartyQuery } from '../../../graphql/queries'
+import ErrorBox from '../../ErrorBox'
+import SafeQuery from '../../SafeQuery'
 
 class UpdatePartyMetaComponent extends Component {
   render() {
@@ -20,7 +20,7 @@ class UpdatePartyMetaComponent extends Component {
           // no party?
           if (!party) {
             if (loading) {
-              return "Loading ..."
+              return 'Loading ...'
             } else {
               return (
                 <ErrorBox>

@@ -1,16 +1,16 @@
-import merge from "lodash/merge"
-import { Deployer } from "@wearekickback/contracts"
+import merge from 'lodash/merge'
+import { Deployer } from '@wearekickback/contracts'
 
-import eventsList from "../fixtures/events.json"
-import getWeb3, { getAccount, getEvents, getDeployerAddress } from "./web3"
-import { toEthVal } from "../utils/units"
+import eventsList from '../fixtures/events.json'
+import getWeb3, { getAccount, getEvents, getDeployerAddress } from './web3'
+import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
-} from "./resolvers/singleEventResolvers"
-import ensResolvers, { defaults as ensDefaults } from "./resolvers/ensResolvers"
+} from './resolvers/singleEventResolvers'
+import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 import qrCodeResolvers, {
   defaults as qrCodeDefaults
-} from "./resolvers/qrCodeResolvers"
+} from './resolvers/qrCodeResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -18,7 +18,7 @@ const rootDefaults = {
   web3: {
     accounts: [],
     networkId: 0,
-    __typename: "Web3"
+    __typename: 'Web3'
   }
 }
 
@@ -28,13 +28,13 @@ const resolvers = {
     async web3() {
       return {
         ...getWeb3(),
-        __typename: "Web3"
+        __typename: 'Web3'
       }
     },
     async parties() {
       return eventsList.map(event => ({
         ...event,
-        __typename: "PartyMeta"
+        __typename: 'PartyMeta'
       }))
     },
     async events() {
@@ -66,7 +66,7 @@ const resolvers = {
         const tx = await contract.methods
           .deploy(
             id,
-            toEthVal(deposit, "eth")
+            toEthVal(deposit, 'eth')
               .toWei()
               .toString(16),
             toEthVal(limitOfParticipants).toString(16),
@@ -79,7 +79,7 @@ const resolvers = {
 
         return tx
       } catch (e) {
-        console.log("error", e)
+        console.log('error', e)
 
         throw new Error(`Failed to deploy party: ${e}`)
       }

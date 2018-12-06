@@ -1,16 +1,16 @@
-import React, { PureComponent } from "react"
-import styled from "react-emotion"
-import { Link } from "react-router-dom"
+import React, { PureComponent } from 'react'
+import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 
-import { GlobalConsumer } from "../GlobalState"
-import Logo from "../components/Icons/LogoFull"
-import Tooltip from "../components/Tooltip"
-import Button from "../components/Forms/Button"
-import Avatar from "../components/User/Avatar"
-import { EDIT_PROFILE } from "../modals"
-import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from "../utils/errors"
+import { GlobalConsumer } from '../GlobalState'
+import Logo from '../components/Icons/LogoFull'
+import Tooltip from '../components/Tooltip'
+import Button from '../components/Forms/Button'
+import Avatar from '../components/User/Avatar'
+import { EDIT_PROFILE } from '../modals'
+import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../utils/errors'
 
-const HeaderContainer = styled("header")`
+const HeaderContainer = styled('header')`
   width: 100%;
   height: 70px;
   background: #6e76ff;
@@ -18,7 +18,7 @@ const HeaderContainer = styled("header")`
   padding: 0 20px;
 `
 
-const HeaderInner = styled("div")`
+const HeaderInner = styled('div')`
   margin: 0 auto 0;
   max-width: 1200px;
   height: 100%;
@@ -28,7 +28,7 @@ const HeaderInner = styled("div")`
   align-items: center;
 `
 
-const RightBar = styled("div")`
+const RightBar = styled('div')`
   display: flex;
   align-items: center;
 `
@@ -36,15 +36,15 @@ const RightBar = styled("div")`
 //   color: white;
 //   margin-right: 20px;
 // `
-const Account = styled("div")`
+const Account = styled('div')`
   display: flex;
   align-items: center;
   cursor: pointer;
 `
-const Username = styled("div")`
+const Username = styled('div')`
   max-width: 100px;
   color: white;
-  font-family: "Muli";
+  font-family: 'Muli';
   margin-right: 5px;
   font-size: 16px;
   white-space: nowrap;
@@ -76,7 +76,7 @@ export default class Header extends PureComponent {
               }) => {
                 const twitterProfile =
                   userProfile &&
-                  userProfile.social.find(s => s.type === "twitter")
+                  userProfile.social.find(s => s.type === 'twitter')
                 return loggedIn ? (
                   <>
                     {/* <Notifications>Notification</Notifications> */}
@@ -94,7 +94,7 @@ export default class Header extends PureComponent {
                         src={`https://avatars.io/twitter/${
                           twitterProfile
                             ? twitterProfile.value
-                            : "unknowntwitter123abc"
+                            : 'unknowntwitter123abc'
                         }/medium`}
                       />
                     </Account>

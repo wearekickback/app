@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from "react"
-import styled from "react-emotion"
+import React, { Component, Fragment } from 'react'
+import styled from 'react-emotion'
 
-import { amOwner, amAdmin, getMyParticipantEntry } from "../../utils/parties"
-import { PartyQuery } from "../../graphql/queries"
-import ErrorBox from "../ErrorBox"
-import SafeQuery from "../SafeQuery"
-import EventInfo from "./EventInfo"
-import EventCTA from "./EventCTA"
-import EventParticipants from "./EventParticipants"
-import { GlobalConsumer } from "../../GlobalState"
-import mq from "../../mediaQuery"
+import { amOwner, amAdmin, getMyParticipantEntry } from '../../utils/parties'
+import { PartyQuery } from '../../graphql/queries'
+import ErrorBox from '../ErrorBox'
+import SafeQuery from '../SafeQuery'
+import EventInfo from './EventInfo'
+import EventCTA from './EventCTA'
+import EventParticipants from './EventParticipants'
+import { GlobalConsumer } from '../../GlobalState'
+import mq from '../../mediaQuery'
 
-const SingleEventContainer = styled("div")`
+const SingleEventContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
@@ -22,14 +22,14 @@ const SingleEventContainer = styled("div")`
   `};
 `
 
-const EventInfoContainer = styled("div")`
+const EventInfoContainer = styled('div')`
   width: 100%;
   ${mq.medium`
     width: 47.5%;
   `};
 `
 
-const RightContainer = styled("div")`
+const RightContainer = styled('div')`
   width: 100%;
   ${mq.medium`
     width: 47.5%;
@@ -55,7 +55,7 @@ class SingleEventWrapper extends Component {
                 // no party?
                 if (!party) {
                   if (loading) {
-                    return "Loading ..."
+                    return 'Loading ...'
                   } else {
                     return (
                       <ErrorBox>

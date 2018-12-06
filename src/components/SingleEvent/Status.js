@@ -1,6 +1,6 @@
-import styled from "react-emotion"
-import React from "react"
-import { ReactComponent as DefaultSuccess } from "../svg/Success.svg"
+import styled from 'react-emotion'
+import React from 'react'
+import { ReactComponent as DefaultSuccess } from '../svg/Success.svg'
 
 const Success = styled(DefaultSuccess)`
   path {
@@ -13,7 +13,7 @@ const Success = styled(DefaultSuccess)`
   margin-right: 5px;
 `
 
-const StatusContainer = styled("div")`
+const StatusContainer = styled('div')`
   background-color: rgba(233, 234, 255, 0.5);
   border-radius: 4px;
   border: 1px solid rgba(233, 234, 255, 0.5);

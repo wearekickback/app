@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
-import { GlobalConsumer } from "../../GlobalState"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
+import { GlobalConsumer } from '../../GlobalState'
 
 class ToggleModal extends Component {
   render() {
@@ -20,7 +20,7 @@ class ToggleModal extends Component {
   }
 }
 
-const ToggleModalContainer = styled("div")`
+const ToggleModalContainer = styled('div')`
   &:hover {
     cursor: pointer;
   }

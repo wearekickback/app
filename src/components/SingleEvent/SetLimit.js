@@ -1,9 +1,9 @@
-import React, { Fragment } from "react"
-import styled from "react-emotion"
-import { Mutation } from "react-apollo"
-import gql from "graphql-tag"
+import React, { Fragment } from 'react'
+import styled from 'react-emotion'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import Button from "../Forms/Button"
+import Button from '../Forms/Button'
 
 const SET_LIMIT = gql`
   mutation setLimitOfParticipants($limit: String, $address: String) {
@@ -39,6 +39,6 @@ const SetLimit = ({ address }) => {
   )
 }
 
-const SetLimitContainer = styled("div")``
+const SetLimitContainer = styled('div')``
 
 export default SetLimit

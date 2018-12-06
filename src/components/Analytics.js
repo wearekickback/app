@@ -1,7 +1,7 @@
-import { Component } from "react"
-import { withRouter } from "react-router-dom"
+import { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 
-import { track } from "../api/analytics"
+import { track } from '../api/analytics'
 
 class RouteAnalyticsWrapper extends Component {
   componentDidMount() {

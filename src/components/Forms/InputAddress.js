@@ -1,16 +1,16 @@
-import React, { Fragment } from "react"
-import styled from "react-emotion"
-import ReverseResolution from "../ReverseResolutionRP"
+import React, { Fragment } from 'react'
+import styled from 'react-emotion'
+import ReverseResolution from '../ReverseResolutionRP'
 
-const InputAddressContainer = styled("div")`
+const InputAddressContainer = styled('div')`
   border: 1px solid #edeef4;
   padding: 10px;
   margin-bottom: 20px;
 `
-const Name = styled("div")``
-const Address = styled("div")`
-  font-family: "Source Code Pro";
-  color: ${({ faded }) => (faded ? "#ccc" : "#2b2b2b")};
+const Name = styled('div')``
+const Address = styled('div')`
+  font-family: 'Source Code Pro';
+  color: ${({ faded }) => (faded ? '#ccc' : '#2b2b2b')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

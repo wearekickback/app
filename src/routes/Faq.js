@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 
 class FAQ extends Component {
   render() {
@@ -12,7 +12,7 @@ class FAQ extends Component {
           Everyone commits a small amount of ETH when they RSVP, which is
           refunded after the event check-in. Any no-shows lose their ETH, which
           can then be split amongst the attendees. To see the demo, please check
-          out our{" "}
+          out our{' '}
           <a href="https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ">
             Youtube channel
           </a>

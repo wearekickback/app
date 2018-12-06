@@ -1,23 +1,23 @@
-import styled from "react-emotion"
+import styled from 'react-emotion'
 
-export const H1 = styled("h1")`
+export const H1 = styled('h1')`
   font-size: 30px;
   font-family: Muli;
   margin-top: 0;
 `
 
-export const H2 = styled("h2")`
+export const H2 = styled('h2')`
   font-size: 24px;
   font-family: Muli;
   margin-top: 0;
 `
 
-export const H3 = styled("h3")`
+export const H3 = styled('h3')`
   font-size: 20px;
   font-family: Muli;
 `
 
-export const P = styled("p")`
+export const P = styled('p')`
   font-family: Muli;
   font-weight: 400;
   font-size: 14px;
@@ -27,7 +27,7 @@ export const P = styled("p")`
   margin-bottom: 1.8em;
 `
 
-export const A = styled("a")`
+export const A = styled('a')`
   color: #6e76ff;
 
   &:hover {

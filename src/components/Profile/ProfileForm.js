@@ -1,6 +1,6 @@
-import _ from "lodash"
-import React, { Component } from "react"
-import styled from "react-emotion"
+import _ from 'lodash'
+import React, { Component } from 'react'
+import styled from 'react-emotion'
 import {
   isEmailAddress,
   isUsername,
@@ -9,22 +9,22 @@ import {
   sanitizeTwitterId,
   trimOrEmptyStringProps,
   LEGAL
-} from "@wearekickback/shared"
+} from '@wearekickback/shared'
 
-import { removeTypename } from "../../graphql"
-import InputAddress from "../Forms/InputAddress"
-import DefaultTextInput from "../Forms/TextInput"
-import Label from "../Forms/Label"
-import { ensureInArray, ensureNotInArray } from "../../utils/arrays"
-import mq from "../../mediaQuery"
+import { removeTypename } from '../../graphql'
+import InputAddress from '../Forms/InputAddress'
+import DefaultTextInput from '../Forms/TextInput'
+import Label from '../Forms/Label'
+import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
+import mq from '../../mediaQuery'
 
 const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
 
-const Field = styled("div")`
+const Field = styled('div')`
   margin: 30px 0;
 `
 
-const Explanation = styled("div")`
+const Explanation = styled('div')`
   color: #999;
   font-size: 80%;
   margin-top: 7px;
@@ -75,7 +75,7 @@ export default class ProfileForm extends Component {
           />
           {existingProfile ? (
             <Explanation>
-              If you wish to change your username please contact us at{" "}
+              If you wish to change your username please contact us at{' '}
               <strong>hello@kickback.events</strong>
             </Explanation>
           ) : (
@@ -129,8 +129,8 @@ export default class ProfileForm extends Component {
               value={TERMS_AND_CONDITIONS}
               checked={terms}
               onChange={this.handleTermsCheck}
-            />{" "}
-            I agree with the{" "}
+            />{' '}
+            I agree with the{' '}
             <a href={`/terms`} target="_blank" rel="noopener noreferrer">
               terms and conditions
             </a>
@@ -143,8 +143,8 @@ export default class ProfileForm extends Component {
               value={PRIVACY_POLICY}
               checked={privacy}
               onChange={this.handlePrivacyCheck}
-            />{" "}
-            I agree with the{" "}
+            />{' '}
+            I agree with the{' '}
             <a href={`/privacy`} target="_blank" rel="noopener noreferrer">
               privacy policy
             </a>
@@ -156,7 +156,7 @@ export default class ProfileForm extends Component {
             value={MARKETING_INFO}
             checked={marketing}
             onChange={this.handleMarketingCheck}
-          />{" "}
+          />{' '}
           I am happy to receive marketing info (optional)
         </p>
         {renderSubmitButton(
@@ -184,17 +184,17 @@ export default class ProfileForm extends Component {
       email:
         email !== undefined
           ? email
-          : _.get(existingProfile, "email.verified", "") ||
-            _.get(existingProfile, "email.pending", ""),
+          : _.get(existingProfile, 'email.verified', '') ||
+            _.get(existingProfile, 'email.pending', ''),
       twitter:
         twitter !== undefined
           ? twitter
           : _.get(
               (existingProfile.social || []).find(
-                ({ type }) => type === "twitter"
+                ({ type }) => type === 'twitter'
               ),
-              "value",
-              ""
+              'value',
+              ''
             ),
       terms:
         terms !== undefined
@@ -233,8 +233,8 @@ export default class ProfileForm extends Component {
     let social = (existingProfile.social || []).map(v => removeTypename(v))
     social = ensureInArray(
       social,
-      "type",
-      { type: "twitter", value: sanitizeTwitterId(twitter) },
+      'type',
+      { type: 'twitter', value: sanitizeTwitterId(twitter) },
       true
     )
 
@@ -242,7 +242,7 @@ export default class ProfileForm extends Component {
     if (terms) {
       legal = ensureInArray(
         legal,
-        "type",
+        'type',
         { type: TERMS_AND_CONDITIONS, accepted: `${Date.now()}` },
         false
       )
@@ -250,7 +250,7 @@ export default class ProfileForm extends Component {
     if (privacy) {
       legal = ensureInArray(
         legal,
-        "type",
+        'type',
         { type: PRIVACY_POLICY, accepted: `${Date.now()}` },
         false
       )
@@ -258,12 +258,12 @@ export default class ProfileForm extends Component {
     if (marketing) {
       legal = ensureInArray(
         legal,
-        "type",
+        'type',
         { type: MARKETING_INFO, accepted: `${Date.now()}` },
         false
       )
     } else {
-      legal = ensureNotInArray(legal, "type", { type: MARKETING_INFO })
+      legal = ensureNotInArray(legal, 'type', { type: MARKETING_INFO })
     }
 
     return {

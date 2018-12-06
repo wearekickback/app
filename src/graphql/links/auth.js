@@ -1,12 +1,12 @@
-import { Observable, ApolloLink } from "apollo-link"
+import { Observable, ApolloLink } from 'apollo-link'
 import {
   hasDirectives,
   checkDocument,
   removeDirectivesFromDocument
-} from "apollo-utilities"
+} from 'apollo-utilities'
 
-import { getProvider as getGlobalProvider } from "../../GlobalState"
-import { buildAuthHeaders } from "../../utils/requests"
+import { getProvider as getGlobalProvider } from '../../GlobalState'
+import { buildAuthHeaders } from '../../utils/requests'
 
 const sanitizedQueryCache = new Map()
 
@@ -23,8 +23,8 @@ const makeError = (observer, err) => {
 
 export default () =>
   new ApolloLink((operation, forward) => {
-    const requireAuth = hasDirectives(["requireAuth"], operation.query)
-    const disableAuth = hasDirectives(["disableAuth"], operation.query)
+    const requireAuth = hasDirectives(['requireAuth'], operation.query)
+    const disableAuth = hasDirectives(['disableAuth'], operation.query)
 
     // get sanitized query (remove @auth directive since server won't understand it)
     let sanitizedQuery = sanitizedQueryCache[JSON.stringify(operation.query)]
@@ -32,7 +32,7 @@ export default () =>
       // remove directives (inspired by https://github.com/apollographql/apollo-link-state/blob/master/packages/apollo-link-state/src/utils.ts)
       checkDocument(operation.query)
       sanitizedQuery = removeDirectivesFromDocument(
-        [{ name: "requireAuth" }, { name: "disableAuth" }],
+        [{ name: 'requireAuth' }, { name: 'disableAuth' }],
         operation.query
       )
       // save to cache for next time!

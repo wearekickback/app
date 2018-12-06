@@ -1,7 +1,7 @@
-import { withClientState } from "apollo-link-state"
+import { withClientState } from 'apollo-link-state'
 
-import resolvers, { defaults } from "../../api/rootResolver"
-import typeDefs from "../schema"
+import resolvers, { defaults } from '../../api/rootResolver'
+import typeDefs from '../schema'
 
 export default ({ cache }) =>
   withClientState({

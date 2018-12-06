@@ -1,28 +1,28 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
 import {
   PARTICIPANT_STATUS,
   calculateFinalizeMaps,
   calculateNumAttended
-} from "@wearekickback/shared"
-import { toEthVal } from "../../utils/units"
+} from '@wearekickback/shared'
+import { toEthVal } from '../../utils/units'
 
-import DefaultRSVP from "./RSVP"
-import ChainMutation, { ChainMutationButton } from "../ChainMutation"
-import WithdrawPayout from "./WithdrawPayout"
+import DefaultRSVP from './RSVP'
+import ChainMutation, { ChainMutationButton } from '../ChainMutation'
+import WithdrawPayout from './WithdrawPayout'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
-} from "../../utils/parties"
-import { PartyQuery } from "../../graphql/queries"
-import { Finalize } from "../../graphql/mutations"
-import Status, { Going } from "./Status"
-import { GlobalConsumer } from "../../GlobalState"
-import Button from "../Forms/Button"
-import { CONFIRM_TRANSACTION } from "../../modals"
-import ConfirmModal from "../ConfirmModal"
+} from '../../utils/parties'
+import { PartyQuery } from '../../graphql/queries'
+import { Finalize } from '../../graphql/mutations'
+import Status, { Going } from './Status'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
+import { CONFIRM_TRANSACTION } from '../../modals'
+import ConfirmModal from '../ConfirmModal'
 
-const CTA = styled("div")`
+const CTA = styled('div')`
   font-family: Muli;
   font-weight: 500;
   font-size: 15px;
@@ -31,7 +31,7 @@ const CTA = styled("div")`
   margin-bottom: 25px;
 `
 
-const CTAInfo = styled("div")`
+const CTAInfo = styled('div')`
   font-family: Muli;
   font-weight: 500;
   padding: 20px;
@@ -49,7 +49,7 @@ const CTAInfo = styled("div")`
   }
 `
 
-const RSVPContainer = styled("div")`
+const RSVPContainer = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -75,13 +75,13 @@ const RSVP = styled(DefaultRSVP)`
   width: 100%;
 `
 
-const AdminCTA = styled("div")`
+const AdminCTA = styled('div')`
   margin-top: 10px;
   display: flex;
   align-items: center;
 `
 
-const MarkAttended = styled("div")``
+const MarkAttended = styled('div')``
 
 class EventCTA extends Component {
   _renderCleared() {
@@ -96,7 +96,7 @@ class EventCTA extends Component {
     } = this.props
 
     if (!myParticipantEntry) {
-      return ""
+      return ''
     }
 
     const totalReg = participants.length
@@ -112,7 +112,7 @@ class EventCTA extends Component {
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
         return <Status>You have withdrawn your payout!</Status>
       default:
-        return ""
+        return ''
     }
   }
 
@@ -147,7 +147,7 @@ class EventCTA extends Component {
         )
       }
 
-      return ""
+      return ''
     }
 
     switch (myParticipantEntry.status) {
@@ -156,7 +156,7 @@ class EventCTA extends Component {
       case PARTICIPANT_STATUS.SHOWED_UP:
         return <Status>You have showed up!</Status>
       default:
-        return ""
+        return ''
     }
   }
 
@@ -283,13 +283,13 @@ class EventCTA extends Component {
         <MarkAttended>
           {`${getParticipantsMarkedAttended(participants)}/${
             participants.length
-          } have been marked attended`}{" "}
+          } have been marked attended`}{' '}
         </MarkAttended>
       </EventCTAContainer>
     )
   }
 }
 
-const EventCTAContainer = styled("div")``
+const EventCTAContainer = styled('div')``
 
 export default EventCTA

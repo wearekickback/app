@@ -1,14 +1,14 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 
-import SafeMutation from "../SafeMutation"
-import Tooltip from "../Tooltip"
-import ErrorBox from "../ErrorBox"
-import Button from "../Forms/Button"
+import SafeMutation from '../SafeMutation'
+import Tooltip from '../Tooltip'
+import ErrorBox from '../ErrorBox'
+import Button from '../Forms/Button'
 import {
   CreateLoginChallenge,
   SignChallengeString
-} from "../../graphql/mutations"
-import { GlobalConsumer } from "../../GlobalState"
+} from '../../graphql/mutations'
+import { GlobalConsumer } from '../../GlobalState'
 
 export default class RefreshAuthTokenButton extends Component {
   state = {}
@@ -27,7 +27,7 @@ export default class RefreshAuthTokenButton extends Component {
 
       const address = await reloadUserAddress()
       if (!address) {
-        throw new Error("Unable to obtain user ethereum address")
+        throw new Error('Unable to obtain user ethereum address')
       }
 
       const result1 = await createLoginChallenge({
@@ -35,7 +35,7 @@ export default class RefreshAuthTokenButton extends Component {
       })
 
       if (result1.errors) {
-        throw new Error("Failed to obtain login challenge!")
+        throw new Error('Failed to obtain login challenge!')
       }
 
       showTooltip()
@@ -53,7 +53,7 @@ export default class RefreshAuthTokenButton extends Component {
       hideTooltip()
 
       if (result2.errors) {
-        throw new Error("Failed to obtain signature!")
+        throw new Error('Failed to obtain signature!')
       }
 
       const { signature } = result2.data
@@ -63,7 +63,7 @@ export default class RefreshAuthTokenButton extends Component {
       const result3 = await fetchUserProfileFromServer()
 
       if (result3.errors) {
-        throw new Error("Failed to fetch user profile!")
+        throw new Error('Failed to fetch user profile!')
       }
 
       const { profile } = result3.data
@@ -106,7 +106,7 @@ export default class RefreshAuthTokenButton extends Component {
                             )
                           }
                         >
-                          {title || "Sign in"}
+                          {title || 'Sign in'}
                           {tooltipElement}
                         </Button>
                       )}

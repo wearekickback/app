@@ -1,4 +1,4 @@
-import { MIXPANEL_ID } from "../config"
+import { MIXPANEL_ID } from '../config'
 
 export const setup = () => {
   if (MIXPANEL_ID && window.mixpanel) {

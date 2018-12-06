@@ -1,8 +1,8 @@
-import React from "react"
-import styled from "react-emotion"
-import { getSocialId } from "@wearekickback/shared"
+import React from 'react'
+import styled from 'react-emotion'
+import { getSocialId } from '@wearekickback/shared'
 
-import DefaultAvatar from "./Avatar"
+import DefaultAvatar from './Avatar'
 
 const Avatar = styled(DefaultAvatar)`
   height: 35px;
@@ -11,9 +11,9 @@ const Avatar = styled(DefaultAvatar)`
 `
 
 const TwitterAvatar = ({ className, user }) => {
-  const avatarId = getSocialId(user, "twitter")
+  const avatarId = getSocialId(user, 'twitter')
   const avatarUrl = `https://avatars.io/twitter/${avatarId ||
-    "randomtwitter+12345"}/medium`
+    'randomtwitter+12345'}/medium`
 
   let props = { src: avatarUrl }
 

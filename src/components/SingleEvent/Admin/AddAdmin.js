@@ -1,11 +1,11 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
 
-import ChainMutation, { ChainMutationButton } from "../../ChainMutation"
-import { AddPartyAdmins } from "../../../graphql/mutations"
-import { PartyQuery } from "../../../graphql/queries"
+import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
+import { AddPartyAdmins } from '../../../graphql/mutations'
+import { PartyQuery } from '../../../graphql/queries'
 
-const Form = styled("div")``
+const Form = styled('div')``
 
 class AddAdmin extends Component {
   state = {}
@@ -20,7 +20,7 @@ class AddAdmin extends Component {
         resultKey="addAdmins"
         variables={{
           address,
-          userAddresses: (userAddresses || "").split("\n").map(s => s.trim())
+          userAddresses: (userAddresses || '').split('\n').map(s => s.trim())
         }}
         refetchQueries={[{ query: PartyQuery, variables: { address } }]}
         onCompleted={() => this.setState({ userAddresses: null })}

@@ -1,13 +1,13 @@
-import _ from "lodash"
-import React, { createContext, Component } from "react"
-import { withApollo } from "react-apollo"
-import jwt from "jsonwebtoken"
+import _ from 'lodash'
+import React, { createContext, Component } from 'react'
+import { withApollo } from 'react-apollo'
+import jwt from 'jsonwebtoken'
 
-import * as LocalStorage from "./api/localStorage"
-import { getAccount } from "./api/web3"
-import { SIGN_IN } from "./modals"
-import { LoginUserNoAuth } from "./graphql/mutations"
-import { buildAuthHeaders } from "./utils/requests"
+import * as LocalStorage from './api/localStorage'
+import { getAccount } from './api/web3'
+import { SIGN_IN } from './modals'
+import { LoginUserNoAuth } from './graphql/mutations'
+import { buildAuthHeaders } from './utils/requests'
 
 const GlobalContext = createContext({})
 
@@ -25,9 +25,9 @@ const signInPromise = new Promise(resolve => {
 
 export const getProvider = () => providerPromise
 
-const AUTH = "auth"
-const TOKEN_SECRET = "kickback"
-const TOKEN_ALGORITHM = "HS256"
+const AUTH = 'auth'
+const TOKEN_SECRET = 'kickback'
+const TOKEN_ALGORITHM = 'HS256'
 
 class Provider extends Component {
   state = {
@@ -67,8 +67,8 @@ class Provider extends Component {
       const payload = jwt.verify(token, TOKEN_SECRET, {
         algorithm: TOKEN_ALGORITHM
       })
-      if (_.get(payload, "address", "") !== address) {
-        throw new Error("Token not valid for current user address")
+      if (_.get(payload, 'address', '') !== address) {
+        throw new Error('Token not valid for current user address')
       }
 
       const {
@@ -106,7 +106,7 @@ class Provider extends Component {
   }
 
   setUserProfile = profile => {
-    console.log("Current user", profile)
+    console.log('Current user', profile)
 
     this.setState(
       state => ({
@@ -148,10 +148,11 @@ class Provider extends Component {
   }
 
   toggleModal = modal => {
-    this.setState(state =>
-      state.currentModal && state.currentModal.name === modal.name
-        ? { currentModal: null }
-        : { currentModal: modal }
+    this.setState(
+      state =>
+        state.currentModal && state.currentModal.name === modal.name
+          ? { currentModal: null }
+          : { currentModal: modal }
     )
   }
 

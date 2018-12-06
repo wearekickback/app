@@ -1,6 +1,6 @@
-import gql from "graphql-tag"
+import gql from 'graphql-tag'
 
-import { ProfileFields, PartyFields } from "./fragments"
+import { ProfileFields, PartyFields } from './fragments'
 
 export const NetworkIdQuery = gql`
   query getNetworkId {

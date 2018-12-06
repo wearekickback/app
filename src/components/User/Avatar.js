@@ -1,7 +1,7 @@
-import React from "react"
-import styled from "react-emotion"
+import React from 'react'
+import styled from 'react-emotion'
 
-const AvatarContainer = styled("div")`
+const AvatarContainer = styled('div')`
   border-radius: 50%;
   width: 40px;
   height: 40px;

@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import styled from "react-emotion"
-import { GlobalConsumer } from "../../GlobalState"
-import mq from "../../mediaQuery"
+import React, { Component } from 'react'
+import styled from 'react-emotion'
+import { GlobalConsumer } from '../../GlobalState'
+import mq from '../../mediaQuery'
 
 class Modal extends Component {
   render() {
@@ -44,7 +44,7 @@ class Modal extends Component {
   }
 }
 
-const ModalContainer = styled("div")`
+const ModalContainer = styled('div')`
   position: fixed;
   left: 0;
   top: 0;
@@ -58,7 +58,7 @@ const ModalContainer = styled("div")`
   z-index: 2;
 `
 
-const ModalContent = styled("div")`
+const ModalContent = styled('div')`
   background: white;
   padding: 40px;
   width: 100%;

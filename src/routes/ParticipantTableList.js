@@ -1,20 +1,20 @@
-import _ from "lodash"
-import React, { Component } from "react"
-import styled from "react-emotion"
-import { addressesMatch } from "@wearekickback/shared"
+import _ from 'lodash'
+import React, { Component } from 'react'
+import styled from 'react-emotion'
+import { addressesMatch } from '@wearekickback/shared'
 
-import { amInAddressList } from "../utils/parties"
-import { PartyAdminViewQuery } from "../graphql/queries"
+import { amInAddressList } from '../utils/parties'
+import { PartyAdminViewQuery } from '../graphql/queries'
 
-import { Table, Tbody, TH, TR, TD } from "../components/Table"
-import Button from "../components/Forms/Button"
-import ErrorBox from "../components/ErrorBox"
-import SafeQuery from "../components/SafeQuery"
-import EventFilters from "../components/SingleEvent/EventFilters"
-import { GlobalConsumer } from "../GlobalState"
-import mq from "../mediaQuery"
+import { Table, Tbody, TH, TR, TD } from '../components/Table'
+import Button from '../components/Forms/Button'
+import ErrorBox from '../components/ErrorBox'
+import SafeQuery from '../components/SafeQuery'
+import EventFilters from '../components/SingleEvent/EventFilters'
+import { GlobalConsumer } from '../GlobalState'
+import mq from '../mediaQuery'
 
-const SingleEventContainer = styled("div")`
+const SingleEventContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -26,9 +26,9 @@ const SingleEventContainer = styled("div")`
   `};
 `
 
-const NoParticipants = styled("div")``
+const NoParticipants = styled('div')``
 
-const TableList = styled("div")`
+const TableList = styled('div')`
   display: flex;
   flex-direction: column;
 `
@@ -38,10 +38,10 @@ const DownloadButton = styled(Button)`
 `
 
 const cells = [
-  { label: "Real Name", value: "user.realName" },
-  { label: "Address", value: "user.address" },
-  { label: "Email", value: "user.email" },
-  { label: "Status", value: "status" }
+  { label: 'Real Name', value: 'user.realName' },
+  { label: 'Address', value: 'user.address' },
+  { label: 'Email', value: 'user.email' },
+  { label: 'Status', value: 'status' }
 ]
 
 function getEmail(email) {
@@ -60,7 +60,7 @@ function getEmail(email) {
 
 class SingleEventWrapper extends Component {
   state = {
-    search: ""
+    search: ''
   }
 
   handleSearch = value => {
@@ -74,10 +74,10 @@ class SingleEventWrapper extends Component {
     let downloadLink
 
     // CSV FILE
-    csvFile = new Blob([csv], { type: "text/csv" })
+    csvFile = new Blob([csv], { type: 'text/csv' })
 
     // Download link
-    downloadLink = document.createElement("a")
+    downloadLink = document.createElement('a')
 
     // File name
     downloadLink.download = filename
@@ -86,7 +86,7 @@ class SingleEventWrapper extends Component {
     downloadLink.href = window.URL.createObjectURL(csvFile)
 
     // Make sure that the link is not displayed
-    downloadLink.style.display = "none"
+    downloadLink.style.display = 'none'
 
     // Add the link to your DOM
     document.body.appendChild(downloadLink)
@@ -97,19 +97,19 @@ class SingleEventWrapper extends Component {
 
   exportTableToCSV(html, filename) {
     var csv = []
-    var rows = document.querySelectorAll("table tr")
+    var rows = document.querySelectorAll('table tr')
 
     for (var i = 0; i < rows.length; i++) {
       var row = [],
-        cols = rows[i].querySelectorAll("td, th")
+        cols = rows[i].querySelectorAll('td, th')
 
       for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText)
 
-      csv.push(row.join(","))
+      csv.push(row.join(','))
     }
 
     // Download CSV
-    this.downloadCSV(csv.join("\n"), filename)
+    this.downloadCSV(csv.join('\n'), filename)
   }
 
   render() {
@@ -131,7 +131,7 @@ class SingleEventWrapper extends Component {
                 // no party?
                 if (!party) {
                   if (loading) {
-                    return "Loading ..."
+                    return 'Loading ...'
                   } else {
                     return (
                       <ErrorBox>
@@ -145,13 +145,13 @@ class SingleEventWrapper extends Component {
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
                   amOwner: addressesMatch(
-                    _.get(party, "owner.address", ""),
+                    _.get(party, 'owner.address', ''),
                     userAddress
                   ),
                   myParticipantEntry:
                     userAddress &&
-                    _.get(party, "participants", []).find(a =>
-                      addressesMatch(_.get(a, "user.address", ""), userAddress)
+                    _.get(party, 'participants', []).find(a =>
+                      addressesMatch(_.get(a, 'user.address', ''), userAddress)
                     )
                 }
 
@@ -159,7 +159,7 @@ class SingleEventWrapper extends Component {
                   preCalculatedProps.amOwner ||
                   (userAddress &&
                     amInAddressList(
-                      _.get(party, "admins", []).map(a => a.address),
+                      _.get(party, 'admins', []).map(a => a.address),
                       userAddress
                     ))
 
@@ -167,8 +167,8 @@ class SingleEventWrapper extends Component {
                   <TableList>
                     <DownloadButton
                       onClick={() => {
-                        const html = document.querySelector("table").outerHTML
-                        this.exportTableToCSV(html, "event.csv")
+                        const html = document.querySelector('table').outerHTML
+                        this.exportTableToCSV(html, 'event.csv')
                       }}
                     >
                       Download as CSV
@@ -189,13 +189,13 @@ class SingleEventWrapper extends Component {
                             .sort((a, b) => (a.index < b.index ? -1 : 1))
                             .filter(
                               p =>
-                                (p.user.address || "")
+                                (p.user.address || '')
                                   .toLowerCase()
                                   .includes(search) ||
-                                (p.user.realName || "")
+                                (p.user.realName || '')
                                   .toLowerCase()
                                   .includes(search) ||
-                                (p.user.username || "")
+                                (p.user.username || '')
                                   .toLowerCase()
                                   .includes(search)
                             )
@@ -204,7 +204,7 @@ class SingleEventWrapper extends Component {
                                 <TR />
                                 <TR>
                                   {cells.map(cell => {
-                                    if (cell.label === "Email") {
+                                    if (cell.label === 'Email') {
                                       return (
                                         <TD>
                                           {getEmail(participant.user.email)}
@@ -219,15 +219,15 @@ class SingleEventWrapper extends Component {
                                     {participant.user.legal &&
                                     participant.user.legal[0] &&
                                     participant.user.legal[0].accepted
-                                      ? "accepted"
-                                      : "denied"}
+                                      ? 'accepted'
+                                      : 'denied'}
                                   </TD>
                                   <TD>
                                     {participant.user.legal &&
                                     participant.user.legal[2] &&
                                     participant.user.legal[2].accepted
-                                      ? "accepted"
-                                      : "denied"}
+                                      ? 'accepted'
+                                      : 'denied'}
                                   </TD>
                                 </TR>
                               </>

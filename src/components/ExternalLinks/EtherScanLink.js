@@ -1,9 +1,9 @@
-import React from "react"
-import styled from "react-emotion"
+import React from 'react'
+import styled from 'react-emotion'
 
-import { GlobalConsumer } from "../../GlobalState"
+import { GlobalConsumer } from '../../GlobalState'
 
-const Link = styled("a")`
+const Link = styled('a')`
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
@@ -14,7 +14,7 @@ const EtherScanLink = ({ address, tx, children }) => (
   <GlobalConsumer>
     {({ networkState: { expectedNetworkName, expectedNetworkId } }) => {
       const prefix =
-        "1" === expectedNetworkId ? "" : `${expectedNetworkName.toLowerCase()}.`
+        '1' === expectedNetworkId ? '' : `${expectedNetworkName.toLowerCase()}.`
 
       let link
       if (address) {
