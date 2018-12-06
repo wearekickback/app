@@ -194,10 +194,12 @@ class Home extends Component {
         </Hero>
         <CTA devcon>
           <CTAInner>
-            <h2>Heading to DevCon4?</h2>
-            <p>RSVP on Kickback powered events now!</p>
+            <h2>Interested in trying out?</h2>
+            <p>
+              We are still in private beta but have a few events already listed
+            </p>
             <ButtonLink analyticsId="See Events" href="/events">
-              Check out events
+              Browse events
             </ButtonLink>
           </CTAInner>
         </CTA>
