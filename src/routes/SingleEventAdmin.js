@@ -20,18 +20,34 @@ const AdminIntro = styled('p')`
   color: #000;
 `
 
-const Separator = styled('hr')`
-  border-width: 3px;
-  margin: 20px 0;
+const TabNavigation = styled('div')`
+  margin-bottom: 20px;
+  display: flex;
 `
 
-const Sidebar = styled('div')``
+const ToggleLink = styled(Link)`
+  padding: 20px 30px;
+  display: flex;
 
-const ToggleLink = styled(Link)``
+  &:hover {
+    color: white;
+    background: #6e76ff;
+  }
+
+  ${p =>
+    p.active &&
+    `
+    color: white;
+    background: #6e76ff;
+  `};
+`
 
 class SingleEvent extends Component {
   render() {
     const { address } = this.props.match.params
+    const {
+      location: { pathname }
+    } = this.props
     return (
       <GlobalConsumer>
         {({ userAddress }) =>
@@ -57,14 +73,20 @@ class SingleEvent extends Component {
 
                 return (
                   <>
-                    <Sidebar>
-                      <ToggleLink to={`/event/${address}/admin`}>
+                    <TabNavigation>
+                      <ToggleLink
+                        active={pathname === `/event/${address}/admin`}
+                        to={`/event/${address}/admin`}
+                      >
                         Participants
                       </ToggleLink>
-                      <ToggleLink to={`/event/${address}/admin/edit`}>
+                      <ToggleLink
+                        active={pathname === `/event/${address}/admin/edit`}
+                        to={`/event/${address}/admin/edit`}
+                      >
                         Edit Details
                       </ToggleLink>
-                    </Sidebar>
+                    </TabNavigation>
                     <Route
                       path={`/event/${address}/admin`}
                       exact
@@ -83,7 +105,6 @@ class SingleEvent extends Component {
                           <SetLimit address={address} />
                           <Clear address={address} />
                           {isOwner ? <AddAdmin address={address} /> : null}
-                          <Separator />
                         </>
                       )}
                     />
