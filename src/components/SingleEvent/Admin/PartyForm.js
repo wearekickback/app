@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
+import Dropzone from 'react-dropzone'
 
+import { upload } from '../../../api/cloudinary'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime
@@ -47,6 +49,27 @@ class PartyForm extends Component {
     }
   }
 
+  onDrop = acceptedFiles => {
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader(file)
+      reader.onload = () => {
+        const dataUrl = reader.result
+
+        upload(dataUrl).then(url => {
+          this.setState({ image: url })
+          //setFormField('avatar', url)
+          // userProfileMutation({
+          //   variables: { id: user._id, profile: { avatar: url } }
+          // }).then(() => refetch())
+        })
+      }
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+
+      reader.readAsDataURL(file)
+    })
+  }
+
   render() {
     const {
       name,
@@ -86,6 +109,7 @@ class PartyForm extends Component {
         <PartyFormContent>
           <Label>Event Name</Label>
           <TextInput
+            wide
             value={name}
             onChange={e => this.setState({ name: e.target.value })}
             type="text"
@@ -93,6 +117,7 @@ class PartyForm extends Component {
           />
           <Label>Description</Label>
           <TextArea
+            wide
             value={description}
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
@@ -102,6 +127,7 @@ class PartyForm extends Component {
           </TextArea>
           <Label>Location</Label>
           <TextInput
+            wide
             value={location}
             onChange={e => this.setState({ location: e.target.value })}
             type="text"
@@ -120,6 +146,9 @@ class PartyForm extends Component {
             placeholder="Time"
           />
           <Label>Image</Label>
+          <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
+            {image ? <img src={image} /> : 'Click here to upload an image'}
+          </Dropzone>
           <TextInput
             value={image}
             onChange={e => this.setState({ image: e.target.value })}

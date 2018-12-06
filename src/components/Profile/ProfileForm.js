@@ -16,7 +16,6 @@ import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
-import mq from '../../mediaQuery'
 
 const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
 
@@ -64,6 +63,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label>Username</Label>
           <TextInput
+            wide
             disabled={!!existingProfile}
             placeholder="username"
             value={username}
@@ -84,6 +84,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label>Real name</Label>
           <TextInput
+            wide
             placeholder="Joe Bloggs"
             value={realName}
             onChange={this.handleRealNameChange}
@@ -96,6 +97,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label>Email</Label>
           <TextInput
+            wide
             placeholder="alice@gmail.com"
             value={email}
             onChange={this.handleEmailChange}

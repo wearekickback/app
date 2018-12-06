@@ -11,7 +11,7 @@ const Input = styled('input')`
   color: #1e1e1e;
   border-radius: 2px;
   border: 1px solid #edeef4;
-  width: 100%;
+  width: 200px;
   padding-left: 30px;
   ${({ wide }) => wide && `width: 100%`};
   &:focus {
