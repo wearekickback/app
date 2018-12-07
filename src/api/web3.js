@@ -100,10 +100,12 @@ async function getWeb3() {
             networkState.readOnly = true
           }
         } finally {
-          if (web3) {
+          if (web3 && localEndpoint) {
             console.log('Success: Local node active')
+          } else if (web3) {
+            console.log('Success: Cloud node active')
           } else {
-            console.log('Falling back to cloud provider.')
+            throw new Error(`Error setting up web3`)
           }
         }
       }
