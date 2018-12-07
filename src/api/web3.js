@@ -98,7 +98,6 @@ async function getWeb3() {
               getNetworkProviderUrl(networkState.expectedNetworkId)
             )
             networkState.readOnly = true
-            console.log(web3)
           }
         } finally {
           if (web3 && localEndpoint) {
@@ -108,8 +107,6 @@ async function getWeb3() {
           }
         }
       }
-
-      console.log(web3)
 
       networkState.networkId = `${await web3.eth.net.getId()}`
       networkState.networkName = getNetworkName(networkState.networkId)
