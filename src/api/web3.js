@@ -64,9 +64,7 @@ async function getWeb3() {
     try {
       networkState = {}
 
-      const result = await clientInstance.query({
-        query: NetworkIdQuery
-      })
+      const result = await clientInstance.query({ query: NetworkIdQuery })
       if (result.error) {
         throw new Error(result.error)
       }
@@ -82,8 +80,10 @@ async function getWeb3() {
         networkState.readOnly = false
       } else {
         //local node
+        const url = 'http://localhost:8545'
+
         try {
-          await fetch('http://localhost:8545')
+          await fetch(url)
         } catch (error) {
           if (
             !(
