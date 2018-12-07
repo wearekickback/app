@@ -84,12 +84,12 @@ async function getWeb3() {
 
         try {
           await fetch(url)
+          localEndpoint = true
+          web3 = new Web3(new Web3.providers.HttpProvider(url))
         } catch (error) {
           if (
-            !(
-              error.readyState !== 4 &&
-              (error.status === 400 || error.status === 200)
-            )
+            error.readyState === 4 &&
+            (error.status === 400 || error.status === 200)
           ) {
             localEndpoint = true
             web3 = new Web3(new Web3.providers.HttpProvider(url))
@@ -98,17 +98,18 @@ async function getWeb3() {
               getNetworkProviderUrl(networkState.expectedNetworkId)
             )
             networkState.readOnly = true
+            console.log(web3)
           }
         } finally {
           if (web3 && localEndpoint) {
             console.log('Success: Local node active')
           } else if (web3) {
             console.log('Success: Cloud node active')
-          } else {
-            throw new Error(`Error setting up web3`)
           }
         }
       }
+
+      console.log(web3)
 
       networkState.networkId = `${await web3.eth.net.getId()}`
       networkState.networkName = getNetworkName(networkState.networkId)
