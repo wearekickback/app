@@ -16,7 +16,7 @@ Please read [our full setup guide](https://github.com/wearekickback/docs/blob/ma
 - Go to http://localhost:3000/party/$address to see if newly created event is shown.
 
 **Automated E2E tests with cypress**
-Make sure the locally environment is up and running with local contract, ganache and serverr.
+Make sure the locally environment is up and running with local contract, ganache and server. When run ganache, run it with 500 accounts `ganache-cli --accounts 500`
 
 Run the seeding script to deploy some seed parties
 

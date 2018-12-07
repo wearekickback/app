@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 function stubTracking() {
   cy.server() // enable response stubbing
   cy.route({
@@ -30,7 +32,15 @@ beforeEach(() => {
 
 const CONFIRMATION_TIME = 15000
 
-describe('Admin create, RSVP and finalise', () => {
+describe('Sign up', () => {
+  it('sign up', () => {
+    const randomAccount = _.random(5, 500)
+    cy.visit(`http://localhost:3000/events?account=${randomAccount}`)
+    cy.getByText('Sign in', { exact: false }).click()
+  })
+})
+
+xdescribe('Admin create, RSVP and finalise', () => {
   it('Admin create, RSVP and finalise', () => {
     cy.visit('http://localhost:3000/create')
 
@@ -76,7 +86,7 @@ describe('Admin create, RSVP and finalise', () => {
   })
 })
 
-describe('Party with 2 people, one mark attended, one not', () => {
+xdescribe('Party with 2 people, one mark attended, one not', () => {
   it('Admin create, RSVP and finalise', async () => {
     cy.visit('http://localhost:3000/')
     cy.getByText('Events').click()

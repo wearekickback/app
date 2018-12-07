@@ -98,7 +98,6 @@ async function getWeb3() {
               getNetworkProviderUrl(networkState.expectedNetworkId)
             )
             networkState.readOnly = true
-            console.log(web3)
           }
         } finally {
           if (web3 && localEndpoint) {
@@ -108,8 +107,6 @@ async function getWeb3() {
           }
         }
       }
-
-      console.log(web3)
 
       networkState.networkId = `${await web3.eth.net.getId()}`
       networkState.networkName = getNetworkName(networkState.networkId)
@@ -181,16 +178,26 @@ export async function getEvents(address, abi) {
 }
 
 export async function getAccount() {
+  let accountIndex = 0
+  /* Query params account switch for testing */
+  if (localEndpoint === true) {
+    const query = window.location.search
+    const params = new URLSearchParams(query)
+    const account = params.get('account')
+    if (account) {
+      accountIndex = account
+    }
+  }
   try {
     const web3 = await getWeb3()
     const accounts = await web3.eth.getAccounts()
 
     if (accounts.length > 0) {
-      return accounts[0]
+      return accounts[accountIndex]
     } else {
       try {
         const accounts = await window.ethereum.enable()
-        return accounts[0]
+        return accounts[accountIndex]
       } catch (error) {
         console.warn('Did not allow app to access dapp browser')
         throw error

@@ -31,8 +31,10 @@ const resolvers = {
   Query: {
     async accounts() {},
     async web3() {
+      const web3 = await getWeb3()
+      console.log('web3', web3)
       return {
-        ...getWeb3(),
+        ...web3,
         __typename: 'Web3'
       }
     },
