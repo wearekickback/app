@@ -141,10 +141,7 @@ class EventInfo extends Component {
     return (
       <EventInfoContainer className={className}>
         <Date>
-          {party.date}
-          {moment(parseInt(party.date)).format(
-            'dddd, MMMM Do YYYY, h:mm:ss a'
-          ) || 'Tuesday, 23rd Sep, 2018 9:00 PM'}
+          {moment(parseInt(party.date)).format('dddd, MMMM Do YYYY, h:mm a')}
         </Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>

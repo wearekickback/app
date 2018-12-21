@@ -92,7 +92,7 @@ class PartyForm extends Component {
       variables: extraVariables = {}
     } = this.props
 
-    const date = `${getDateFromDayAndTime(day, time)}`
+    const date = `${getDateFromDayAndTime(day, time.valueOf())}`
 
     const variables = {
       meta: { name, description, location, date, image },
@@ -139,22 +139,20 @@ class PartyForm extends Component {
             onDayChange={day => this.setState({ day })}
           />
           <Label>Time</Label>
+          {console.log(this.state.time.valueOf())}
           <TimePicker
             showSecond={false}
             defaultValue={moment()
               .hours(0)
-              .minutes(0)}
-            onChange={value => this.setState({ time: value })}
+              .minutes(0)
+              .seconds(0)
+              .milliseconds(0)}
+            onChange={value => {
+              const time = value.valueOf() - new Date(day).setHours(0, 0, 0, 0)
+
+              this.setState({ time })
+            }}
             format="h:mm a"
-            value={this.state.time}
-            use12Hours
-            inputReadOnly
-          />
-          <TextInput
-            value={time}
-            onChange={e => this.setState({ time: e.target.value })}
-            type="text"
-            placeholder="Time"
           />
           <Label>Image</Label>
           <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
