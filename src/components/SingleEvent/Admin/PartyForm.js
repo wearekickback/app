@@ -3,6 +3,9 @@ import styled from 'react-emotion'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
 import Dropzone from 'react-dropzone'
+import TimePicker from 'rc-time-picker'
+import moment from 'moment'
+import 'rc-time-picker/assets/index.css'
 
 import { upload } from '../../../api/cloudinary'
 import {
@@ -41,11 +44,12 @@ class PartyForm extends Component {
       description,
       location,
       day: new Date(day),
-      time,
+      time: moment(time),
       image,
       deposit,
       coolingPeriod,
-      limitOfParticipants
+      limitOfParticipants,
+      imageUploading: true
     }
   }
 
@@ -54,13 +58,9 @@ class PartyForm extends Component {
       const reader = new FileReader(file)
       reader.onload = () => {
         const dataUrl = reader.result
-
+        this.setState({ imageUploading: true })
         upload(dataUrl).then(url => {
           this.setState({ image: url })
-          //setFormField('avatar', url)
-          // userProfileMutation({
-          //   variables: { id: user._id, profile: { avatar: url } }
-          // }).then(() => refetch())
         })
       }
       reader.onabort = () => console.log('file reading was aborted')
@@ -139,6 +139,17 @@ class PartyForm extends Component {
             onDayChange={day => this.setState({ day })}
           />
           <Label>Time</Label>
+          <TimePicker
+            showSecond={false}
+            defaultValue={moment()
+              .hours(0)
+              .minutes(0)}
+            onChange={value => this.setState({ time: value })}
+            format="h:mm a"
+            value={this.state.time}
+            use12Hours
+            inputReadOnly
+          />
           <TextInput
             value={time}
             onChange={e => this.setState({ time: e.target.value })}
@@ -147,7 +158,13 @@ class PartyForm extends Component {
           />
           <Label>Image</Label>
           <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
-            {image ? <img src={image} /> : 'Click here to upload an image'}
+            {this.state.imageUploading ? (
+              'uploading...'
+            ) : image ? (
+              <img src={image} />
+            ) : (
+              'Click here to upload an image'
+            )}
           </Dropzone>
           <TextInput
             value={image}

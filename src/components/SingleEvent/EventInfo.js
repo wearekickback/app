@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
+import moment from 'moment'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
@@ -9,7 +10,6 @@ import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
-import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
 import { toEthVal } from '../../utils/units'
@@ -140,7 +140,12 @@ class EventInfo extends Component {
     const { party, address, className } = this.props
     return (
       <EventInfoContainer className={className}>
-        <Date>{party.date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
+        <Date>
+          {party.date}
+          {moment(parseInt(party.date)).format(
+            'dddd, MMMM Do YYYY, h:mm:ss a'
+          ) || 'Tuesday, 23rd Sep, 2018 9:00 PM'}
+        </Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
