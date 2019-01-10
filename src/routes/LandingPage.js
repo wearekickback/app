@@ -277,7 +277,8 @@ class Home extends Component {
               Request early access
             </ButtonLink>
             <p>
-              Or just curious? Join our <a href="https://t.me/wearekickback">telegram channel</a>
+              Or just curious? Join our{' '}
+              <a href="https://t.me/wearekickback">telegram channel</a>
             </p>
           </CTAInner>
         </CTA>
