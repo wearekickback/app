@@ -14,7 +14,6 @@ export const ProfileFields = gql`
     legal {
       id
       type
-      version
       accepted
     }
     email {
