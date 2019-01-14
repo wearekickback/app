@@ -1,9 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { addressesMatch } from '@wearekickback/shared'
 
-import { amInAddressList } from '../utils/parties'
+import { amAdmin, getMyParticipantEntry } from '../utils/parties'
 import { PartyAdminViewQuery } from '../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../components/Table'
@@ -144,24 +143,11 @@ class SingleEventWrapper extends Component {
 
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
-                  amOwner: addressesMatch(
-                    _.get(party, 'owner.address', ''),
-                    userAddress
-                  ),
-                  myParticipantEntry:
-                    userAddress &&
-                    _.get(party, 'participants', []).find(a =>
-                      addressesMatch(_.get(a, 'user.address', ''), userAddress)
-                    )
+                  amAdmin: amAdmin(party, userAddress),
+                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
 
-                preCalculatedProps.amAdmin =
-                  preCalculatedProps.amOwner ||
-                  (userAddress &&
-                    amInAddressList(
-                      _.get(party, 'admins', []).map(a => a.address),
-                      userAddress
-                    ))
+                preCalculatedProps.amAdmin = amAdmin(party, userAddress)
 
                 return (
                   <TableList>
