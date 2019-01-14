@@ -152,7 +152,9 @@ class EventInfo extends Component {
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
         </ContractAddress>
-        <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
+        <EventImage
+          src={party.headerImg || 'https://placeimg.com/640/480/tech'}
+        />
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>

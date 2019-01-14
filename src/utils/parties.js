@@ -10,7 +10,7 @@ import { toEthVal } from './units'
 
 export const getMyParticipantEntry = (party, address) =>
   address
-    ? _.get(party, 'participants', []).find(a =>
+    ? (_.get(party, 'participants') || []).find(a =>
         addressesMatch(_.get(a, 'user.address', ''), address)
       )
     : null
