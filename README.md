@@ -14,3 +14,4 @@ Please read [our full setup guide](https://github.com/wearekickback/docs/blob/ma
 - Fill in event detail and press "Submit"
 - Once transaction is complete, then get `deployedAddress` from the event.
 - Go to http://localhost:3000/party/$address to see if newly created event is shown.
+

@@ -12,11 +12,12 @@ const Avatar = styled(DefaultAvatar)`
 
 const TwitterAvatar = ({ className, user }) => {
   const avatarId = getSocialId(user, 'twitter')
-  const avatarUrl = `https://avatars.io/twitter/${avatarId || 'randomtwitter+12345'}/medium`
+  const avatarUrl = `https://avatars.io/twitter/${avatarId ||
+    'randomtwitter+12345'}/medium`
 
   let props = { src: avatarUrl }
 
-  if(avatarId){
+  if (avatarId) {
     props.href = `https://twitter.com/${avatarId}`
   }
 

@@ -45,7 +45,7 @@ class PartyForm extends Component {
       mutation,
       address,
       children,
-      variables: extraVariables = {},
+      variables: extraVariables = {}
     } = this.props
 
     const variables = {
@@ -116,7 +116,9 @@ class PartyForm extends Component {
               <input
                 value={limitOfParticipants}
                 onChange={e =>
-                  this.setState({ limitOfParticipants: e.target.value })
+                  this.setState({
+                    limitOfParticipants: e.target.value
+                  })
                 }
                 type="text"
                 placeholder="number of participants"
@@ -126,7 +128,10 @@ class PartyForm extends Component {
               <input
                 value={coolingPeriod}
                 onChange={e =>
-                  this.setState({ coolingPeriod: 0 < parseInt(e.target.value) ? e.target.value : '1' })
+                  this.setState({
+                    coolingPeriod:
+                      0 < parseInt(e.target.value) ? e.target.value : '1'
+                  })
                 }
                 type="text"
                 placeholder="Cooling period in seconds"
@@ -143,7 +148,13 @@ class PartyForm extends Component {
           variables={variables}
           onCompleted={
             onCompleted
-              ? ({ id }) => onCompleted({ id }, deposit, limitOfParticipants, coolingPeriod)
+              ? ({ id }) =>
+                  onCompleted(
+                    { id },
+                    deposit,
+                    limitOfParticipants,
+                    coolingPeriod
+                  )
               : null
           }
         >

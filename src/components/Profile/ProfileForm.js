@@ -1,7 +1,15 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { isEmailAddress, isUsername, isRealName, isTwitterId, sanitizeTwitterId, trimOrEmptyStringProps, LEGAL } from '@wearekickback/shared'
+import {
+  isEmailAddress,
+  isUsername,
+  isRealName,
+  isTwitterId,
+  sanitizeTwitterId,
+  trimOrEmptyStringProps,
+  LEGAL
+} from '@wearekickback/shared'
 
 import { removeTypename } from '../../graphql'
 import InputAddress from '../Forms/InputAddress'
@@ -11,7 +19,6 @@ import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
 import mq from '../../mediaQuery'
 
 const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
-
 
 const Field = styled('div')`
   margin: 30px 0;
@@ -44,7 +51,15 @@ export default class ProfileForm extends Component {
 
     const values = this._currentValues(existingProfile)
 
-    const { username, realName, email, twitter, terms, privacy, marketing } = values
+    const {
+      username,
+      realName,
+      email,
+      twitter,
+      terms,
+      privacy,
+      marketing
+    } = values
 
     return (
       <div>
@@ -60,11 +75,13 @@ export default class ProfileForm extends Component {
           />
           {existingProfile ? (
             <Explanation>
-              If you wish to change your username please contact us at <strong>hello@kickback.events</strong>
+              If you wish to change your username please contact us at{' '}
+              <strong>hello@kickback.events</strong>
             </Explanation>
           ) : (
             <Explanation>
-              We hope this will be easier to remember than your account address (0x...)!
+              We hope this will be easier to remember than your account address
+              (0x...)!
             </Explanation>
           )}
         </Field>
@@ -76,9 +93,8 @@ export default class ProfileForm extends Component {
             onChange={this.handleRealNameChange}
           />
           <Explanation>
-            We <strong>only</strong> share this with
-            organizers of the events you attend, so that they can identify
-            you on arrival.
+            We <strong>only</strong> share this with organizers of the events
+            you attend, so that they can identify you on arrival.
           </Explanation>
         </Field>
         <Field>
@@ -89,9 +105,9 @@ export default class ProfileForm extends Component {
             onChange={this.handleEmailChange}
           />
           <Explanation>
-            This allows us to notify you of any changes to the event and
-            remind you when it's time to withdraw your payout. We do not share
-            this with anyone.
+            This allows us to notify you of any changes to the event and remind
+            you when it's time to withdraw your payout. We do not share this
+            with anyone.
           </Explanation>
         </Field>
         <Field>
@@ -102,8 +118,8 @@ export default class ProfileForm extends Component {
             onChange={this.handleTwitterChange}
           />
           <Explanation>
-            We use this for your profile picture, and for anyone to contact
-            your over social media if they so wish.
+            We use this for your profile picture, and for anyone to contact your
+            over social media if they so wish.
           </Explanation>
         </Field>
         {existingProfile ? null : (
@@ -114,7 +130,10 @@ export default class ProfileForm extends Component {
               checked={terms}
               onChange={this.handleTermsCheck}
             />{' '}
-            I agree with the <a href={`/terms`} target="_blank" rel="noopener noreferrer">terms and conditions</a>
+            I agree with the{' '}
+            <a href={`/terms`} target="_blank" rel="noopener noreferrer">
+              terms and conditions
+            </a>
           </p>
         )}
         {existingProfile ? null : (
@@ -140,12 +159,15 @@ export default class ProfileForm extends Component {
           />{' '}
           I am happy to receive marketing info (optional)
         </p>
-        {renderSubmitButton(this._prepareValuesForSubmission(values), this._valuesAreValid(values))}
+        {renderSubmitButton(
+          this._prepareValuesForSubmission(values),
+          this._valuesAreValid(values)
+        )}
       </div>
     )
   }
 
-  _currentValues (existingProfile = {}) {
+  _currentValues(existingProfile = {}) {
     const {
       email,
       twitter,
@@ -153,21 +175,49 @@ export default class ProfileForm extends Component {
       realName,
       terms,
       privacy,
-      marketing,
+      marketing
     } = this.state
 
     return {
       username: existingProfile.username || username,
       realName: realName !== undefined ? realName : existingProfile.realName,
-      email: email !== undefined  ? email : _.get(existingProfile, 'email.verified', '') || _.get(existingProfile, 'email.pending', ''),
-      twitter: twitter !== undefined ? twitter : _.get((existingProfile.social || []).find(({ type }) => type === 'twitter'), 'value', ''),
-      terms: terms !== undefined ? terms : !!((existingProfile.legal || []).find(({ type, accepted }) => type === TERMS_AND_CONDITIONS && accepted)),
-      privacy: privacy !== undefined ? privacy : !!((existingProfile.legal || []).find(({ type, accepted }) => type === PRIVACY_POLICY && accepted)),
-      marketing: marketing !== undefined ? marketing : !!((existingProfile.legal || []).find(({ type, accepted }) => type === MARKETING_INFO && accepted)),
+      email:
+        email !== undefined
+          ? email
+          : _.get(existingProfile, 'email.verified', '') ||
+            _.get(existingProfile, 'email.pending', ''),
+      twitter:
+        twitter !== undefined
+          ? twitter
+          : _.get(
+              (existingProfile.social || []).find(
+                ({ type }) => type === 'twitter'
+              ),
+              'value',
+              ''
+            ),
+      terms:
+        terms !== undefined
+          ? terms
+          : !!(existingProfile.legal || []).find(
+              ({ type, accepted }) => type === TERMS_AND_CONDITIONS && accepted
+            ),
+      privacy:
+        privacy !== undefined
+          ? privacy
+          : !!(existingProfile.legal || []).find(
+              ({ type, accepted }) => type === PRIVACY_POLICY && accepted
+            ),
+      marketing:
+        marketing !== undefined
+          ? marketing
+          : !!(existingProfile.legal || []).find(
+              ({ type, accepted }) => type === MARKETING_INFO && accepted
+            )
     }
   }
 
-  _prepareValuesForSubmission (values) {
+  _prepareValuesForSubmission(values) {
     const { existingProfile = {} } = this.props
 
     const {
@@ -177,21 +227,41 @@ export default class ProfileForm extends Component {
       realName,
       terms,
       privacy,
-      marketing,
+      marketing
     } = values
 
     let social = (existingProfile.social || []).map(v => removeTypename(v))
-    social = ensureInArray(social, 'type', { type: 'twitter', value: sanitizeTwitterId(twitter) }, true)
+    social = ensureInArray(
+      social,
+      'type',
+      { type: 'twitter', value: sanitizeTwitterId(twitter) },
+      true
+    )
 
     let legal = (existingProfile.legal || []).map(v => removeTypename(v))
     if (terms) {
-      legal = ensureInArray(legal, 'type', { type: TERMS_AND_CONDITIONS, accepted: `${Date.now()}` }, false)
+      legal = ensureInArray(
+        legal,
+        'type',
+        { type: TERMS_AND_CONDITIONS, accepted: `${Date.now()}` },
+        false
+      )
     }
     if (privacy) {
-      legal = ensureInArray(legal, 'type', { type: PRIVACY_POLICY, accepted: `${Date.now()}` }, false)
+      legal = ensureInArray(
+        legal,
+        'type',
+        { type: PRIVACY_POLICY, accepted: `${Date.now()}` },
+        false
+      )
     }
     if (marketing) {
-      legal = ensureInArray(legal, 'type', { type: MARKETING_INFO, accepted: `${Date.now()}` }, false)
+      legal = ensureInArray(
+        legal,
+        'type',
+        { type: MARKETING_INFO, accepted: `${Date.now()}` },
+        false
+      )
     } else {
       legal = ensureNotInArray(legal, 'type', { type: MARKETING_INFO })
     }
@@ -199,11 +269,11 @@ export default class ProfileForm extends Component {
     return {
       ...trimOrEmptyStringProps({ email, username, realName }),
       social,
-      legal,
+      legal
     }
   }
 
-  _valuesAreValid (values) {
+  _valuesAreValid(values) {
     const { email, twitter, username, realName, terms, privacy } = values
 
     if (!isUsername(username)) {

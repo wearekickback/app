@@ -1,24 +1,27 @@
 import { Observable, ApolloLink } from 'apollo-link'
-import { hasDirectives, checkDocument, removeDirectivesFromDocument } from 'apollo-utilities'
+import {
+  hasDirectives,
+  checkDocument,
+  removeDirectivesFromDocument
+} from 'apollo-utilities'
 
 import { getProvider as getGlobalProvider } from '../../GlobalState'
 import { buildAuthHeaders } from '../../utils/requests'
 
 const sanitizedQueryCache = new Map()
 
-
 const makeError = (observer, err) => {
   // observer.next([{
-      // result: {
-      //   data: {},
-      // },
-      // errors: [ err ]
+  // result: {
+  //   data: {},
+  // },
+  // errors: [ err ]
   //   }
   // ])
   observer.complete([])
 }
 
-export default () => (
+export default () =>
   new ApolloLink((operation, forward) => {
     const requireAuth = hasDirectives(['requireAuth'], operation.query)
     const disableAuth = hasDirectives(['disableAuth'], operation.query)
@@ -29,7 +32,7 @@ export default () => (
       // remove directives (inspired by https://github.com/apollographql/apollo-link-state/blob/master/packages/apollo-link-state/src/utils.ts)
       checkDocument(operation.query)
       sanitizedQuery = removeDirectivesFromDocument(
-        [{ name: 'requireAuth' }, { name: 'disableAuth'}], 
+        [{ name: 'requireAuth' }, { name: 'disableAuth' }],
         operation.query
       )
       // save to cache for next time!
@@ -71,7 +74,7 @@ export default () => (
       handle = forward(operation).subscribe({
         next: observer.next.bind(observer),
         error: observer.error.bind(observer),
-        complete: observer.complete.bind(observer),
+        complete: observer.complete.bind(observer)
       })
 
       // return unsubscribe function
@@ -82,4 +85,3 @@ export default () => (
       }
     })
   })
-)

@@ -4,9 +4,11 @@ import SafeMutation from '../SafeMutation'
 import Tooltip from '../Tooltip'
 import ErrorBox from '../ErrorBox'
 import Button from '../Forms/Button'
-import { CreateLoginChallenge, SignChallengeString } from '../../graphql/mutations'
+import {
+  CreateLoginChallenge,
+  SignChallengeString
+} from '../../graphql/mutations'
 import { GlobalConsumer } from '../../GlobalState'
-
 
 export default class RefreshAuthTokenButton extends Component {
   state = {}
@@ -18,7 +20,7 @@ export default class RefreshAuthTokenButton extends Component {
     createLoginChallenge,
     signChallengeString,
     setAuthTokenFromSignature,
-    setUserProfile,
+    setUserProfile
   }) => async ({ fetchUserProfileFromServer }) => {
     try {
       this.setState({ error: null })
@@ -28,7 +30,9 @@ export default class RefreshAuthTokenButton extends Component {
         throw new Error('Unable to obtain user ethereum address')
       }
 
-      const result1 = await createLoginChallenge({ variables: { address }})
+      const result1 = await createLoginChallenge({
+        variables: { address }
+      })
 
       if (result1.errors) {
         throw new Error('Failed to obtain login challenge!')
@@ -36,7 +40,9 @@ export default class RefreshAuthTokenButton extends Component {
 
       showTooltip()
 
-      const { challenge: { str } } = result1.data
+      const {
+        challenge: { str }
+      } = result1.data
 
       const result2 = await signChallengeString({
         variables: {
@@ -82,28 +88,30 @@ export default class RefreshAuthTokenButton extends Component {
               <SafeMutation mutation={SignChallengeString}>
                 {signChallengeString => (
                   <>
-                  <Tooltip text='Please sign the login message using your wallet or Dapp browser'>
-                    {({ showTooltip, hideTooltip, tooltipElement }) => (
-                      <Button
-                        analyticsId='Sign Message'
-                        onClick={() => onClick(this.buildCallback({
-                          showTooltip,
-                          hideTooltip,
-                          reloadUserAddress,
-                          createLoginChallenge,
-                          signChallengeString,
-                          setAuthTokenFromSignature,
-                          setUserProfile,
-                        }))}
-                      >
-                        {title || 'Sign in'}
-                        {tooltipElement}
-                      </Button>
-                    )}
-                  </Tooltip>
-                  {error ? (
-                    <ErrorBox>{`${error}`}</ErrorBox>
-                  ) : null}
+                    <Tooltip text="Please sign the login message using your wallet or Dapp browser">
+                      {({ showTooltip, hideTooltip, tooltipElement }) => (
+                        <Button
+                          analyticsId="Sign Message"
+                          onClick={() =>
+                            onClick(
+                              this.buildCallback({
+                                showTooltip,
+                                hideTooltip,
+                                reloadUserAddress,
+                                createLoginChallenge,
+                                signChallengeString,
+                                setAuthTokenFromSignature,
+                                setUserProfile
+                              })
+                            )
+                          }
+                        >
+                          {title || 'Sign in'}
+                          {tooltipElement}
+                        </Button>
+                      )}
+                    </Tooltip>
+                    {error ? <ErrorBox>{`${error}`}</ErrorBox> : null}
                   </>
                 )}
               </SafeMutation>

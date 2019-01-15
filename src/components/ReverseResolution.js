@@ -9,9 +9,7 @@ class ReverseResolution extends Component {
       <SafeQuery
         query={ReverseRecordQuery}
         variables={{ address: this.props.address }}
-        renderLoading={() => (
-          <span>{this.props.address}</span>
-        )}
+        renderLoading={() => <span>{this.props.address}</span>}
       >
         {({ data: { reverseRecord = {} } }) => {
           if (!reverseRecord.name) {

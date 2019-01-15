@@ -13,7 +13,8 @@ export const DEFAULT_RENDER_ERROR = ({ error }) => {
   const errStrLowercase = errStr.toLowerCase()
 
   if (errStrLowercase.includes('failed to fetch')) {
-    errStr = 'We were unable to connect to our backend server. Is your internet connection working?'
+    errStr =
+      'We were unable to connect to our backend server. Is your internet connection working?'
   }
 
   return <ErrorBox>{errStr}</ErrorBox>

@@ -14,11 +14,12 @@ class AllEvents extends Component {
     return (
       <>
         <h2>All events</h2>
-        <SafeQuery query={AllPartiesQuery}
+        <SafeQuery
+          query={AllPartiesQuery}
           isLoading={result => !_.get(result, 'data.parties')}
           renderLoading={this._renderLoading}
         >
-          {({ data: { parties } }) => {
+          {({ data: { parties } }) => {
             return (
               <EventCardGrid>
                 {parties.map((party, index) => (
