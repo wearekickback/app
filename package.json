@@ -22,6 +22,7 @@
     "graphql-tag": "^2.9.2",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.10",
+    "marked": "^0.6.0",
     "moment": "^2.22.2",
     "query-string": "^6.2.0",
     "react": "^16.4.2",
