@@ -117,7 +117,7 @@ const TotalPot = styled('div')`
   }
 `
 
-const EventDescription = styled('p')`
+const EventDescription = styled('div')`
   white-space: pre-line;
   line-height: 1.6em;
 `
