@@ -202,7 +202,7 @@ class EventInfo extends Component {
           </span>
         </TotalPot>
         <EventDescription
-          dangerouslySetInnerHTML={{ _html: marked(party.description || '') }}
+          dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
         />
         <Photos>
           <PhotoContainer>
