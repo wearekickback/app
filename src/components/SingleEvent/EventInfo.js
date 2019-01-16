@@ -118,11 +118,10 @@ const TotalPot = styled('div')`
 `
 
 const EventDescription = styled('div')`
-  white-space: pre-line;
   line-height: 1.6em;
   padding-top: 2em;
   p {
-    margin: 0;
+    margin: 0 0 1em 0;
   }
 `
 
