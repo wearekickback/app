@@ -120,6 +120,10 @@ const TotalPot = styled('div')`
 const EventDescription = styled('div')`
   white-space: pre-line;
   line-height: 1.6em;
+  padding-top: 2em;
+  p {
+    margin: 0;
+  }
 `
 
 const UserAvatar = styled(TwitterAvatar)`
