@@ -11,9 +11,9 @@ class PartyForm extends Component {
       name = '',
       description = '',
       location = '',
-      start = '',
-      end = '',
-      arriveBy = '',
+      start = undefined,
+      end = undefined,
+      arriveBy = undefined,
       headerImg = '',
       deposit = '0.02',
       coolingPeriod = `${60 * 60 * 24 * 7}`,
@@ -97,20 +97,20 @@ class PartyForm extends Component {
           <br />
           <label>Start date</label>
           <DateTimePicker
-            onChange={d => this.setState({ start: d })}
-            value={start}
+            onChange={d => this.setState({ start: d.toISOString() })}
+            value={new Date(start)}
           />
           <br />
           <label>End date</label>
           <DateTimePicker
-            onChange={d => this.setState({ end: d })}
-            value={end}
+            onChange={d => this.setState({ end: d.toISOString() })}
+            value={new Date(end)}
           />
           <br />
           <label>Arrive by</label>
           <DateTimePicker
-            onChange={d => this.setState({ arriveBy: d })}
-            value={arriveBy}
+            onChange={d => this.setState({ arriveBy: d.toISOString() })}
+            value={new Date(arriveBy || start)}
           />
           <br />
           <label>Image</label>
