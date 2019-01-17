@@ -55,7 +55,7 @@ export default class SignIn extends Component {
 
   renderSignUp(userAddress, toggleModal) {
     return (
-      <Form>
+      <Form onSubmit={e => e.preventDefault()}>
         <H2>
           <Pencil />
           Create account
