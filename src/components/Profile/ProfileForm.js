@@ -68,6 +68,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label>Username</Label>
           <TextInput
+            data-testid="username"
             disabled={!!existingProfile}
             placeholder="username"
             value={username}
@@ -88,6 +89,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label>Real name</Label>
           <TextInput
+            data-testid="realname"
             placeholder="Joe Bloggs"
             value={realName}
             onChange={this.handleRealNameChange}
@@ -100,6 +102,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label>Email</Label>
           <TextInput
+            data-testid="email"
             placeholder="alice@gmail.com"
             value={email}
             onChange={this.handleEmailChange}
@@ -113,6 +116,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label optional>Twitter</Label>
           <TextInput
+            data-testid="twitter"
             placeholder="jack"
             value={twitter}
             onChange={this.handleTwitterChange}
@@ -125,6 +129,7 @@ export default class ProfileForm extends Component {
         {existingProfile ? null : (
           <p>
             <input
+              data-testid="terms"
               type="checkbox"
               value={TERMS_AND_CONDITIONS}
               checked={terms}
@@ -139,6 +144,7 @@ export default class ProfileForm extends Component {
         {existingProfile ? null : (
           <p>
             <input
+              data-testid="privacy"
               type="checkbox"
               value={PRIVACY_POLICY}
               checked={privacy}
@@ -152,6 +158,7 @@ export default class ProfileForm extends Component {
         )}
         <p>
           <input
+            data-testid="marketing"
             type="checkbox"
             value={MARKETING_INFO}
             checked={marketing}
@@ -275,7 +282,6 @@ export default class ProfileForm extends Component {
 
   _valuesAreValid(values) {
     const { email, twitter, username, realName, terms, privacy } = values
-
     if (!isUsername(username)) {
       return false
     }
