@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
+import marked from 'marked'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
@@ -116,9 +117,12 @@ const TotalPot = styled('div')`
   }
 `
 
-const EventDescription = styled('p')`
-  white-space: pre-line;
+const EventDescription = styled('div')`
   line-height: 1.6em;
+  padding-top: 2em;
+  p {
+    margin: 0 0 1em 0;
+  }
 `
 
 const UserAvatar = styled(TwitterAvatar)`
@@ -200,7 +204,9 @@ class EventInfo extends Component {
             days
           </span>
         </TotalPot>
-        <EventDescription>{party.description}</EventDescription>
+        <EventDescription
+          dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
+        />
         <Photos>
           <PhotoContainer>
             <Photo />
