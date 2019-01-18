@@ -17,7 +17,10 @@ function stubTracking() {
 function signIn() {
   cy.getByTestId('sign-in-modal').within(() => {
     cy.getByText('Sign in', { exact: false }).should('exist')
-    cy.getByTestId('sign-in-button').click()
+    cy.queryByTestId('sign-in-button', {
+      exact: false,
+      timeout: CONFIRMATION_TIME
+    }).click()
   })
 }
 
@@ -102,34 +105,28 @@ describe('Admin create, RSVP and finalise', () => {
   })
 })
 
-xdescribe('Party with 2 people, one mark attended, one not', () => {
+describe('Party with 2 people, one mark attended, one not', () => {
   it('Admin create, RSVP and finalise', async () => {
     cy.visit('http://localhost:3000/')
     cy.getByText('Events').click()
     cy.getByText('Super duper').click()
-
-    //TODO: expect there to be 2 participants
-
-    //Get Attendee box
-    cy.queryByText('makoto')
-      .parent()
-      .parent()
-      .within(container => {
-        cy.getByText('Mark Attended', {
-          container,
-          exact: false
-        }).click()
-      })
-
-    //TODO: expect there to be one marked attended
-
+    cy.getByText('- 2 going, 98 spots left').should('exist')
+    cy.getByText('Mark Attended', {
+      exact: false
+    }).click()
     signIn()
+
+    cy.getByText('1/2 have been marked attended').should('exist')
     finalise()
-    cy.getByText('Finalized', {
+    cy.wait(CONFIRMATION_TIME)
+    cy.getByText('Finalized!', {
       timeout: CONFIRMATION_TIME,
       exact: false
     }).should('exist')
-
-    //TODO: assert on payouts displayed are correct
+    cy.getByText('Close').click()
+    cy.wait(5000)
+    cy.getByText(
+      'This event is over. 1 out of 2 people went to this event.'
+    ).should('exist')
   })
 })
