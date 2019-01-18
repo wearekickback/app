@@ -16,11 +16,42 @@ const PendingParty = `
     id: createPendingParty(meta: $meta, password: $password)
   }
 `
+const UpdateUserProfile = `
+  mutation updateUserProfile($profile: UserProfileInput!) {
+    profile: updateUserProfile(profile: $profile)  {
+      address
+      realName
+      lastLogin
+      created
+      social {
+        type
+        value
+      }
+      email {
+        verified
+        pending
+      }
+      legal {
+        type
+        accepted
+      }
+    }
+  }
+`
 
 const LoginChallenge = `
   mutation createLoginChallenge($address: String!) {
     createLoginChallenge(address: $address) {
       str
+    }
+  }
+`
+
+const UserProfileQuery = `
+  query getUserProfile($address: String!) {
+    profile: userProfile(address: $address) {
+      address
+      username
     }
   }
 `
@@ -69,6 +100,28 @@ class DummyParty {
     return this
   }
 
+  async updateUserProfile() {
+    const username = `adm${new Date().getTime()}`
+    const { profile } = await this.client.request(UpdateUserProfile, {
+      profile: {
+        email: 'admin@example.com',
+        username: username,
+        realName: 'Admin',
+        social: [{ type: 'twitter', value: 'admin' }],
+        legal: [
+          { type: 'TERMS_AND_CONDITIONS', accepted: '1547813987275' },
+          { type: 'PRIVACY_POLICY', accepted: '1547813987275' }
+        ]
+      }
+    })
+    return profile
+  }
+
+  async userProfileQuery(address) {
+    const { profile } = await this.client.request(UserProfileQuery, { address })
+    return profile
+  }
+
   async createPendingParty() {
     const { id } = await this.client.request(PendingParty, {
       meta: this.meta,
@@ -108,6 +161,14 @@ class DummyParty {
     })
 
     const id = await this.createPendingParty()
+    const admin = await this.userProfileQuery(this.owner)
+
+    if (!admin.username) {
+      console.log('Creating admin profile')
+      const profile = await this.updateUserProfile()
+    } else {
+      console.log(`Admin account ${admin.username} already exists`)
+    }
 
     const deployer = new this.web3.eth.Contract(
       DeployerABI,
