@@ -6,6 +6,7 @@ import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'
 import { ReactComponent as GithubIcon } from '../components/svg/github.svg'
 import { ReactComponent as MediumIcon } from '../components/svg/medium.svg'
 import { ReactComponent as YoutubeIcon } from '../components/svg/youtube.svg'
+import { ReactComponent as TelegramIcon } from '../components/svg/telegram.svg'
 
 import mq from '../mediaQuery'
 
@@ -113,6 +114,9 @@ class Footer extends Component {
           <Row>
             <Copyright>&copy; 2018 No Block No Party Ltd</Copyright>
             <Social>
+              <a href="https://t.me/wearekickback">
+                <TelegramIcon />
+              </a>
               <a href="https://github.com/wearekickback">
                 <GithubIcon />
               </a>
