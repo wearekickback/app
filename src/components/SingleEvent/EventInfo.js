@@ -5,6 +5,7 @@ import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 import marked from 'marked'
 
+import { toPrettyDate } from '../../utils/dates'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
@@ -149,10 +150,7 @@ class EventInfo extends Component {
 
     return (
       <EventInfoContainer className={className}>
-        <Date>
-          {party.start} - {party.end}
-        </Date>
-        {party.arribeBy ? <Date>{party.arriveBy}</Date> : null}
+        <Date>{toPrettyDate(party.start)}</Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
