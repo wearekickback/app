@@ -9,6 +9,7 @@ import Button from '../components/Forms/Button'
 import Avatar from '../components/User/Avatar'
 import { EDIT_PROFILE } from '../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../utils/errors'
+import Dropdown from '../components/Dropdown/Dropdown'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -64,6 +65,7 @@ export default class Header extends PureComponent {
         <HeaderInner>
           <Logo />
           <RightBar>
+            <Dropdown />
             <NavLink to="/events">Events</NavLink>
             <GlobalConsumer>
               {({

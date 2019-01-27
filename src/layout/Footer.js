@@ -105,7 +105,6 @@ class Footer extends Component {
               the events they sign up for more seriously.
             </ElevatorPitch>
             <Links>
-              <Link to="/faq">FAQ</Link>
               <Link to="/team">Team</Link>
               <Link to="/terms">Terms and conditions</Link>
               <Link to="/privacy">Privacy</Link>
