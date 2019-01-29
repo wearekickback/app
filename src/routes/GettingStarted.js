@@ -51,13 +51,13 @@ class GettingStarted extends Component {
             <h3>From Desktop</h3>
             <ul>
               <li>
-                <a hrfe="https://metamask.io">Metamask</a> Chrome extension
+                <a href="https://metamask.io">Metamask</a> Chrome extension
               </li>
               <li>
-                <a hrfe="https://brave.com">Brave</a>
+                <a href="https://brave.com">Brave</a>
               </li>
               <li>
-                <a hrfe="http://opera.com">Opera</a>
+                <a href="http://opera.com">Opera</a>
               </li>
             </ul>
           </WalletColumn>
@@ -65,13 +65,13 @@ class GettingStarted extends Component {
             <h3>From Mobile phone</h3>
             <ul>
               <li>
-                <a hrfe="https://status.im">Status.im</a>
+                <a href="https://status.im">Status.im</a>
               </li>
               <li>
-                <a hrfe="https://trustwallet.com">Trust</a>
+                <a href="https://trustwallet.com">Trust</a>
               </li>
               <li>
-                <a hrfe="https://wallet.coinbase.com">Coinbase</a>
+                <a href="https://wallet.coinbase.com">Coinbase</a>
               </li>
             </ul>
           </WalletColumn>
