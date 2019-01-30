@@ -53,7 +53,7 @@ export default class Dropdown extends Component {
   render() {
     return (
       <DropdownWrapper>
-        <a href="#" onClick={this.toggleMenu}>
+        <a href="#guide" onClick={this.toggleMenu}>
           Guides
         </a>
 
