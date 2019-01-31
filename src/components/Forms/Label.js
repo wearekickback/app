@@ -6,7 +6,7 @@ const LabelContainer = styled('label')`
   display: block;
   font-family: Muli;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   color: #3d3f50;
   line-height: 21px;
 `

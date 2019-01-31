@@ -97,11 +97,11 @@ class SingleEvent extends Component {
                       exact
                       render={() => (
                         <>
+                          <UpdatePartyMeta address={address} />
                           <AdminIntro>
                             These are the administrative functions for this
                             event. Please be careful!
                           </AdminIntro>
-                          <UpdatePartyMeta address={address} />
                           <SetLimit address={address} />
                           <Clear address={address} />
                           {isOwner ? <AddAdmin address={address} /> : null}

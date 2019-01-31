@@ -165,78 +165,83 @@ class SingleEventWrapper extends Component {
 
                 return (
                   <TableList>
-                    <DownloadButton
-                      onClick={() => {
-                        const html = document.querySelector('table').outerHTML
-                        this.exportTableToCSV(html, 'event.csv')
-                      }}
-                    >
-                      Download as CSV
-                    </DownloadButton>
-                    <EventFilters handleSearch={handleSearch} />
-                    <Table>
-                      <Tbody>
-                        <TR>
-                          {cells.map(cell => (
-                            <TH>{cell.label}</TH>
-                          ))}
-                          <TH>GDPR</TH>
-                          <TH>Marketing</TH>
-                        </TR>
+                    {participants.length > 0 ? (
+                      <>
+                        <DownloadButton
+                          onClick={() => {
+                            const html = document.querySelector('table')
+                              .outerHTML
+                            this.exportTableToCSV(html, 'event.csv')
+                          }}
+                        >
+                          Download as CSV
+                        </DownloadButton>
+                        <EventFilters handleSearch={handleSearch} />
+                        <Table>
+                          <Tbody>
+                            <TR>
+                              {cells.map(cell => (
+                                <TH>{cell.label}</TH>
+                              ))}
+                              <TH>GDPR</TH>
+                              <TH>Marketing</TH>
+                            </TR>
 
-                        {participants.length > 0 ? (
-                          participants
-                            .sort((a, b) => (a.index < b.index ? -1 : 1))
-                            .filter(
-                              p =>
-                                (p.user.address || '')
-                                  .toLowerCase()
-                                  .includes(search) ||
-                                (p.user.realName || '')
-                                  .toLowerCase()
-                                  .includes(search) ||
-                                (p.user.username || '')
-                                  .toLowerCase()
-                                  .includes(search)
-                            )
-                            .map(participant => (
-                              <>
-                                <TR />
-                                <TR>
-                                  {cells.map(cell => {
-                                    if (cell.label === 'Email') {
+                            {participants
+                              .sort((a, b) => (a.index < b.index ? -1 : 1))
+                              .filter(
+                                p =>
+                                  (p.user.address || '')
+                                    .toLowerCase()
+                                    .includes(search) ||
+                                  (p.user.realName || '')
+                                    .toLowerCase()
+                                    .includes(search) ||
+                                  (p.user.username || '')
+                                    .toLowerCase()
+                                    .includes(search)
+                              )
+                              .map(participant => (
+                                <>
+                                  <TR />
+                                  <TR>
+                                    {cells.map(cell => {
+                                      if (cell.label === 'Email') {
+                                        return (
+                                          <TD>
+                                            {getEmail(participant.user.email)}
+                                          </TD>
+                                        )
+                                      }
                                       return (
                                         <TD>
-                                          {getEmail(participant.user.email)}
+                                          {_.get(participant, cell.value)}
                                         </TD>
                                       )
-                                    }
-                                    return (
-                                      <TD>{_.get(participant, cell.value)}</TD>
-                                    )
-                                  })}
-                                  <TD>
-                                    {participant.user.legal &&
-                                    participant.user.legal[0] &&
-                                    participant.user.legal[0].accepted
-                                      ? 'accepted'
-                                      : 'denied'}
-                                  </TD>
-                                  <TD>
-                                    {participant.user.legal &&
-                                    participant.user.legal[2] &&
-                                    participant.user.legal[2].accepted
-                                      ? 'accepted'
-                                      : 'denied'}
-                                  </TD>
-                                </TR>
-                              </>
-                            ))
-                        ) : (
-                          <NoParticipants>No one is attending.</NoParticipants>
-                        )}
-                      </Tbody>
-                    </Table>
+                                    })}
+                                    <TD>
+                                      {participant.user.legal &&
+                                      participant.user.legal[0] &&
+                                      participant.user.legal[0].accepted
+                                        ? 'accepted'
+                                        : 'denied'}
+                                    </TD>
+                                    <TD>
+                                      {participant.user.legal &&
+                                      participant.user.legal[2] &&
+                                      participant.user.legal[2].accepted
+                                        ? 'accepted'
+                                        : 'denied'}
+                                    </TD>
+                                  </TR>
+                                </>
+                              ))}
+                          </Tbody>
+                        </Table>
+                      </>
+                    ) : (
+                      <NoParticipants>No one is attending</NoParticipants>
+                    )}
                   </TableList>
                 )
               }}

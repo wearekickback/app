@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
+import { formatDate } from '../../utils/parties'
 import DepositValue from '../Utils/DepositValue.js'
 
 const Link = styled(DefaultLink)`
@@ -48,7 +49,7 @@ class EventCard extends Component {
         <Link to={`/event/${address}`}>
           <EventImage src={image || 'https://placeimg.com/640/480/tech'} />
           <EventDetails>
-            <Date>{date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
+            <Date>{formatDate(date)}</Date>
             <DepositValue value={deposit} />
             <EventName>{name}</EventName>
           </EventDetails>

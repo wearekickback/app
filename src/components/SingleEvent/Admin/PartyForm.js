@@ -23,6 +23,40 @@ import { H2 } from '../../Typography/Basic'
 const PartyFormContainer = styled('div')``
 const PartyFormContent = styled('div')``
 
+const NoImage = styled('div')`
+  color: white;
+  background: #6e76ff;
+  max-width: 100%;
+  height: 300px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+const ImageWrapper = styled('div')`
+  &:hover {
+    &:before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: #6e76ff;
+      opacity: 0.85;
+    }
+  }
+`
+
+const UploadedImage = ({ src }) => (
+  <ImageWrapper>
+    <img src={src} />
+  </ImageWrapper>
+)
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -49,7 +83,7 @@ class PartyForm extends Component {
       deposit,
       coolingPeriod,
       limitOfParticipants,
-      imageUploading: true
+      imageUploading: false
     }
   }
 
@@ -139,7 +173,6 @@ class PartyForm extends Component {
             onDayChange={day => this.setState({ day })}
           />
           <Label>Time</Label>
-          {console.log(this.state.time.valueOf())}
           <TimePicker
             showSecond={false}
             defaultValue={moment()
@@ -156,20 +189,16 @@ class PartyForm extends Component {
           />
           <Label>Image</Label>
           <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
-            {this.state.imageUploading ? (
-              'uploading...'
-            ) : image ? (
-              <img src={image} />
+            {image ? (
+              <UploadedImage src={image} />
             ) : (
-              'Click here to upload an image'
+              <NoImage>
+                {this.state.imageUploading
+                  ? 'Uploading...'
+                  : 'Click here to upload a photo'}
+              </NoImage>
             )}
           </Dropzone>
-          <TextInput
-            value={image}
-            onChange={e => this.setState({ image: e.target.value })}
-            type="text"
-            placeholder="URL to image for the event"
-          />
           {type === 'Create Pending Party' && (
             <>
               <Label>Commitment</Label>

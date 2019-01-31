@@ -14,6 +14,7 @@ import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 // import Tooltip from '../Tooltip/Tooltip'
 
 import { toEthVal } from '../../utils/units'
+import { formatDate } from '../../utils/parties'
 
 const Date = styled('div')``
 const EventName = styled(H2)``
@@ -144,9 +145,7 @@ class EventInfo extends Component {
     const { party, address, className } = this.props
     return (
       <EventInfoContainer className={className}>
-        <Date>
-          {moment(parseInt(party.date)).format('dddd, MMMM Do YYYY, h:mm a')}
-        </Date>
+        <Date>{formatDate(party.date)}</Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>

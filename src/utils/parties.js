@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 import { addressesMatch, PARTICIPANT_STATUS } from '@wearekickback/shared'
 
 import { toEthVal } from './units'
@@ -46,4 +47,12 @@ export const getDayAndTimeFromDate = dateAsString => {
 
 export const getDateFromDayAndTime = (day, time) => {
   return new Date(day).setHours(0, 0, 0, 0) + time
+}
+
+export const formatDate = date => {
+  if (isNaN(parseInt(date)) === true) {
+    return date
+  } else {
+    return moment(parseInt(date)).format('dddd, MMMM Do YYYY, h:mm a')
+  }
 }
