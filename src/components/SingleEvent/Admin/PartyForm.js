@@ -53,7 +53,7 @@ const ImageWrapper = styled('div')`
 
 const UploadedImage = ({ src }) => (
   <ImageWrapper>
-    <img alt="event image" src={src} />
+    <img alt="event" src={src} />
   </ImageWrapper>
 )
 
