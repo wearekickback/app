@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import DateTimePicker from 'react-datetime-picker'
+
 import SafeMutation from '../../SafeMutation'
 import Button from '../../Forms/Button'
 
@@ -9,8 +11,10 @@ class PartyForm extends Component {
       name = '',
       description = '',
       location = '',
-      date = '',
-      image = '',
+      start = new Date(),
+      end = new Date(),
+      arriveBy = new Date(),
+      headerImg = '',
       deposit = '0.02',
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
@@ -19,8 +23,10 @@ class PartyForm extends Component {
       name,
       description,
       location,
-      date,
-      image,
+      start,
+      end,
+      arriveBy,
+      headerImg,
       deposit,
       coolingPeriod,
       limitOfParticipants
@@ -32,8 +38,10 @@ class PartyForm extends Component {
       name,
       description,
       location,
-      date,
-      image,
+      start,
+      end,
+      arriveBy,
+      headerImg,
       deposit,
       limitOfParticipants,
       coolingPeriod
@@ -49,7 +57,7 @@ class PartyForm extends Component {
     } = this.props
 
     const variables = {
-      meta: { name, description, location, date, image },
+      meta: { name, description, location, start, end, arriveBy, headerImg },
       ...extraVariables
     }
 
@@ -74,6 +82,7 @@ class PartyForm extends Component {
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
             placeholder="Description of the event"
+            rows="10"
           >
             {description}
           </textarea>
@@ -86,18 +95,28 @@ class PartyForm extends Component {
             placeholder="Location of the event"
           />
           <br />
-          <label>Dates</label>
-          <input
-            value={date}
-            onChange={e => this.setState({ date: e.target.value })}
-            type="text"
-            placeholder="Dates of the event"
+          <label>Start date</label>
+          <DateTimePicker
+            onChange={d => this.setState({ start: d.toISOString() })}
+            value={new Date(start)}
+          />
+          <br />
+          <label>End date</label>
+          <DateTimePicker
+            onChange={d => this.setState({ end: d.toISOString() })}
+            value={new Date(end)}
+          />
+          <br />
+          <label>Arrive by</label>
+          <DateTimePicker
+            onChange={d => this.setState({ arriveBy: d.toISOString() })}
+            value={new Date(arriveBy || start)}
           />
           <br />
           <label>Image</label>
           <input
-            value={image}
-            onChange={e => this.setState({ image: e.target.value })}
+            value={headerImg}
+            onChange={e => this.setState({ headerImg: e.target.value })}
             type="text"
             placeholder="URL to image for the event"
           />

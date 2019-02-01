@@ -1,12 +1,19 @@
 import _ from 'lodash'
-import { addressesMatch, PARTICIPANT_STATUS } from '@wearekickback/shared'
+import {
+  addressesMatch,
+  userHasEventRole,
+  PARTICIPANT_STATUS,
+  ROLE
+} from '@wearekickback/shared'
 
 import { toEthVal } from './units'
 
 export const getMyParticipantEntry = (party, address) =>
-  _.get(party, 'participants', []).find(a =>
-    addressesMatch(_.get(a, 'user.address', ''), address)
-  )
+  address
+    ? (_.get(party, 'participants') || []).find(a =>
+        addressesMatch(_.get(a, 'user.address', ''), address)
+      )
+    : null
 
 export const getParticipantsMarkedAttended = participants =>
   participants.reduce(
@@ -18,16 +25,8 @@ export const getParticipantsMarkedAttended = participants =>
     0
   )
 
-export const amOwner = (party, address) =>
-  addressesMatch(_.get(party, 'owner.address', ''), address)
-
 export const amAdmin = (party, address) =>
-  amOwner(party, address) ||
-  (address &&
-    amInAddressList(_.get(party, 'admins', []).map(a => a.address), address))
-
-export const amInAddressList = (addressList, address) =>
-  addressList.find(a => addressesMatch(a, address))
+  address && userHasEventRole(address, party, ROLE.EVENT_ADMIN)
 
 export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
   toEthVal(deposit)

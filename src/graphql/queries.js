@@ -8,6 +8,15 @@ export const NetworkIdQuery = gql`
   }
 `
 
+export const LegalAgreementsQuery = gql`
+  query getLegalAgreements {
+    legal: legalAgreements {
+      id
+      type
+    }
+  }
+`
+
 export const UserProfileQuery = gql`
   ${ProfileFields}
 
@@ -34,21 +43,6 @@ export const PartyAdminViewQuery = gql`
   query getPartyAdminView($address: String!) {
     partyAdminView(address: $address) {
       ...PartyFields
-    }
-  }
-`
-
-export const PartyAdminsQuery = gql`
-  ${ProfileFields}
-
-  query getPartyAdmins($address: String!) {
-    party(address: $address) {
-      owner {
-        ...ProfileFields
-      }
-      admins {
-        ...ProfileFields
-      }
     }
   }
 `
