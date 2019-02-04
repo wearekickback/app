@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import ErrorBox from '../components/ErrorBox'
-import { PartyAdminsQuery } from '../graphql/queries'
-import { amOwner, amAdmin } from '../utils/parties'
+import { PartyQuery } from '../graphql/queries'
+import { amAdmin } from '../utils/parties'
 import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import SingleEventWrapper from '../components/SingleEvent/SingleEventWrapper'
@@ -34,12 +34,11 @@ class SingleEvent extends Component {
             <ErrorBox>You need to be logged-in to view this page</ErrorBox>
           ) : (
             <SafeQuery
-              query={PartyAdminsQuery}
+              query={PartyQuery}
               variables={{ address }}
               fetchPolicy="cache-and-network"
             >
               {({ data: { party } }) => {
-                const isOwner = amOwner(party, userAddress)
                 const isAdmin = amAdmin(party, userAddress)
 
                 if (!isAdmin) {
@@ -59,7 +58,7 @@ class SingleEvent extends Component {
                     <SetLimit address={address} />
                     <Clear address={address} />
                     <UpdatePartyMeta address={address} />
-                    {isOwner ? <AddAdmin address={address} /> : null}
+                    <AddAdmin address={address} />
                     <Separator />
                     <SingleEventWrapper address={address} />
                   </>

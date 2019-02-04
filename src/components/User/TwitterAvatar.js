@@ -11,7 +11,7 @@ const Avatar = styled(DefaultAvatar)`
 `
 
 const TwitterAvatar = ({ className, user }) => {
-  const avatarId = getSocialId(user, 'twitter')
+  const avatarId = getSocialId(user.social, 'twitter')
   const avatarUrl = `https://avatars.io/twitter/${avatarId ||
     'randomtwitter+12345'}/medium`
 
