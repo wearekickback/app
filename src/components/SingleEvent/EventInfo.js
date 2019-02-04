@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
+
+import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 import marked from 'marked'
 
+import { toPrettyDate } from '../../utils/dates'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
@@ -142,22 +145,27 @@ const HostUsername = styled('span')`
 class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
+
+    const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
+
     return (
       <EventInfoContainer className={className}>
-        <Date>{party.date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
+        <Date>{toPrettyDate(party.start)}</Date>
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
         </ContractAddress>
-        <EventImage src={party.image || 'https://placeimg.com/640/480/tech'} />
+        <EventImage
+          src={party.headerImg || 'https://placeimg.com/640/480/tech'}
+        />
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>
-            {[party.owner, ...party.admins].map(organiser => {
+            {admins.map(user => {
               return (
-                <Organiser key={organiser.username}>
-                  <UserAvatar user={organiser} />
-                  <HostUsername>{organiser.username}</HostUsername>
+                <Organiser key={user.username}>
+                  <UserAvatar user={user} />
+                  <HostUsername>{user.username}</HostUsername>
                 </Organiser>
               )
             })}

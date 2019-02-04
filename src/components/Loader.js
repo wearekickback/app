@@ -15,16 +15,16 @@ const LoaderWrapper = ({ large }) => (
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid"
-      class="lds-rolling"
+      className="lds-rolling"
     >
       <circle
         cx="50"
         cy="50"
         fill="none"
         stroke="#6e76ff"
-        stroke-width="20"
+        strokeWidth="20"
         r="35"
-        stroke-dasharray="164.93361431346415 56.97787143782138"
+        strokeDasharray="164.93361431346415 56.97787143782138"
         transform="rotate(83.939 50 50)"
       >
         <animateTransform
