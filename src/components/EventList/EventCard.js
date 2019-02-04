@@ -48,7 +48,7 @@ class EventCard extends Component {
         <Link to={`/event/${address}`}>
           <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
           <EventDetails>
-            <Date>{date}</Date>
+            <Date>{start}</Date>
             <DepositValue value={deposit} />
             <EventName>{name}</EventName>
           </EventDetails>
