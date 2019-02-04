@@ -41,14 +41,14 @@ const EventDetails = styled('section')`
 class EventCard extends Component {
   render() {
     const { party } = this.props
-    const { address, headerImg, deposit, date, name } = party
+    const { address, headerImg, deposit, start, name } = party
 
     return (
       <EventCardContainer>
         <Link to={`/event/${address}`}>
           <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
           <EventDetails>
-            <Date>{date || 'Tuesday, 23rd Sep, 2018 9:00 PM'}</Date>
+            <Date>{date}</Date>
             <DepositValue value={deposit} />
             <EventName>{name}</EventName>
           </EventDetails>
