@@ -46,13 +46,12 @@
     "setup": "scripts/setup.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "cp build/index.html build/200.html",
-    "build:release:ropsten": "yarn setup --ropsten && react-scripts build && yarn postbuild",
-    "build:release:rinkeby": "yarn setup --rinkeby && react-scripts build && yarn postbuild",
-    "build:release:live": "yarn setup --live && react-scripts build && yarn postbuild",
-    "deploy:ropsten": "yarn build:release:ropsten && yarn surge -p build -d ropsten.kickback.events",
-    "deploy:rinkeby": "yarn build:release:rinkeby && yarn surge -p build -d rinkeby.kickback.events",
-    "deploy:live": "yarn build:release:live && yarn surge -p build -d kickback.events",
+    "build:release:ropsten": "yarn setup --ropsten && react-scripts build",
+    "build:release:rinkeby": "yarn setup --rinkeby && react-scripts build",
+    "build:release:live": "yarn setup --live && react-scripts build",
+    "deploy:ropsten": "yarn build:release:ropsten && yarn now -f --local-config=.deploy/now.ropsten.json --name=kickback-app-ropsten --public ./build && yarn now alias --local-config=.deploy/now.ropsten.json && yarn now rm kickback-app-ropsten --safe --yes",
+    "deploy:rinkeby": "yarn build:release:rinkeby && yarn now -f --local-config=.deploy/now.rinkeby.json --name=kickback-app-rinkeby --public ./build && yarn now alias --local-config=.deploy/now.rinkeby.json && yarn now rm kickback-app-rinkeby --safe --yes",
+    "deploy:live": "yarn build:release:live && yarn now -f --local-config=.deploy/now.live.json --name=kickback-app-live --public ./build && yarn now alias --local-config=.deploy/now.live.json && yarn now rm kickback-app-live --safe --yes",
     "deploy:dev": "yarn deploy:ropsten && yarn deploy:rinkeby",
     "deploy:branch": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn deploy:live; elif [ \"$TRAVIS_BRANCH\" = \"dev\" ]; then yarn deploy:dev; fi'",
     "deploy:pr": "yarn build:release:rinkeby && scripts/deployTravisBuildToSurge.sh",
@@ -62,7 +61,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "now": "now --team wearekickback --token $NOW_TOKEN"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.11",
@@ -72,6 +72,7 @@
     "ganache-cli": "^6.1.8",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
+    "now": "^13.1.3",
     "prettier": "^1.15.2",
     "surge": "^0.20.1",
     "yargs": "^12.0.2"
