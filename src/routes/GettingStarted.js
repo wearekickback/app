@@ -44,7 +44,8 @@ class GettingStarted extends Component {
         <h2>How to connect</h2>
 
         <p>
-          To use our service, you have to access our site with Ethereum Wallet.
+          To use our service, you have to access our site with an Ethereum
+          Wallet.
         </p>
         <WalletsWrapper>
           <WalletColumn>
