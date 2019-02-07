@@ -29,6 +29,7 @@ const SearchContainer = styled(InputContainer)`
 `
 
 const SearchInput = styled(Input)`
+  padding-left: 40px;
   background-color: rgba(243, 243, 249, 0.5);
 `
 
