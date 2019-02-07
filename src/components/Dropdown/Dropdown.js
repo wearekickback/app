@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 const DropdownWrapper = styled('div')`
-  margin-right: 1em;
+  margin-right: 2em;
 
   & > a,
   & > div > a {
