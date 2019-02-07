@@ -161,32 +161,22 @@ class PartyForm extends Component {
             type="text"
             placeholder="Location of the event"
           />
-          <br />
-          <label>Start date</label>
+          <Label>Start date</Label>
           <DateTimePicker
             onChange={d => this.setState({ start: d.toISOString() })}
             value={new Date(start)}
           />
-          <br />
-          <label>End date</label>
+          <Label>End date</Label>
           <DateTimePicker
             onChange={d => this.setState({ end: d.toISOString() })}
             value={new Date(end)}
           />
-          <br />
-          <label>Arrive by</label>
+          <Label>Arrive by</Label>
           <DateTimePicker
             onChange={d => this.setState({ arriveBy: d.toISOString() })}
             value={new Date(arriveBy || start)}
           />
           <br />
-          <label>Image</label>
-          <input
-            value={headerImg}
-            onChange={e => this.setState({ headerImg: e.target.value })}
-            type="text"
-            placeholder="URL to image for the event"
-          />
           <Label>Image</Label>
           <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
             {headerImg ? (
