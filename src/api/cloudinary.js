@@ -6,7 +6,6 @@ export function upload(file) {
   const body = new FormData()
   body.append('file', file)
   body.append('upload_preset', unsignedUploadPreset)
-  console.log('uploading')
 
   return (
     fetch(cloudinaryUrl, {
@@ -17,7 +16,6 @@ export function upload(file) {
       .then(body => {
         // use the https:// url given by cloudinary; or eager property if using transformations
         const imageUrl = body.eager ? body.eager : body.secure_url
-        console.log(imageUrl)
 
         // set the uploading status to false
 

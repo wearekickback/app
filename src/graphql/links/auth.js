@@ -26,7 +26,7 @@ export default () =>
     const requireAuth = hasDirectives(['requireAuth'], operation.query)
     const disableAuth = hasDirectives(['disableAuth'], operation.query)
 
-    // get sanitized query (remove @auth directive since server won't understand it)
+    // get sanitized query (remove auth directives since server won't understand them)
     let sanitizedQuery = sanitizedQueryCache[JSON.stringify(operation.query)]
     if (!sanitizedQuery) {
       // remove directives (inspired by https://github.com/apollographql/apollo-link-state/blob/master/packages/apollo-link-state/src/utils.ts)

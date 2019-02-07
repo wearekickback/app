@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import DayPickerInput from 'react-day-picker/DayPickerInput'
-import 'react-day-picker/lib/style.css'
 import Dropzone from 'react-dropzone'
-import TimePicker from 'rc-time-picker'
-import moment from 'moment'
 import 'rc-time-picker/assets/index.css'
 
 import { upload } from '../../../api/cloudinary'
-import {
-  getDayAndTimeFromDate,
-  getDateFromDayAndTime
-} from '../../../utils/parties'
+import DateTimePicker from 'react-datetime-picker'
 
 import SafeMutation from '../../SafeMutation'
 import Button from '../../Forms/Button'
@@ -64,22 +57,23 @@ class PartyForm extends Component {
       name = '',
       description = '',
       location = '',
-      date = `${new Date().getTime()}`,
-      image = '',
+      start = new Date(),
+      end = new Date(),
+      arriveBy = new Date(),
+      headerImg = '',
       deposit = '0.02',
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
 
-    const [day, time] = getDayAndTimeFromDate(date)
-
     this.state = {
       name,
       description,
       location,
-      day: new Date(day),
-      time: moment(time),
-      image,
+      start,
+      end,
+      arriveBy,
+      headerImg,
       deposit,
       coolingPeriod,
       limitOfParticipants,
@@ -94,7 +88,7 @@ class PartyForm extends Component {
         const dataUrl = reader.result
         this.setState({ imageUploading: true })
         upload(dataUrl).then(url => {
-          this.setState({ image: url })
+          this.setState({ headerImg: url })
         })
       }
       reader.onabort = () => console.log('file reading was aborted')
@@ -109,9 +103,10 @@ class PartyForm extends Component {
       name,
       description,
       location,
-      day,
-      time,
-      image,
+      start,
+      end,
+      arriveBy,
+      headerImg,
       deposit,
       limitOfParticipants,
       coolingPeriod
@@ -126,10 +121,8 @@ class PartyForm extends Component {
       variables: extraVariables = {}
     } = this.props
 
-    const date = `${getDateFromDayAndTime(day, time.valueOf())}`
-
     const variables = {
-      meta: { name, description, location, date, image },
+      meta: { name, description, location, start, end, arriveBy, headerImg },
       ...extraVariables
     }
 
@@ -156,6 +149,7 @@ class PartyForm extends Component {
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
             placeholder="Description of the event"
+            rows="10"
           >
             {description}
           </TextArea>
@@ -167,30 +161,36 @@ class PartyForm extends Component {
             type="text"
             placeholder="Location of the event"
           />
-          <Label>Date</Label>
-          <DayPickerInput
-            value={day}
-            onDayChange={day => this.setState({ day })}
+          <br />
+          <label>Start date</label>
+          <DateTimePicker
+            onChange={d => this.setState({ start: d.toISOString() })}
+            value={new Date(start)}
           />
-          <Label>Time</Label>
-          <TimePicker
-            showSecond={false}
-            defaultValue={moment()
-              .hours(0)
-              .minutes(0)
-              .seconds(0)
-              .milliseconds(0)}
-            onChange={value => {
-              const time = value.valueOf() - new Date(day).setHours(0, 0, 0, 0)
-
-              this.setState({ time })
-            }}
-            format="h:mm a"
+          <br />
+          <label>End date</label>
+          <DateTimePicker
+            onChange={d => this.setState({ end: d.toISOString() })}
+            value={new Date(end)}
+          />
+          <br />
+          <label>Arrive by</label>
+          <DateTimePicker
+            onChange={d => this.setState({ arriveBy: d.toISOString() })}
+            value={new Date(arriveBy || start)}
+          />
+          <br />
+          <label>Image</label>
+          <input
+            value={headerImg}
+            onChange={e => this.setState({ headerImg: e.target.value })}
+            type="text"
+            placeholder="URL to image for the event"
           />
           <Label>Image</Label>
           <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
-            {image ? (
-              <UploadedImage src={image} />
+            {headerImg ? (
+              <UploadedImage src={headerImg} />
             ) : (
               <NoImage>
                 {this.state.imageUploading

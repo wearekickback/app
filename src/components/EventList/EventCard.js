@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
-import { formatDate } from '../../utils/parties'
+import { toPrettyDate } from '../../utils/dates'
 import DepositValue from '../Utils/DepositValue.js'
 
 const Link = styled(DefaultLink)`
@@ -42,14 +42,14 @@ const EventDetails = styled('section')`
 class EventCard extends Component {
   render() {
     const { party } = this.props
-    const { address, image, deposit, date, name } = party
+    const { address, headerImg, deposit, start, name } = party
 
     return (
       <EventCardContainer>
         <Link to={`/event/${address}`}>
-          <EventImage src={image || 'https://placeimg.com/640/480/tech'} />
+          <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
           <EventDetails>
-            <Date>{formatDate(date)}</Date>
+            <Date>{toPrettyDate(start)}</Date>
             <DepositValue value={deposit} />
             <EventName>{name}</EventName>
           </EventDetails>

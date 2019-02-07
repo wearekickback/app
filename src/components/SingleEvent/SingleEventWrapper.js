@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
-import { amOwner, amAdmin, getMyParticipantEntry } from '../../utils/parties'
+import { amAdmin, getMyParticipantEntry } from '../../utils/parties'
 import { PartyQuery } from '../../graphql/queries'
 import mq from '../../mediaQuery'
 
@@ -68,7 +68,6 @@ class SingleEventWrapper extends Component {
                 }
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
-                  amOwner: amOwner(party, userAddress),
                   amAdmin: amAdmin(party, userAddress),
                   myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }

@@ -2,22 +2,23 @@ import gql from 'graphql-tag'
 
 export const ProfileFields = gql`
   fragment ProfileFields on UserProfile {
+    id
     address
-    realName
     username
-    lastLogin
-    created
+    realName
+    roles
     social {
       type
       value
     }
+    legal {
+      id
+      type
+      accepted
+    }
     email {
       verified
       pending
-    }
-    legal {
-      type
-      accepted
     }
   }
 `
@@ -39,26 +40,29 @@ export const PartyFields = gql`
   ${ParticipantFields}
 
   fragment PartyFields on Party {
+    id
     address
-    balance
     name
     description
-    date
+    start
+    end
+    arriveBy
     location
-    image
+    headerImg
+    balance
     deposit
     coolingPeriod
     participantLimit
-    participants {
-      ...ParticipantFields
-    }
     ended
     cancelled
-    owner {
-      ...ProfileFields
+    roles {
+      role
+      user {
+        ...ProfileFields
+      }
     }
-    admins {
-      ...ProfileFields
+    participants {
+      ...ParticipantFields
     }
   }
 `

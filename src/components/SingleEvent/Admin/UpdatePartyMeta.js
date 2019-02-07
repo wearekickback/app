@@ -35,10 +35,7 @@ class UpdatePartyMetaComponent extends Component {
               name={party.name}
               type="Update Party Meta"
               address={address}
-              description={party.description}
-              location={party.location}
-              date={party.date}
-              image={party.image}
+              {...party}
             />
           )
         }}

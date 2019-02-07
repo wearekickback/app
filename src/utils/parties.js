@@ -1,13 +1,19 @@
 import _ from 'lodash'
-import moment from 'moment'
-import { addressesMatch, PARTICIPANT_STATUS } from '@wearekickback/shared'
+import {
+  addressesMatch,
+  userHasEventRole,
+  PARTICIPANT_STATUS,
+  ROLE
+} from '@wearekickback/shared'
 
 import { toEthVal } from './units'
 
 export const getMyParticipantEntry = (party, address) =>
-  _.get(party, 'participants', []).find(a =>
-    addressesMatch(_.get(a, 'user.address', ''), address)
-  )
+  address
+    ? (_.get(party, 'participants') || []).find(a =>
+        addressesMatch(_.get(a, 'user.address', ''), address)
+      )
+    : null
 
 export const getParticipantsMarkedAttended = participants =>
   participants.reduce(
@@ -19,16 +25,8 @@ export const getParticipantsMarkedAttended = participants =>
     0
   )
 
-export const amOwner = (party, address) =>
-  addressesMatch(_.get(party, 'owner.address', ''), address)
-
 export const amAdmin = (party, address) =>
-  amOwner(party, address) ||
-  (address &&
-    amInAddressList(_.get(party, 'admins', []).map(a => a.address), address))
-
-export const amInAddressList = (addressList, address) =>
-  addressList.find(a => addressesMatch(a, address))
+  address && userHasEventRole(address, party, ROLE.EVENT_ADMIN)
 
 export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
   toEthVal(deposit)
@@ -36,23 +34,3 @@ export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
     .div(numAttended)
     .toEth()
     .toFixed(3)
-
-export const getDayAndTimeFromDate = dateAsString => {
-  const date = new Date(parseInt(dateAsString))
-  const hours = date.getHours() * 60 * 60 * 1000
-  const minutes = date.getMinutes() * 60 * 1000
-  const day = date.setHours(0, 0, 0, 0)
-  return [day, hours + minutes]
-}
-
-export const getDateFromDayAndTime = (day, time) => {
-  return new Date(day).setHours(0, 0, 0, 0) + time
-}
-
-export const formatDate = date => {
-  if (isNaN(parseInt(date)) === true) {
-    return date
-  } else {
-    return moment(parseInt(date)).format('dddd, MMMM Do YYYY, h:mm a')
-  }
-}
