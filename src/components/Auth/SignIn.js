@@ -4,8 +4,8 @@ import styled from 'react-emotion'
 
 import Button from '../Forms/Button'
 import ProfileForm from '../Profile/ProfileForm'
-import { UpdateUserProfile, LoginUser } from '../../graphql/mutations'
-import { UserProfileQuery } from '../../graphql/queries'
+import { UPDATE_USER_PROFILE, LOGIN_USER } from '../../graphql/mutations'
+import { USER_PROFILE_QUERY } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
@@ -34,7 +34,7 @@ export default class SignIn extends Component {
         <GlobalConsumer>
           {({ userAddress, toggleModal }) => (
             <SafeQuery
-              query={UserProfileQuery}
+              query={USER_PROFILE_QUERY}
               variables={{ address: userAddress }}
             >
               {result => {
@@ -63,7 +63,10 @@ export default class SignIn extends Component {
         <ProfileForm
           userAddress={userAddress}
           renderSubmitButton={(profile, isValid) => (
-            <SafeMutation mutation={UpdateUserProfile} variables={{ profile }}>
+            <SafeMutation
+              mutation={UPDATE_USER_PROFILE}
+              variables={{ profile }}
+            >
               {updateUserProfile =>
                 isValid ? (
                   <RefreshAuthTokenButton
@@ -89,7 +92,7 @@ export default class SignIn extends Component {
       <FormDiv>
         <H2>Sign in</H2>
         <div>{userAddress}</div>
-        <SafeMutation mutation={LoginUser}>
+        <SafeMutation mutation={LOGIN_USER}>
           {loginUser => (
             <RefreshAuthTokenButton
               onClick={this.signInOrSignUp({

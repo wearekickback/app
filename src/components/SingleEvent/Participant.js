@@ -5,7 +5,10 @@ import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { Mutation } from 'react-apollo'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 
-import { MarkUserAttended, UnmarkUserAttended } from '../../graphql/mutations'
+import {
+  MARK_USER_ATTENDED,
+  UNMARK_USER_ATTENDED
+} from '../../graphql/mutations'
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
@@ -207,7 +210,7 @@ class ParticipantContainer extends Component {
     const { party, participant } = this.props
     return (
       <Mutation
-        mutation={UnmarkUserAttended}
+        mutation={UNMARK_USER_ATTENDED}
         variables={{
           address: party.address,
           participant: {
@@ -218,7 +221,7 @@ class ParticipantContainer extends Component {
       >
         {unmarkAttended => (
           <Mutation
-            mutation={MarkUserAttended}
+            mutation={MARK_USER_ATTENDED}
             variables={{
               address: party.address,
               participant: {

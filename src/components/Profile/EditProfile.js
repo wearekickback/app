@@ -5,7 +5,7 @@ import styled from 'react-emotion'
 import Button from '../Forms/Button'
 import { H2 as DefaultH2 } from '../Typography/Basic'
 import ProfileForm from './ProfileForm'
-import { UpdateUserProfile } from '../../graphql/mutations'
+import { UPDATE_USER_PROFILE } from '../../graphql/mutations'
 import SafeMutation from '../SafeMutation'
 import { GlobalConsumer } from '../../GlobalState'
 import { EDIT_PROFILE } from '../../modals'
@@ -46,7 +46,7 @@ export default class SignIn extends Component {
                 existingProfile={userProfile}
                 renderSubmitButton={(profile, isValid) => (
                   <SafeMutation
-                    mutation={UpdateUserProfile}
+                    mutation={UPDATE_USER_PROFILE}
                     variables={{
                       profile: _.omit(profile, 'username')
                     }}

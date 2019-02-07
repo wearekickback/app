@@ -3,15 +3,13 @@ import styled from 'react-emotion'
 import { Route, Link } from 'react-router-dom'
 
 import ParticipantTableList from './ParticipantTableList'
+import AdminPanel from '../components/SingleEvent/Admin/AdminPanel'
 import ErrorBox from '../components/ErrorBox'
-import { PartyQuery } from '../graphql/queries'
+import { PARTY_QUERY } from '../graphql/queries'
 import { amAdmin } from '../utils/parties'
 import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
-import SetLimit from '../components/SingleEvent/SetLimit'
-import Clear from '../components/SingleEvent/Clear'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
-import AddAdmin from '../components/SingleEvent/Admin/AddAdmin'
 
 const AdminIntro = styled('p')`
   background-color: #ccc;
@@ -55,7 +53,7 @@ class SingleEvent extends Component {
             <ErrorBox>You need to be logged-in to view this page</ErrorBox>
           ) : (
             <SafeQuery
-              query={PartyQuery}
+              query={PARTY_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
             >
@@ -89,7 +87,16 @@ class SingleEvent extends Component {
                     <Route
                       path={`/event/${address}/admin`}
                       exact
-                      render={() => <ParticipantTableList address={address} />}
+                      render={() => (
+                        <>
+                          <AdminIntro>
+                            These are the administrative functions for this
+                            event. Please be careful!
+                          </AdminIntro>
+                          <AdminPanel party={party} />
+                          <ParticipantTableList address={address} />
+                        </>
+                      )}
                     />
                     <Route
                       path={`/event/${address}/admin/edit`}
@@ -97,13 +104,6 @@ class SingleEvent extends Component {
                       render={() => (
                         <>
                           <UpdatePartyMeta address={address} />
-                          <AdminIntro>
-                            These are the administrative functions for this
-                            event. Please be careful!
-                          </AdminIntro>
-                          <SetLimit address={address} />
-                          <Clear address={address} />
-                          <AddAdmin address={address} />
                         </>
                       )}
                     />

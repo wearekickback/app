@@ -3,9 +3,9 @@ import styled from 'react-emotion'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import Button from '../Forms/Button'
-import Label from '../Forms/Label'
-import TextInput from '../Forms/TextInput'
+import Button from '../../Forms/Button'
+import Label from '../../Forms/Label'
+import TextInput from '../../Forms/TextInput'
 
 const SET_LIMIT = gql`
   mutation setLimitOfParticipants($limit: String, $address: String) {

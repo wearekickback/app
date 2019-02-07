@@ -14,7 +14,7 @@ import {
 } from '@wearekickback/shared'
 
 import { removeTypename } from '../../graphql'
-import { LegalAgreementsQuery } from '../../graphql/queries'
+import { LEGAL_AGREEMENTS_QUERY } from '../../graphql/queries'
 import InputAddress from '../Forms/InputAddress'
 import SafeQuery from '../SafeQuery'
 import DefaultTextInput from '../Forms/TextInput'
@@ -49,7 +49,7 @@ export default class ProfileForm extends Component {
     const { userAddress, existingProfile, renderSubmitButton } = this.props
 
     return (
-      <SafeQuery query={LegalAgreementsQuery}>
+      <SafeQuery query={LEGAL_AGREEMENTS_QUERY}>
         {({ data: { legal } }) => {
           const values = this._currentValues(existingProfile, legal)
 

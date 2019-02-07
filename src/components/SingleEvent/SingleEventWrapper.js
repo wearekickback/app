@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
 import { amAdmin, getMyParticipantEntry } from '../../utils/parties'
-import { PartyQuery } from '../../graphql/queries'
+import { PARTY_QUERY } from '../../graphql/queries'
 import mq from '../../mediaQuery'
 
 import Loader from '../Loader'
@@ -47,7 +47,7 @@ class SingleEventWrapper extends Component {
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery
-              query={PartyQuery}
+              query={PARTY_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}

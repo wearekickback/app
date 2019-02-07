@@ -2,13 +2,13 @@ import gql from 'graphql-tag'
 
 import { ProfileFields, PartyFields } from './fragments'
 
-export const NetworkIdQuery = gql`
+export const NETWORK_ID_QUERY = gql`
   query getNetworkId {
     networkId: networkId @disableAuth
   }
 `
 
-export const LegalAgreementsQuery = gql`
+export const LEGAL_AGREEMENTS_QUERY = gql`
   query getLegalAgreements {
     legal: legalAgreements {
       id
@@ -17,7 +17,7 @@ export const LegalAgreementsQuery = gql`
   }
 `
 
-export const UserProfileQuery = gql`
+export const USER_PROFILE_QUERY = gql`
   ${ProfileFields}
 
   query getUserProfile($address: String!) {
@@ -27,7 +27,7 @@ export const UserProfileQuery = gql`
   }
 `
 
-export const PartyQuery = gql`
+export const PARTY_QUERY = gql`
   ${PartyFields}
 
   query getParty($address: String!) {
@@ -37,7 +37,7 @@ export const PartyQuery = gql`
   }
 `
 
-export const PartyAdminViewQuery = gql`
+export const PARTY_ADMIN_VIEW_QUERY = gql`
   ${PartyFields}
 
   query getPartyAdminView($address: String!) {
@@ -47,7 +47,7 @@ export const PartyAdminViewQuery = gql`
   }
 `
 
-export const AllPartiesQuery = gql`
+export const ALL_PARTIES_QUERY = gql`
   ${PartyFields}
 
   query getParties {
@@ -57,7 +57,7 @@ export const AllPartiesQuery = gql`
   }
 `
 
-export const ReverseRecordQuery = gql`
+export const REVERSE_RECORD_QUERY = gql`
   query getReverseRecord($address: String) {
     getReverseRecord(address: $address) @client {
       name
@@ -66,13 +66,13 @@ export const ReverseRecordQuery = gql`
   }
 `
 
-export const QRSupportedQuery = gql`
+export const QR_SUPPORTED_QUERY = gql`
   query scanQRCodeSupported {
     supported: scanQRCodeSupported @client
   }
 `
 
-export const QRQuery = gql`
+export const QR_QUERY = gql`
   query scanQRCode {
     qrCode: scanQRCode @client
   }

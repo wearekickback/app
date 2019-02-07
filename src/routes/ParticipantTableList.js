@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import { amAdmin, getMyParticipantEntry } from '../utils/parties'
-import { PartyAdminViewQuery } from '../graphql/queries'
+import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../components/Table'
 import Button from '../components/Forms/Button'
@@ -121,7 +121,7 @@ class SingleEventWrapper extends Component {
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery
-              query={PartyAdminViewQuery}
+              query={PARTY_ADMIN_VIEW_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}

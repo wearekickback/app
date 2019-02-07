@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 
-import { AllPartiesQuery } from '../graphql/queries'
+import { ALL_PARTIES_QUERY } from '../graphql/queries'
 import EventCard from '../components/EventList/EventCard'
 import EventCardGrid from '../components/EventList/EventCardGrid'
 import Loader from '../components/Loader'
@@ -15,7 +15,7 @@ class AllEvents extends Component {
       <>
         <h2>All events</h2>
         <SafeQuery
-          query={AllPartiesQuery}
+          query={ALL_PARTIES_QUERY}
           isLoading={result => !_.get(result, 'data.parties')}
           renderLoading={this._renderLoading}
         >

@@ -1,15 +1,16 @@
 import React from 'react'
 
-import { PartyQuery } from '../../graphql/queries'
+import { PARTY_QUERY } from '../../graphql/queries'
+import { WITHDRAW_PAYOUT } from '../../graphql/mutations'
+
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
-import { WithdrawPayout } from '../../graphql/mutations'
 
 const WithdrawPayoutButton = ({ address, amount, className }) => (
   <ChainMutation
-    mutation={WithdrawPayout}
+    mutation={WITHDRAW_PAYOUT}
     resultKey="withdrawPayout"
     variables={{ address }}
-    refetchQueries={[{ query: PartyQuery, variables: { address } }]}
+    refetchQueries={[{ query: PARTY_QUERY, variables: { address } }]}
   >
     {(withdrawPayout, result) => (
       <ChainMutationButton

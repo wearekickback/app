@@ -6,10 +6,12 @@ import jwt from 'jsonwebtoken'
 import * as LocalStorage from './api/localStorage'
 import { getAccount } from './api/web3'
 import { SIGN_IN } from './modals'
-import { LoginUserNoAuth } from './graphql/mutations'
+import { LOGIN_USER_NO_AUTH } from './graphql/mutations'
 import { buildAuthHeaders } from './utils/requests'
 
 const GlobalContext = createContext({})
+
+export default GlobalContext
 
 export const GlobalConsumer = GlobalContext.Consumer
 
@@ -74,7 +76,7 @@ class Provider extends Component {
       const {
         data: { profile }
       } = await this.apolloClient().mutate({
-        mutation: LoginUserNoAuth,
+        mutation: LOGIN_USER_NO_AUTH,
         context: {
           headers: buildAuthHeaders(token)
         }

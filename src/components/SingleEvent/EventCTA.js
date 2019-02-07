@@ -6,6 +6,8 @@ import {
   calculateNumAttended
 } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
+import { PARTY_QUERY } from '../../graphql/queries'
+import { FINALIZE } from '../../graphql/mutations'
 
 import DefaultRSVP from './RSVP'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
@@ -14,8 +16,6 @@ import {
   calculateWinningShare,
   getParticipantsMarkedAttended
 } from '../../utils/parties'
-import { PartyQuery } from '../../graphql/queries'
-import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
@@ -183,7 +183,7 @@ class EventCTA extends Component {
                               message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
                               mutationComponent={
                                 <ChainMutation
-                                  mutation={Finalize}
+                                  mutation={FINALIZE}
                                   resultKey="finalize"
                                   variables={{
                                     address,
@@ -191,7 +191,7 @@ class EventCTA extends Component {
                                   }}
                                   refetchQueries={[
                                     {
-                                      query: PartyQuery,
+                                      query: PARTY_QUERY,
                                       variables: {
                                         address
                                       }

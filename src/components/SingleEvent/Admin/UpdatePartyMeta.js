@@ -1,47 +1,48 @@
-import React, { Component } from 'react'
+import React from 'react'
 
+import { UPDATE_PARTY_META } from '../../../graphql/mutations'
+import { PARTY_QUERY } from '../../../graphql/queries'
+
+import Loader from '../../Loader'
 import PartyForm from './PartyForm'
-import { UpdatePartyMeta } from '../../../graphql/mutations'
-import { PartyQuery } from '../../../graphql/queries'
 import ErrorBox from '../../ErrorBox'
 import SafeQuery from '../../SafeQuery'
 
-class UpdatePartyMetaComponent extends Component {
-  render() {
-    const { address } = this.props
-    return (
-      <SafeQuery
-        query={PartyQuery}
-        variables={{ address }}
-        fetchPolicy="cache-and-network"
-        pollInterval={60000}
-      >
-        {({ data: { party }, loading }) => {
-          // no party?
-          if (!party) {
-            if (loading) {
-              return 'Loading ...'
-            } else {
-              return (
-                <ErrorBox>
-                  We could not find an event at the address {address}!
-                </ErrorBox>
-              )
-            }
+function UpdatePartyMetaComponent({ address }) {
+  return (
+    <SafeQuery
+      query={PARTY_QUERY}
+      variables={{ address }}
+      fetchPolicy="cache-and-network"
+      pollInterval={60000}
+    >
+      {({ data: { party }, loading }) => {
+        // no party?
+        if (!party) {
+          if (loading) {
+            return <Loader />
+          } else {
+            return (
+              <ErrorBox>
+                We could not find an event at the address {address}!
+              </ErrorBox>
+            )
           }
-          return (
+        }
+        return (
+          <>
             <PartyForm
-              mutation={UpdatePartyMeta}
+              mutation={UPDATE_PARTY_META}
               name={party.name}
               type="Update Party Meta"
               address={address}
               {...party}
             />
-          )
-        }}
-      </SafeQuery>
-    )
-  }
+          </>
+        )
+      }}
+    </SafeQuery>
+  )
 }
 
 export default UpdatePartyMetaComponent

@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import { withRouter } from 'react-router-dom'
 
 import PartyForm from '../components/SingleEvent/Admin/PartyForm'
-import { CreatePendingParty } from '../graphql/mutations'
+import { CREATE_PENDING_PARTY } from '../graphql/mutations'
 
 const CreateContainer = styled('div')`
   display: flex;
@@ -24,7 +24,7 @@ class Create extends Component {
         <h1>Create a new party</h1>
         <PartyForm
           onCompleted={this._onCreated}
-          mutation={CreatePendingParty}
+          mutation={CREATE_PENDING_PARTY}
           variables={{ password }}
         >
           <p>
