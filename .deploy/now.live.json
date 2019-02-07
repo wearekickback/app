@@ -1,5 +1,11 @@
 {
   "version": 2,
   "name": "kickback-app-live",
-  "alias": "kickback.events"
+  "alias": "kickback.events",
+  "routes": [
+    { "src": "/create", "dest": "index.html" },
+    { "src": "/deploy", "dest": "index.html" },
+    { "src": "/events", "dest": "index.html" },
+    { "src": "/events*", "dest": "index.html" }
+  ]
 }
