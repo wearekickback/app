@@ -14,10 +14,8 @@ import ConfirmModal from '../../ConfirmModal'
 const FinalizeContainer = styled('div')``
 
 function Finalize({ party }) {
-  const globalContext = useContext(GlobalContext)
+  const { toggleModal } = useContext(GlobalContext)
   const { address, participants, ended } = party
-  function toggleModal() {}
-  console.log(globalContext)
   return (
     <FinalizeContainer>
       {!ended ? (
