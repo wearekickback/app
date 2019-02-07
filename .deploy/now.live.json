@@ -2,10 +2,10 @@
   "version": 2,
   "name": "kickback-app-live",
   "alias": "kickback.events",
+  "builds": [
+    { "src": "build/**", "use": "@now/static" }
+  ],
   "routes": [
-    { "src": "/create", "dest": "index.html" },
-    { "src": "/deploy", "dest": "index.html" },
-    { "src": "/events", "dest": "index.html" },
-    { "src": "/events*", "dest": "index.html" }
+    { "src": "/.*", "dest": "build/index.html" }
   ]
 }
