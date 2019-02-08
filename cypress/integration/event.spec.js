@@ -40,7 +40,9 @@ describe('Sign up', () => {
   it('sign up', () => {
     cy.visit(`http://localhost:3000/events?account=${randomAccount}`)
     const username = `joel${randomAccount}`
+    cy.wait(1000)
     cy.getByText('Sign in', { exact: false }).click()
+
     cy.get('input[data-testid="username"]').type(username)
     cy.get('input[data-testid="realname"]').type('Joel Bloggs')
     cy.get('input[data-testid="email"]').type('joel@gmail.com')

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import DateTimePicker from 'react-datetime-picker'
-import styled from 'react-emotion'
+
 import SafeMutation from '../../SafeMutation'
 import Button from '../../Forms/Button'
-
-const Form = styled('form')``
 
 class PartyForm extends Component {
   constructor(props) {
@@ -68,7 +66,7 @@ class PartyForm extends Component {
     }
 
     return (
-      <Form onSubmit={e => e.preventDefault()}>
+      <>
         <div>
           <label for="eventName">Name</label>
           <input
@@ -193,7 +191,7 @@ class PartyForm extends Component {
             </div>
           )}
         </SafeMutation>
-      </Form>
+      </>
     )
   }
 }
