@@ -2,13 +2,9 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
-import { Mutation } from 'react-apollo'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
+import MarkedAttended from './MarkedAttendedRP'
 
-import {
-  MARK_USER_ATTENDED,
-  UNMARK_USER_ATTENDED
-} from '../../graphql/mutations'
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
@@ -209,37 +205,15 @@ class ParticipantContainer extends Component {
   render() {
     const { party, participant } = this.props
     return (
-      <Mutation
-        mutation={UNMARK_USER_ATTENDED}
-        variables={{
-          address: party.address,
-          participant: {
-            address: participant.user.address,
-            status: PARTICIPANT_STATUS.REGISTERED
-          }
-        }}
-      >
-        {unmarkAttended => (
-          <Mutation
-            mutation={MARK_USER_ATTENDED}
-            variables={{
-              address: party.address,
-              participant: {
-                address: participant.user.address,
-                status: PARTICIPANT_STATUS.SHOWED_UP
-              }
-            }}
-          >
-            {markAttended => (
-              <Participant
-                markAttended={markAttended}
-                unmarkAttended={unmarkAttended}
-                {...this.props}
-              />
-            )}
-          </Mutation>
+      <MarkedAttended party={party} participant={participant}>
+        {({ markAttended, unmarkAttended }) => (
+          <Participant
+            markAttended={markAttended}
+            unmarkAttended={unmarkAttended}
+            {...this.props}
+          />
         )}
-      </Mutation>
+      </MarkedAttended>
     )
   }
 }
