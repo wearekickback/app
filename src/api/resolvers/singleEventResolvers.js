@@ -92,7 +92,6 @@ const resolvers = {
       const participants = await Promise.all(participantsRaw).then(
         participantsRaw =>
           participantsRaw.map(arr => {
-            console.log(arr)
             return {
               participantName: arr.participantName,
               address: arr.addr,
