@@ -102,29 +102,27 @@ export default class Header extends PureComponent {
                     </Account>
                   </>
                 ) : (
-                  networkState.allGood && (
-                    <Tooltip
-                      text={CANNOT_RESOLVE_ACCOUNT_ADDRESS}
-                      position="left"
-                    >
-                      {({ tooltipElement, showTooltip, hideTooltip }) => (
-                        <Button
-                          type="light"
-                          onClick={this._signIn({
-                            showTooltip,
-                            hideTooltip,
-                            signIn,
-                            reloadUserAddress,
-                            networkState
-                          })}
-                          analyticsId="Sign In"
-                        >
-                          {tooltipElement}
-                          Sign in
-                        </Button>
-                      )}
-                    </Tooltip>
-                  )
+                  <Tooltip
+                    text={CANNOT_RESOLVE_ACCOUNT_ADDRESS}
+                    position="left"
+                  >
+                    {({ tooltipElement, showTooltip, hideTooltip }) => (
+                      <Button
+                        type="light"
+                        onClick={this._signIn({
+                          showTooltip,
+                          hideTooltip,
+                          signIn,
+                          reloadUserAddress,
+                          networkState
+                        })}
+                        analyticsId="Sign In"
+                      >
+                        {tooltipElement}
+                        Sign in
+                      </Button>
+                    )}
+                  </Tooltip>
                 )
               }}
             </GlobalConsumer>
