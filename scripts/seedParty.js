@@ -21,8 +21,6 @@ const UpdateUserProfile = `
     profile: updateUserProfile(profile: $profile)  {
       address
       realName
-      lastLogin
-      created
       social {
         type
         value
@@ -32,6 +30,7 @@ const UpdateUserProfile = `
         pending
       }
       legal {
+        id
         type
         accepted
       }
@@ -76,9 +75,9 @@ class DummyParty {
     {
       name = 'Awesome Party',
       description = 'description',
-      date = '25th December',
-      location = 'Some location',
-      image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUk7ni2PYcBZ_qXOLriROqyiiZRGiCMfKnkdx_I1gTOVf3FPGQ'
+      start = new Date(),
+      end = new Date(),
+      location = 'Some location'
     },
     endpoint = 'http://localhost:3001/graphql'
   ) {
@@ -89,9 +88,9 @@ class DummyParty {
     this.meta = {
       name,
       description,
-      date,
-      location,
-      image
+      start,
+      end,
+      location
     }
   }
 
@@ -174,25 +173,21 @@ class DummyParty {
       DeployerABI,
       DEPLOYER_CONTRACT_ADDRESS
     )
-
     const args = [
       id,
       new EthVal(0.02, 'eth').toWei().toString(16),
       new EthVal(100).toString(16),
       new EthVal(1).toString(16)
     ]
-
     const tx = await deployer.methods.deploy(...args).send({
       gas: 4000000,
       from: this.owner
     })
-
     const newPartyAddress = extractNewPartyAddressFromTx(tx)
 
     console.log(`Deployed new party at address: ${newPartyAddress}`)
     this.party = new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
     this.deposit = await this.party.methods.deposit().call()
-
     return this.party
   }
 
@@ -222,18 +217,10 @@ async function seed() {
   const provider = new Web3.providers.HttpProvider(ethereumEndpoint)
   const web3 = new Web3(provider)
   const accounts = await web3.eth.getAccounts()
-
   const party1 = await new DummyParty(web3, accounts[0], {
     name: 'Super duper'
   }).deploy()
-
   await party1.rsvp(accounts[1], accounts[2])
-
-  const party2 = await new DummyParty(web3, accounts[0], {
-    name: 'Super duper 2'
-  }).deploy()
-
-  await party2.rsvp(accounts[1], accounts[2])
   return
 }
 

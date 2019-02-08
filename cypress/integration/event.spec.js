@@ -66,14 +66,7 @@ describe('Admin create, RSVP and finalise', () => {
     cy.getByLabelText('Location')
       .click()
       .type('London')
-    cy.getByLabelText('Dates')
-      .click()
-      .type('12 September 2020')
-    cy.getByLabelText('Image')
-      .click()
-      .type(
-        'https://coinnounce.com/wp-content/uploads/2018/08/the-next-ethereum-hard-fork-constantinople-all-you-need-to-know.jpg'
-      )
+
     // Deploy pending event to server //
     cy.getByText('Create Pending Party').click()
     signIn()
@@ -86,8 +79,6 @@ describe('Admin create, RSVP and finalise', () => {
     cy.getByText(eventName).should('exist')
     cy.getByText('This is going to be a great event').should('exist')
     cy.getByText('London').should('exist')
-    cy.getByText('12 September 2020').should('exist')
-
     cy.queryByText('RSVP -', { exact: false }).click()
     cy.queryByText('1 going', {
       exact: false,
