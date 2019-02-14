@@ -68,14 +68,6 @@ function AddAdmin({ address }) {
             )
           })}
           <Add onClick={() => pushAddress('')}>+</Add>
-          {/* <textarea
-              rows="5"
-              onChange={e => this.setState({ userAddresses: e.target.value })}
-              type="text"
-              placeholder="0x... (one per line)"
-            >
-              {userAddresses}
-            </textarea> */}
           <ChainMutationButton
             analyticsId="AddAdmins"
             onClick={mutate}
