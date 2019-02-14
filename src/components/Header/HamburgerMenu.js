@@ -4,12 +4,13 @@ import styled from 'react-emotion'
 import { links } from './Guide'
 
 const HamburgerMenuContainer = styled('div')`
-  display: ${p => (p.isMenuOpen ? 'flex' : 'none')};
+  display: flex;
   background: #6e76ff;
   flex-direction: column;
   position: relative;
   padding: 0 20px 10px;
-
+  transition: 0.5s;
+  max-height: ${p => (p.isMenuOpen ? '500px' : '0')};
   a {
     color: white;
     padding: 10px 0;
