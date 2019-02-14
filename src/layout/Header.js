@@ -1,23 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 
 import { useMediaMin, useMediaMax } from '../mediaQuery'
 
 import Logo from '../components/Icons/LogoFull'
-import Dropdown from '../components/Header/Dropdown'
+import GuideDropdown from '../components/Header/Guide'
 import SignInButton from '../components/Header/SignInButton'
+import Hamburger from '../components/Header/Hamburger'
+import HamburgerMenu from '../components/Header/HamburgerMenu'
 
 const HeaderContainer = styled('header')`
   width: 100%;
   height: 70px;
   background: #6e76ff;
   margin-bottom: 50px;
-  padding: 0 20px;
 `
 
 const HeaderInner = styled('div')`
   margin: 0 auto 0;
+  padding: 0 20px;
   max-width: 1200px;
   height: 100%;
   display: flex;
@@ -41,6 +43,7 @@ const NavLink = styled(Link)`
 `
 
 function Header() {
+  const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
   return (
@@ -49,14 +52,17 @@ function Header() {
         <Logo />
         {isMinMedium && (
           <RightBar>
-            <Dropdown />
+            <GuideDropdown />
             <NavLink to="/events">Events</NavLink>
             <SignInButton />
           </RightBar>
         )}
 
-        {isMaxMedium && <div>hamburger!</div>}
+        {isMaxMedium && (
+          <Hamburger isMenuOpen={open} toggleOpen={() => setOpen(!open)} />
+        )}
       </HeaderInner>
+      {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
     </HeaderContainer>
   )
 }

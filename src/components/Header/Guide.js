@@ -32,6 +32,16 @@ const Link = styled('a')`
   color: white;
 `
 
+export const links = [
+  { label: 'Getting Started', href: '/gettingstarted' },
+  { label: 'FAQ', href: '/faq' },
+  {
+    label: 'Event Organiser guide',
+    href:
+      'https://medium.com/wearekickback/kickback-event-organiser-guide-c2146c12defb'
+  }
+]
+
 export default class Dropdown extends Component {
   constructor() {
     super()
@@ -60,17 +70,11 @@ export default class Dropdown extends Component {
         {this.state.showMenu ? (
           <Menu>
             <List>
-              <ListItem>
-                <Link href="/gettingstarted"> Getting started </Link>
-              </ListItem>
-              <ListItem>
-                <Link href="/faq"> FAQ </Link>
-              </ListItem>
-              <ListItem>
-                <Link href="https://medium.com/wearekickback/kickback-event-organiser-guide-c2146c12defb">
-                  Event organiser guide
-                </Link>
-              </ListItem>
+              {links.map(l => (
+                <ListItem>
+                  <Link href={l.href}>{l.label}</Link>
+                </ListItem>
+              ))}
             </List>
           </Menu>
         ) : null}
