@@ -1,15 +1,17 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 import MarkedAttended from './MarkedAttendedRP'
+import Status from './ParticipantStatus'
 
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import tick from '../svg/tick.svg'
+
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
 // const ParticipantName = styled('div')`
@@ -79,39 +81,6 @@ const ParticipantRealName = styled('div')`
   text-align: center;
 `
 
-const Status = styled('div')`
-  ${({ type }) => {
-    switch (type) {
-      case 'won':
-        return `
-          color: #5cca94;
-          background-color: #e7f7ef;
-        `
-      case 'lost':
-        return `
-          color: #6E76FF;
-          background-color: #F4F5FF;
-        `
-      case 'marked':
-        return `
-          color: #6e76ff;
-          background-color: rgba(233, 234, 255, 0.5);
-          border: 1px solid rgba(233, 234, 255, 0.5);
-        `
-      default:
-        return `
-          color: #ccc;
-          background-color: rgba(233, 234, 255, 0.5);
-          border: 1px solid rgba(233, 234, 255, 0.5);
-        `
-    }
-  }} font-size: 12px;
-  padding: 5px;
-  border-radius: 4px;
-  text-align: center;
-  display: flex;
-`
-
 export class Participant extends Component {
   render() {
     const {
@@ -163,7 +132,7 @@ export class Participant extends Component {
                 </Status>
               )
             ) : amAdmin ? (
-              <Fragment>
+              <>
                 {attended ? (
                   <Button
                     wide
@@ -182,9 +151,9 @@ export class Participant extends Component {
                     Mark attended
                   </Button>
                 )}
-              </Fragment>
+              </>
             ) : (
-              <Fragment>
+              <>
                 {attended ? (
                   <Status type="marked">
                     Marked attended <Tick />
@@ -192,7 +161,7 @@ export class Participant extends Component {
                 ) : (
                   <Status>Not marked attended</Status>
                 )}
-              </Fragment>
+              </>
             )}
           </ParticipantWrapper>
         )}

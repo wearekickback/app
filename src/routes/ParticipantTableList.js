@@ -1,8 +1,14 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
-import { amAdmin, getMyParticipantEntry } from '../utils/parties'
+import {
+  amAdmin,
+  getMyParticipantEntry,
+  calculateWinningShare
+} from '../utils/parties'
+import { toEthVal } from '../utils/units'
 import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../components/Table'
@@ -11,7 +17,10 @@ import ErrorBox from '../components/ErrorBox'
 import SafeQuery from '../components/SafeQuery'
 import EventFilters from '../components/SingleEvent/EventFilters'
 import { GlobalConsumer } from '../GlobalState'
+import Status from '../components/SingleEvent/ParticipantStatus'
 import mq from '../mediaQuery'
+import MarkedAttended from '../components/SingleEvent/MarkedAttendedRP'
+import tick from '../components/svg/tick.svg'
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -31,6 +40,17 @@ const TableList = styled('div')`
   display: flex;
   flex-direction: column;
 `
+
+const TickContainer = styled('div')`
+  width: 12px;
+  margin-left: 3px;
+`
+
+const Tick = () => (
+  <TickContainer>
+    <img alt="tick" src={tick} />
+  </TickContainer>
+)
 
 const DownloadButton = styled(Button)`
   margin-bottom: 20px;
@@ -126,7 +146,12 @@ class SingleEventWrapper extends Component {
               fetchPolicy="cache-and-network"
               pollInterval={60000}
             >
-              {({ data: { partyAdminView: party }, loading, error }) => {
+              {({
+                data: { partyAdminView: party },
+                loading,
+                error,
+                refetch
+              }) => {
                 // no party?
                 if (!party) {
                   if (loading) {
@@ -139,7 +164,7 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-                const { participants } = party
+                const { participants, ended, deposit } = party
 
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
@@ -167,7 +192,7 @@ class SingleEventWrapper extends Component {
                           <Tbody>
                             <TR>
                               {cells.map(cell => (
-                                <TH>{cell.label}</TH>
+                                <TH key={cell.label}>{cell.label}</TH>
                               ))}
                               <TH>GDPR</TH>
                               <TH>Marketing</TH>
@@ -187,20 +212,37 @@ class SingleEventWrapper extends Component {
                                     .toLowerCase()
                                     .includes(search)
                               )
-                              .map(participant => (
-                                <>
-                                  <TR />
-                                  <TR>
-                                    {cells.map(cell => {
+                              .map(participant => {
+                                const { status } = participant
+                                const withdrawn =
+                                  status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+                                const attended =
+                                  status === PARTICIPANT_STATUS.SHOWED_UP ||
+                                  withdrawn
+
+                                const numRegistered = party.participants.length
+                                const numShowedUp = calculateNumAttended(
+                                  party.participants
+                                )
+
+                                const payout = calculateWinningShare(
+                                  deposit,
+                                  numRegistered,
+                                  numShowedUp
+                                )
+                                console.log(participant)
+                                return (
+                                  <TR key={participant.user.id}>
+                                    {cells.map((cell, i) => {
                                       if (cell.label === 'Email') {
                                         return (
-                                          <TD>
+                                          <TD key={i}>
                                             {getEmail(participant.user.email)}
                                           </TD>
                                         )
                                       }
                                       return (
-                                        <TD>
+                                        <TD key={i}>
                                           {_.get(participant, cell.value)}
                                         </TD>
                                       )
@@ -219,9 +261,66 @@ class SingleEventWrapper extends Component {
                                         ? 'accepted'
                                         : 'denied'}
                                     </TD>
+                                    <TD>
+                                      {participant.user.legal &&
+                                      participant.user.legal[2] &&
+                                      participant.user.legal[2].accepted
+                                        ? 'accepted'
+                                        : 'denied'}
+                                    </TD>
+                                    <TD>
+                                      {' '}
+                                      {ended ? (
+                                        attended ? (
+                                          <Status type="won">{`${
+                                            withdrawn ? ' Withdrew' : 'Won'
+                                          } ${payout} ETH `}</Status>
+                                        ) : (
+                                          <Status type="lost">
+                                            Lost{' '}
+                                            {toEthVal(deposit)
+                                              .toEth()
+                                              .toString()}{' '}
+                                            ETH
+                                          </Status>
+                                        )
+                                      ) : (
+                                        <>
+                                          <MarkedAttended
+                                            party={party}
+                                            participant={participant}
+                                            refetch={refetch}
+                                          >
+                                            {({
+                                              markAttended,
+                                              unmarkAttended
+                                            }) =>
+                                              attended ? (
+                                                <Button
+                                                  wide
+                                                  onClick={unmarkAttended}
+                                                  analyticsId="Unmark Attendee"
+                                                >
+                                                  Unmark attended
+                                                </Button>
+                                              ) : (
+                                                <Button
+                                                  wide
+                                                  type="hollow"
+                                                  onClick={markAttended}
+                                                  analyticsId="Mark Attendee"
+                                                >
+                                                  Mark attended
+                                                </Button>
+                                              )
+                                            }
+                                          </MarkedAttended>
+                                        </>
+                                      )}
+                                    </TD>
                                   </TR>
-                                </>
-                              ))}
+                                )
+                              })}
                           </Tbody>
                         </Table>
                       </>

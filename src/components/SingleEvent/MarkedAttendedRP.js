@@ -6,7 +6,12 @@ import {
   UNMARK_USER_ATTENDED
 } from '../../graphql/mutations'
 
-export default function MarkedAttendedRP({ children, party, participant }) {
+export default function MarkedAttendedRP({
+  children,
+  party,
+  participant,
+  refetch
+}) {
   return (
     <Mutation
       mutation={UNMARK_USER_ATTENDED}
@@ -17,6 +22,7 @@ export default function MarkedAttendedRP({ children, party, participant }) {
           status: PARTICIPANT_STATUS.REGISTERED
         }
       }}
+      onCompleted={() => refetch()}
     >
       {unmarkAttended => (
         <Mutation
@@ -28,6 +34,7 @@ export default function MarkedAttendedRP({ children, party, participant }) {
               status: PARTICIPANT_STATUS.SHOWED_UP
             }
           }}
+          onCompleted={() => refetch()}
         >
           {markAttended => children({ markAttended, unmarkAttended })}
         </Mutation>
