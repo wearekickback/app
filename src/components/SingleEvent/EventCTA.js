@@ -1,26 +1,24 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
-import {
-  PARTICIPANT_STATUS,
-  calculateFinalizeMaps,
-  calculateNumAttended
-} from '@wearekickback/shared'
+import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
-import { PARTY_QUERY } from '../../graphql/queries'
-import { FINALIZE } from '../../graphql/mutations'
 
 import DefaultRSVP from './RSVP'
-import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
 } from '../../utils/parties'
 import Status, { Going } from './Status'
-import { GlobalConsumer } from '../../GlobalState'
-import Button from '../Forms/Button'
-import { CONFIRM_TRANSACTION } from '../../modals'
-import ConfirmModal from '../ConfirmModal'
+import DefaultButton from '../Forms/Button'
+
+const Button = styled(DefaultButton)`
+  margin-bottom: 20px;
+  a {
+    color: white;
+  }
+`
 
 const CTA = styled('div')`
   font-family: Muli;
@@ -162,68 +160,15 @@ class EventCTA extends Component {
 
   _renderAdminCTA() {
     const {
-      party: { address, participants, ended },
+      party: { address },
       amAdmin
     } = this.props
 
     return (
       amAdmin && (
-        <GlobalConsumer>
-          {({ toggleModal }) => {
-            return (
-              <AdminCTA>
-                {!ended ? (
-                  <>
-                    <Button
-                      onClick={() => {
-                        toggleModal({
-                          name: CONFIRM_TRANSACTION,
-                          render: () => (
-                            <ConfirmModal
-                              message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
-                              mutationComponent={
-                                <ChainMutation
-                                  mutation={FINALIZE}
-                                  resultKey="finalize"
-                                  variables={{
-                                    address,
-                                    maps: calculateFinalizeMaps(participants)
-                                  }}
-                                  refetchQueries={[
-                                    {
-                                      query: PARTY_QUERY,
-                                      variables: {
-                                        address
-                                      }
-                                    }
-                                  ]}
-                                >
-                                  {(finalize, result) => (
-                                    <ChainMutationButton
-                                      analyticsId="Finalize Event"
-                                      result={result}
-                                      onClick={finalize}
-                                      preContent="Finalize and enable payouts"
-                                      postContent="Finalized!"
-                                    />
-                                  )}
-                                </ChainMutation>
-                              }
-                            >
-                              rendering
-                            </ConfirmModal>
-                          )
-                        })
-                      }}
-                    >
-                      Finalize
-                    </Button>
-                  </>
-                ) : null}
-              </AdminCTA>
-            )
-          }}
-        </GlobalConsumer>
+        <Button>
+          <Link to={`/event/${address}/admin`}>Admin Panel</Link>
+        </Button>
       )
     )
   }
