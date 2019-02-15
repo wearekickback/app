@@ -11,13 +11,6 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
-const AdminIntro = styled('p')`
-  background-color: #ccc;
-  padding: 1em;
-  border-radius: 5px;
-  color: #000;
-`
-
 const TabNavigation = styled('div')`
   margin-bottom: 20px;
   display: flex;
@@ -83,29 +76,29 @@ class SingleEvent extends Component {
                       >
                         Edit Details
                       </ToggleLink>
+                      <ToggleLink
+                        active={
+                          pathname === `/event/${address}/admin/smart-contract`
+                        }
+                        to={`/event/${address}/admin/smart-contract`}
+                      >
+                        Smart Contract
+                      </ToggleLink>
                     </TabNavigation>
                     <Route
                       path={`/event/${address}/admin`}
                       exact
-                      render={() => (
-                        <>
-                          <AdminIntro>
-                            These are the administrative functions for this
-                            event. Please be careful!
-                          </AdminIntro>
-                          <AdminPanel party={party} />
-                          <ParticipantTableList address={address} />
-                        </>
-                      )}
+                      render={() => <ParticipantTableList address={address} />}
                     />
                     <Route
                       path={`/event/${address}/admin/edit`}
                       exact
-                      render={() => (
-                        <>
-                          <UpdatePartyMeta address={address} />
-                        </>
-                      )}
+                      render={() => <UpdatePartyMeta address={address} />}
+                    />
+                    <Route
+                      path={`/event/${address}/admin/smart-contract`}
+                      exact
+                      render={() => <AdminPanel party={party} />}
                     />
                   </>
                 )

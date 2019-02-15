@@ -20,7 +20,6 @@ const SetLimit = ({ address }) => {
       <Mutation mutation={SET_LIMIT}>
         {setLimitOfParticipants => (
           <Fragment>
-            <Label>Set Limit</Label>
             <TextInput type="text" ref={element => (input = element)} />
             <Button
               analyticsId="Set Event Limit"

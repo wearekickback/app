@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'react-emotion'
 import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
-import Label from '../../Forms/Label'
 
 import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
 import { ADD_PARTY_ADMINS } from '../../../graphql/mutations'
@@ -22,7 +21,9 @@ const AddAdminInput = styled(TextInput)`
   margin-right: 20px;
 `
 
-const Add = styled(Button)``
+const Add = styled(Button)`
+  margin-right: 20px;
+`
 
 function AddAdmin({ address }) {
   const [userAddresses, setAddresses] = useState([''])
@@ -50,9 +51,6 @@ function AddAdmin({ address }) {
     >
       {(mutate, result) => (
         <AddPartyAdminsContainer>
-          <Label>
-            Add Admins (click + to add multiple admins in 1 transactions)
-          </Label>
           {userAddresses.map((address, index) => {
             return (
               <AddAdminInputContainer>
@@ -72,7 +70,7 @@ function AddAdmin({ address }) {
             analyticsId="AddAdmins"
             onClick={mutate}
             result={result}
-            preContent="Add admins"
+            preContent="Confirm admins"
           />
         </AddPartyAdminsContainer>
       )}
