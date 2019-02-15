@@ -8,9 +8,10 @@ const HamburgerMenuContainer = styled('div')`
   background: #6e76ff;
   flex-direction: column;
   position: relative;
-  padding: 0 20px 10px;
+  padding: ${p => (p.isMenuOpen ? '0 20px 10px;' : '0 20px 0 ')};
   transition: 0.5s;
   max-height: ${p => (p.isMenuOpen ? '500px' : '0')};
+  overflow: hidden;
   a {
     color: white;
     padding: 10px 0;
