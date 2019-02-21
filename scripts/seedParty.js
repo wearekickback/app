@@ -55,8 +55,18 @@ const UserProfileQuery = `
   }
 `
 
+const LegalQuery = `
+  query getLegalAgreements {
+    legal: legalAgreements {
+      id
+      type
+    }
+  }
+`
+
 const extractNewPartyAddressFromTx = tx => {
   // coerce events into logs if available
+  if (Object.keys(tx.events).length == 0) throw 'events is empty'
   if (tx.events) {
     tx.logs = Object.values(tx.events).map(a => {
       a.topics = a.raw.topics
@@ -101,16 +111,17 @@ class DummyParty {
 
   async updateUserProfile() {
     const username = `adm${new Date().getTime()}`
+    const { legal } = await this.getLegalQuery()
+    for (let index = 0; index < legal.length; index++) {
+      legal[index].accepted = '1547813987275'
+    }
     const { profile } = await this.client.request(UpdateUserProfile, {
       profile: {
         email: 'admin@example.com',
         username: username,
         realName: 'Admin',
         social: [{ type: 'twitter', value: 'admin' }],
-        legal: [
-          { type: 'TERMS_AND_CONDITIONS', accepted: '1547813987275' },
-          { type: 'PRIVACY_POLICY', accepted: '1547813987275' }
-        ]
+        legal: legal
       }
     })
     return profile
@@ -119,6 +130,11 @@ class DummyParty {
   async userProfileQuery(address) {
     const { profile } = await this.client.request(UserProfileQuery, { address })
     return profile
+  }
+
+  async getLegalQuery() {
+    const result = await this.client.request(LegalQuery)
+    return result
   }
 
   async createPendingParty() {
