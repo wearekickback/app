@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-const DropdownWrapper = styled('div')`
+const GuideWrapper = styled('div')`
   margin-right: 2em;
 
   & > a,
@@ -42,7 +42,7 @@ export const links = [
   }
 ]
 
-export default class Dropdown extends Component {
+export default class Guide extends Component {
   constructor() {
     super()
 
@@ -62,7 +62,7 @@ export default class Dropdown extends Component {
 
   render() {
     return (
-      <DropdownWrapper>
+      <GuideWrapper>
         <a href="#guide" onClick={this.toggleMenu}>
           Guides
         </a>
@@ -78,7 +78,7 @@ export default class Dropdown extends Component {
             </List>
           </Menu>
         ) : null}
-      </DropdownWrapper>
+      </GuideWrapper>
     )
   }
 }
