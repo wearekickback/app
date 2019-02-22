@@ -13,8 +13,6 @@ import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
 
 const Container = styled('div')``
 
-const FormDiv = styled('div')``
-
 const Pencil = styled(DefaultPencil)`
   margin-right: 10px;
 `
@@ -36,7 +34,7 @@ export default class SignIn extends Component {
       <Container>
         <GlobalConsumer>
           {({ userAddress, userProfile, setUserProfile, toggleModal }) => (
-            <FormDiv>
+            <>
               <H2>
                 <Pencil />
                 Edit Profile
@@ -66,7 +64,7 @@ export default class SignIn extends Component {
                   </SafeMutation>
                 )}
               />
-            </FormDiv>
+            </>
           )}
         </GlobalConsumer>
       </Container>

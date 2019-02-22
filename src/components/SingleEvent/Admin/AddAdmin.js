@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
 
 import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
 import { AddPartyAdmins } from '../../../graphql/mutations'
 import { PartyQuery } from '../../../graphql/queries'
-
-const Form = styled('div')``
 
 class AddAdmin extends Component {
   state = {}
@@ -26,7 +23,7 @@ class AddAdmin extends Component {
         onCompleted={() => this.setState({ userAddresses: null })}
       >
         {(mutate, result) => (
-          <Form>
+          <>
             <label>User:</label>
             <textarea
               rows="5"
@@ -42,7 +39,7 @@ class AddAdmin extends Component {
               result={result}
               preContent="Add admins"
             />
-          </Form>
+          </>
         )}
       </ChainMutation>
     )

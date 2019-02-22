@@ -88,7 +88,9 @@ export default class Header extends PureComponent {
                       }
                     >
                       {userProfile ? (
-                        <Username>{userProfile.username}</Username>
+                        <Username data-testid="userprofile-name">
+                          {userProfile.username}
+                        </Username>
                       ) : null}
                       <Avatar
                         src={`https://avatars.io/twitter/${
