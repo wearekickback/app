@@ -65,7 +65,11 @@ function SignInButton() {
                 })
               }
             >
-              {userProfile ? <Username>{userProfile.username}</Username> : null}
+              {userProfile ? (
+                <Username data-testid="userprofile-name">
+                  {userProfile.username}
+                </Username>
+              ) : null}
               <Avatar
                 src={`https://avatars.io/twitter/${
                   twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
