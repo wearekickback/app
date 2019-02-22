@@ -91,6 +91,7 @@ export default class RefreshAuthTokenButton extends Component {
                     <Tooltip text="Please sign the login message using your wallet or Dapp browser">
                       {({ showTooltip, hideTooltip, tooltipElement }) => (
                         <Button
+                          data-testid="sign-in-button"
                           analyticsId="Sign Message"
                           onClick={() =>
                             onClick(
