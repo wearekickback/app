@@ -22,7 +22,7 @@ export default function MarkedAttendedRP({
           status: PARTICIPANT_STATUS.REGISTERED
         }
       }}
-      onCompleted={() => refetch()}
+      //onCompleted={() => refetch()}
     >
       {unmarkAttended => (
         <Mutation
@@ -34,7 +34,7 @@ export default function MarkedAttendedRP({
               status: PARTICIPANT_STATUS.SHOWED_UP
             }
           }}
-          onCompleted={() => refetch()}
+          //onCompleted={() => refetch()}
         >
           {markAttended => children({ markAttended, unmarkAttended })}
         </Mutation>
