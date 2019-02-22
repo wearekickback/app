@@ -136,8 +136,11 @@ class SingleEventWrapper extends Component {
     for (var i = 0; i < rows.length; i++) {
       var row = [],
         cols = rows[i].querySelectorAll('td, th')
-
-      for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText)
+      for (var j = 0; j < cols.length; j++) {
+        if (cols[j].dataset.csv !== 'no') {
+          row.push(cols[j].innerText)
+        }
+      }
 
       csv.push(row.join(','))
     }
@@ -221,10 +224,11 @@ class SingleEventWrapper extends Component {
                               {cells.map(cell => (
                                 <TH key={cell.label}>{cell.label}</TH>
                               ))}
-                              <TH>GDPR</TH>
                               <TH>T&amp;C</TH>
+                              <TH>GDPR</TH>
+
                               <TH>Marketing</TH>
-                              <TH>Marked attended</TH>
+                              <TH data-csv="no">Marked attended</TH>
                             </TR>
 
                             {participants
@@ -296,7 +300,7 @@ class SingleEventWrapper extends Component {
                                         ? 'accepted'
                                         : 'denied'}
                                     </TD>
-                                    <TD>
+                                    <TD data-csv="no">
                                       {' '}
                                       {ended ? (
                                         attended ? (
