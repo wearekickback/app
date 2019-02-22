@@ -18,13 +18,21 @@ const HamburgerMenuContainer = styled('div')`
   }
 `
 
+function isExternal(url) {
+  return /^https/.test(url)
+}
+
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
       <Link to="/events">Events</Link>
-      {links.map(l => (
-        <Link to={l.href}>{l.label}</Link>
-      ))}
+      {links.map(l =>
+        isExternal(l.url) ? (
+          <Link to={l.href}>{l.label}</Link>
+        ) : (
+          <a href={l.href}>{l.label}</a>
+        )
+      )}
     </HamburgerMenuContainer>
   )
 }
