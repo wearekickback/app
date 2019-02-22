@@ -3,11 +3,15 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import createLinks from './links/index'
 import { dataIdFromObject } from './ids'
+import { API_URL } from '../config'
 
 const cache = new InMemoryCache({ dataIdFromObject })
 
 export const clientInstance = new ApolloClient({
   cache,
+  onError: e => {
+    console.log(e)
+  },
   link: createLinks({ cache })
 })
 

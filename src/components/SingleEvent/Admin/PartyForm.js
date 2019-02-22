@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import Dropzone from 'react-dropzone'
 import 'rc-time-picker/assets/index.css'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import { upload } from '../../../api/cloudinary'
 import DateTimePicker from 'react-datetime-picker'
@@ -44,6 +46,14 @@ const ImageWrapper = styled('div')`
   }
 `
 
+const uploadFileMutation = gql`
+  mutation($file: Upload!) {
+    singleUpload(file: $file) @requireAuth {
+      success
+    }
+  }
+`
+
 const UploadedImage = ({ src }) => (
   <ImageWrapper>
     <img alt="event" src={src} />
@@ -81,10 +91,11 @@ class PartyForm extends Component {
     }
   }
 
-  onDrop = acceptedFiles => {
+  onDrop = (acceptedFiles, mutate) => {
     acceptedFiles.forEach(file => {
       const reader = new FileReader(file)
       reader.onload = () => {
+        mutate({ variables: { file } })
         const dataUrl = reader.result
         this.setState({ imageUploading: true })
         upload(dataUrl).then(url => {
@@ -178,17 +189,25 @@ class PartyForm extends Component {
           />
           <br />
           <Label>Image</Label>
-          <Dropzone className="dropzone" onDrop={this.onDrop} accept="image/*">
-            {headerImg ? (
-              <UploadedImage src={headerImg} />
-            ) : (
-              <NoImage>
-                {this.state.imageUploading
-                  ? 'Uploading...'
-                  : 'Click here to upload a photo'}
-              </NoImage>
+          <Mutation mutation={uploadFileMutation}>
+            {mutate => (
+              <Dropzone
+                className="dropzone"
+                onDrop={files => this.onDrop(files, mutate)}
+                accept="image/*"
+              >
+                {headerImg ? (
+                  <UploadedImage src={headerImg} />
+                ) : (
+                  <NoImage>
+                    {this.state.imageUploading
+                      ? 'Uploading...'
+                      : 'Click here to upload a photo'}
+                  </NoImage>
+                )}
+              </Dropzone>
             )}
-          </Dropzone>
+          </Mutation>
           {type === 'Create Pending Party' && (
             <>
               <Label>Commitment</Label>
