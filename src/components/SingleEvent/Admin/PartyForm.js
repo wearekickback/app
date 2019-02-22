@@ -66,18 +66,20 @@ class PartyForm extends Component {
     }
 
     return (
-      <div className="App">
+      <>
         <div>
-          <label>Name</label>
+          <label for="eventName">Name</label>
           <input
+            id="eventName"
             value={name}
             onChange={e => this.setState({ name: e.target.value })}
             type="text"
             placeholder="Name of the event"
           />
           <br />
-          <label>Description</label>
+          <label for="description">Description</label>
           <textarea
+            id="description"
             value={description}
             onChange={e => this.setState({ description: e.target.value })}
             type="text"
@@ -87,8 +89,9 @@ class PartyForm extends Component {
             {description}
           </textarea>
           <br />
-          <label>Location</label>
+          <label for="location">Location</label>
           <input
+            id="location"
             value={location}
             onChange={e => this.setState({ location: e.target.value })}
             type="text"
@@ -113,7 +116,7 @@ class PartyForm extends Component {
             value={new Date(arriveBy || start)}
           />
           <br />
-          <label>Image</label>
+          <label for="image">Image</label>
           <input
             value={headerImg}
             onChange={e => this.setState({ headerImg: e.target.value })}
@@ -123,16 +126,18 @@ class PartyForm extends Component {
           <br />
           {type === 'Create Pending Party' && (
             <>
-              <label>Commitment</label>
+              <label for="commitment">Commitment</label>
               <input
+                id="commitment"
                 value={deposit}
                 onChange={e => this.setState({ deposit: e.target.value })}
                 type="text"
                 placeholder="ETH"
               />
               <br />
-              <label>Limit of participants</label>
+              <label for="limit">Limit of participants</label>
               <input
+                id="limit"
                 value={limitOfParticipants}
                 onChange={e =>
                   this.setState({
@@ -143,8 +148,9 @@ class PartyForm extends Component {
                 placeholder="number of participants"
               />
               <br />
-              <label>Cooling period</label>
+              <label for="coolingPeriod">Cooling period</label>
               <input
+                id="coolingPeriod"
                 value={coolingPeriod}
                 onChange={e =>
                   this.setState({
@@ -185,7 +191,7 @@ class PartyForm extends Component {
             </div>
           )}
         </SafeMutation>
-      </div>
+      </>
     )
   }
 }

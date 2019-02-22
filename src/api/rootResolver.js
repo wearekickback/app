@@ -2,7 +2,12 @@ import merge from 'lodash/merge'
 import { Deployer } from '@wearekickback/contracts'
 
 import eventsList from '../fixtures/events.json'
-import getWeb3, { getAccount, getEvents, getDeployerAddress } from './web3'
+import getWeb3, {
+  getAccount,
+  getEvents,
+  getDeployerAddress,
+  isLocalEndpoint
+} from './web3'
 import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
@@ -26,8 +31,10 @@ const resolvers = {
   Query: {
     async accounts() {},
     async web3() {
+      const web3 = await getWeb3()
+      console.log('web3', web3)
       return {
-        ...getWeb3(),
+        ...web3,
         __typename: 'Web3'
       }
     },
@@ -87,10 +94,12 @@ const resolvers = {
     async signChallengeString(_, { challengeString }) {
       const web3 = await getWeb3()
       const address = await getAccount()
-
+      const unlocked = isLocalEndpoint()
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
-      return web3.eth.personal.sign(challengeString, address)
+      return !unlocked
+        ? web3.eth.personal.sign(challengeString, address)
+        : web3.eth.sign(challengeString, address)
     }
   }
 }
