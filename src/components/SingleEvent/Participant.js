@@ -3,13 +3,11 @@ import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
-import MarkedAttended from './MarkedAttendedRP'
 import Status from './ParticipantStatus'
 
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
-import Button from '../Forms/Button'
 import tick from '../svg/tick.svg'
 
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -81,110 +79,63 @@ const ParticipantRealName = styled('div')`
   text-align: center;
 `
 
-export class Participant extends Component {
-  render() {
-    const {
-      participant,
-      party,
-      markAttended,
-      unmarkAttended,
-      amAdmin
-    } = this.props
-    const { user, status } = participant
-    const { deposit, ended } = party
+function Participant({ participant, party, amAdmin }) {
+  const { user, status } = participant
+  const { deposit, ended } = party
 
-    const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
-    const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
+  const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+  const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
-    const numRegistered = party.participants.length
-    const numShowedUp = calculateNumAttended(party.participants)
+  const numRegistered = party.participants.length
+  const numShowedUp = calculateNumAttended(party.participants)
 
-    const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
+  const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
 
-    return (
-      <GlobalConsumer>
-        {({ userAddress, loggedIn }) => (
-          <ParticipantWrapper amAdmin={amAdmin}>
-            <TwitterAvatar user={user} />
-            <ParticipantId>
-              <ParticipantUsername>{user.username}</ParticipantUsername>
-              {amAdmin && user.realName ? (
-                <ParticipantRealName>{user.realName}</ParticipantRealName>
-              ) : null}
-              {amAdmin ? (
-                <ParticipantAddress>
-                  {user.address.slice(0, 5) + '...'}
-                </ParticipantAddress>
-              ) : null}
-            </ParticipantId>
-            {ended ? (
-              attended ? (
-                <Status type="won">{`${
-                  withdrawn ? ' Withdrew' : 'Won'
-                } ${payout} ETH `}</Status>
-              ) : (
-                <Status type="lost">
-                  Lost{' '}
-                  {toEthVal(deposit)
-                    .toEth()
-                    .toString()}{' '}
-                  ETH
-                </Status>
-              )
-            ) : amAdmin ? (
-              <>
-                {attended ? (
-                  <Button
-                    wide
-                    onClick={unmarkAttended}
-                    analyticsId="Unmark Attendee"
-                  >
-                    Unmark attended
-                  </Button>
-                ) : (
-                  <Button
-                    wide
-                    type="hollow"
-                    onClick={markAttended}
-                    analyticsId="Mark Attendee"
-                  >
-                    Mark attended
-                  </Button>
-                )}
-              </>
+  return (
+    <GlobalConsumer>
+      {({ userAddress, loggedIn }) => (
+        <ParticipantWrapper amAdmin={amAdmin}>
+          <TwitterAvatar user={user} />
+          <ParticipantId>
+            <ParticipantUsername>{user.username}</ParticipantUsername>
+            {amAdmin && user.realName ? (
+              <ParticipantRealName>{user.realName}</ParticipantRealName>
+            ) : null}
+            {amAdmin ? (
+              <ParticipantAddress>
+                {user.address.slice(0, 5) + '...'}
+              </ParticipantAddress>
+            ) : null}
+          </ParticipantId>
+          {ended ? (
+            attended ? (
+              <Status type="won">{`${
+                withdrawn ? ' Withdrew' : 'Won'
+              } ${payout} ETH `}</Status>
             ) : (
-              <>
-                {attended ? (
-                  <Status type="marked">
-                    Marked attended <Tick />
-                  </Status>
-                ) : (
-                  <Status>Not marked attended</Status>
-                )}
-              </>
-            )}
-          </ParticipantWrapper>
-        )}
-      </GlobalConsumer>
-    )
-  }
+              <Status type="lost">
+                Lost{' '}
+                {toEthVal(deposit)
+                  .toEth()
+                  .toString()}{' '}
+                ETH
+              </Status>
+            )
+          ) : (
+            <>
+              {attended ? (
+                <Status type="marked">
+                  Marked attended <Tick />
+                </Status>
+              ) : (
+                <Status>Not marked attended</Status>
+              )}
+            </>
+          )}
+        </ParticipantWrapper>
+      )}
+    </GlobalConsumer>
+  )
 }
 
-class ParticipantContainer extends Component {
-  render() {
-    const { party, participant } = this.props
-    return (
-      <MarkedAttended party={party} participant={participant}>
-        {({ markAttended, unmarkAttended }) => (
-          <Participant
-            markAttended={markAttended}
-            unmarkAttended={unmarkAttended}
-            {...this.props}
-          />
-        )}
-      </MarkedAttended>
-    )
-  }
-}
-
-export default ParticipantContainer
+export default Participant

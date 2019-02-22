@@ -73,12 +73,6 @@ const RSVP = styled(DefaultRSVP)`
   width: 100%;
 `
 
-const AdminCTA = styled('div')`
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-`
-
 const MarkAttended = styled('div')``
 
 class EventCTA extends Component {

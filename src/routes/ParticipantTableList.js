@@ -6,13 +6,14 @@ import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import {
   amAdmin,
   getMyParticipantEntry,
-  calculateWinningShare
+  calculateWinningShare,
+  getParticipantsMarkedAttended
 } from '../utils/parties'
 import { toEthVal } from '../utils/units'
 import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../components/Table'
-import Button from '../components/Forms/Button'
+import DefaultButton from '../components/Forms/Button'
 import ErrorBox from '../components/ErrorBox'
 import SafeQuery from '../components/SafeQuery'
 import EventFilters from '../components/SingleEvent/EventFilters'
@@ -21,6 +22,7 @@ import Status from '../components/SingleEvent/ParticipantStatus'
 import mq from '../mediaQuery'
 import MarkedAttended from '../components/SingleEvent/MarkedAttendedRP'
 import tick from '../components/svg/tick.svg'
+import Number from '../components/Icons/Number'
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -32,6 +34,10 @@ const SingleEventContainer = styled('div')`
   ${mq.medium`
     flex-direction: row;
   `};
+`
+
+const Button = styled(DefaultButton)`
+  display: flex;
 `
 
 const NoParticipants = styled('div')``
@@ -46,6 +52,14 @@ const TickContainer = styled('div')`
   margin-left: 3px;
 `
 
+const MarkedAttendedInfo = styled('div')`
+  margin-bottom: 20px;
+
+  p {
+    margin-bottom: 20px;
+  }
+`
+
 const Tick = () => (
   <TickContainer>
     <img alt="tick" src={tick} />
@@ -54,6 +68,7 @@ const Tick = () => (
 
 const DownloadButton = styled(Button)`
   margin-bottom: 20px;
+  justify-content: center;
 `
 
 const cells = [
@@ -179,6 +194,18 @@ class SingleEventWrapper extends Component {
 
                 return (
                   <TableList>
+                    <MarkedAttendedInfo>
+                      <p>Marked attended:</p>
+                      <Number
+                        number={getParticipantsMarkedAttended(participants)}
+                        max={participants.length}
+                        progress={
+                          (getParticipantsMarkedAttended(participants) /
+                            participants.length) *
+                          100
+                        }
+                      />
+                    </MarkedAttendedInfo>
                     {participants.length > 0 ? (
                       <>
                         <DownloadButton
@@ -197,10 +224,11 @@ class SingleEventWrapper extends Component {
                               {cells.map(cell => (
                                 <TH key={cell.label}>{cell.label}</TH>
                               ))}
-                              <TH>T &amp; C</TH>
+                              <TH>T&amp;C</TH>
                               <TH>GDPR</TH>
+
                               <TH>Marketing</TH>
-                              <TH data-csv="no">Status</TH>
+                              <TH data-csv="no">Marked attended</TH>
                             </TR>
 
                             {participants
@@ -235,7 +263,6 @@ class SingleEventWrapper extends Component {
                                   numRegistered,
                                   numShowedUp
                                 )
-
                                 return (
                                   <TR key={participant.user.id}>
                                     {cells.map((cell, i) => {
@@ -323,7 +350,7 @@ class SingleEventWrapper extends Component {
                                                   }
                                                   analyticsId="Mark Attendee"
                                                 >
-                                                  Mark attended
+                                                  Mark attended <Tick />
                                                 </Button>
                                               )
                                             }
