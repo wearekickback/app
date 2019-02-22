@@ -222,7 +222,9 @@ class SingleEventWrapper extends Component {
                                 <TH key={cell.label}>{cell.label}</TH>
                               ))}
                               <TH>GDPR</TH>
+                              <TH>T&amp;C</TH>
                               <TH>Marketing</TH>
+                              <TH>Marked attended</TH>
                             </TR>
 
                             {participants
