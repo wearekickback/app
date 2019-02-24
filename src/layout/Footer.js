@@ -108,6 +108,7 @@ class Footer extends Component {
               <Link to="/team">Team</Link>
               <Link to="/terms">Terms and conditions</Link>
               <Link to="/privacy">Privacy</Link>
+              <Link to="/pricing">Pricing</Link>
             </Links>
           </MiddleRow>
           <Row>
