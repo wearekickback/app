@@ -331,9 +331,7 @@ class SingleEventWrapper extends Component {
                                                 <Button
                                                   wide
                                                   onClick={() =>
-                                                    unmarkAttended().then(
-                                                      console.log
-                                                    )
+                                                    unmarkAttended()
                                                   }
                                                   analyticsId="Unmark Attendee"
                                                 >
@@ -343,11 +341,7 @@ class SingleEventWrapper extends Component {
                                                 <Button
                                                   wide
                                                   type="hollow"
-                                                  onClick={() =>
-                                                    markAttended().then(
-                                                      console.log
-                                                    )
-                                                  }
+                                                  onClick={() => markAttended()}
                                                   analyticsId="Mark Attendee"
                                                 >
                                                   Mark attended <Tick />
