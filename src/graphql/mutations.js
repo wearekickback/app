@@ -130,3 +130,9 @@ export const WITHDRAW_PAYOUT = gql`
     withdrawPayout(address: $address) @client
   }
 `
+
+export const SINGLE_UPLOAD = gql`
+  mutation singleUpload($file: Upload!) {
+    singleUpload(file: $file)
+  }
+`

@@ -3,9 +3,8 @@ import styled from 'react-emotion'
 import Dropzone from 'react-dropzone'
 import 'rc-time-picker/assets/index.css'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
 
-import { upload } from '../../../api/cloudinary'
+import { SINGLE_UPLOAD } from '../../../graphql/mutations'
 import DateTimePicker from 'react-datetime-picker'
 
 import SafeMutation from '../../SafeMutation'
@@ -42,14 +41,6 @@ const ImageWrapper = styled('div')`
       height: 100%;
       background: #6e76ff;
       opacity: 0.85;
-    }
-  }
-`
-
-const uploadFileMutation = gql`
-  mutation($file: Upload!) {
-    singleUpload(file: $file) @requireAuth {
-      success
     }
   }
 `
@@ -93,19 +84,9 @@ class PartyForm extends Component {
 
   onDrop = (acceptedFiles, mutate) => {
     acceptedFiles.forEach(file => {
-      const reader = new FileReader(file)
-      reader.onload = () => {
-        mutate({ variables: { file } })
-        const dataUrl = reader.result
-        this.setState({ imageUploading: true })
-        upload(dataUrl).then(url => {
-          this.setState({ headerImg: url })
-        })
-      }
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
-
-      reader.readAsDataURL(file)
+      mutate({ variables: { file } }).then(({ data: { singleUpload } }) => {
+        this.setState({ headerImg: singleUpload })
+      })
     })
   }
 
@@ -189,7 +170,7 @@ class PartyForm extends Component {
           />
           <br />
           <Label>Image</Label>
-          <Mutation mutation={uploadFileMutation}>
+          <Mutation mutation={SINGLE_UPLOAD}>
             {mutate => (
               <Dropzone
                 className="dropzone"
