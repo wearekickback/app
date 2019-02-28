@@ -62,15 +62,6 @@ const resolvers = {
 
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
 
-      console.log(
-        id,
-        toEthVal(deposit, 'eth')
-          .toWei()
-          .toString(16),
-        toEthVal(limitOfParticipants).toString(16),
-        toEthVal(coolingPeriod).toString(16)
-      )
-
       try {
         const tx = await contract.methods
           .deploy(
