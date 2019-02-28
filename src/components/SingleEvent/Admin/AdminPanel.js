@@ -25,7 +25,6 @@ export default function AdminPanel({ party }) {
         These are the administrative functions for this event. Please be
         careful!
       </AdminIntro>
-      <FileUpload />
 
       <Section>
         <Label>Finalize</Label>
