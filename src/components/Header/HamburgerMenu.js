@@ -26,6 +26,7 @@ function isExternal(url) {
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
+      <SignInButton />
       <Link to="/events">Events</Link>
       {links.map(l =>
         isExternal(l.url) ? (
@@ -34,7 +35,6 @@ function HamburgerMenu({ isMenuOpen }) {
           <a href={l.href}>{l.label}</a>
         )
       )}
-      <SignInButton />
     </HamburgerMenuContainer>
   )
 }
