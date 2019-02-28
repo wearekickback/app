@@ -6,7 +6,6 @@ import Clear from './Clear'
 import Finalize from './Finalize'
 import SetLimit from './SetLimit'
 import AddAdmin from './AddAdmin'
-import FileUpload from './FileUpload'
 
 const Section = styled('section')`
   margin-bottom: 40px;
