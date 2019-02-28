@@ -25,5 +25,3 @@ window.addEventListener('load', async () => {
     document.getElementById('root')
   )
 })
-
-registerServiceWorker()
