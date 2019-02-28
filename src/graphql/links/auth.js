@@ -59,7 +59,6 @@ export default () =>
           // try logging in
           await globalProvider.signIn()
         } catch (err) {
-          console.log('sign in here')
           return makeError(observer, err.message)
         }
       }
