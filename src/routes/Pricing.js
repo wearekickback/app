@@ -11,7 +11,7 @@ function Pricing() {
   return (
     <PricingContainer>
       <h1>Pricing</h1>
-      <h2>$1 per 1 turn up</h2>
+      <h2>The event organiser pays $1 per 1 turn up</h2>
       <p>It’s very simple!</p>
 
       <p>
@@ -40,6 +40,14 @@ function Pricing() {
         non profits, individuals, and students. If you decide to choose the
         quarterly payment model, we ask you to pay upfront. In future we will
         incorporate the recurring payment mechanism into our smart contract.
+      </p>
+
+      <h2>Why not charge against the fraction of commitments from no shows?</h2>
+      <p>
+        I understand where you are coming from. Charging from no shows helps
+        event organisers not paying fees. However, our goal is to increase your
+        event participation rate and we should not be receiving fee in propotion
+        to NOT achieving it.
       </p>
     </PricingContainer>
   )
