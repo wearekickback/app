@@ -123,6 +123,7 @@ class PartyForm extends Component {
     }
 
     return (
+
       <PartyFormContainer>
         <H2>Event Details</H2>
         <PartyFormContent>

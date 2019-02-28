@@ -7,6 +7,11 @@
   ],
   "routes": [
     { "src": "/", "dest": "build/index.html" },
+    { "src": "/gettingstarted", "dest": "build/index.html" },
+    { "src": "/faq", "dest": "build/index.html" },
+    { "src": "/team", "dest": "build/index.html" },
+    { "src": "/terms", "dest": "build/index.html" },
+    { "src": "/privacy", "dest": "build/index.html" },
     { "src": "/create/?", "dest": "build/index.html" },
     { "src": "/deploy/?", "dest": "build/index.html" },
     { "src": "/events/?", "dest": "build/index.html" },

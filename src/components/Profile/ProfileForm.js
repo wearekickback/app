@@ -72,6 +72,7 @@ export default class ProfileForm extends Component {
                 <TextInput
                   disabled={!!existingProfile}
                   placeholder="username"
+                  data-testid="username"
                   value={username}
                   onChange={this.handleUsernameChange}
                 />
@@ -92,6 +93,7 @@ export default class ProfileForm extends Component {
                 <TextInput
                   placeholder="Joe Bloggs"
                   value={realName}
+                  data-testid="realname"
                   onChange={this.handleRealNameChange}
                 />
                 <Explanation>
@@ -103,6 +105,7 @@ export default class ProfileForm extends Component {
                 <Label>Email</Label>
                 <TextInput
                   placeholder="alice@gmail.com"
+                  data-testid="email"
                   value={email}
                   onChange={this.handleEmailChange}
                 />
@@ -130,6 +133,7 @@ export default class ProfileForm extends Component {
                     type="checkbox"
                     value={TERMS_AND_CONDITIONS}
                     checked={!!terms}
+                    data-testid="terms"
                     onChange={this.handleTermsCheck(
                       getLegalAgreement(legal, TERMS_AND_CONDITIONS)
                     )}
@@ -146,6 +150,7 @@ export default class ProfileForm extends Component {
                     type="checkbox"
                     value={PRIVACY_POLICY}
                     checked={!!privacy}
+                    data-testid="privacy"
                     onChange={this.handlePrivacyCheck(
                       getLegalAgreement(legal, PRIVACY_POLICY)
                     )}
@@ -163,6 +168,7 @@ export default class ProfileForm extends Component {
               <p>
                 <input
                   type="checkbox"
+                  data-testid="marketing"
                   value={MARKETING_INFO}
                   checked={!!marketing}
                   onChange={this.handleMarketingCheck(
@@ -305,7 +311,6 @@ export default class ProfileForm extends Component {
 
   _valuesAreValid(values) {
     const { email, twitter, username, realName, terms, privacy } = values
-
     if (!isUsername(username)) {
       return false
     }

@@ -16,8 +16,6 @@ import { SIGN_IN } from '../../modals'
 
 const SignInContainer = styled('div')``
 
-const FormDiv = styled('div')``
-
 const Pencil = styled(DefaultPencil)`
   margin-right: 10px;
 `
@@ -30,7 +28,7 @@ const H2 = styled(DefaultH2)`
 export default class SignIn extends Component {
   render() {
     return (
-      <SignInContainer>
+      <SignInContainer data-testid="sign-in-modal">
         <GlobalConsumer>
           {({ userAddress, toggleModal }) => (
             <SafeQuery
@@ -55,7 +53,7 @@ export default class SignIn extends Component {
 
   renderSignUp(userAddress, toggleModal) {
     return (
-      <FormDiv>
+      <>
         <H2>
           <Pencil />
           Create account
@@ -83,13 +81,13 @@ export default class SignIn extends Component {
             </SafeMutation>
           )}
         />
-      </FormDiv>
+      </>
     )
   }
 
   renderSignIn(userAddress, toggleModal) {
     return (
-      <FormDiv>
+      <>
         <H2>Sign in</H2>
         <div>{userAddress}</div>
         <SafeMutation mutation={LOGIN_USER}>
@@ -102,7 +100,7 @@ export default class SignIn extends Component {
             />
           )}
         </SafeMutation>
-      </FormDiv>
+      </>
     )
   }
 

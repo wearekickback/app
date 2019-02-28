@@ -92,7 +92,6 @@ const resolvers = {
       const participants = await Promise.all(participantsRaw).then(
         participantsRaw =>
           participantsRaw.map(arr => {
-            console.log(arr)
             return {
               participantName: arr.participantName,
               address: arr.addr,
@@ -149,9 +148,9 @@ const resolvers = {
       try {
         const tx = await contract.register().send({
           from: account,
-          value: deposit
+          value: deposit,
+          gas: 120000
         })
-
         return tx
       } catch (err) {
         console.error(err)
@@ -164,10 +163,15 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
+        const gas = await contract
+          .finalize(maps.map(m => toBN(m).toString(10)))
+          .estimateGas()
+
         const tx = await contract
           .finalize(maps.map(m => toBN(m).toString(10)))
           .send({
-            from: account
+            from: account,
+            gas
           })
 
         return tx

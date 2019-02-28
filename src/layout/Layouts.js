@@ -46,7 +46,14 @@ const DefaultLayout = ({ children }) => {
             }
           }
 
-          return content ? <ErrorBox>{content}</ErrorBox> : null
+          return content ? (
+            <ErrorBox>
+              {content} .
+              <br />
+              Not sure what to do? Click <a href="/gettingstarted">here</a> to
+              read "Getting started" guide
+            </ErrorBox>
+          ) : null
         }}
       </GlobalConsumer>
       <Container>

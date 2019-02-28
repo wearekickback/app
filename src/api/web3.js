@@ -10,8 +10,11 @@ import { NETWORK_ID_QUERY } from '../graphql/queries'
 
 let web3
 let networkState = {}
+let localEndpoint = false
 
 export const events = new EventEmitter()
+
+export const isLocalEndpoint = () => localEndpoint
 
 const updateGlobalState = () => {
   getProvider().then(provider => {
@@ -64,6 +67,7 @@ async function getWeb3() {
       const result = await clientInstance.query({
         query: NETWORK_ID_QUERY
       })
+      
       if (result.error) {
         throw new Error(result.error)
       }
@@ -72,18 +76,39 @@ async function getWeb3() {
       networkState.expectedNetworkName = getNetworkName(
         networkState.expectedNetworkId
       )
-
       if (window.ethereum) {
         web3 = new Web3(window.ethereum)
       } else if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
       } else {
-        console.log(
-          'No web3 instance injected. Falling back to cloud provider.'
-        )
-        web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
-        networkState.readOnly = true
+        //local node
+        const url = 'http://localhost:8545'
+
+        try {
+          await fetch(url)
+          localEndpoint = true
+          web3 = new Web3(new Web3.providers.HttpProvider(url))
+        } catch (error) {
+          if (
+            error.readyState === 4 &&
+            (error.status === 400 || error.status === 200)
+          ) {
+            localEndpoint = true
+            web3 = new Web3(new Web3.providers.HttpProvider(url))
+          } else {
+            web3 = new Web3(
+              getNetworkProviderUrl(networkState.expectedNetworkId)
+            )
+            networkState.readOnly = true
+          }
+        } finally {
+          if (web3 && localEndpoint) {
+            console.log('Success: Local node active')
+          } else if (web3) {
+            console.log('Success: Cloud node active')
+          }
+        }
       }
 
       networkState.networkId = `${await web3.eth.net.getId()}`
@@ -156,16 +181,26 @@ export async function getEvents(address, abi) {
 }
 
 export async function getAccount() {
+  let accountIndex = 0
+  /* Query params account switch for testing */
+  if (localEndpoint === true) {
+    const query = window.location.search
+    const params = new URLSearchParams(query)
+    const account = params.get('account')
+    if (account) {
+      accountIndex = account
+    }
+  }
   try {
     const web3 = await getWeb3()
     const accounts = await web3.eth.getAccounts()
 
     if (accounts.length > 0) {
-      return accounts[0]
+      return accounts[accountIndex]
     } else {
       try {
         const accounts = await window.ethereum.enable()
-        return accounts[0]
+        return accounts[accountIndex]
       } catch (error) {
         console.warn('Did not allow app to access dapp browser')
         throw error
