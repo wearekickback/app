@@ -136,8 +136,11 @@ class SingleEventWrapper extends Component {
     for (var i = 0; i < rows.length; i++) {
       var row = [],
         cols = rows[i].querySelectorAll('td, th')
-
-      for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText)
+      for (var j = 0; j < cols.length; j++) {
+        if (cols[j].dataset.csv !== 'no') {
+          row.push(cols[j].innerText)
+        }
+      }
 
       csv.push(row.join(','))
     }
@@ -221,8 +224,11 @@ class SingleEventWrapper extends Component {
                               {cells.map(cell => (
                                 <TH key={cell.label}>{cell.label}</TH>
                               ))}
+                              <TH>T&amp;C</TH>
                               <TH>GDPR</TH>
+
                               <TH>Marketing</TH>
+                              <TH data-csv="no">Marked attended</TH>
                             </TR>
 
                             {participants
@@ -282,8 +288,8 @@ class SingleEventWrapper extends Component {
                                     </TD>
                                     <TD>
                                       {participant.user.legal &&
-                                      participant.user.legal[2] &&
-                                      participant.user.legal[2].accepted
+                                      participant.user.legal[1] &&
+                                      participant.user.legal[1].accepted
                                         ? 'accepted'
                                         : 'denied'}
                                     </TD>
@@ -294,7 +300,7 @@ class SingleEventWrapper extends Component {
                                         ? 'accepted'
                                         : 'denied'}
                                     </TD>
-                                    <TD>
+                                    <TD data-csv="no">
                                       {' '}
                                       {ended ? (
                                         attended ? (
@@ -324,7 +330,9 @@ class SingleEventWrapper extends Component {
                                               attended ? (
                                                 <Button
                                                   wide
-                                                  onClick={unmarkAttended}
+                                                  onClick={() =>
+                                                    unmarkAttended()
+                                                  }
                                                   analyticsId="Unmark Attendee"
                                                 >
                                                   Unmark attended
@@ -333,7 +341,7 @@ class SingleEventWrapper extends Component {
                                                 <Button
                                                   wide
                                                   type="hollow"
-                                                  onClick={markAttended}
+                                                  onClick={() => markAttended()}
                                                   analyticsId="Mark Attendee"
                                                 >
                                                   Mark attended <Tick />
