@@ -288,8 +288,8 @@ class SingleEventWrapper extends Component {
                                     </TD>
                                     <TD>
                                       {participant.user.legal &&
-                                      participant.user.legal[2] &&
-                                      participant.user.legal[2].accepted
+                                      participant.user.legal[1] &&
+                                      participant.user.legal[1].accepted
                                         ? 'accepted'
                                         : 'denied'}
                                     </TD>
@@ -330,7 +330,9 @@ class SingleEventWrapper extends Component {
                                               attended ? (
                                                 <Button
                                                   wide
-                                                  onClick={unmarkAttended}
+                                                  onClick={() =>
+                                                    unmarkAttended()
+                                                  }
                                                   analyticsId="Unmark Attendee"
                                                 >
                                                   Unmark attended
@@ -339,7 +341,7 @@ class SingleEventWrapper extends Component {
                                                 <Button
                                                   wide
                                                   type="hollow"
-                                                  onClick={markAttended}
+                                                  onClick={() => markAttended()}
                                                   analyticsId="Mark Attendee"
                                                 >
                                                   Mark attended <Tick />

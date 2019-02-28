@@ -21,6 +21,7 @@ import Team from './routes/Team'
 import Faq from './routes/Faq'
 import Privacy from './routes/Privacy'
 import Terms from './routes/Terms'
+import GettingStarted from './routes/GettingStarted'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
@@ -77,6 +78,7 @@ class App extends Component {
               <Route path="/terms" component={Terms} />
               <Route path="/privacy" component={Privacy} />
               <Route path="/team" component={Team} />
+              <Route path="/gettingstarted" component={GettingStarted} />
             </Switch>
           </ScrollToTop>
         </Router>
