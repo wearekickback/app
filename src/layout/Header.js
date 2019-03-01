@@ -52,8 +52,9 @@ function Header() {
         <Logo />
         {isMinMedium && (
           <RightBar>
-            <GuideDropdown />
             <NavLink to="/events">Events</NavLink>
+            <NavLink to="/pricing">Pricing</NavLink>
+            <GuideDropdown />
             <SignInButton />
           </RightBar>
         )}
