@@ -19,7 +19,7 @@ const RSVP = ({ address, className, deposit }) => (
         onClick={rsvp}
         result={result}
         className={className}
-        preContent={`RSVP - ${DepositValue({ value: deposit })}`}
+        preContent={<span>RSVP - {DepositValue({ value: deposit })}</span>}
         postContent={<Going>You are going!</Going>}
       />
     )}
