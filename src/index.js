@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { ApolloProvider } from 'react-apollo'
 
 import * as LogRocket from './logRocket'
-import { LOGROCKET_TOKEN } from './config'
 import { setup as setupAnalytics } from './api/analytics'
 import './index.css'
 import App from './App'
