@@ -80,7 +80,7 @@ const resolvers = {
             toEthVal(coolingPeriod).toString(16)
           )
           .send({
-            gas: 4000000,
+            gas: 3000000,
             from: account
           })
 
