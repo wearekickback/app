@@ -14,10 +14,8 @@ export const init = () => {
 
 export const identify = profile => {
   if (LOGROCKET_TOKEN) {
-    LogRocket.identify(profile.id, {
-      address: profile.address,
-      name: profile.realName || 'Unknown',
-      email: profile.email.verified || profile.email.pending || 'Unknown'
+    LogRocket.identify(profile.address, {
+      name: profile.username || 'Unknown'
     })
   }
 }
