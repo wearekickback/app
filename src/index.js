@@ -1,7 +1,9 @@
+import LogRocket from 'logrocket'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ApolloProvider } from 'react-apollo'
 
+import { LOGROCKET_TOKEN } from './config'
 import { setup as setupAnalytics } from './api/analytics'
 import './index.css'
 import App from './App'
@@ -9,6 +11,8 @@ import { clientInstance } from './graphql'
 import setupWeb3 from './api/web3'
 import { GlobalProvider } from './GlobalState'
 import './globalStyles'
+
+LogRocket.init(LOGROCKET_TOKEN)
 
 window.addEventListener('load', async () => {
   setupAnalytics()

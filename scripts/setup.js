@@ -5,7 +5,10 @@ const path = require('path')
 const fs = require('fs')
 const { argv } = require('yargs')
 
-const getGitCommit = () => spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir }).stdout.toString().trim()
+const getGitCommit = () =>
+  spawnSync('git', ['rev-parse', 'HEAD'], { cwd: projectDir })
+    .stdout.toString()
+    .trim()
 
 const projectDir = path.join(__dirname, '..')
 
@@ -15,9 +18,14 @@ const appConfigPath = path.join(projectDir, 'src', 'config', 'env.json')
 let appConfig = {}
 
 // try loading from existing file
-try { appConfig = require(appConfigPath) } catch (_) { /* do nothing */ }
+try {
+  appConfig = require(appConfigPath)
+} catch (_) {
+  /* do nothing */
+}
 
 appConfig.API_URL = 'http://localhost:3001'
+appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-devlocal'
 
 if (undefined === appConfig.NUM_CONFIRMATIONS) {
   appConfig.NUM_CONFIRMATIONS = 1
@@ -31,6 +39,7 @@ if (argv.ropsten) {
   appConfig.GIT_COMMIT = getGitCommit()
 } else if (argv.live) {
   appConfig.MIXPANEL_ID = '11a2f7a59470cdb46cb611c5d22876f2'
+  appConfig.LOGROCKET_LIVE = '5gnafo/kickback-live'
   appConfig.API_URL = 'https://live.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 }

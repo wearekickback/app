@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { createContext, Component } from 'react'
 import { withApollo } from 'react-apollo'
 import jwt from 'jsonwebtoken'
+import LogRocket from 'logrocket'
 
 import * as LocalStorage from './api/localStorage'
 import { getAccount } from './api/web3'
@@ -107,6 +108,12 @@ class Provider extends Component {
 
   setUserProfile = profile => {
     console.log('Current user', profile)
+
+    LogRocket.identify(profile.id, {
+      address: profile.address,
+      name: profile.realName || 'Unknown',
+      email: profile.email.verified || profile.email.pending || 'Unknown'
+    })
 
     this.setState(
       state => ({
