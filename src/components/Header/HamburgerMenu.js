@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
+import SignInButton from './SignInButton'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
@@ -25,7 +26,9 @@ function isExternal(url) {
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
+      <SignInButton />
       <Link to="/events">Events</Link>
+      <Link to="/pricing">Pricing</Link>
       {links.map(l =>
         isExternal(l.url) ? (
           <Link to={l.href}>{l.label}</Link>
