@@ -40,7 +40,7 @@ if (argv.ropsten) {
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-rinkeby'
 } else if (argv.live) {
   appConfig.MIXPANEL_ID = '11a2f7a59470cdb46cb611c5d22876f2'
-  appConfig.LOGROCKET_LIVE = '5gnafo/kickback-live'
+  appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-live'
   appConfig.API_URL = 'https://live.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
 }
