@@ -18,20 +18,12 @@ window.addEventListener('load', async () => {
 
   setupWeb3().catch(_ => {})
 
-  const rootElement = document.getElementById('root')
-  let render
-  if (rootElement.hasChildNodes()) {
-    render = ReactDOM.hydrate
-  } else {
-    render = ReactDOM.render
-  }
-
-  render(
+  ReactDOM.render(
     <ApolloProvider client={clientInstance}>
       <GlobalProvider>
         <App />
       </GlobalProvider>
     </ApolloProvider>,
-    rootElement
+    document.getElementById('root')
   )
 })

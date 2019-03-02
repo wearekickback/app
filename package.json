@@ -49,7 +49,6 @@
     "seedParty": "node scripts/seedParty.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "react-snap",
     "build:release:ropsten": "yarn setup --ropsten && yarn build",
     "build:release:rinkeby": "yarn setup --rinkeby && yarn build",
     "build:release:live": "yarn setup --live && yarn build",
@@ -82,7 +81,6 @@
     "lint-staged": "^8.1.0",
     "now": "^13.1.3",
     "prettier": "^1.15.2",
-    "react-snap": "^1.23.0",
     "surge": "^0.20.1",
     "yargs": "^12.0.2"
   },
