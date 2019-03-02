@@ -32,6 +32,7 @@
     "react-datetime-picker": "^2.1.1",
     "react-dom": "^16.8.1",
     "react-emotion": "^9.2.6",
+    "react-meta-tags": "^0.7.4",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-hash-link": "^1.2.0",

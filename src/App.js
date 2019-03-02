@@ -28,6 +28,7 @@ import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
 import EditProfile from './components/Profile/EditProfile'
 import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
+import MetaTags from 'react-meta-tags'
 
 import './App.css'
 
@@ -52,8 +53,22 @@ const Route = ({
 
 class App extends Component {
   render() {
+    const title = 'Kickback'
+    const description =
+      'Event no shows? No problem. Kickback reduces no shows by asking registrants to put some skin in the game.'
+
     return (
       <Fragment>
+        <MetaTags>
+          <title>{title}</title>
+          <meta property="og:title" content={title} />
+          <meta property="og:type" content="website" />
+          <meta property="og:description" content={description} />
+          <meta property="og:image" content="/card.png" />
+          <meta property="og:url" content="https://kickback.events" />
+          <meta name="twitter:card" content="/card.png" />
+        </MetaTags>
+
         <Router>
           <ScrollToTop>
             <Switch>

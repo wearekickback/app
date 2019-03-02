@@ -15,8 +15,9 @@ import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
-
+import { toPrettyDate } from '../../utils/dates'
 import { toEthVal } from '../../utils/units'
+import MetaTags from 'react-meta-tags'
 
 const EventDate = styled(DefaultEventDate)``
 
@@ -146,11 +147,28 @@ const HostUsername = styled('span')`
 class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
-
     const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
+    let title = `Kickback event: ${party.name}`
+    let description = `Date:${toPrettyDate(party.start)}, Location:${
+      party.location
+    }, Event Summary:`
+    if (party.description.length > 50) {
+      description += `${party.description.slice(0, 50)}...`
+    } else {
+      description += party.description
+    }
 
     return (
       <EventInfoContainer className={className}>
+        <MetaTags>
+          <title>{title}</title>
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={description} />
+          (party.headerImg ? (
+          <meta property="og:image" content={party.headerImg} />) : null)
+          (party.headerImg ? (
+          <meta name="twitter:card" content={party.headerImg} />) : null)
+        </MetaTags>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
         <ContractAddress>
@@ -175,7 +193,7 @@ class EventInfo extends Component {
         <H3>Event Details</H3>
         <Location>
           <PinIcon />
-          {party.location || '11 Macclesfield St, London W1D 5BW'}
+          {party.location}
         </Location>
         <TotalPot>
           <EthIcon />
