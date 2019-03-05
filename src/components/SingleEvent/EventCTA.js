@@ -55,6 +55,11 @@ const RSVPContainer = styled('div')`
   justify-content: space-between;
   margin-bottom: 20px;
 `
+const Reference = styled('p')`
+  a {
+    text-decoration: underline;
+  }
+`
 
 // const Deposit = styled('div')`
 //   font-family: Muli;
@@ -128,20 +133,29 @@ class EventCTA extends Component {
           <>
             <RSVP address={address} deposit={deposit} />
             <CTAInfo>
-              <strong>You cannot cancel once registered.</strong>
-              <p>
-                Also, your payment is <strong>non-refundable</strong> if:
-              </p>
+              <strong>The rule of Kickback</strong>
               <ul>
+                <li>Everyone commits a small amount of ETH when they RSVP</li>
                 <li>
-                  You RSVP but then don't turn up in time (or don't get marked
-                  as attended by the organizer).
+                  Any no-shows lose their ETH, which will be
+                  <strong> split amongst the attendees</strong>
                 </li>
-                <li>
-                  You fail to withdraw your post-event payout within the cooling
-                  period.
-                </li>
+                <li>After the event, you withdraw your post-event payout</li>
               </ul>
+              <p>Make sure the followings</p>
+              <ul>
+                <li>Once you RSVP, you cannot cancel</li>
+                <li>
+                  The event organiser must mark you as attended to qualify for
+                  the payout
+                </li>
+                <li>You withdraw your payout within cooling period</li>
+              </ul>
+              <Reference>
+                For more detail please see{' '}
+                <a href="/gettingstarted">"Getting started guide"</a> and{' '}
+                <a href="/terms">"Terms and conditions"</a>
+              </Reference>
             </CTAInfo>
           </>
         )
