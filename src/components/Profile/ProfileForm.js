@@ -54,42 +54,51 @@ export default class ProfileForm extends Component {
     const { legal = [], social = [], username, email, realName } =
       existingProfile || {}
 
+    const terms = _.get(
+      getUserAcceptedLegalAgreement(legal, latestLegal, TERMS_AND_CONDITIONS),
+      'id'
+    )
+
+    const privacy = _.get(
+      getUserAcceptedLegalAgreement(legal, latestLegal, PRIVACY_POLICY),
+      'id'
+    )
+
     this.state = {
-      canSubmit: !!existingProfile,
       values: {
         email: _.get(email, 'verified') || _.get(email, 'pending') || '',
         username,
         realName,
+        social,
+        legal,
         twitter: _.get(
           social.find(({ type }) => type === 'twitter'),
           'value',
           ''
         ),
-        terms: _.get(
-          getUserAcceptedLegalAgreement(
-            legal,
-            latestlLegal,
-            TERMS_AND_CONDITIONS
-          ),
-          'id'
-        ),
-        privacy: _.get(
-          getUserAcceptedLegalAgreement(legal, latestlLegal, PRIVACY_POLICY),
-          'id'
-        ),
+        terms,
+        privacy,
         marketing: _.get(
-          getUserAcceptedLegalAgreement(legal, latestlLegal, MARKETING_INFO),
+          getUserAcceptedLegalAgreement(legal, latestLegal, MARKETING_INFO),
           'id'
         )
       },
-      errors: {}
+      errors: {
+        ...(terms ? null : { terms: [] }),
+        ...(privacy ? null : { privacy: [] })
+      }
     }
   }
 
   render() {
-    const { userAddress, existingProfile, renderSubmitButton } = this.props
+    const {
+      userAddress,
+      existingProfile,
+      renderSubmitButton,
+      latestLegal
+    } = this.props
 
-    const { canSubmit, values, errors } = this.state
+    const { values, errors } = this.state
 
     const {
       username,
@@ -100,6 +109,8 @@ export default class ProfileForm extends Component {
       privacy,
       marketing
     } = values
+
+    const canSubmit = !Object.keys(errors).length
 
     return (
       <div>
@@ -112,7 +123,7 @@ export default class ProfileForm extends Component {
             placeholder="username"
             data-testid="username"
             value={username}
-            onChange={this.handleUsernameChange}
+            onUpdate={this.handleUsernameChange}
             errors={errors.username}
           />
           {existingProfile ? (
@@ -133,7 +144,7 @@ export default class ProfileForm extends Component {
             placeholder="Joe Bloggs"
             value={realName}
             data-testid="realname"
-            onChange={this.handleRealNameChange}
+            onUpdate={this.handleRealNameChange}
             errors={errors.realName}
           />
           <Explanation>
@@ -147,7 +158,7 @@ export default class ProfileForm extends Component {
             placeholder="alice@gmail.com"
             data-testid="email"
             value={email}
-            onChange={this.handleEmailChange}
+            onUpdate={this.handleEmailChange}
             errors={errors.email}
           />
           <Explanation>
@@ -161,7 +172,7 @@ export default class ProfileForm extends Component {
           <TextInput
             placeholder="jack"
             value={twitter}
-            onChange={this.handleTwitterChange}
+            onUpdate={this.handleTwitterChange}
             errors={errors.twitter}
           />
           <Explanation>
@@ -175,8 +186,8 @@ export default class ProfileForm extends Component {
               value={TERMS_AND_CONDITIONS}
               checked={!!terms}
               testId="terms"
-              onChange={this.handleTermsCheck(
-                getLegalAgreement(legal, TERMS_AND_CONDITIONS)
+              onUpdate={this.handleTermsCheck(
+                getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
               )}
             >
               I agree with the{' '}
@@ -188,8 +199,8 @@ export default class ProfileForm extends Component {
               value={PRIVACY_POLICY}
               checked={!!privacy}
               testId="privacy"
-              onChange={this.handlePrivacyCheck(
-                getLegalAgreement(legal, PRIVACY_POLICY)
+              onUpdate={this.handlePrivacyCheck(
+                getLegalAgreement(latestLegal, PRIVACY_POLICY)
               )}
             >
               I agree with the{' '}
@@ -203,42 +214,41 @@ export default class ProfileForm extends Component {
           value={MARKETING_INFO}
           checked={!!marketing}
           testId="marketing"
-          onChange={this.handleMarketingCheck(
-            getLegalAgreement(legal, MARKETING_INFO)
+          onUpdate={this.handleMarketingCheck(
+            getLegalAgreement(latestLegal, MARKETING_INFO)
           )}
         >
           I am happy to receive marketing info (optional)
         </Checkbox>
-        {renderSubmitButton(
-          this._prepareValuesForSubmission(values),
-          canSubmit
-        )}
+        {renderSubmitButton(canSubmit, this._prepareValuesForSubmission)}
       </div>
     )
   }
 
-  _prepareValuesForSubmission(values) {
-    const { existingProfile = {} } = this.props
+  _prepareValuesForSubmission = () => {
+    const { values } = this.state
 
     const {
       email,
-      twitter,
       username,
       realName,
+      twitter,
       terms,
       privacy,
       marketing
     } = values
 
-    let social = (existingProfile.social || []).map(v => removeTypename(v))
+    let { legal, social } = values
+
+    social = social.map(v => removeTypename(v))
     social = ensureInArray(
       social,
       'type',
-      { type: 'twitter', value: sanitizeTwitterId(twitter) },
+      { type: 'twitter', value: twitter },
       true
     )
 
-    let legal = (existingProfile.legal || []).map(v => removeTypename(v))
+    legal = legal.map(v => removeTypename(v))
     if (terms) {
       legal = ensureInArray(
         legal,
@@ -273,62 +283,87 @@ export default class ProfileForm extends Component {
     }
   }
 
-  _handleFieldChanged = (val, fieldName, assertionFn) => {
-    this.setState(({ errors }) => {
+  _handleTextFieldChanged = (
+    val,
+    fieldName,
+    assertionFn,
+    { required } = {}
+  ) => {
+    this.setState(({ values, errors }) => {
       try {
-        assertionFn(val)
+        if (val || required) {
+          assertionFn(val)
+        }
         delete errors[fieldName]
       } catch (err) {
-        errors[fieldName] = err.rules || 'Please correct this field'
+        errors[fieldName] = err.rules || ['Please correct this field']
       }
 
       return {
-        [fieldName]: val,
-        errors,
-        canSubmit: !Object.keys(errors).length
+        values: {
+          ...values,
+          [fieldName]: val
+        },
+        errors
       }
     })
   }
 
-  handleUsernameChange = e => {
-    this._handleFieldChanged(e.target.value, 'username', assertUsername)
+  _handleLegalFieldChanged = (id, checked, fieldName, { required } = {}) => {
+    this.setState(({ values, errors, canSubmit }) => {
+      const val = checked ? id : false
+
+      if (val || !required) {
+        delete errors[fieldName]
+      } else {
+        errors[fieldName] = ['Please tick this box']
+      }
+
+      return {
+        values: {
+          ...values,
+          [fieldName]: val
+        },
+        errors
+      }
+    })
   }
 
-  handleRealNameChange = e => {
-    this._handleFieldChanged(e.target.value, 'realName', assertRealName)
+  handleUsernameChange = val => {
+    this._handleTextFieldChanged(val, 'username', assertUsername, {
+      required: true
+    })
   }
 
-  handleEmailChange = e => {
-    this._handleFieldChanged(e.target.value, 'email', assertEmailAddress)
+  handleRealNameChange = val => {
+    this._handleTextFieldChanged(val, 'realName', assertRealName, {
+      required: true
+    })
   }
 
-  handleTwitterChange = e => {
-    this._handleFieldChanged(
-      sanitizeTwitterId(e.target.value),
+  handleEmailChange = val => {
+    this._handleTextFieldChanged(val, 'email', assertEmailAddress, {
+      required: true
+    })
+  }
+
+  handleTwitterChange = val => {
+    this._handleTextFieldChanged(
+      sanitizeTwitterId(val),
       'twitter',
       assertTwitterId
     )
   }
 
-  handleTermsCheck = ({ id }) => e => {
-    const terms = e.target.checked ? id : false
-
-    this.setState(({ canSubmit }) => ({
-      terms,
-      canSubmit: canSubmit && terms
-    }))
+  handleTermsCheck = ({ id }) => checked => {
+    this._handleLegalFieldChanged(id, checked, 'terms', { required: true })
   }
 
-  handlePrivacyCheck = ({ id }) => e => {
-    const privacy = e.target.checked ? id : false
-
-    this.setState(({ canSubmit }) => ({
-      privacy,
-      canSubmit: canSubmit && privacy
-    }))
+  handlePrivacyCheck = ({ id }) => checked => {
+    this._handleLegalFieldChanged(id, checked, 'privacy', { required: true })
   }
 
-  handleMarketingCheck = ({ id }) => e => ({
-    marketing: e.target.checked ? id : false
-  })
+  handleMarketingCheck = ({ id }) => checked => {
+    this._handleLegalFieldChanged(id, checked, 'marketing')
+  }
 }

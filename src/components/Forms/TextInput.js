@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'react-emotion'
+
+import FieldErrors from './FieldErrors'
 
 const InputContainer = styled('div')`
   position: relative;
@@ -32,38 +34,63 @@ const SearchInput = styled(Input)`
   background-color: rgba(243, 243, 249, 0.5);
 `
 
-export const Search = ({ placeholder = '', Icon, innerRef, ...props }) => {
-  let SearchIcon
-  if (Icon) {
-    SearchIcon = styled(Icon)`
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translate(0, -50%);
-    `
+export class Search extends Component {
+  render() {
+    const { placeholder = '', Icon, innerRef, onUpdate, ...props } = this.props
+
+    let SearchIcon
+    if (Icon) {
+      SearchIcon = styled(Icon)`
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translate(0, -50%);
+      `
+    }
+    return (
+      <SearchContainer {...props}>
+        {Icon ? <SearchIcon /> : ''}
+        <SearchInput
+          type="text"
+          placeholder={placeholder}
+          innerRef={innerRef}
+          {...props}
+          onChange={this._onChange}
+        />
+      </SearchContainer>
+    )
   }
-  return (
-    <SearchContainer {...props}>
-      {Icon ? <SearchIcon /> : ''}
-      <SearchInput
-        type="text"
-        placeholder={placeholder}
-        innerRef={innerRef}
-        {...props}
-      />
-    </SearchContainer>
-  )
+
+  _onChange = e => {
+    this.props.onUpdate(e.target.value)
+  }
 }
 
-const TextInput = ({ placeholder = '', innerRef, ...props }) => (
-  <InputContainer {...props}>
-    <Input
-      type="text"
-      placeholder={placeholder}
-      innerRef={innerRef}
-      {...props}
-    />
-  </InputContainer>
-)
+export default class TextInput extends Component {
+  render() {
+    const {
+      errors,
+      placeholder = '',
+      innerRef,
+      onUpdate,
+      ...props
+    } = this.props
 
-export default TextInput
+    return (
+      <InputContainer {...props}>
+        <Input
+          type="text"
+          placeholder={placeholder}
+          innerRef={innerRef}
+          {...props}
+          onChange={this._onChange}
+        />
+        <FieldErrors errors={errors} />
+      </InputContainer>
+    )
+  }
+
+  _onChange = e => {
+    this.props.onUpdate(e.target.value)
+  }
+}

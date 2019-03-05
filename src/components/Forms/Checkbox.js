@@ -1,23 +1,28 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const Checkbox = ({
-  className,
-  value,
-  checked,
-  testId,
-  onChange,
-  children
-}) => (
-  <div className={className}>
-    <input
-      type="checkbox"
-      value={value}
-      checked={checked}
-      data-testid={testId}
-      onChange={onChange}
-    />{' '}
-    {children}
-  </div>
-)
+class Checkbox extends Component {
+  render() {
+    const { className, value, checked, testId, children } = this.props
+
+    return (
+      <div className={className}>
+        <input
+          type="checkbox"
+          value={value}
+          checked={checked}
+          data-testid={testId}
+          onChange={this._onChange}
+        />{' '}
+        {children}
+      </div>
+    )
+  }
+
+  _onChange = e => {
+    if (this.props.checked !== e.target.checked) {
+      this.props.onUpdate(e.target.checked)
+    }
+  }
+}
 
 export default Checkbox

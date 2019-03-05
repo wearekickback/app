@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import Button from '../Forms/Button'
+import DefaultButton from '../Forms/Button'
 import { H2 as DefaultH2 } from '../Typography/Basic'
 import ProfileForm from './ProfileForm'
 import { UpdateUserProfile } from '../../graphql/mutations'
@@ -22,6 +22,10 @@ const Pencil = styled(DefaultPencil)`
 const H2 = styled(DefaultH2)`
   display: flex;
   align-items: center;
+`
+
+const SubmitButton = styled(DefaultButton)`
+  margin-top: 30px;
 `
 
 export default class SignIn extends Component {
@@ -47,16 +51,12 @@ export default class SignIn extends Component {
                     userAddress={userAddress}
                     existingProfile={userProfile}
                     latestLegal={latestLegal}
-                    renderSubmitButton={(profile, isValid) => (
-                      <SafeMutation
-                        mutation={UpdateUserProfile}
-                        variables={{
-                          profile: _.omit(profile, 'username')
-                        }}
-                      >
+                    renderSubmitButton={(isValid, prepareValuesFn) => (
+                      <SafeMutation mutation={UpdateUserProfile}>
                         {updateUserProfile => (
-                          <Button
+                          <SubmitButton
                             onClick={this.submit({
+                              prepareValuesFn,
                               updateUserProfile,
                               setUserProfile,
                               toggleModal
@@ -64,7 +64,7 @@ export default class SignIn extends Component {
                             disabled={!isValid}
                           >
                             Save changes
-                          </Button>
+                          </SubmitButton>
                         )}
                       </SafeMutation>
                     )}
@@ -78,8 +78,17 @@ export default class SignIn extends Component {
     )
   }
 
-  submit = ({ updateUserProfile, setUserProfile, toggleModal }) => () => {
-    updateUserProfile().then(({ data: { profile } }) => {
+  submit = ({
+    prepareValuesFn,
+    updateUserProfile,
+    setUserProfile,
+    toggleModal
+  }) => () => {
+    const profile = _.omit(prepareValuesFn(), 'username')
+
+    updateUserProfile({
+      variables: { profile }
+    }).then(({ data: { profile } }) => {
       setUserProfile(profile)
       toggleModal(EDIT_PROFILE)
     })

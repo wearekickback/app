@@ -25,6 +25,10 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
+const SignUpButtonDiv = styled('div')`
+  margin-top: 30px;
+`
+
 export default class SignIn extends Component {
   render() {
     return (
@@ -63,24 +67,24 @@ export default class SignIn extends Component {
             <ProfileForm
               userAddress={userAddress}
               latestLegal={latestLegal}
-              renderSubmitButton={(profile, isValid) => (
-                <SafeMutation
-                  mutation={UpdateUserProfile}
-                  variables={{ profile }}
-                >
-                  {updateUserProfile =>
-                    isValid ? (
-                      <RefreshAuthTokenButton
-                        onClick={this.signInOrSignUp({
-                          fetchUserProfileFromServer: updateUserProfile,
-                          toggleModal
-                        })}
-                        title="Create account"
-                      />
-                    ) : (
-                      <Button type="disabled">Create account</Button>
-                    )
-                  }
+              renderSubmitButton={(isValid, prepareValuesFn) => (
+                <SafeMutation mutation={UpdateUserProfile}>
+                  {updateUserProfile => (
+                    <SignUpButtonDiv>
+                      {isValid ? (
+                        <RefreshAuthTokenButton
+                          onClick={this.signInOrSignUp({
+                            prepareValuesFn,
+                            sendDataToServer: updateUserProfile,
+                            toggleModal
+                          })}
+                          title="Create account"
+                        />
+                      ) : (
+                        <Button type="disabled">Create account</Button>
+                      )}
+                    </SignUpButtonDiv>
+                  )}
                 </SafeMutation>
               )}
             />
@@ -99,7 +103,7 @@ export default class SignIn extends Component {
           {loginUser => (
             <RefreshAuthTokenButton
               onClick={this.signInOrSignUp({
-                fetchUserProfileFromServer: loginUser,
+                sendDataToServer: loginUser,
                 toggleModal
               })}
             />
@@ -110,10 +114,22 @@ export default class SignIn extends Component {
   }
 
   signInOrSignUp = ({
-    fetchUserProfileFromServer,
+    prepareValuesFn,
+    sendDataToServer,
     toggleModal
   }) => async refreshAuthToken => {
-    await refreshAuthToken({ fetchUserProfileFromServer })
+    const dataToSend = !prepareValuesFn
+      ? undefined
+      : {
+          variables: {
+            profile: prepareValuesFn()
+          }
+        }
+
+    await refreshAuthToken({
+      fetchUserProfileFromServer: () => sendDataToServer(dataToSend)
+    })
+
     toggleModal({ name: SIGN_IN })
   }
 }
