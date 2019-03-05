@@ -5,7 +5,7 @@ import styled from 'react-emotion'
 import Button from '../Forms/Button'
 import ProfileForm from '../Profile/ProfileForm'
 import { UpdateUserProfile, LoginUser } from '../../graphql/mutations'
-import { UserProfileQuery } from '../../graphql/queries'
+import { UserProfileQuery, LegalAgreementsQuery } from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
@@ -58,26 +58,34 @@ export default class SignIn extends Component {
           <Pencil />
           Create account
         </H2>
-        <ProfileForm
-          userAddress={userAddress}
-          renderSubmitButton={(profile, isValid) => (
-            <SafeMutation mutation={UpdateUserProfile} variables={{ profile }}>
-              {updateUserProfile =>
-                isValid ? (
-                  <RefreshAuthTokenButton
-                    onClick={this.signInOrSignUp({
-                      fetchUserProfileFromServer: updateUserProfile,
-                      toggleModal
-                    })}
-                    title="Create account"
-                  />
-                ) : (
-                  <Button type="disabled">Create account</Button>
-                )
-              }
-            </SafeMutation>
+        <SafeQuery query={LegalAgreementsQuery}>
+          {({ data: { legal: latestLegal } }) => (
+            <ProfileForm
+              userAddress={userAddress}
+              latestLegal={latestLegal}
+              renderSubmitButton={(profile, isValid) => (
+                <SafeMutation
+                  mutation={UpdateUserProfile}
+                  variables={{ profile }}
+                >
+                  {updateUserProfile =>
+                    isValid ? (
+                      <RefreshAuthTokenButton
+                        onClick={this.signInOrSignUp({
+                          fetchUserProfileFromServer: updateUserProfile,
+                          toggleModal
+                        })}
+                        title="Create account"
+                      />
+                    ) : (
+                      <Button type="disabled">Create account</Button>
+                    )
+                  }
+                </SafeMutation>
+              )}
+            />
           )}
-        />
+        </SafeQuery>
       </>
     )
   }
