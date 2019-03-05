@@ -32,13 +32,13 @@ class ConfirmModal extends Component {
     const { mutation, mutationComponent, message } = this.props
     return (
       <GlobalConsumer>
-        {({ toggleModal }) => (
+        {({ closeModal }) => (
           <ConfirmModalContainer>
             <Message>{message}</Message>
 
             <Buttons>
               <Cancel
-                onClick={() => toggleModal({ name: 'CONFIRM_TRANSACTION' })}
+                onClick={() => closeModal({ name: 'CONFIRM_TRANSACTION' })}
                 type="hollow"
               >
                 {this.state.mutationStarted ? 'Close' : 'Cancel'}

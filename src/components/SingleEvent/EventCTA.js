@@ -169,14 +169,14 @@ class EventCTA extends Component {
     return (
       amAdmin && (
         <GlobalConsumer>
-          {({ toggleModal }) => {
+          {({ showModal }) => {
             return (
               <AdminCTA>
                 {!ended ? (
                   <>
                     <Button
                       onClick={() => {
-                        toggleModal({
+                        showModal({
                           name: CONFIRM_TRANSACTION,
                           render: () => (
                             <ConfirmModal

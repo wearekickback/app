@@ -8,7 +8,7 @@ class Modal extends Component {
     const { small, name, children, component: Component } = this.props
     return (
       <GlobalConsumer>
-        {({ currentModal, toggleModal }) => {
+        {({ currentModal, closeModal }) => {
           if (!currentModal) {
             return null
           }
@@ -18,7 +18,7 @@ class Modal extends Component {
                 show={name === currentModal.name}
                 onClick={event => {
                   event.stopPropagation()
-                  toggleModal({ name })
+                  closeModal({ name })
                 }}
               >
                 <ModalContent
@@ -30,7 +30,7 @@ class Modal extends Component {
                   ) : currentModal.render ? (
                     currentModal.render({
                       ...this.props,
-                      toggleModal
+                      closeModal
                     })
                   ) : null}
                   {children}

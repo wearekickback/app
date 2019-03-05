@@ -150,12 +150,16 @@ class Provider extends Component {
     })
   }
 
-  toggleModal = modal => {
-    this.setState(state =>
-      state.currentModal && state.currentModal.name === modal.name
-        ? { currentModal: null }
-        : { currentModal: modal }
-    )
+  closeModal = modal => {
+    this.setState(state => {
+      if (state.currentModal && state.currentModal.name === modal.name) {
+        return {
+          currentModal: null
+        }
+      } else {
+        return state
+      }
+    })
   }
 
   async componentDidMount() {
@@ -201,11 +205,10 @@ class Provider extends Component {
           userProfile: this.state.auth.profile,
           networkState: this.state.networkState,
           loggedIn: this.isLoggedIn(),
-          toggleModal: this.toggleModal,
-
           signIn: this.signIn,
           signInError: this.state.signInError,
           showModal: this.showModal,
+          closeModal: this.closeModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
           setUserProfile: this.setUserProfile
         }}

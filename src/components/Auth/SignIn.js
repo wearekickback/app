@@ -34,7 +34,7 @@ export default class SignIn extends Component {
     return (
       <SignInContainer data-testid="sign-in-modal">
         <GlobalConsumer>
-          {({ userAddress, toggleModal }) => (
+          {({ userAddress, closeModal }) => (
             <SafeQuery
               query={UserProfileQuery}
               variables={{ address: userAddress }}
@@ -43,9 +43,9 @@ export default class SignIn extends Component {
                 const hasProfile = !!_.get(result, 'data.profile.username')
 
                 if (hasProfile) {
-                  return this.renderSignIn(userAddress, toggleModal)
+                  return this.renderSignIn(userAddress, closeModal)
                 } else {
-                  return this.renderSignUp(userAddress, toggleModal)
+                  return this.renderSignUp(userAddress, closeModal)
                 }
               }}
             </SafeQuery>
@@ -55,7 +55,7 @@ export default class SignIn extends Component {
     )
   }
 
-  renderSignUp(userAddress, toggleModal) {
+  renderSignUp(userAddress, closeModal) {
     return (
       <>
         <H2>
@@ -76,7 +76,7 @@ export default class SignIn extends Component {
                           onClick={this.signInOrSignUp({
                             prepareValuesFn,
                             sendDataToServer: updateUserProfile,
-                            toggleModal
+                            closeModal
                           })}
                           title="Create account"
                         />
@@ -94,7 +94,7 @@ export default class SignIn extends Component {
     )
   }
 
-  renderSignIn(userAddress, toggleModal) {
+  renderSignIn(userAddress, closeModal) {
     return (
       <>
         <H2>Sign in</H2>
@@ -104,7 +104,7 @@ export default class SignIn extends Component {
             <RefreshAuthTokenButton
               onClick={this.signInOrSignUp({
                 sendDataToServer: loginUser,
-                toggleModal
+                closeModal
               })}
             />
           )}
@@ -116,7 +116,7 @@ export default class SignIn extends Component {
   signInOrSignUp = ({
     prepareValuesFn,
     sendDataToServer,
-    toggleModal
+    closeModal
   }) => async refreshAuthToken => {
     const dataToSend = !prepareValuesFn
       ? undefined
@@ -130,6 +130,10 @@ export default class SignIn extends Component {
       fetchUserProfileFromServer: () => sendDataToServer(dataToSend)
     })
 
-    toggleModal({ name: SIGN_IN })
+    this.close(closeModal)
+  }
+
+  close = closeModal => {
+    closeModal({ name: SIGN_IN })
   }
 }

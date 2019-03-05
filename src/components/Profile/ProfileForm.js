@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
+
 import {
   assertEmailAddress,
   assertUsername,
@@ -51,37 +53,41 @@ export default class ProfileForm extends Component {
     super(props)
 
     const { existingProfile, latestLegal } = props
-    const { legal = [], social = [], username, email, realName } =
-      existingProfile || {}
 
+    const legal = _.get(existingProfile, 'legal') || []
+    const social = _.get(existingProfile, 'social') || []
+    const username = _.get(existingProfile, 'username') || ''
+    const email =
+      _.get(existingProfile, 'email.verified') ||
+      _.get(existingProfile, 'email.pending') ||
+      ''
+    const realName = _.get(existingProfile, 'realName') || ''
+    const twitter =
+      _.get(social.find(({ type }) => type === 'twitter'), 'value') || ''
     const terms = _.get(
       getUserAcceptedLegalAgreement(legal, latestLegal, TERMS_AND_CONDITIONS),
       'id'
     )
-
     const privacy = _.get(
       getUserAcceptedLegalAgreement(legal, latestLegal, PRIVACY_POLICY),
+      'id'
+    )
+    const marketing = _.get(
+      getUserAcceptedLegalAgreement(legal, latestLegal, MARKETING_INFO),
       'id'
     )
 
     this.state = {
       values: {
-        email: _.get(email, 'verified') || _.get(email, 'pending') || '',
+        email,
         username,
         realName,
         social,
         legal,
-        twitter: _.get(
-          social.find(({ type }) => type === 'twitter'),
-          'value',
-          ''
-        ),
+        twitter,
         terms,
         privacy,
-        marketing: _.get(
-          getUserAcceptedLegalAgreement(legal, latestLegal, MARKETING_INFO),
-          'id'
-        )
+        marketing
       },
       errors: {
         ...(terms ? null : { terms: [] }),
@@ -180,36 +186,32 @@ export default class ProfileForm extends Component {
             over social media if they so wish.
           </Explanation>
         </Field>
-        {existingProfile ? null : (
-          <>
-            <Checkbox
-              value={TERMS_AND_CONDITIONS}
-              checked={!!terms}
-              testId="terms"
-              onUpdate={this.handleTermsCheck(
-                getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
-              )}
-            >
-              I agree with the{' '}
-              <a href={`/terms`} target="_blank" rel="noopener noreferrer">
-                terms and conditions
-              </a>
-            </Checkbox>
-            <Checkbox
-              value={PRIVACY_POLICY}
-              checked={!!privacy}
-              testId="privacy"
-              onUpdate={this.handlePrivacyCheck(
-                getLegalAgreement(latestLegal, PRIVACY_POLICY)
-              )}
-            >
-              I agree with the{' '}
-              <a href={`/privacy`} target="_blank" rel="noopener noreferrer">
-                privacy policy
-              </a>
-            </Checkbox>
-          </>
-        )}
+        <Checkbox
+          value={TERMS_AND_CONDITIONS}
+          checked={!!terms}
+          testId="terms"
+          onUpdate={this.handleTermsCheck(
+            getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+          )}
+        >
+          I agree with the{' '}
+          <Link to="/terms" target="_blank" rel="noopener noreferrer">
+            terms and conditions
+          </Link>
+        </Checkbox>
+        <Checkbox
+          value={PRIVACY_POLICY}
+          checked={!!privacy}
+          testId="privacy"
+          onUpdate={this.handlePrivacyCheck(
+            getLegalAgreement(latestLegal, PRIVACY_POLICY)
+          )}
+        >
+          I agree with the{' '}
+          <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+            privacy policy
+          </Link>
+        </Checkbox>
         <Checkbox
           value={MARKETING_INFO}
           checked={!!marketing}

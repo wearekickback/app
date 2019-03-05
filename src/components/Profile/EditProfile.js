@@ -39,7 +39,7 @@ export default class SignIn extends Component {
     return (
       <Container>
         <GlobalConsumer>
-          {({ userAddress, userProfile, setUserProfile, toggleModal }) => (
+          {({ userAddress, userProfile, setUserProfile, closeModal }) => (
             <>
               <H2>
                 <Pencil />
@@ -59,7 +59,7 @@ export default class SignIn extends Component {
                               prepareValuesFn,
                               updateUserProfile,
                               setUserProfile,
-                              toggleModal
+                              closeModal
                             })}
                             disabled={!isValid}
                           >
@@ -82,7 +82,7 @@ export default class SignIn extends Component {
     prepareValuesFn,
     updateUserProfile,
     setUserProfile,
-    toggleModal
+    closeModal
   }) => () => {
     const profile = _.omit(prepareValuesFn(), 'username')
 
@@ -90,7 +90,11 @@ export default class SignIn extends Component {
       variables: { profile }
     }).then(({ data: { profile } }) => {
       setUserProfile(profile)
-      toggleModal(EDIT_PROFILE)
+      this.close(closeModal)
     })
+  }
+
+  close = closeModal => {
+    closeModal({ name: EDIT_PROFILE })
   }
 }
