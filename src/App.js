@@ -83,11 +83,11 @@ class App extends Component {
               <Route path="/team" component={Team} />
               <Route path="/gettingstarted" component={GettingStarted} />
             </Switch>
+            <Modal name={SIGN_IN} component={SignIn} />
+            <Modal name={EDIT_PROFILE} component={EditProfile} />
+            <Modal small name={CONFIRM_TRANSACTION} />
           </ScrollToTop>
         </Router>
-        <Modal name={SIGN_IN} component={SignIn} />
-        <Modal name={EDIT_PROFILE} component={EditProfile} />
-        <Modal small name={CONFIRM_TRANSACTION} />
       </Fragment>
     )
   }

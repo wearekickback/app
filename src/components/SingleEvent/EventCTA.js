@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 import {
   PARTICIPANT_STATUS,
   calculateFinalizeMaps,
@@ -54,6 +55,11 @@ const RSVPContainer = styled('div')`
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 20px;
+`
+const Reference = styled('p')`
+  a {
+    text-decoration: underline;
+  }
 `
 
 // const Deposit = styled('div')`
@@ -128,20 +134,27 @@ class EventCTA extends Component {
           <>
             <RSVP address={address} deposit={deposit} />
             <CTAInfo>
-              <strong>You cannot cancel once registered.</strong>
-              <p>
-                Also, your payment is <strong>non-refundable</strong> if:
-              </p>
+              <strong>Kickback rules:</strong>
               <ul>
+                <li>Everyone commits a small amount of ETH when they RSVP.</li>
                 <li>
-                  You RSVP but then don't turn up in time (or don't get marked
-                  as attended by the organizer).
+                  Any no-shows lose their ETH, which will be
+                  <strong> split amongst the attendees</strong>.
                 </li>
-                <li>
-                  You fail to withdraw your post-event payout within the cooling
-                  period.
-                </li>
+                <li>After the event you can withdraw your post-event payout.</li>
               </ul>
+              <p>Please remember:</p>
+              <ul>
+                <li>Once you RSVP, you cannot cancel.</li>
+                <li>
+                  The event organiser must mark you as attended in order for you to qualify for
+                  the payout.
+                </li>
+                <li>You must withdraw your payout within the post-event cooling period.</li>
+              </ul>
+              <Reference>
+                For more detail please see <Link to="/gettingstarted">Getting started</Link> and <Link to="/terms">Terms and conditions</Link>.
+              </Reference>
             </CTAInfo>
           </>
         )
@@ -169,17 +182,18 @@ class EventCTA extends Component {
     return (
       amAdmin && (
         <GlobalConsumer>
-          {({ toggleModal }) => {
+          {({ showModal }) => {
             return (
               <AdminCTA>
                 {!ended ? (
                   <>
                     <Button
                       onClick={() => {
-                        toggleModal({
+                        showModal({
                           name: CONFIRM_TRANSACTION,
-                          render: () => (
+                          render: ({ closeModal }) => (
                             <ConfirmModal
+                              closeModal={closeModal}
                               message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
                               mutationComponent={
                                 <ChainMutation
