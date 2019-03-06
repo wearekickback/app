@@ -20,6 +20,8 @@ const Filter = styled('div')`
   margin-bottom: 20px;
 `
 
+const EventFiltersContainer = styled('div')``
+
 class EventFilters extends Component {
   state = {}
 
@@ -54,12 +56,13 @@ class EventFilters extends Component {
       enableQrCodeScanner,
       handleFilterChange,
       amAdmin,
-      ended
+      ended,
+      className
     } = this.props
     const { scanError } = this.state
 
     return (
-      <EventFiltersContainer>
+      <EventFiltersContainer className={className}>
         {amAdmin && !ended && (
           <Filter>
             <Label>Filters</Label>
@@ -106,7 +109,5 @@ class EventFilters extends Component {
     )
   }
 }
-
-const EventFiltersContainer = styled('div')``
 
 export default EventFilters
