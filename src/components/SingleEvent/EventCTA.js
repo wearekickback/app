@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 import {
   PARTICIPANT_STATUS,
   calculateFinalizeMaps,
@@ -152,9 +153,7 @@ class EventCTA extends Component {
                 <li>You must withdraw your payout within the post-event cooling period.</li>
               </ul>
               <Reference>
-                For more detail please see{' '}
-                <a href="/gettingstarted">"Getting started guide"</a> and{' '}
-                <a href="/terms">"Terms and conditions"</a>
+                For more detail please read <Link to="/gettingstarted">"getting started"</Link> and <Link to="/terms">"terms and conditions"</Link>.
               </Reference>
             </CTAInfo>
           </>
