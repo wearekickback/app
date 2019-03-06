@@ -30,7 +30,7 @@ class Modal extends Component {
                   ) : currentModal.render ? (
                     currentModal.render({
                       ...this.props,
-                      closeModal
+                      closeModal: () => closeModal({ name })
                     })
                   ) : null}
                   {children}
