@@ -141,19 +141,26 @@ class EventCTA extends Component {
                   Any no-shows lose their ETH, which will be
                   <strong> split amongst the attendees</strong>.
                 </li>
-                <li>After the event you can withdraw your post-event payout.</li>
+                <li>
+                  After the event you can withdraw your post-event payout.
+                </li>
               </ul>
               <p>Please remember:</p>
               <ul>
                 <li>Once you RSVP, you cannot cancel.</li>
                 <li>
-                  The event organiser must mark you as attended in order for you to qualify for
-                  the payout.
+                  The event organiser must mark you as attended in order for you
+                  to qualify for the payout.
                 </li>
-                <li>You must withdraw your payout within the post-event cooling period.</li>
+                <li>
+                  You must withdraw your payout within the post-event cooling
+                  period.
+                </li>
               </ul>
               <Reference>
-                For more detail please see <Link to="/gettingstarted">Getting started</Link> and <Link to="/terms">Terms and conditions</Link>.
+                For more detail please see{' '}
+                <Link to="/gettingstarted">Getting started</Link> and{' '}
+                <Link to="/terms">Terms and conditions</Link>.
               </Reference>
             </CTAInfo>
           </>
