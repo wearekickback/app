@@ -182,17 +182,18 @@ class EventCTA extends Component {
     return (
       amAdmin && (
         <GlobalConsumer>
-          {({ toggleModal }) => {
+          {({ showModal }) => {
             return (
               <AdminCTA>
                 {!ended ? (
                   <>
                     <Button
                       onClick={() => {
-                        toggleModal({
+                        showModal({
                           name: CONFIRM_TRANSACTION,
-                          render: () => (
+                          render: ({ closeModal }) => (
                             <ConfirmModal
+                              closeModal={closeModal}
                               message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
                               mutationComponent={
                                 <ChainMutation

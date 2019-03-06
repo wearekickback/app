@@ -1,11 +1,13 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
+
 import {
-  isEmailAddress,
-  isUsername,
-  isRealName,
-  isTwitterId,
+  assertEmailAddress,
+  assertUsername,
+  assertRealName,
+  assertTwitterId,
   sanitizeTwitterId,
   trimOrEmptyStringProps,
   getLegalAgreement,
@@ -14,10 +16,9 @@ import {
 } from '@wearekickback/shared'
 
 import { removeTypename } from '../../graphql'
-import { LegalAgreementsQuery } from '../../graphql/queries'
 import InputAddress from '../Forms/InputAddress'
-import SafeQuery from '../SafeQuery'
 import DefaultTextInput from '../Forms/TextInput'
+import DefaultCheckbox from '../Forms/Checkbox'
 import Label from '../Forms/Label'
 import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
 import mq from '../../mediaQuery'
@@ -43,243 +44,225 @@ const TextInput = styled(DefaultTextInput)`
   `};
 `
 
+const Checkbox = styled(DefaultCheckbox)`
+  margin: 5px 0;
+`
+
 export default class ProfileForm extends Component {
-  state = {}
+  constructor(props) {
+    super(props)
 
-  render() {
-    return this.renderForm()
-  }
+    const { existingProfile, latestLegal } = props
 
-  renderForm() {
-    const { userAddress, existingProfile, renderSubmitButton } = this.props
-
-    return (
-      <SafeQuery query={LegalAgreementsQuery}>
-        {({ data: { legal } }) => {
-          const values = this._currentValues(existingProfile, legal)
-
-          const {
-            username,
-            realName,
-            email,
-            twitter,
-            terms,
-            privacy,
-            marketing
-          } = values
-
-          return (
-            <div>
-              <Label>Ethereum address</Label>
-              <InputAddress address={userAddress} />
-              <Field>
-                <Label>Username</Label>
-                <TextInput
-                  disabled={!!existingProfile}
-                  placeholder="username"
-                  data-testid="username"
-                  value={username}
-                  onChange={this.handleUsernameChange}
-                />
-                {existingProfile ? (
-                  <Explanation>
-                    If you wish to change your username please contact us at{' '}
-                    <strong>hello@kickback.events</strong>
-                  </Explanation>
-                ) : (
-                  <Explanation>
-                    We hope this will be easier to remember than your account
-                    address (0x...)!
-                  </Explanation>
-                )}
-              </Field>
-              <Field>
-                <Label>Real name</Label>
-                <TextInput
-                  placeholder="Joe Bloggs"
-                  value={realName}
-                  data-testid="realname"
-                  onChange={this.handleRealNameChange}
-                />
-                <Explanation>
-                  We <strong>only</strong> share this with organizers of the
-                  events you attend, so that they can identify you on arrival.
-                </Explanation>
-              </Field>
-              <Field>
-                <Label>Email</Label>
-                <TextInput
-                  placeholder="alice@gmail.com"
-                  data-testid="email"
-                  value={email}
-                  onChange={this.handleEmailChange}
-                />
-                <Explanation>
-                  This allows us to notify you of any changes to the event and
-                  remind you when it's time to withdraw your payout. We do not
-                  share this with anyone.
-                </Explanation>
-              </Field>
-              <Field>
-                <Label optional>Twitter</Label>
-                <TextInput
-                  placeholder="jack"
-                  value={twitter}
-                  onChange={this.handleTwitterChange}
-                />
-                <Explanation>
-                  We use this for your profile picture, and for anyone to
-                  contact your over social media if they so wish.
-                </Explanation>
-              </Field>
-              {existingProfile ? null : (
-                <p>
-                  <input
-                    type="checkbox"
-                    value={TERMS_AND_CONDITIONS}
-                    checked={!!terms}
-                    data-testid="terms"
-                    onChange={this.handleTermsCheck(
-                      getLegalAgreement(legal, TERMS_AND_CONDITIONS)
-                    )}
-                  />{' '}
-                  I agree with the{' '}
-                  <a href={`/terms`} target="_blank" rel="noopener noreferrer">
-                    terms and conditions
-                  </a>
-                </p>
-              )}
-              {existingProfile ? null : (
-                <p>
-                  <input
-                    type="checkbox"
-                    value={PRIVACY_POLICY}
-                    checked={!!privacy}
-                    data-testid="privacy"
-                    onChange={this.handlePrivacyCheck(
-                      getLegalAgreement(legal, PRIVACY_POLICY)
-                    )}
-                  />{' '}
-                  I agree with the{' '}
-                  <a
-                    href={`/privacy`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    privacy policy
-                  </a>
-                </p>
-              )}
-              <p>
-                <input
-                  type="checkbox"
-                  data-testid="marketing"
-                  value={MARKETING_INFO}
-                  checked={!!marketing}
-                  onChange={this.handleMarketingCheck(
-                    getLegalAgreement(legal, MARKETING_INFO)
-                  )}
-                />{' '}
-                I am happy to receive marketing info (optional)
-              </p>
-              {renderSubmitButton(
-                this._prepareValuesForSubmission(values),
-                this._valuesAreValid(values)
-              )}
-            </div>
-          )
-        }}
-      </SafeQuery>
+    const legal = _.get(existingProfile, 'legal') || []
+    const social = _.get(existingProfile, 'social') || []
+    const username = _.get(existingProfile, 'username') || ''
+    const email =
+      _.get(existingProfile, 'email.verified') ||
+      _.get(existingProfile, 'email.pending') ||
+      ''
+    const realName = _.get(existingProfile, 'realName') || ''
+    const twitter =
+      _.get(social.find(({ type }) => type === 'twitter'), 'value') || ''
+    const terms = _.get(
+      getUserAcceptedLegalAgreement(legal, latestLegal, TERMS_AND_CONDITIONS),
+      'id'
     )
-  }
+    const privacy = _.get(
+      getUserAcceptedLegalAgreement(legal, latestLegal, PRIVACY_POLICY),
+      'id'
+    )
+    const marketing = _.get(
+      getUserAcceptedLegalAgreement(legal, latestLegal, MARKETING_INFO),
+      'id'
+    )
 
-  _currentValues(existingProfile = {}, legal) {
-    const {
-      email,
-      twitter,
-      username,
-      realName,
-      terms,
-      privacy,
-      marketing
-    } = this.state
+    const alreadyAcceptedTerms = !!terms
+    const alreadyAcceptedPrivacy = !!privacy
 
-    return {
-      username: existingProfile.username || username,
-      realName: realName !== undefined ? realName : existingProfile.realName,
-      email:
-        email !== undefined
-          ? email
-          : _.get(existingProfile, 'email.verified', '') ||
-            _.get(existingProfile, 'email.pending', ''),
-      twitter:
-        twitter !== undefined
-          ? twitter
-          : _.get(
-              (existingProfile.social || []).find(
-                ({ type }) => type === 'twitter'
-              ),
-              'value',
-              ''
-            ),
-      terms:
-        terms !== undefined
-          ? terms
-          : _.get(
-              getUserAcceptedLegalAgreement(
-                existingProfile.legal,
-                legal,
-                TERMS_AND_CONDITIONS
-              ),
-              'id'
-            ),
-      privacy:
-        privacy !== undefined
-          ? privacy
-          : _.get(
-              getUserAcceptedLegalAgreement(
-                existingProfile.legal,
-                legal,
-                PRIVACY_POLICY
-              ),
-              'id'
-            ),
-      marketing:
-        marketing !== undefined
-          ? marketing
-          : _.get(
-              getUserAcceptedLegalAgreement(
-                existingProfile.legal,
-                legal,
-                MARKETING_INFO
-              ),
-              'id'
-            )
+    this.state = {
+      values: {
+        email,
+        username,
+        realName,
+        social,
+        legal,
+        twitter,
+        terms,
+        privacy,
+        marketing,
+        alreadyAcceptedTerms,
+        alreadyAcceptedPrivacy
+      },
+      errors: {
+        ...(terms ? null : { terms: [] }),
+        ...(privacy ? null : { privacy: [] })
+      }
     }
   }
 
-  _prepareValuesForSubmission(values) {
-    const { existingProfile = {} } = this.props
+  render() {
+    const {
+      userAddress,
+      existingProfile,
+      renderSubmitButton,
+      latestLegal
+    } = this.props
+
+    const { values, errors } = this.state
+
+    const {
+      username,
+      realName,
+      email,
+      twitter,
+      terms,
+      privacy,
+      marketing,
+      alreadyAcceptedTerms,
+      alreadyAcceptedPrivacy
+    } = values
+
+    const canSubmit = !Object.keys(errors).length
+
+    return (
+      <div>
+        <Label>Ethereum address</Label>
+        <InputAddress address={userAddress} />
+        <Field>
+          <Label>Username</Label>
+          <TextInput
+            disabled={!!existingProfile}
+            placeholder="username"
+            data-testid="username"
+            value={username}
+            onUpdate={this.handleUsernameChange}
+            errors={errors.username}
+          />
+          {existingProfile ? (
+            <Explanation>
+              If you wish to change your username please contact us at{' '}
+              <strong>hello@kickback.events</strong>
+            </Explanation>
+          ) : (
+            <Explanation>
+              We hope this will be easier to remember than your account address
+              (0x...)!
+            </Explanation>
+          )}
+        </Field>
+        <Field>
+          <Label>Real name</Label>
+          <TextInput
+            placeholder="Joe Bloggs"
+            value={realName}
+            data-testid="realname"
+            onUpdate={this.handleRealNameChange}
+            errors={errors.realName}
+          />
+          <Explanation>
+            We <strong>only</strong> share this with organizers of the events
+            you attend, so that they can identify you on arrival.
+          </Explanation>
+        </Field>
+        <Field>
+          <Label>Email</Label>
+          <TextInput
+            placeholder="alice@gmail.com"
+            data-testid="email"
+            value={email}
+            onUpdate={this.handleEmailChange}
+            errors={errors.email}
+          />
+          <Explanation>
+            This allows us to notify you of any changes to the event and remind
+            you when it's time to withdraw your payout. We do not share this
+            with anyone.
+          </Explanation>
+        </Field>
+        <Field>
+          <Label optional>Twitter</Label>
+          <TextInput
+            prefix="@"
+            placeholder="jack"
+            value={twitter}
+            onUpdate={this.handleTwitterChange}
+            errors={errors.twitter}
+          />
+          <Explanation>
+            We use this for your profile picture, and for anyone to contact your
+            over social media if they so wish.
+          </Explanation>
+        </Field>
+        {terms && alreadyAcceptedTerms ? null : (
+          <Checkbox
+            value={TERMS_AND_CONDITIONS}
+            checked={!!terms}
+            testId="terms"
+            onUpdate={this.handleTermsCheck(
+              getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+            )}
+          >
+            I agree with the{' '}
+            <Link to="/terms" target="_blank" rel="noopener noreferrer">
+              terms and conditions
+            </Link>
+          </Checkbox>
+        )}
+        {privacy && alreadyAcceptedPrivacy ? null : (
+          <Checkbox
+            value={PRIVACY_POLICY}
+            checked={!!privacy}
+            testId="privacy"
+            onUpdate={this.handlePrivacyCheck(
+              getLegalAgreement(latestLegal, PRIVACY_POLICY)
+            )}
+          >
+            I agree with the{' '}
+            <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+              privacy policy
+            </Link>
+          </Checkbox>
+        )}
+        <Checkbox
+          value={MARKETING_INFO}
+          checked={!!marketing}
+          testId="marketing"
+          onUpdate={this.handleMarketingCheck(
+            getLegalAgreement(latestLegal, MARKETING_INFO)
+          )}
+        >
+          I am happy to receive marketing info (optional)
+        </Checkbox>
+        {renderSubmitButton(canSubmit, this._prepareValuesForSubmission)}
+      </div>
+    )
+  }
+
+  _prepareValuesForSubmission = () => {
+    const { values } = this.state
 
     const {
       email,
-      twitter,
       username,
       realName,
+      twitter,
       terms,
       privacy,
       marketing
     } = values
 
-    let social = (existingProfile.social || []).map(v => removeTypename(v))
+    let { legal, social } = values
+
+    social = social.map(v => removeTypename(v))
     social = ensureInArray(
       social,
       'type',
-      { type: 'twitter', value: sanitizeTwitterId(twitter) },
+      { type: 'twitter', value: twitter },
       true
     )
 
-    let legal = (existingProfile.legal || []).map(v => removeTypename(v))
+    legal = legal.map(v => removeTypename(v))
     if (terms) {
       legal = ensureInArray(
         legal,
@@ -314,74 +297,87 @@ export default class ProfileForm extends Component {
     }
   }
 
-  _valuesAreValid(values) {
-    const { email, twitter, username, realName, terms, privacy } = values
-    if (!isUsername(username)) {
-      return false
-    }
+  _handleTextFieldChanged = (
+    val,
+    fieldName,
+    assertionFn,
+    { required } = {}
+  ) => {
+    this.setState(({ values, errors }) => {
+      try {
+        if (val || required) {
+          assertionFn(val)
+        }
+        delete errors[fieldName]
+      } catch (err) {
+        errors[fieldName] = err.rules || ['Please correct this field']
+      }
 
-    if (!isRealName(realName)) {
-      return false
-    }
-
-    if (!isEmailAddress(email)) {
-      return false
-    }
-
-    if (twitter && !isTwitterId(sanitizeTwitterId(twitter))) {
-      return false
-    }
-
-    if (!terms) {
-      return false
-    }
-
-    if (!privacy) {
-      return false
-    }
-
-    return true
-  }
-
-  handleUsernameChange = e => {
-    this.setState({
-      username: e.target.value
+      return {
+        values: {
+          ...values,
+          [fieldName]: val
+        },
+        errors
+      }
     })
   }
 
-  handleRealNameChange = e => {
-    this.setState({
-      realName: e.target.value
+  _handleLegalFieldChanged = (id, checked, fieldName, { required } = {}) => {
+    this.setState(({ values, errors, canSubmit }) => {
+      const val = checked ? id : false
+
+      if (val || !required) {
+        delete errors[fieldName]
+      } else {
+        errors[fieldName] = ['Please tick this box']
+      }
+
+      return {
+        values: {
+          ...values,
+          [fieldName]: val
+        },
+        errors
+      }
     })
   }
 
-  handleEmailChange = e => {
-    this.setState({
-      email: e.target.value
+  handleUsernameChange = val => {
+    this._handleTextFieldChanged(val, 'username', assertUsername, {
+      required: true
     })
   }
 
-  handleTwitterChange = e => {
-    this.setState({
-      twitter: e.target.value
+  handleRealNameChange = val => {
+    this._handleTextFieldChanged(val, 'realName', assertRealName, {
+      required: true
     })
   }
 
-  handleTermsCheck = ({ id }) => e => {
-    this.setState({
-      terms: e.target.checked ? id : false
+  handleEmailChange = val => {
+    this._handleTextFieldChanged(val, 'email', assertEmailAddress, {
+      required: true
     })
   }
 
-  handlePrivacyCheck = ({ id }) => e => {
-    this.setState({
-      privacy: e.target.checked ? id : false
-    })
+  handleTwitterChange = val => {
+    this._handleTextFieldChanged(
+      sanitizeTwitterId(val),
+      'twitter',
+      assertTwitterId
+    )
   }
 
-  handleMarketingCheck = ({ id }) => e => {
-    this.setState({
-      marketing: e.target.checked ? id : false
-    })
+  handleTermsCheck = ({ id }) => checked => {
+    this._handleLegalFieldChanged(id, checked, 'terms', { required: true })
+  }
+
+  handlePrivacyCheck = ({ id }) => checked => {
+    this._handleLegalFieldChanged(id, checked, 'privacy', { required: true })
+  }
+
+  handleMarketingCheck = ({ id }) => checked => {
+    this._handleLegalFieldChanged(id, checked, 'marketing')
   }
 }

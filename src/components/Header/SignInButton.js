@@ -51,20 +51,14 @@ function SignInButton() {
         networkState,
         loggedIn,
         signIn,
-        toggleModal
+        showModal
       }) => {
         const twitterProfile =
           userProfile && userProfile.social.find(s => s.type === 'twitter')
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
-            <Account
-              onClick={() =>
-                toggleModal({
-                  name: EDIT_PROFILE
-                })
-              }
-            >
+            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
                   {userProfile.username}

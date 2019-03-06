@@ -44,8 +44,8 @@ class EventFilters extends Component {
     })
   }
 
-  _onSearch = event => {
-    this.props.handleSearch(event.target.value)
+  _onSearch = val => {
+    this.props.handleSearch(val)
   }
 
   render() {
@@ -81,7 +81,7 @@ class EventFilters extends Component {
         <Search
           type="text"
           Icon={SearchIcon}
-          onChange={this._onSearch}
+          onUpdate={this._onSearch}
           value={search}
           placeholder="Search for names or addresses"
           wide
