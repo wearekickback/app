@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
@@ -84,7 +83,7 @@ export default class SignIn extends Component {
     setUserProfile,
     closeModal
   }) => () => {
-    const profile = _.omit(prepareValuesFn(), 'username')
+    const profile = prepareValuesFn()
 
     updateUserProfile({
       variables: { profile }

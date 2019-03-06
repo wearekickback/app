@@ -9,7 +9,7 @@ export const NetworkIdQuery = gql`
 `
 
 export const CheckIfUsernameIsAvailableQuery = gql`
-  query isUsernameAvailable($username: !String) {
+  query isUsernameAvailable($username: String!) {
     available: isUsernameAvailable(username: $username)
   }
 `

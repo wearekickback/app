@@ -17,6 +17,7 @@ import {
 
 import { GlobalConsumer } from '../../GlobalState'
 import { removeTypename } from '../../graphql'
+import { CheckIfUsernameIsAvailableQuery } from '../../graphql/queries'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import DefaultCheckbox from '../Forms/Checkbox'
@@ -103,12 +104,7 @@ export default class ProfileForm extends Component {
   }
 
   render() {
-    const {
-      userAddress,
-      existingProfile,
-      renderSubmitButton,
-      latestLegal
-    } = this.props
+    const { userAddress, renderSubmitButton, latestLegal } = this.props
 
     const { values, errors } = this.state
 
@@ -128,8 +124,8 @@ export default class ProfileForm extends Component {
 
     return (
       <GlobalConsumer>
-        {({ apolloClient }) => {
-          ;<div>
+        {({ apolloClient }) => (
+          <div>
             <Label>Ethereum address</Label>
             <InputAddress address={userAddress} />
             <Field>
@@ -138,20 +134,13 @@ export default class ProfileForm extends Component {
                 placeholder="username"
                 data-testid="username"
                 value={username}
-                onUpdate={this.handleUsernameChange}
+                onUpdate={this.handleUsernameChange(apolloClient)}
                 errors={errors.username}
               />
-              {existingProfile ? (
-                <Explanation>
-                  If you wish to change your username please contact us at{' '}
-                  <strong>hello@kickback.events</strong>
-                </Explanation>
-              ) : (
-                <Explanation>
-                  We hope this will be easier to remember than your account
-                  address (0x...)!
-                </Explanation>
-              )}
+              <Explanation>
+                We hope this will be easier to remember than your account
+                address (0x...)!
+              </Explanation>
             </Field>
             <Field>
               <Label>Real name</Label>
@@ -193,7 +182,7 @@ export default class ProfileForm extends Component {
               />
               <Explanation>
                 We use this for your profile picture, and for anyone to contact
-                your over social media if they so wish.
+                you over social media if they so wish.
               </Explanation>
             </Field>
             {terms && alreadyAcceptedTerms ? null : (
@@ -238,7 +227,7 @@ export default class ProfileForm extends Component {
             </Checkbox>
             {renderSubmitButton(canSubmit, this._prepareValuesForSubmission)}
           </div>
-        }}
+        )}
       </GlobalConsumer>
     )
   }
@@ -305,7 +294,8 @@ export default class ProfileForm extends Component {
     val,
     fieldName,
     assertionFn,
-    { required } = {}
+    { required } = {},
+    cb
   ) => {
     this.setState(({ values, errors }) => {
       try {
@@ -324,7 +314,7 @@ export default class ProfileForm extends Component {
         },
         errors
       }
-    })
+    }, cb)
   }
 
   _handleLegalFieldChanged = (id, checked, fieldName, { required } = {}) => {
@@ -347,16 +337,52 @@ export default class ProfileForm extends Component {
     })
   }
 
-  handleUsernameChange = val => {
-    this._handleTextFieldChanged(val, 'username', assertUsername, {
-      required: true
-    })
-
-    _.debounce()
+  handleUsernameChange = apolloClient => val => {
+    this._handleTextFieldChanged(
+      val,
+      'username',
+      assertUsername,
+      {
+        required: true
+      },
+      () => this.checkIfUsernameIsTaken({ apolloClient })
+    )
   }
 
-  checkIfUsernameIsTaken = _.debounce(() => {},
-  1000 /* invoke no more than once per second */)
+  checkIfUsernameIsTaken = _.debounce(async ({ apolloClient }) => {
+    const {
+      errors,
+      values: { username }
+    } = this.state
+    const { existingProfile } = this.props
+
+    if (errors.username || _.get(existingProfile, 'username') === username) {
+      return
+    }
+
+    try {
+      const {
+        data: { available }
+      } = await apolloClient.query({
+        query: CheckIfUsernameIsAvailableQuery,
+        variables: {
+          username
+        },
+        fetchPolicy: 'network-only'
+      })
+
+      if (!available) {
+        this.setState({
+          errors: {
+            ...errors,
+            username: ['This username has already been taken']
+          }
+        })
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }, 250 /* give time for typing to end */)
 
   handleRealNameChange = val => {
     this._handleTextFieldChanged(val, 'realName', assertRealName, {
