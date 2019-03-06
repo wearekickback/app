@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 
 import { pluralize, PARTICIPANT_STATUS } from '@wearekickback/shared'
 import Participant from './Participant'
-import EventFilters from './EventFilters'
+import DefaultEventFilters from './EventFilters'
 
 import { H3 } from '../Typography/Basic'
 
@@ -13,6 +13,11 @@ const EventParticipantsContainer = styled('div')`
   grid-gap: 20px;
   margin-bottom: 40px;
 `
+
+const EventFilters = styled(DefaultEventFilters)`
+  margin-bottom: 20px;
+`
+
 const NoParticipants = styled('div')``
 
 const Spots = styled('span')`
