@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import Button from '../components/Forms/Button'
-import { GlobalConsumer } from '../GlobalState'
 
 const ConfirmModalContainer = styled('div')`
   display: flex;
