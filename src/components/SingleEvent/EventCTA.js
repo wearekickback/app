@@ -153,7 +153,7 @@ class EventCTA extends Component {
                 <li>You must withdraw your payout within the post-event cooling period.</li>
               </ul>
               <Reference>
-                For more detail please read <Link to="/gettingstarted">"getting started"</Link> and <Link to="/terms">"terms and conditions"</Link>.
+                For more detail please see <Link to="/gettingstarted">"Getting started"</Link> and <Link to="/terms">"Terms and conditions"</Link>.
               </Reference>
             </CTAInfo>
           </>
