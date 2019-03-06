@@ -133,23 +133,23 @@ class EventCTA extends Component {
           <>
             <RSVP address={address} deposit={deposit} />
             <CTAInfo>
-              <strong>The rule of Kickback</strong>
+              <strong>Kickback rules:</strong>
               <ul>
-                <li>Everyone commits a small amount of ETH when they RSVP</li>
+                <li>Everyone commits a small amount of ETH when they RSVP.</li>
                 <li>
                   Any no-shows lose their ETH, which will be
-                  <strong> split amongst the attendees</strong>
+                  <strong> split amongst the attendees</strong>.
                 </li>
-                <li>After the event, you withdraw your post-event payout</li>
+                <li>After the event you can withdraw your post-event payout.</li>
               </ul>
-              <p>Make sure the followings</p>
+              <p>Please remember:</p>
               <ul>
-                <li>Once you RSVP, you cannot cancel</li>
+                <li>Once you RSVP, you cannot cancel.</li>
                 <li>
-                  The event organiser must mark you as attended to qualify for
-                  the payout
+                  The event organiser must mark you as attended in order for you to qualify for
+                  the payout.
                 </li>
-                <li>You withdraw your payout within cooling period</li>
+                <li>You must withdraw your payout within the post-event cooling period.</li>
               </ul>
               <Reference>
                 For more detail please see{' '}
