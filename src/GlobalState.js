@@ -199,6 +199,7 @@ class Provider extends Component {
     return (
       <GlobalContext.Provider
         value={{
+          apolloClient: this.apolloClient(),
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
           reloadUserAddress: this.reloadUserAddress,

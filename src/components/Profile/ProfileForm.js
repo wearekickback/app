@@ -15,7 +15,9 @@ import {
   LEGAL
 } from '@wearekickback/shared'
 
+import { GlobalConsumer } from '../../GlobalState'
 import { removeTypename } from '../../graphql'
+import { CheckIfUsernameIsAvailableQuery } from '../../graphql/queries'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import DefaultCheckbox from '../Forms/Checkbox'
@@ -102,12 +104,7 @@ export default class ProfileForm extends Component {
   }
 
   render() {
-    const {
-      userAddress,
-      existingProfile,
-      renderSubmitButton,
-      latestLegal
-    } = this.props
+    const { userAddress, renderSubmitButton, latestLegal } = this.props
 
     const { values, errors } = this.state
 
@@ -126,116 +123,112 @@ export default class ProfileForm extends Component {
     const canSubmit = !Object.keys(errors).length
 
     return (
-      <div>
-        <Label>Ethereum address</Label>
-        <InputAddress address={userAddress} />
-        <Field>
-          <Label>Username</Label>
-          <TextInput
-            disabled={!!existingProfile}
-            placeholder="username"
-            data-testid="username"
-            value={username}
-            onUpdate={this.handleUsernameChange}
-            errors={errors.username}
-          />
-          {existingProfile ? (
-            <Explanation>
-              If you wish to change your username please contact us at{' '}
-              <strong>hello@kickback.events</strong>
-            </Explanation>
-          ) : (
-            <Explanation>
-              We hope this will be easier to remember than your account address
-              (0x...)!
-            </Explanation>
-          )}
-        </Field>
-        <Field>
-          <Label>Real name</Label>
-          <TextInput
-            placeholder="Joe Bloggs"
-            value={realName}
-            data-testid="realname"
-            onUpdate={this.handleRealNameChange}
-            errors={errors.realName}
-          />
-          <Explanation>
-            We <strong>only</strong> share this with organizers of the events
-            you attend, so that they can identify you on arrival.
-          </Explanation>
-        </Field>
-        <Field>
-          <Label>Email</Label>
-          <TextInput
-            placeholder="alice@gmail.com"
-            data-testid="email"
-            value={email}
-            onUpdate={this.handleEmailChange}
-            errors={errors.email}
-          />
-          <Explanation>
-            This allows us to notify you of any changes to the event and remind
-            you when it's time to withdraw your payout. We do not share this
-            with anyone.
-          </Explanation>
-        </Field>
-        <Field>
-          <Label optional>Twitter</Label>
-          <TextInput
-            prefix="@"
-            placeholder="jack"
-            value={twitter}
-            onUpdate={this.handleTwitterChange}
-            errors={errors.twitter}
-          />
-          <Explanation>
-            We use this for your profile picture, and for anyone to contact your
-            over social media if they so wish.
-          </Explanation>
-        </Field>
-        {terms && alreadyAcceptedTerms ? null : (
-          <Checkbox
-            value={TERMS_AND_CONDITIONS}
-            checked={!!terms}
-            testId="terms"
-            onUpdate={this.handleTermsCheck(
-              getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+      <GlobalConsumer>
+        {({ apolloClient }) => (
+          <div>
+            <Label>Ethereum address</Label>
+            <InputAddress address={userAddress} />
+            <Field>
+              <Label>Username</Label>
+              <TextInput
+                placeholder="username"
+                data-testid="username"
+                value={username}
+                onUpdate={this.handleUsernameChange(apolloClient)}
+                errors={errors.username}
+              />
+              <Explanation>
+                We hope this will be easier to remember than your account
+                address (0x...)!
+              </Explanation>
+            </Field>
+            <Field>
+              <Label>Real name</Label>
+              <TextInput
+                placeholder="Joe Bloggs"
+                value={realName}
+                data-testid="realname"
+                onUpdate={this.handleRealNameChange}
+                errors={errors.realName}
+              />
+              <Explanation>
+                We <strong>only</strong> share this with organizers of the
+                events you attend, so that they can identify you on arrival.
+              </Explanation>
+            </Field>
+            <Field>
+              <Label>Email</Label>
+              <TextInput
+                placeholder="alice@gmail.com"
+                data-testid="email"
+                value={email}
+                onUpdate={this.handleEmailChange}
+                errors={errors.email}
+              />
+              <Explanation>
+                This allows us to notify you of any changes to the event and
+                remind you when it's time to withdraw your payout. We do not
+                share this with anyone.
+              </Explanation>
+            </Field>
+            <Field>
+              <Label optional>Twitter</Label>
+              <TextInput
+                prefix="@"
+                placeholder="jack"
+                value={twitter}
+                onUpdate={this.handleTwitterChange}
+                errors={errors.twitter}
+              />
+              <Explanation>
+                We use this for your profile picture, and for anyone to contact
+                you over social media if they so wish.
+              </Explanation>
+            </Field>
+            {terms && alreadyAcceptedTerms ? null : (
+              <Checkbox
+                value={TERMS_AND_CONDITIONS}
+                checked={!!terms}
+                testId="terms"
+                onUpdate={this.handleTermsCheck(
+                  getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+                )}
+              >
+                I agree with the{' '}
+                <Link to="/terms" target="_blank" rel="noopener noreferrer">
+                  terms and conditions
+                </Link>
+              </Checkbox>
             )}
-          >
-            I agree with the{' '}
-            <Link to="/terms" target="_blank" rel="noopener noreferrer">
-              terms and conditions
-            </Link>
-          </Checkbox>
-        )}
-        {privacy && alreadyAcceptedPrivacy ? null : (
-          <Checkbox
-            value={PRIVACY_POLICY}
-            checked={!!privacy}
-            testId="privacy"
-            onUpdate={this.handlePrivacyCheck(
-              getLegalAgreement(latestLegal, PRIVACY_POLICY)
+            {privacy && alreadyAcceptedPrivacy ? null : (
+              <Checkbox
+                value={PRIVACY_POLICY}
+                checked={!!privacy}
+                testId="privacy"
+                onUpdate={this.handlePrivacyCheck(
+                  getLegalAgreement(latestLegal, PRIVACY_POLICY)
+                )}
+              >
+                I agree with the{' '}
+                <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+                  privacy policy
+                </Link>
+              </Checkbox>
             )}
-          >
-            I agree with the{' '}
-            <Link to="/privacy" target="_blank" rel="noopener noreferrer">
-              privacy policy
-            </Link>
-          </Checkbox>
+            <Checkbox
+              value={MARKETING_INFO}
+              checked={!!marketing}
+              testId="marketing"
+              onUpdate={this.handleMarketingCheck(
+                getLegalAgreement(latestLegal, MARKETING_INFO)
+              )}
+            >
+              I am happy to receive marketing info (optional)
+            </Checkbox>
+            {renderSubmitButton(canSubmit, this._prepareValuesForSubmission)}
+          </div>
         )}
-        <Checkbox
-          value={MARKETING_INFO}
-          checked={!!marketing}
-          testId="marketing"
-          onUpdate={this.handleMarketingCheck(
-            getLegalAgreement(latestLegal, MARKETING_INFO)
-          )}
-        >
-          I am happy to receive marketing info (optional)
-        </Checkbox>
-        {renderSubmitButton(canSubmit, this._prepareValuesForSubmission)}
-      </div>
+      </GlobalConsumer>
     )
   }
 
@@ -301,7 +294,8 @@ export default class ProfileForm extends Component {
     val,
     fieldName,
     assertionFn,
-    { required } = {}
+    { required } = {},
+    cb
   ) => {
     this.setState(({ values, errors }) => {
       try {
@@ -320,7 +314,7 @@ export default class ProfileForm extends Component {
         },
         errors
       }
-    })
+    }, cb)
   }
 
   _handleLegalFieldChanged = (id, checked, fieldName, { required } = {}) => {
@@ -343,11 +337,52 @@ export default class ProfileForm extends Component {
     })
   }
 
-  handleUsernameChange = val => {
-    this._handleTextFieldChanged(val, 'username', assertUsername, {
-      required: true
-    })
+  handleUsernameChange = apolloClient => val => {
+    this._handleTextFieldChanged(
+      val,
+      'username',
+      assertUsername,
+      {
+        required: true
+      },
+      () => this.checkIfUsernameIsTaken({ apolloClient })
+    )
   }
+
+  checkIfUsernameIsTaken = _.debounce(async ({ apolloClient }) => {
+    const {
+      errors,
+      values: { username }
+    } = this.state
+    const { existingProfile } = this.props
+
+    if (errors.username || _.get(existingProfile, 'username') === username) {
+      return
+    }
+
+    try {
+      const {
+        data: { available }
+      } = await apolloClient.query({
+        query: CheckIfUsernameIsAvailableQuery,
+        variables: {
+          username
+        },
+        fetchPolicy: 'network-only'
+      })
+
+      if (!available) {
+        this.setState({
+          errors: {
+            ...errors,
+            username: ['This username has already been taken']
+          }
+        })
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }, 250 /* give time for typing to end */)
 
   handleRealNameChange = val => {
     this._handleTextFieldChanged(val, 'realName', assertRealName, {
