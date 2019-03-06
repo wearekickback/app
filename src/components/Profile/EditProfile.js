@@ -2,11 +2,13 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import Button from '../Forms/Button'
+import DefaultButton from '../Forms/Button'
 import { H2 as DefaultH2 } from '../Typography/Basic'
 import ProfileForm from './ProfileForm'
 import { UpdateUserProfile } from '../../graphql/mutations'
 import SafeMutation from '../SafeMutation'
+import SafeQuery from '../SafeQuery'
+import { LegalAgreementsQuery } from '../../graphql/queries'
 import { GlobalConsumer } from '../../GlobalState'
 import { EDIT_PROFILE } from '../../modals'
 import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
@@ -22,6 +24,10 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
+const SubmitButton = styled(DefaultButton)`
+  margin-top: 30px;
+`
+
 export default class SignIn extends Component {
   state = {
     email: '',
@@ -33,37 +39,38 @@ export default class SignIn extends Component {
     return (
       <Container>
         <GlobalConsumer>
-          {({ userAddress, userProfile, setUserProfile, toggleModal }) => (
+          {({ userAddress, userProfile, setUserProfile, closeModal }) => (
             <>
               <H2>
                 <Pencil />
                 Edit Profile
               </H2>
-              <ProfileForm
-                userAddress={userAddress}
-                existingProfile={userProfile}
-                renderSubmitButton={(profile, isValid) => (
-                  <SafeMutation
-                    mutation={UpdateUserProfile}
-                    variables={{
-                      profile: _.omit(profile, 'username')
-                    }}
-                  >
-                    {updateUserProfile => (
-                      <Button
-                        onClick={this.submit({
-                          updateUserProfile,
-                          setUserProfile,
-                          toggleModal
-                        })}
-                        disabled={!isValid}
-                      >
-                        Save changes
-                      </Button>
+              <SafeQuery query={LegalAgreementsQuery}>
+                {({ data: { legal: latestLegal } }) => (
+                  <ProfileForm
+                    userAddress={userAddress}
+                    existingProfile={userProfile}
+                    latestLegal={latestLegal}
+                    renderSubmitButton={(isValid, prepareValuesFn) => (
+                      <SafeMutation mutation={UpdateUserProfile}>
+                        {updateUserProfile => (
+                          <SubmitButton
+                            onClick={this.submit({
+                              prepareValuesFn,
+                              updateUserProfile,
+                              setUserProfile,
+                              closeModal
+                            })}
+                            disabled={!isValid}
+                          >
+                            Save changes
+                          </SubmitButton>
+                        )}
+                      </SafeMutation>
                     )}
-                  </SafeMutation>
+                  />
                 )}
-              />
+              </SafeQuery>
             </>
           )}
         </GlobalConsumer>
@@ -71,10 +78,23 @@ export default class SignIn extends Component {
     )
   }
 
-  submit = ({ updateUserProfile, setUserProfile, toggleModal }) => () => {
-    updateUserProfile().then(({ data: { profile } }) => {
+  submit = ({
+    prepareValuesFn,
+    updateUserProfile,
+    setUserProfile,
+    closeModal
+  }) => () => {
+    const profile = _.omit(prepareValuesFn(), 'username')
+
+    updateUserProfile({
+      variables: { profile }
+    }).then(({ data: { profile } }) => {
       setUserProfile(profile)
-      toggleModal(EDIT_PROFILE)
+      this.close(closeModal)
     })
+  }
+
+  close = closeModal => {
+    closeModal({ name: EDIT_PROFILE })
   }
 }
