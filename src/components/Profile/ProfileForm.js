@@ -77,6 +77,9 @@ export default class ProfileForm extends Component {
       'id'
     )
 
+    const alreadyAcceptedTerms = !!terms
+    const alreadyAcceptedPrivacy = !!privacy
+
     this.state = {
       values: {
         email,
@@ -87,7 +90,9 @@ export default class ProfileForm extends Component {
         twitter,
         terms,
         privacy,
-        marketing
+        marketing,
+        alreadyAcceptedTerms,
+        alreadyAcceptedPrivacy
       },
       errors: {
         ...(terms ? null : { terms: [] }),
@@ -113,7 +118,9 @@ export default class ProfileForm extends Component {
       twitter,
       terms,
       privacy,
-      marketing
+      marketing,
+      alreadyAcceptedTerms,
+      alreadyAcceptedPrivacy
     } = values
 
     const canSubmit = !Object.keys(errors).length
@@ -176,6 +183,7 @@ export default class ProfileForm extends Component {
         <Field>
           <Label optional>Twitter</Label>
           <TextInput
+            prefix="@"
             placeholder="jack"
             value={twitter}
             onUpdate={this.handleTwitterChange}
@@ -186,32 +194,36 @@ export default class ProfileForm extends Component {
             over social media if they so wish.
           </Explanation>
         </Field>
-        <Checkbox
-          value={TERMS_AND_CONDITIONS}
-          checked={!!terms}
-          testId="terms"
-          onUpdate={this.handleTermsCheck(
-            getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
-          )}
-        >
-          I agree with the{' '}
-          <Link to="/terms" target="_blank" rel="noopener noreferrer">
-            terms and conditions
-          </Link>
-        </Checkbox>
-        <Checkbox
-          value={PRIVACY_POLICY}
-          checked={!!privacy}
-          testId="privacy"
-          onUpdate={this.handlePrivacyCheck(
-            getLegalAgreement(latestLegal, PRIVACY_POLICY)
-          )}
-        >
-          I agree with the{' '}
-          <Link to="/privacy" target="_blank" rel="noopener noreferrer">
-            privacy policy
-          </Link>
-        </Checkbox>
+        {terms && alreadyAcceptedTerms ? null : (
+          <Checkbox
+            value={TERMS_AND_CONDITIONS}
+            checked={!!terms}
+            testId="terms"
+            onUpdate={this.handleTermsCheck(
+              getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+            )}
+          >
+            I agree with the{' '}
+            <Link to="/terms" target="_blank" rel="noopener noreferrer">
+              terms and conditions
+            </Link>
+          </Checkbox>
+        )}
+        {privacy && alreadyAcceptedPrivacy ? null : (
+          <Checkbox
+            value={PRIVACY_POLICY}
+            checked={!!privacy}
+            testId="privacy"
+            onUpdate={this.handlePrivacyCheck(
+              getLegalAgreement(latestLegal, PRIVACY_POLICY)
+            )}
+          >
+            I agree with the{' '}
+            <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+              privacy policy
+            </Link>
+          </Checkbox>
+        )}
         <Checkbox
           value={MARKETING_INFO}
           checked={!!marketing}

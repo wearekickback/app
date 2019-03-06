@@ -4,6 +4,7 @@ import styled from 'react-emotion'
 const List = styled('ul')`
   display: block;
   text-align: left;
+  margin: 0;
 `
 
 const ListItem = styled('li')`
