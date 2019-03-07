@@ -221,14 +221,11 @@ class SingleEventWrapper extends Component {
                         <Table>
                           <Tbody>
                             <TR>
+                              <TH data-csv="no">Marked attended</TH>
                               {cells.map(cell => (
                                 <TH key={cell.label}>{cell.label}</TH>
                               ))}
-                              <TH>T&amp;C</TH>
-                              <TH>GDPR</TH>
-
                               <TH>Marketing</TH>
-                              <TH data-csv="no">Marked attended</TH>
                             </TR>
 
                             {participants
@@ -265,41 +262,6 @@ class SingleEventWrapper extends Component {
                                 )
                                 return (
                                   <TR key={participant.user.id}>
-                                    {cells.map((cell, i) => {
-                                      if (cell.label === 'Email') {
-                                        return (
-                                          <TD key={i}>
-                                            {getEmail(participant.user.email)}
-                                          </TD>
-                                        )
-                                      }
-                                      return (
-                                        <TD key={i}>
-                                          {_.get(participant, cell.value)}
-                                        </TD>
-                                      )
-                                    })}
-                                    <TD>
-                                      {participant.user.legal &&
-                                      participant.user.legal[0] &&
-                                      participant.user.legal[0].accepted
-                                        ? 'accepted'
-                                        : 'denied'}
-                                    </TD>
-                                    <TD>
-                                      {participant.user.legal &&
-                                      participant.user.legal[1] &&
-                                      participant.user.legal[1].accepted
-                                        ? 'accepted'
-                                        : 'denied'}
-                                    </TD>
-                                    <TD>
-                                      {participant.user.legal &&
-                                      participant.user.legal[2] &&
-                                      participant.user.legal[2].accepted
-                                        ? 'accepted'
-                                        : 'denied'}
-                                    </TD>
                                     <TD data-csv="no">
                                       {' '}
                                       {ended ? (
@@ -351,6 +313,27 @@ class SingleEventWrapper extends Component {
                                           </MarkedAttended>
                                         </>
                                       )}
+                                    </TD>
+                                    {cells.map((cell, i) => {
+                                      if (cell.label === 'Email') {
+                                        return (
+                                          <TD key={i}>
+                                            {getEmail(participant.user.email)}
+                                          </TD>
+                                        )
+                                      }
+                                      return (
+                                        <TD key={i}>
+                                          {_.get(participant, cell.value)}
+                                        </TD>
+                                      )
+                                    })}
+                                    <TD>
+                                      {participant.user.legal &&
+                                      participant.user.legal[2] &&
+                                      participant.user.legal[2].accepted
+                                        ? 'accepted'
+                                        : 'denied'}
                                     </TD>
                                   </TR>
                                 )
