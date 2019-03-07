@@ -98,14 +98,6 @@ function Participant({ participant, party, amAdmin }) {
           <TwitterAvatar user={user} />
           <ParticipantId>
             <ParticipantUsername>{user.username}</ParticipantUsername>
-            {amAdmin && user.realName ? (
-              <ParticipantRealName>{user.realName}</ParticipantRealName>
-            ) : null}
-            {amAdmin ? (
-              <ParticipantAddress>
-                {user.address.slice(0, 5) + '...'}
-              </ParticipantAddress>
-            ) : null}
           </ParticipantId>
           {ended ? (
             attended ? (
