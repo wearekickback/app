@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import Dropzone from 'react-dropzone'
+import 'rc-time-picker/assets/index.css'
 import { Mutation } from 'react-apollo'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'

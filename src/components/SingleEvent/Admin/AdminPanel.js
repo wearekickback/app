@@ -47,7 +47,7 @@ export default function AdminPanel({ party }) {
           Set Limit will change the amount of participants that are allowed to
           register for your event.
         </p>
-        <SetLimit />
+        <SetLimit address={party.address} />
       </Section>
       <Label>
         Add Admins (click + to add multiple admins in 1 transactions)

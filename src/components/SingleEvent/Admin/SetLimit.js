@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { useState } from 'react'
 import styled from 'react-emotion'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -13,27 +13,27 @@ const SET_LIMIT = gql`
 `
 
 const SetLimit = ({ address }) => {
-  let input
+  const [text, setText] = useState('')
   return (
     <SetLimitContainer>
       <Mutation mutation={SET_LIMIT}>
         {setLimitOfParticipants => (
-          <Fragment>
-            <TextInput type="text" ref={element => (input = element)} />
+          <>
+            <TextInput type="text" onChange={e => setText(e.target.value)} />
             <Button
               analyticsId="Set Event Limit"
               onClick={() =>
                 setLimitOfParticipants({
                   variables: {
                     address,
-                    limit: parseInt(input.value)
+                    limit: parseInt(text)
                   }
                 })
               }
             >
               Set Limit
             </Button>
-          </Fragment>
+          </>
         )}
       </Mutation>
     </SetLimitContainer>
