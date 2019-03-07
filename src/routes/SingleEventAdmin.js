@@ -11,6 +11,8 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
+import backArrow from '../components/svg/backArrow.svg'
+
 const TabNavigation = styled('div')`
   margin-bottom: 20px;
   display: flex;
@@ -33,6 +35,28 @@ const ToggleLink = styled(Link)`
   `};
 `
 
+const BackToEventButton = styled(Link)`
+  border: solid 1px #6e76ff;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  display: flex;
+  transition: 0.2s;
+  width: 250px;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    margin-right: 10px;
+    width: 20px;
+  }
+
+  &:hover {
+    color: white;
+    background: #6e76ff;
+  }
+`
+
 class SingleEvent extends Component {
   render() {
     const { address } = this.props.match.params
@@ -45,65 +69,73 @@ class SingleEvent extends Component {
           !userAddress ? (
             <ErrorBox>You need to be logged-in to view this page</ErrorBox>
           ) : (
-            <SafeQuery
-              query={PARTY_QUERY}
-              variables={{ address }}
-              fetchPolicy="cache-and-network"
-            >
-              {({ data: { party } }) => {
-                const isAdmin = amAdmin(party, userAddress)
+            <>
+              <BackToEventButton to={`/event/${address}`}>
+                Back to Event Page
+              </BackToEventButton>
+              <SafeQuery
+                query={PARTY_QUERY}
+                variables={{ address }}
+                fetchPolicy="cache-and-network"
+              >
+                {({ data: { party } }) => {
+                  const isAdmin = amAdmin(party, userAddress)
 
-                if (!isAdmin) {
+                  if (!isAdmin) {
+                    return (
+                      <ErrorBox>
+                        You need to be an admin to view this page
+                      </ErrorBox>
+                    )
+                  }
+
                   return (
-                    <ErrorBox>
-                      You need to be an admin to view this page
-                    </ErrorBox>
+                    <>
+                      <TabNavigation>
+                        <ToggleLink
+                          active={pathname === `/event/${address}/admin`}
+                          to={`/event/${address}/admin`}
+                        >
+                          Participants
+                        </ToggleLink>
+                        <ToggleLink
+                          active={pathname === `/event/${address}/admin/edit`}
+                          to={`/event/${address}/admin/edit`}
+                        >
+                          Edit Details
+                        </ToggleLink>
+                        <ToggleLink
+                          active={
+                            pathname ===
+                            `/event/${address}/admin/smart-contract`
+                          }
+                          to={`/event/${address}/admin/smart-contract`}
+                        >
+                          Smart Contract
+                        </ToggleLink>
+                      </TabNavigation>
+                      <Route
+                        path={`/event/${address}/admin`}
+                        exact
+                        render={() => (
+                          <ParticipantTableList address={address} />
+                        )}
+                      />
+                      <Route
+                        path={`/event/${address}/admin/edit`}
+                        exact
+                        render={() => <UpdatePartyMeta address={address} />}
+                      />
+                      <Route
+                        path={`/event/${address}/admin/smart-contract`}
+                        exact
+                        render={() => <AdminPanel party={party} />}
+                      />
+                    </>
                   )
-                }
-
-                return (
-                  <>
-                    <TabNavigation>
-                      <ToggleLink
-                        active={pathname === `/event/${address}/admin`}
-                        to={`/event/${address}/admin`}
-                      >
-                        Participants
-                      </ToggleLink>
-                      <ToggleLink
-                        active={pathname === `/event/${address}/admin/edit`}
-                        to={`/event/${address}/admin/edit`}
-                      >
-                        Edit Details
-                      </ToggleLink>
-                      <ToggleLink
-                        active={
-                          pathname === `/event/${address}/admin/smart-contract`
-                        }
-                        to={`/event/${address}/admin/smart-contract`}
-                      >
-                        Smart Contract
-                      </ToggleLink>
-                    </TabNavigation>
-                    <Route
-                      path={`/event/${address}/admin`}
-                      exact
-                      render={() => <ParticipantTableList address={address} />}
-                    />
-                    <Route
-                      path={`/event/${address}/admin/edit`}
-                      exact
-                      render={() => <UpdatePartyMeta address={address} />}
-                    />
-                    <Route
-                      path={`/event/${address}/admin/smart-contract`}
-                      exact
-                      render={() => <AdminPanel party={party} />}
-                    />
-                  </>
-                )
-              }}
-            </SafeQuery>
+                }}
+              </SafeQuery>
+            </>
           )
         }
       </GlobalConsumer>
