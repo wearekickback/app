@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Route, Link } from 'react-router-dom'
+import { ReactComponent as DefaultBackArrow } from '../components/svg/arrowBack.svg'
 
 import ParticipantTableList from './ParticipantTableList'
 import AdminPanel from '../components/SingleEvent/Admin/AdminPanel'
@@ -40,19 +41,28 @@ const BackToEventButton = styled(Link)`
   border-radius: 10px;
   display: flex;
   transition: 0.2s;
-  width: 250px;
-  justify-content: center;
+  width: 210px;
+  justify-content: space-between;
   align-items: center;
-
-  img {
-    margin-right: 10px;
-    width: 20px;
-  }
 
   &:hover {
     color: white;
     background: #6e76ff;
+
+    path {
+      fill: #ffffff;
+    }
   }
+`
+
+const BackArrow = styled(DefaultBackArrow)`
+  path {
+    fill: #6e76ff;
+  }
+  width: 20px;
+  margin-top: 4px;
+  margin-left: -4px;
+  margin-right: 5px;
 `
 
 class SingleEvent extends Component {
@@ -69,7 +79,7 @@ class SingleEvent extends Component {
           ) : (
             <>
               <BackToEventButton to={`/event/${address}`}>
-                Back to Event Page
+                <BackArrow /> Back to Event Page
               </BackToEventButton>
               <SafeQuery
                 query={PARTY_QUERY}
