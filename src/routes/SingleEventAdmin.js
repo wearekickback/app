@@ -11,8 +11,6 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
-import backArrow from '../components/svg/backArrow.svg'
-
 const TabNavigation = styled('div')`
   margin-bottom: 20px;
   display: flex;
