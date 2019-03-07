@@ -196,6 +196,7 @@ const resolvers = {
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
       const account = await getAccount()
+      console.log(address)
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await contract
