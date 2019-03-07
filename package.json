@@ -28,6 +28,7 @@
     "marked": "^0.6.0",
     "moment": "^2.22.2",
     "query-string": "^6.2.0",
+    "rc-time-picker": "^3.6.2",
     "react": "^16.8.1",
     "react-apollo": "^2.2.4",
     "react-datetime-picker": "^2.1.1",

@@ -71,7 +71,7 @@ export default class SignIn extends Component {
               userAddress={userAddress}
               latestLegal={latestLegal}
               renderSubmitButton={(isValid, prepareValuesFn) => (
-                <SafeMutation mutation={UpdateUserProfile}>
+                <SafeMutation mutation={USER_PROFILE_QUERY}>
                   {updateUserProfile => (
                     <SignUpButtonDiv>
                       {isValid ? (

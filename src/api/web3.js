@@ -67,7 +67,7 @@ async function getWeb3() {
       const result = await clientInstance.query({
         query: NETWORK_ID_QUERY
       })
-      
+
       if (result.error) {
         throw new Error(result.error)
       }
