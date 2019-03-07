@@ -148,8 +148,7 @@ const resolvers = {
       try {
         const tx = await contract.register().send({
           from: account,
-          value: deposit,
-          gas: 120000
+          value: deposit
         })
         return tx
       } catch (err) {
@@ -163,15 +162,10 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const gas = await contract
-          .finalize(maps.map(m => toBN(m).toString(10)))
-          .estimateGas()
-
         const tx = await contract
           .finalize(maps.map(m => toBN(m).toString(10)))
           .send({
-            from: account,
-            gas
+            from: account
           })
 
         return tx

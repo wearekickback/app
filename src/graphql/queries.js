@@ -8,6 +8,12 @@ export const NETWORK_ID_QUERY = gql`
   }
 `
 
+export const CHECK_IF_USERNAME_IS_AVAILABLE_QUERY = gql`
+  query isUsernameAvailable($username: String!) {
+    available: isUsernameAvailable(username: $username)
+  }
+`
+
 export const LEGAL_AGREEMENTS_QUERY = gql`
   query getLegalAgreements {
     legal: legalAgreements {

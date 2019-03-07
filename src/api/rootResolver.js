@@ -80,7 +80,7 @@ const resolvers = {
             toEthVal(coolingPeriod).toString(16)
           )
           .send({
-            gas: 4000000,
+            gas: 3000000,
             from: account
           })
 
@@ -98,7 +98,7 @@ const resolvers = {
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
       return !unlocked
-        ? web3.eth.personal.sign(challengeString, address)
+        ? web3.eth.personal.sign(challengeString, address, '')
         : web3.eth.sign(challengeString, address)
     }
   }

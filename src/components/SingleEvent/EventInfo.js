@@ -5,12 +5,12 @@ import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 import marked from 'marked'
 
-import { toPrettyDate } from '../../utils/dates'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
+import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 // import Tooltip from '../Tooltip/Tooltip'
@@ -18,7 +18,8 @@ import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
 
-const Date = styled('div')``
+const EventDate = styled(DefaultEventDate)``
+
 const EventName = styled(H2)``
 const ContractAddress = styled('h3')`
   overflow: hidden;
@@ -150,7 +151,7 @@ class EventInfo extends Component {
 
     return (
       <EventInfoContainer className={className}>
-        <Date>{toPrettyDate(party.start)}</Date>
+        <EventDate event={party} />
         <EventName>{party.name}</EventName>
         <ContractAddress>
           <EtherScanLink address={address}>{address}</EtherScanLink>
@@ -193,7 +194,7 @@ class EventInfo extends Component {
             <Deposit>
               <strong>RSVP: </strong>
               <span>
-                <DepositValue value={party.deposit} /> ETH
+                <DepositValue value={party.deposit} />
               </span>
             </Deposit>
           </Pot>
