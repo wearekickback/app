@@ -1,7 +1,11 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
+import {
+  PARTICIPANT_STATUS,
+  calculateNumAttended,
+  getSocialId
+} from '@wearekickback/shared'
 
 import {
   amAdmin,
@@ -72,9 +76,11 @@ const DownloadButton = styled(Button)`
 `
 
 const cells = [
+  { label: 'Username', value: 'user.username' },
   { label: 'Real Name', value: 'user.realName' },
   { label: 'Address', value: 'user.address' },
-  { label: 'Email', value: 'user.email' },
+  { label: 'Email' },
+  { label: 'Twitter' },
   { label: 'Status', value: 'status' }
 ]
 
@@ -314,11 +320,21 @@ class SingleEventWrapper extends Component {
                                         </>
                                       )}
                                     </TD>
+                                    {console.log(participant)}
                                     {cells.map((cell, i) => {
                                       if (cell.label === 'Email') {
                                         return (
                                           <TD key={i}>
                                             {getEmail(participant.user.email)}
+                                          </TD>
+                                        )
+                                      } else if (cell.label === 'Twitter') {
+                                        return (
+                                          <TD key={i}>
+                                            {getSocialId(
+                                              participant.user.social,
+                                              'twitter'
+                                            )}
                                           </TD>
                                         )
                                       }
