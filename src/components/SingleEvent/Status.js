@@ -27,6 +27,7 @@ const StatusContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 
   span {
     ${p => p.going && `margin-right: 20px;`};

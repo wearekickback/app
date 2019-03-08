@@ -13,6 +13,8 @@ import {
 import Status, { Going } from './Status'
 import DefaultButton from '../Forms/Button'
 
+const AdminPanelButtonWrapper = styled('div')``
+
 const Button = styled(DefaultButton)`
   margin-bottom: 20px;
   a {
@@ -179,9 +181,11 @@ class EventCTA extends Component {
 
     return (
       amAdmin && (
-        <Button>
-          <Link to={`/event/${address}/admin`}>Admin Panel</Link>
-        </Button>
+        <AdminPanelButtonWrapper>
+          <Button>
+            <Link to={`/event/${address}/admin`}>Admin Panel</Link>
+          </Button>
+        </AdminPanelButtonWrapper>
       )
     )
   }
@@ -204,11 +208,13 @@ class EventCTA extends Component {
     const numWent = calculateNumAttended(participants)
 
     return (
-      <CTA>
-        This event is over. {numWent} out of {totalReg} people went to this
-        event.
+      <>
         {this._renderAdminCTA()}
-      </CTA>
+        <CTA>
+          This event is over. {numWent} out of {totalReg} people went to this
+          event.
+        </CTA>
+      </>
     )
   }
 
