@@ -27,11 +27,17 @@ export default function AdminPanel({ party }) {
       </AdminIntro>
       <Section>
         <Label>Finalize</Label>
-        <p>
-          Finalize ends the event and allows participants to withdraw. No one
-          will be able to be mark attended after you finalize!
-        </p>
-        <Finalize party={party} />
+        {party.ended ? (
+          'This party has been finalized'
+        ) : (
+          <>
+            <p>
+              Finalize ends the event and allows participants to withdraw. No
+              one will be able to be mark attended after you finalize!
+            </p>
+            <Finalize party={party} />
+          </>
+        )}
       </Section>
       <Section>
         <Label>Clear</Label>
