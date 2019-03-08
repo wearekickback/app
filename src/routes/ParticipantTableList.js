@@ -106,7 +106,7 @@ class SingleEventWrapper extends Component {
 
   handleSearch = value => {
     this.setState({
-      search: value
+      search: value.toLowerCase()
     })
   }
 
@@ -161,7 +161,7 @@ class SingleEventWrapper extends Component {
   }
 
   render() {
-    const { search } = this.state
+    const { search, selectedFilter } = this.state
     const { handleSearch, handleFilterChange } = this
     const { address } = this.props
 
@@ -232,7 +232,7 @@ class SingleEventWrapper extends Component {
                           handleSearch={handleSearch}
                           handleFilterChange={handleFilterChange}
                           amAdmin={amAdmin}
-                          search={this.state.search}
+                          search={search}
                           enableQrCodeScanner={amAdmin}
                           ended={ended}
                         />
@@ -251,18 +251,33 @@ class SingleEventWrapper extends Component {
 
                             {participants
                               .sort((a, b) => (a.index < b.index ? -1 : 1))
-                              .filter(
-                                p =>
-                                  (p.user.address || '')
-                                    .toLowerCase()
-                                    .includes(search) ||
+                              .filter(p => {
+                                //TODO: allow this to handle multiple filters
+                                if (
+                                  selectedFilter &&
+                                  selectedFilter.value === 'unmarked' &&
+                                  p.status !== PARTICIPANT_STATUS.REGISTERED
+                                ) {
+                                  return false
+                                }
+
+                                if (
+                                  selectedFilter &&
+                                  selectedFilter.value === 'marked' &&
+                                  p.status === PARTICIPANT_STATUS.REGISTERED
+                                ) {
+                                  return false
+                                }
+                                return (
                                   (p.user.realName || '')
                                     .toLowerCase()
                                     .includes(search) ||
                                   (p.user.username || '')
                                     .toLowerCase()
-                                    .includes(search)
-                              )
+                                    .includes(search) ||
+                                  p.user.address.toLowerCase().includes(search)
+                                )
+                              })
                               .map(participant => {
                                 const { status } = participant
                                 const withdrawn =
