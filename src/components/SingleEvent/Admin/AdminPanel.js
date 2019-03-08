@@ -39,7 +39,7 @@ export default function AdminPanel({ party }) {
           Clear will return all remaining funds to the host. Participants will
           no longer be able to withdraw.
         </p>
-        <Clear />
+        <Clear address={party.address} />
       </Section>
       <Section>
         <Label>Set Limit</Label>

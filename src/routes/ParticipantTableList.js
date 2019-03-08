@@ -320,7 +320,6 @@ class SingleEventWrapper extends Component {
                                         </>
                                       )}
                                     </TD>
-                                    {console.log(participant)}
                                     {cells.map((cell, i) => {
                                       if (cell.label === 'Email') {
                                         return (
