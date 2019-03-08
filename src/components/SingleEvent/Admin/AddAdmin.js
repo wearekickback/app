@@ -53,7 +53,7 @@ function AddAdmin({ address }) {
         <AddPartyAdminsContainer>
           {userAddresses.map((address, index) => {
             return (
-              <AddAdminInputContainer>
+              <AddAdminInputContainer key={index}>
                 <AddAdminInput
                   onChange={event => {
                     setAddress(index, event.target.value)
