@@ -1,17 +1,17 @@
 import React from 'react'
 
-import { PartyQuery } from '../../graphql/queries'
+import { PARTY_QUERY } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import DepositValue from '../Utils/DepositValue'
-import { RsvpToEvent } from '../../graphql/mutations'
+import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 
 const RSVP = ({ address, className, deposit }) => (
   <ChainMutation
-    mutation={RsvpToEvent}
+    mutation={RSVP_TO_EVENT}
     resultKey="rsvp"
     variables={{ address }}
-    refetchQueries={[{ query: PartyQuery, variables: { address } }]}
+    refetchQueries={[{ query: PARTY_QUERY, variables: { address } }]}
   >
     {(rsvp, result) => (
       <ChainMutationButton

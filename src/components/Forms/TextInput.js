@@ -29,7 +29,6 @@ const Input = styled('input')`
     border: 1px solid ${({ hasError }) => (hasError ? '#f00' : '#6e76ff')};
   }
   ::placeholder {
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #ccced8;
     opacity: 1; /* Firefox */
   }
@@ -40,6 +39,7 @@ const SearchContainer = styled(InputContainer)`
 `
 
 const SearchInput = styled(Input)`
+  padding-left: 40px;
   background-color: rgba(243, 243, 249, 0.5);
 `
 
@@ -83,6 +83,7 @@ export default class TextInput extends Component {
       innerRef,
       onUpdate,
       prefix,
+      onChange,
       ...props
     } = this.props
 
@@ -95,14 +96,10 @@ export default class TextInput extends Component {
           innerRef={innerRef}
           hasError={!!errors}
           {...props}
-          onChange={this._onChange}
+          onChange={onChange}
         />
         <FieldErrors errors={errors} />
       </InputContainer>
     )
-  }
-
-  _onChange = e => {
-    this.props.onUpdate(e.target.value)
   }
 }

@@ -1,17 +1,32 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import {
+  PARTICIPANT_STATUS,
+  calculateNumAttended,
+  getSocialId
+} from '@wearekickback/shared'
 
-import { amAdmin, getMyParticipantEntry } from '../utils/parties'
-import { PartyAdminViewQuery } from '../graphql/queries'
+import {
+  amAdmin,
+  getMyParticipantEntry,
+  calculateWinningShare,
+  getParticipantsMarkedAttended
+} from '../utils/parties'
+import { toEthVal } from '../utils/units'
+import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../components/Table'
-import Button from '../components/Forms/Button'
+import DefaultButton from '../components/Forms/Button'
 import ErrorBox from '../components/ErrorBox'
 import SafeQuery from '../components/SafeQuery'
 import EventFilters from '../components/SingleEvent/EventFilters'
 import { GlobalConsumer } from '../GlobalState'
+import Status from '../components/SingleEvent/ParticipantStatus'
 import mq from '../mediaQuery'
+import MarkedAttended from '../components/SingleEvent/MarkedAttendedRP'
+import tick from '../components/svg/tick.svg'
+import Number from '../components/Icons/Number'
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -25,6 +40,10 @@ const SingleEventContainer = styled('div')`
   `};
 `
 
+const Button = styled(DefaultButton)`
+  display: flex;
+`
+
 const NoParticipants = styled('div')``
 
 const TableList = styled('div')`
@@ -32,14 +51,36 @@ const TableList = styled('div')`
   flex-direction: column;
 `
 
+const TickContainer = styled('div')`
+  width: 12px;
+  margin-left: 3px;
+`
+
+const MarkedAttendedInfo = styled('div')`
+  margin-bottom: 20px;
+
+  p {
+    margin-bottom: 20px;
+  }
+`
+
+const Tick = () => (
+  <TickContainer>
+    <img alt="tick" src={tick} />
+  </TickContainer>
+)
+
 const DownloadButton = styled(Button)`
   margin-bottom: 20px;
+  justify-content: center;
 `
 
 const cells = [
+  { label: 'Username', value: 'user.username' },
   { label: 'Real Name', value: 'user.realName' },
   { label: 'Address', value: 'user.address' },
-  { label: 'Email', value: 'user.email' },
+  { label: 'Email' },
+  { label: 'Twitter' },
   { label: 'Status', value: 'status' }
 ]
 
@@ -101,8 +142,11 @@ class SingleEventWrapper extends Component {
     for (var i = 0; i < rows.length; i++) {
       var row = [],
         cols = rows[i].querySelectorAll('td, th')
-
-      for (var j = 0; j < cols.length; j++) row.push(cols[j].innerText)
+      for (var j = 0; j < cols.length; j++) {
+        if (cols[j].dataset.csv !== 'no') {
+          row.push(cols[j].innerText)
+        }
+      }
 
       csv.push(row.join(','))
     }
@@ -114,19 +158,24 @@ class SingleEventWrapper extends Component {
   render() {
     const { search } = this.state
     const { handleSearch } = this
-    const { address } = this.props.match.params
+    const { address } = this.props
 
     return (
       <SingleEventContainer>
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery
-              query={PartyAdminViewQuery}
+              query={PARTY_ADMIN_VIEW_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}
             >
-              {({ data: { partyAdminView: party }, loading, error }) => {
+              {({
+                data: { partyAdminView: party },
+                loading,
+                error,
+                refetch
+              }) => {
                 // no party?
                 if (!party) {
                   if (loading) {
@@ -139,7 +188,7 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-                const { participants } = party
+                const { participants, ended, deposit } = party
 
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
@@ -151,78 +200,165 @@ class SingleEventWrapper extends Component {
 
                 return (
                   <TableList>
-                    <DownloadButton
-                      onClick={() => {
-                        const html = document.querySelector('table').outerHTML
-                        this.exportTableToCSV(html, 'event.csv')
-                      }}
-                    >
-                      Download as CSV
-                    </DownloadButton>
-                    <EventFilters handleSearch={handleSearch} />
-                    <Table>
-                      <Tbody>
-                        <TR>
-                          {cells.map(cell => (
-                            <TH>{cell.label}</TH>
-                          ))}
-                          <TH>GDPR</TH>
-                          <TH>Marketing</TH>
-                        </TR>
+                    <MarkedAttendedInfo>
+                      <p>Marked attended:</p>
+                      <Number
+                        number={getParticipantsMarkedAttended(participants)}
+                        max={participants.length}
+                        progress={
+                          (getParticipantsMarkedAttended(participants) /
+                            participants.length) *
+                          100
+                        }
+                      />
+                    </MarkedAttendedInfo>
+                    {participants.length > 0 ? (
+                      <>
+                        <DownloadButton
+                          onClick={() => {
+                            const html = document.querySelector('table')
+                              .outerHTML
+                            this.exportTableToCSV(html, 'event.csv')
+                          }}
+                        >
+                          Download as CSV
+                        </DownloadButton>
+                        <EventFilters handleSearch={handleSearch} />
+                        <Table>
+                          <Tbody>
+                            <TR>
+                              <TH data-csv="no">Marked attended</TH>
+                              {cells.map(cell => (
+                                <TH key={cell.label}>{cell.label}</TH>
+                              ))}
+                              <TH>Marketing</TH>
+                            </TR>
 
-                        {participants.length > 0 ? (
-                          participants
-                            .sort((a, b) => (a.index < b.index ? -1 : 1))
-                            .filter(
-                              p =>
-                                (p.user.address || '')
-                                  .toLowerCase()
-                                  .includes(search) ||
-                                (p.user.realName || '')
-                                  .toLowerCase()
-                                  .includes(search) ||
-                                (p.user.username || '')
-                                  .toLowerCase()
-                                  .includes(search)
-                            )
-                            .map(participant => (
-                              <>
-                                <TR />
-                                <TR>
-                                  {cells.map(cell => {
-                                    if (cell.label === 'Email') {
+                            {participants
+                              .sort((a, b) => (a.index < b.index ? -1 : 1))
+                              .filter(
+                                p =>
+                                  (p.user.address || '')
+                                    .toLowerCase()
+                                    .includes(search) ||
+                                  (p.user.realName || '')
+                                    .toLowerCase()
+                                    .includes(search) ||
+                                  (p.user.username || '')
+                                    .toLowerCase()
+                                    .includes(search)
+                              )
+                              .map(participant => {
+                                const { status } = participant
+                                const withdrawn =
+                                  status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+                                const attended =
+                                  status === PARTICIPANT_STATUS.SHOWED_UP ||
+                                  withdrawn
+
+                                const numRegistered = party.participants.length
+                                const numShowedUp = calculateNumAttended(
+                                  party.participants
+                                )
+
+                                const payout = calculateWinningShare(
+                                  deposit,
+                                  numRegistered,
+                                  numShowedUp
+                                )
+                                return (
+                                  <TR key={participant.user.id}>
+                                    <TD data-csv="no">
+                                      {' '}
+                                      {ended ? (
+                                        attended ? (
+                                          <Status type="won">{`${
+                                            withdrawn ? ' Withdrew' : 'Won'
+                                          } ${payout} ETH `}</Status>
+                                        ) : (
+                                          <Status type="lost">
+                                            Lost{' '}
+                                            {toEthVal(deposit)
+                                              .toEth()
+                                              .toString()}{' '}
+                                            ETH
+                                          </Status>
+                                        )
+                                      ) : (
+                                        <>
+                                          <MarkedAttended
+                                            party={party}
+                                            participant={participant}
+                                            refetch={refetch}
+                                          >
+                                            {({
+                                              markAttended,
+                                              unmarkAttended
+                                            }) =>
+                                              attended ? (
+                                                <Button
+                                                  wide
+                                                  onClick={() =>
+                                                    unmarkAttended()
+                                                  }
+                                                  analyticsId="Unmark Attendee"
+                                                >
+                                                  Unmark attended
+                                                </Button>
+                                              ) : (
+                                                <Button
+                                                  wide
+                                                  type="hollow"
+                                                  onClick={() => markAttended()}
+                                                  analyticsId="Mark Attendee"
+                                                >
+                                                  Mark attended <Tick />
+                                                </Button>
+                                              )
+                                            }
+                                          </MarkedAttended>
+                                        </>
+                                      )}
+                                    </TD>
+                                    {cells.map((cell, i) => {
+                                      if (cell.label === 'Email') {
+                                        return (
+                                          <TD key={i}>
+                                            {getEmail(participant.user.email)}
+                                          </TD>
+                                        )
+                                      } else if (cell.label === 'Twitter') {
+                                        return (
+                                          <TD key={i}>
+                                            {getSocialId(
+                                              participant.user.social,
+                                              'twitter'
+                                            )}
+                                          </TD>
+                                        )
+                                      }
                                       return (
-                                        <TD>
-                                          {getEmail(participant.user.email)}
+                                        <TD key={i}>
+                                          {_.get(participant, cell.value)}
                                         </TD>
                                       )
-                                    }
-                                    return (
-                                      <TD>{_.get(participant, cell.value)}</TD>
-                                    )
-                                  })}
-                                  <TD>
-                                    {participant.user.legal &&
-                                    participant.user.legal[0] &&
-                                    participant.user.legal[0].accepted
-                                      ? 'accepted'
-                                      : 'denied'}
-                                  </TD>
-                                  <TD>
-                                    {participant.user.legal &&
-                                    participant.user.legal[2] &&
-                                    participant.user.legal[2].accepted
-                                      ? 'accepted'
-                                      : 'denied'}
-                                  </TD>
-                                </TR>
-                              </>
-                            ))
-                        ) : (
-                          <NoParticipants>No one is attending.</NoParticipants>
-                        )}
-                      </Tbody>
-                    </Table>
+                                    })}
+                                    <TD>
+                                      {participant.user.legal &&
+                                      participant.user.legal[2] &&
+                                      participant.user.legal[2].accepted
+                                        ? 'accepted'
+                                        : 'denied'}
+                                    </TD>
+                                  </TR>
+                                )
+                              })}
+                          </Tbody>
+                        </Table>
+                      </>
+                    ) : (
+                      <NoParticipants>No one is attending</NoParticipants>
+                    )}
                   </TableList>
                 )
               }}

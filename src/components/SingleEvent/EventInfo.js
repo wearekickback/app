@@ -13,9 +13,9 @@ import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
-import moment from 'moment'
 // import Tooltip from '../Tooltip/Tooltip'
 
+import moment from 'moment'
 import { toEthVal } from '../../utils/units'
 
 const EventDate = styled(DefaultEventDate)``

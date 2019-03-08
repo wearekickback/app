@@ -1,27 +1,26 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
-import {
-  PARTICIPANT_STATUS,
-  calculateFinalizeMaps,
-  calculateNumAttended
-} from '@wearekickback/shared'
+import styled from 'react-emotion'
+import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
 
 import DefaultRSVP from './RSVP'
-import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import WithdrawPayout from './WithdrawPayout'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
 } from '../../utils/parties'
-import { PartyQuery } from '../../graphql/queries'
-import { Finalize } from '../../graphql/mutations'
 import Status, { Going } from './Status'
-import { GlobalConsumer } from '../../GlobalState'
-import Button from '../Forms/Button'
-import { CONFIRM_TRANSACTION } from '../../modals'
-import ConfirmModal from '../ConfirmModal'
+import DefaultButton from '../Forms/Button'
+
+const AdminPanelButtonWrapper = styled('div')``
+
+const Button = styled(DefaultButton)`
+  margin-bottom: 20px;
+  a {
+    color: white;
+  }
+`
 
 const CTA = styled('div')`
   font-family: Muli;
@@ -79,12 +78,6 @@ const Reference = styled('p')`
 
 const RSVP = styled(DefaultRSVP)`
   width: 100%;
-`
-
-const AdminCTA = styled('div')`
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
 `
 
 const MarkAttended = styled('div')``
@@ -182,69 +175,17 @@ class EventCTA extends Component {
 
   _renderAdminCTA() {
     const {
-      party: { address, participants, ended },
+      party: { address },
       amAdmin
     } = this.props
 
     return (
       amAdmin && (
-        <GlobalConsumer>
-          {({ showModal }) => {
-            return (
-              <AdminCTA>
-                {!ended ? (
-                  <>
-                    <Button
-                      onClick={() => {
-                        showModal({
-                          name: CONFIRM_TRANSACTION,
-                          render: ({ closeModal }) => (
-                            <ConfirmModal
-                              closeModal={closeModal}
-                              message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
-                              mutationComponent={
-                                <ChainMutation
-                                  mutation={Finalize}
-                                  resultKey="finalize"
-                                  variables={{
-                                    address,
-                                    maps: calculateFinalizeMaps(participants)
-                                  }}
-                                  refetchQueries={[
-                                    {
-                                      query: PartyQuery,
-                                      variables: {
-                                        address
-                                      }
-                                    }
-                                  ]}
-                                >
-                                  {(finalize, result) => (
-                                    <ChainMutationButton
-                                      analyticsId="Finalize Event"
-                                      result={result}
-                                      onClick={finalize}
-                                      preContent="Finalize and enable payouts"
-                                      postContent="Finalized!"
-                                    />
-                                  )}
-                                </ChainMutation>
-                              }
-                            >
-                              rendering
-                            </ConfirmModal>
-                          )
-                        })
-                      }}
-                    >
-                      Finalize
-                    </Button>
-                  </>
-                ) : null}
-              </AdminCTA>
-            )
-          }}
-        </GlobalConsumer>
+        <AdminPanelButtonWrapper>
+          <Button>
+            <Link to={`/event/${address}/admin`}>Admin Panel</Link>
+          </Button>
+        </AdminPanelButtonWrapper>
       )
     )
   }
@@ -267,11 +208,13 @@ class EventCTA extends Component {
     const numWent = calculateNumAttended(participants)
 
     return (
-      <CTA>
-        This event is over. {numWent} out of {totalReg} people went to this
-        event.
+      <>
         {this._renderAdminCTA()}
-      </CTA>
+        <CTA>
+          This event is over. {numWent} out of {totalReg} people went to this
+          event.
+        </CTA>
+      </>
     )
   }
 

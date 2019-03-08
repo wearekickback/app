@@ -2,7 +2,7 @@ import { ApolloConsumer } from 'react-apollo'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import { QRSupportedQuery, QRQuery } from '../../graphql/queries'
+import { QR_SUPPORTED_QUERY, QR_QUERY } from '../../graphql/queries'
 
 import Button from '../Forms/Button'
 import ErrorBox from '../ErrorBox'
@@ -29,7 +29,7 @@ class EventFilters extends Component {
     this.setState({ scanError: null }, async () => {
       try {
         const { error, data = {} } = await client.query({
-          query: QRQuery,
+          query: QR_QUERY,
           fetchPolicy: 'no-cache'
         })
 
@@ -90,7 +90,7 @@ class EventFilters extends Component {
           wide
         />
         {enableQrCodeScanner ? (
-          <SafeQuery query={QRSupportedQuery}>
+          <SafeQuery query={QR_SUPPORTED_QUERY}>
             {({ data = {} }) => {
               return data.supported ? (
                 <ApolloConsumer>

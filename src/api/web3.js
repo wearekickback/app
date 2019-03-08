@@ -6,7 +6,7 @@ import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
 import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
-import { NetworkIdQuery } from '../graphql/queries'
+import { NETWORK_ID_QUERY } from '../graphql/queries'
 
 let web3
 let networkState = {}
@@ -64,7 +64,10 @@ async function getWeb3() {
     try {
       networkState = {}
 
-      const result = await clientInstance.query({ query: NetworkIdQuery })
+      const result = await clientInstance.query({
+        query: NETWORK_ID_QUERY
+      })
+
       if (result.error) {
         throw new Error(result.error)
       }
