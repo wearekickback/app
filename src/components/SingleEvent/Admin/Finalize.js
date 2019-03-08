@@ -14,7 +14,7 @@ import ConfirmModal from '../../ConfirmModal'
 const FinalizeContainer = styled('div')``
 
 function Finalize({ party }) {
-  const { toggleModal } = useContext(GlobalContext)
+  const { showModal, closeModal } = useContext(GlobalContext)
   const { address, participants, ended } = party
   return (
     <FinalizeContainer>
@@ -22,11 +22,12 @@ function Finalize({ party }) {
         <>
           <Button
             onClick={() => {
-              toggleModal({
+              showModal({
                 name: CONFIRM_TRANSACTION,
                 render: () => (
                   <ConfirmModal
                     message="Finalizing enables payouts for all that have been marked attended. This can only be done once is irreversible, are you sure you want to finalize?"
+                    closeModal={() => closeModal({ name: CONFIRM_TRANSACTION })}
                     mutationComponent={
                       <ChainMutation
                         mutation={FINALIZE}
