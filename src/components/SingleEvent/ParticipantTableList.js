@@ -14,21 +14,21 @@ import {
   getParticipantsMarkedAttended,
   sortParticipants,
   filterParticipants
-} from '../utils/parties'
-import { toEthVal } from '../utils/units'
-import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
+} from '../../utils/parties'
+import { toEthVal } from '../../utils/units'
+import { PARTY_ADMIN_VIEW_QUERY } from '../../graphql/queries'
 
-import { Table, Tbody, TH, TR, TD } from '../components/Table'
-import DefaultButton from '../components/Forms/Button'
-import ErrorBox from '../components/ErrorBox'
-import SafeQuery from '../components/SafeQuery'
-import EventFilters from '../components/SingleEvent/EventFilters'
-import { GlobalConsumer } from '../GlobalState'
-import Status from '../components/SingleEvent/ParticipantStatus'
-import mq from '../mediaQuery'
-import MarkedAttended from '../components/SingleEvent/MarkedAttendedRP'
-import tick from '../components/svg/tick.svg'
-import Number from '../components/Icons/Number'
+import { Table, Tbody, TH, TR, TD } from '../Table'
+import DefaultButton from '../Forms/Button'
+import ErrorBox from '../ErrorBox'
+import SafeQuery from '../SafeQuery'
+import EventFilters from './EventFilters'
+import { GlobalConsumer } from '../../GlobalState'
+import Status from './ParticipantStatus'
+import mq from '../../mediaQuery'
+import MarkedAttended from './MarkedAttendedRP'
+import tick from '../svg/tick.svg'
+import Number from '../Icons/Number'
 
 const SingleEventContainer = styled('div')`
   display: flex;
