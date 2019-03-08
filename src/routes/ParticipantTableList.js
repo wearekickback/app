@@ -11,7 +11,9 @@ import {
   amAdmin,
   getMyParticipantEntry,
   calculateWinningShare,
-  getParticipantsMarkedAttended
+  getParticipantsMarkedAttended,
+  sortParticipants,
+  filterParticipants
 } from '../utils/parties'
 import { toEthVal } from '../utils/units'
 import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
@@ -249,34 +251,10 @@ class SingleEventWrapper extends Component {
                             </TR>
 
                             {participants
-                              .sort((a, b) => (a.index < b.index ? -1 : 1))
-                              .filter(p => {
-                                //TODO: allow this to handle multiple filters
-                                if (
-                                  selectedFilter &&
-                                  selectedFilter.value === 'unmarked' &&
-                                  p.status !== PARTICIPANT_STATUS.REGISTERED
-                                ) {
-                                  return false
-                                }
-
-                                if (
-                                  selectedFilter &&
-                                  selectedFilter.value === 'marked' &&
-                                  p.status === PARTICIPANT_STATUS.REGISTERED
-                                ) {
-                                  return false
-                                }
-                                return (
-                                  (p.user.realName || '')
-                                    .toLowerCase()
-                                    .includes(search) ||
-                                  (p.user.username || '')
-                                    .toLowerCase()
-                                    .includes(search) ||
-                                  p.user.address.toLowerCase().includes(search)
-                                )
-                              })
+                              .sort(sortParticipants)
+                              .filter(
+                                filterParticipants(selectedFilter, search)
+                              )
                               .map(participant => {
                                 const { status } = participant
                                 const withdrawn =
