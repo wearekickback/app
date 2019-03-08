@@ -118,7 +118,7 @@ class PartyForm extends Component {
       ...extraVariables
     }
 
-    if (type === 'Update Party Meta') {
+    if (address) {
       variables.address = address
     }
 
@@ -130,7 +130,7 @@ class PartyForm extends Component {
           <TextInput
             wide
             value={name}
-            onChange={e => this.setState({ name: e.target.value })}
+            onChangeText={val => this.setState({ name: val })}
             type="text"
             placeholder="Name of the event"
           />
@@ -138,7 +138,7 @@ class PartyForm extends Component {
           <TextArea
             wide
             value={description}
-            onChange={e => this.setState({ description: e.target.value })}
+            onChangeText={val => this.setState({ description: val })}
             type="text"
             placeholder="Description of the event"
             rows="10"
@@ -149,7 +149,7 @@ class PartyForm extends Component {
           <TextInput
             wide
             value={location}
-            onChange={e => this.setState({ location: e.target.value })}
+            onChangeText={val => this.setState({ location: val })}
             type="text"
             placeholder="Location of the event"
           />
@@ -194,17 +194,15 @@ class PartyForm extends Component {
               <Label>Commitment</Label>
               <TextInput
                 value={deposit}
-                onChange={e => this.setState({ deposit: e.target.value })}
+                onChangeText={val => this.setState({ deposit: val })}
                 type="text"
                 placeholder="ETH"
               />
               <Label>Limit of participants</Label>
               <TextInput
                 value={limitOfParticipants}
-                onChange={e =>
-                  this.setState({
-                    limitOfParticipants: e.target.value
-                  })
+                onChangeText={val =>
+                  this.setState({ limitOfParticipants: val })
                 }
                 type="text"
                 placeholder="number of participants"
@@ -212,10 +210,9 @@ class PartyForm extends Component {
               <Label>Cooling period</Label>
               <TextInput
                 value={coolingPeriod}
-                onChange={e =>
+                onChangeText={val =>
                   this.setState({
-                    coolingPeriod:
-                      0 < parseInt(e.target.value) ? e.target.value : '1'
+                    coolingPeriod: 0 < parseInt(val) ? val : '1'
                   })
                 }
                 type="text"
