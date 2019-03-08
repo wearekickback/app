@@ -34,3 +34,29 @@ export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
     .div(numAttended)
     .toEth()
     .toFixed(3)
+
+export const sortParticipants = (a, b) => (a.index < b.index ? -1 : 1)
+
+export const filterParticipants = (selectedFilter, search) => participant => {
+  //TODO: allow this to handle multiple filters
+  if (
+    selectedFilter &&
+    selectedFilter.value === 'unmarked' &&
+    participant.status !== PARTICIPANT_STATUS.REGISTERED
+  ) {
+    return false
+  }
+
+  if (
+    selectedFilter &&
+    selectedFilter.value === 'marked' &&
+    participant.status === PARTICIPANT_STATUS.REGISTERED
+  ) {
+    return false
+  }
+  return (
+    (participant.user.realName || '').toLowerCase().includes(search) ||
+    (participant.user.username || '').toLowerCase().includes(search) ||
+    participant.user.address.toLowerCase().includes(search)
+  )
+}

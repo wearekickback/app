@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import { Route, Link } from 'react-router-dom'
 import { ReactComponent as DefaultBackArrow } from '../components/svg/arrowBack.svg'
 
-import ParticipantTableList from './ParticipantTableList'
+import ParticipantTableList from '../components/SingleEvent/ParticipantTableList'
 import AdminPanel from '../components/SingleEvent/Admin/AdminPanel'
 import ErrorBox from '../components/ErrorBox'
 import { PARTY_QUERY } from '../graphql/queries'

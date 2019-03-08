@@ -45,6 +45,10 @@ const ImageWrapper = styled('div')`
   }
 `
 
+const DropZoneWrapper = styled('div')`
+  margin-bottom: 20px;
+`
+
 const UploadedImage = ({ src }) => (
   <ImageWrapper>
     <img alt="event" src={src} />
@@ -170,25 +174,27 @@ class PartyForm extends Component {
           />
           <br />
           <Label>Image</Label>
-          <Mutation mutation={SINGLE_UPLOAD}>
-            {mutate => (
-              <Dropzone
-                className="dropzone"
-                onDrop={files => this.onDrop(files, mutate)}
-                accept="image/*"
-              >
-                {headerImg ? (
-                  <UploadedImage src={headerImg} />
-                ) : (
-                  <NoImage>
-                    {this.state.imageUploading
-                      ? 'Uploading...'
-                      : 'Click here to upload a photo'}
-                  </NoImage>
-                )}
-              </Dropzone>
-            )}
-          </Mutation>
+          <DropZoneWrapper>
+            <Mutation mutation={SINGLE_UPLOAD}>
+              {mutate => (
+                <Dropzone
+                  className="dropzone"
+                  onDrop={files => this.onDrop(files, mutate)}
+                  accept="image/*"
+                >
+                  {headerImg ? (
+                    <UploadedImage src={headerImg} />
+                  ) : (
+                    <NoImage>
+                      {this.state.imageUploading
+                        ? 'Uploading...'
+                        : 'Click here to upload a photo'}
+                    </NoImage>
+                  )}
+                </Dropzone>
+              )}
+            </Mutation>
+          </DropZoneWrapper>
           {type === 'Create Pending Party' && (
             <>
               <Label>Commitment</Label>

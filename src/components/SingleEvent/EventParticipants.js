@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
-import { pluralize, PARTICIPANT_STATUS } from '@wearekickback/shared'
+import { pluralize } from '@wearekickback/shared'
 import Participant from './Participant'
 import DefaultEventFilters from './EventFilters'
 
 import { H3 } from '../Typography/Basic'
+import { sortParticipants, filterParticipants } from '../../utils/parties'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
@@ -36,7 +37,7 @@ class EventParticipants extends Component {
 
   handleSearch = search => {
     this.setState({
-      search: search || ''
+      search: (search || '').toLowerCase()
     })
   }
 
@@ -47,13 +48,7 @@ class EventParticipants extends Component {
       amAdmin
     } = this.props
 
-    const { selectedFilter } = this.state
-
-    const lowerSearch = this.state.search.toLowerCase()
-
-    participants.sort((a, b) => {
-      return a.index < b.index ? -1 : 1
-    })
+    const { selectedFilter, search } = this.state
 
     let spots
 
@@ -83,30 +78,8 @@ class EventParticipants extends Component {
         <EventParticipantsContainer>
           {participants.length > 0 ? (
             participants
-              .sort((a, b) => (a.index < b.index ? -1 : 1))
-              .filter(p => {
-                //TODO: allow this to handle multiple filters
-                if (
-                  selectedFilter &&
-                  selectedFilter.value === 'unmarked' &&
-                  p.status !== PARTICIPANT_STATUS.REGISTERED
-                ) {
-                  return false
-                }
-
-                if (
-                  selectedFilter &&
-                  selectedFilter.value === 'marked' &&
-                  p.status === PARTICIPANT_STATUS.REGISTERED
-                ) {
-                  return false
-                }
-                return (
-                  (p.user.realName || '').toLowerCase().includes(lowerSearch) ||
-                  (p.user.username || '').toLowerCase().includes(lowerSearch) ||
-                  p.user.address.toLowerCase().includes(lowerSearch)
-                )
-              })
+              .sort(sortParticipants)
+              .filter(filterParticipants(selectedFilter, search))
               .map(participant => (
                 <Participant
                   amAdmin={amAdmin}

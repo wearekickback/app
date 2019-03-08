@@ -67,7 +67,7 @@ class EventFilters extends Component {
           <Filter>
             <Label>Filters</Label>
             <Select
-              onChangeText={handleFilterChange}
+              onChange={handleFilterChange}
               placeholder="Choose"
               options={[
                 { label: 'All', value: 'all' },

@@ -11,22 +11,24 @@ import {
   amAdmin,
   getMyParticipantEntry,
   calculateWinningShare,
-  getParticipantsMarkedAttended
-} from '../utils/parties'
-import { toEthVal } from '../utils/units'
-import { PARTY_ADMIN_VIEW_QUERY } from '../graphql/queries'
+  getParticipantsMarkedAttended,
+  sortParticipants,
+  filterParticipants
+} from '../../utils/parties'
+import { toEthVal } from '../../utils/units'
+import { PARTY_ADMIN_VIEW_QUERY } from '../../graphql/queries'
 
-import { Table, Tbody, TH, TR, TD } from '../components/Table'
-import DefaultButton from '../components/Forms/Button'
-import ErrorBox from '../components/ErrorBox'
-import SafeQuery from '../components/SafeQuery'
-import EventFilters from '../components/SingleEvent/EventFilters'
-import { GlobalConsumer } from '../GlobalState'
-import Status from '../components/SingleEvent/ParticipantStatus'
-import mq from '../mediaQuery'
-import MarkedAttended from '../components/SingleEvent/MarkedAttendedRP'
-import tick from '../components/svg/tick.svg'
-import Number from '../components/Icons/Number'
+import { Table, Tbody, TH, TR, TD } from '../Table'
+import DefaultButton from '../Forms/Button'
+import ErrorBox from '../ErrorBox'
+import SafeQuery from '../SafeQuery'
+import EventFilters from './EventFilters'
+import { GlobalConsumer } from '../../GlobalState'
+import Status from './ParticipantStatus'
+import mq from '../../mediaQuery'
+import MarkedAttended from './MarkedAttendedRP'
+import tick from '../svg/tick.svg'
+import Number from '../Icons/Number'
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -80,8 +82,7 @@ const cells = [
   { label: 'Real Name', value: 'user.realName' },
   { label: 'Address', value: 'user.address' },
   { label: 'Email' },
-  { label: 'Twitter' },
-  { label: 'Status', value: 'status' }
+  { label: 'Twitter' }
 ]
 
 function getEmail(email) {
@@ -100,13 +101,18 @@ function getEmail(email) {
 
 class SingleEventWrapper extends Component {
   state = {
-    search: ''
+    search: '',
+    selectedFilter: null
   }
 
   handleSearch = value => {
     this.setState({
-      search: value
+      search: value.toLowerCase()
     })
+  }
+
+  handleFilterChange = selectedFilter => {
+    this.setState({ selectedFilter })
   }
 
   downloadCSV(csv, filename) {
@@ -156,8 +162,8 @@ class SingleEventWrapper extends Component {
   }
 
   render() {
-    const { search } = this.state
-    const { handleSearch } = this
+    const { search, selectedFilter } = this.state
+    const { handleSearch, handleFilterChange } = this
     const { address } = this.props
 
     return (
@@ -223,30 +229,31 @@ class SingleEventWrapper extends Component {
                         >
                           Download as CSV
                         </DownloadButton>
-                        <EventFilters handleSearch={handleSearch} />
+                        <EventFilters
+                          handleSearch={handleSearch}
+                          handleFilterChange={handleFilterChange}
+                          amAdmin={amAdmin}
+                          search={search}
+                          enableQrCodeScanner={amAdmin}
+                          ended={ended}
+                        />
                         <Table>
                           <Tbody>
                             <TR>
-                              <TH data-csv="no">Marked attended</TH>
-                              {cells.map(cell => (
-                                <TH key={cell.label}>{cell.label}</TH>
-                              ))}
+                              <TH data-csv="no">Status</TH>
+                              {cells.map(
+                                cell =>
+                                  !cell.hidden && (
+                                    <TH key={cell.label}>{cell.label}</TH>
+                                  )
+                              )}
                               <TH>Marketing</TH>
                             </TR>
 
                             {participants
-                              .sort((a, b) => (a.index < b.index ? -1 : 1))
+                              .sort(sortParticipants)
                               .filter(
-                                p =>
-                                  (p.user.address || '')
-                                    .toLowerCase()
-                                    .includes(search) ||
-                                  (p.user.realName || '')
-                                    .toLowerCase()
-                                    .includes(search) ||
-                                  (p.user.username || '')
-                                    .toLowerCase()
-                                    .includes(search)
+                                filterParticipants(selectedFilter, search)
                               )
                               .map(participant => {
                                 const { status } = participant
@@ -336,6 +343,8 @@ class SingleEventWrapper extends Component {
                                             )}
                                           </TD>
                                         )
+                                      } else if (cell.hidden === true) {
+                                        return null
                                       }
                                       return (
                                         <TD key={i}>
