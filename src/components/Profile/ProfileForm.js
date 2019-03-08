@@ -17,13 +17,12 @@ import {
 
 import { GlobalConsumer } from '../../GlobalState'
 import { removeTypename } from '../../graphql'
-import { CheckIfUsernameIsAvailableQuery } from '../../graphql/queries'
+import { CHECK_IF_USERNAME_IS_AVAILABLE_QUERY } from '../../graphql/queries'
 import InputAddress from '../Forms/InputAddress'
 import DefaultTextInput from '../Forms/TextInput'
 import DefaultCheckbox from '../Forms/Checkbox'
 import Label from '../Forms/Label'
 import { ensureInArray, ensureNotInArray } from '../../utils/arrays'
-import mq from '../../mediaQuery'
 
 const { TERMS_AND_CONDITIONS, PRIVACY_POLICY, MARKETING_INFO } = LEGAL
 
@@ -40,10 +39,6 @@ const Explanation = styled('div')`
 const TextInput = styled(DefaultTextInput)`
   margin-bottom: 0;
   width: 100%;
-
-  ${mq.medium`
-    width: 80%;
-  `};
 `
 
 const Checkbox = styled(DefaultCheckbox)`
@@ -134,7 +129,9 @@ export default class ProfileForm extends Component {
                 placeholder="username"
                 data-testid="username"
                 value={username}
-                onUpdate={this.handleUsernameChange(apolloClient)}
+                onChange={e =>
+                  this.handleUsernameChange(apolloClient)(e.target.value)
+                }
                 errors={errors.username}
               />
               <Explanation>
@@ -148,7 +145,7 @@ export default class ProfileForm extends Component {
                 placeholder="Joe Bloggs"
                 value={realName}
                 data-testid="realname"
-                onUpdate={this.handleRealNameChange}
+                onChange={e => this.handleRealNameChange(e.target.value)}
                 errors={errors.realName}
               />
               <Explanation>
@@ -162,7 +159,7 @@ export default class ProfileForm extends Component {
                 placeholder="alice@gmail.com"
                 data-testid="email"
                 value={email}
-                onUpdate={this.handleEmailChange}
+                onChange={e => this.handleEmailChange(e.target.value)}
                 errors={errors.email}
               />
               <Explanation>
@@ -177,7 +174,7 @@ export default class ProfileForm extends Component {
                 prefix="@"
                 placeholder="jack"
                 value={twitter}
-                onUpdate={this.handleTwitterChange}
+                onChange={e => this.handleTwitterChange(e.target.value)}
                 errors={errors.twitter}
               />
               <Explanation>
@@ -190,9 +187,11 @@ export default class ProfileForm extends Component {
                 value={TERMS_AND_CONDITIONS}
                 checked={!!terms}
                 testId="terms"
-                onUpdate={this.handleTermsCheck(
-                  getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
-                )}
+                onChange={() =>
+                  this.handleTermsCheck(
+                    getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+                  )
+                }
               >
                 I agree with the{' '}
                 <Link to="/terms" target="_blank" rel="noopener noreferrer">
@@ -205,9 +204,11 @@ export default class ProfileForm extends Component {
                 value={PRIVACY_POLICY}
                 checked={!!privacy}
                 testId="privacy"
-                onUpdate={this.handlePrivacyCheck(
-                  getLegalAgreement(latestLegal, PRIVACY_POLICY)
-                )}
+                onChange={e =>
+                  this.handlePrivacyCheck(
+                    getLegalAgreement(latestLegal, PRIVACY_POLICY)
+                  )(e.target.value)
+                }
               >
                 I agree with the{' '}
                 <Link to="/privacy" target="_blank" rel="noopener noreferrer">
@@ -219,9 +220,11 @@ export default class ProfileForm extends Component {
               value={MARKETING_INFO}
               checked={!!marketing}
               testId="marketing"
-              onUpdate={this.handleMarketingCheck(
-                getLegalAgreement(latestLegal, MARKETING_INFO)
-              )}
+              onChange={e =>
+                this.handleMarketingCheck(
+                  getLegalAgreement(latestLegal, MARKETING_INFO)
+                )(e.target.value)
+              }
             >
               I am happy to receive marketing info (optional)
             </Checkbox>
@@ -364,7 +367,7 @@ export default class ProfileForm extends Component {
       const {
         data: { available }
       } = await apolloClient.query({
-        query: CheckIfUsernameIsAvailableQuery,
+        query: CHECK_IF_USERNAME_IS_AVAILABLE_QUERY,
         variables: {
           username
         },

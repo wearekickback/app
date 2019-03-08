@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 
 import ChainMutation, { ChainMutationButton } from '../components/ChainMutation'
-import { CreateParty } from '../graphql/mutations'
+import { CREATE_PARTY } from '../graphql/mutations'
 import { GlobalConsumer } from '../GlobalState'
 import { extractNewPartyAddressFromTx } from '../api/utils'
 import queryString from 'query-string'
@@ -48,7 +48,7 @@ class DeployPendingEvent extends Component {
                   <div>limitOfParticipants: {limitOfParticipants}</div>
                   <div>coolingPeriod: {coolingPeriod}</div>
                   <ChainMutation
-                    mutation={CreateParty}
+                    mutation={CREATE_PARTY}
                     resultKey="create"
                     variables={{
                       id,

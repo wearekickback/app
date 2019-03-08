@@ -67,7 +67,6 @@ class App extends Component {
               <Route exact path="/event/:address" component={SingleEvent} />
               <Route
                 path="/event/:address/admin"
-                exact
                 component={SingleEventAdmin}
               />
               <Route

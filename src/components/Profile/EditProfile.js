@@ -4,10 +4,10 @@ import styled from 'react-emotion'
 import DefaultButton from '../Forms/Button'
 import { H2 as DefaultH2 } from '../Typography/Basic'
 import ProfileForm from './ProfileForm'
-import { UpdateUserProfile } from '../../graphql/mutations'
+import { UPDATE_USER_PROFILE } from '../../graphql/mutations'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
-import { LegalAgreementsQuery } from '../../graphql/queries'
+import { LEGAL_AGREEMENTS_QUERY } from '../../graphql/queries'
 import { GlobalConsumer } from '../../GlobalState'
 import { EDIT_PROFILE } from '../../modals'
 import { ReactComponent as DefaultPencil } from '../svg/Pencil.svg'
@@ -44,14 +44,14 @@ export default class SignIn extends Component {
                 <Pencil />
                 Edit Profile
               </H2>
-              <SafeQuery query={LegalAgreementsQuery}>
+              <SafeQuery query={LEGAL_AGREEMENTS_QUERY}>
                 {({ data: { legal: latestLegal } }) => (
                   <ProfileForm
                     userAddress={userAddress}
                     existingProfile={userProfile}
                     latestLegal={latestLegal}
                     renderSubmitButton={(isValid, prepareValuesFn) => (
-                      <SafeMutation mutation={UpdateUserProfile}>
+                      <SafeMutation mutation={UPDATE_USER_PROFILE}>
                         {updateUserProfile => (
                           <SubmitButton
                             onClick={this.submit({

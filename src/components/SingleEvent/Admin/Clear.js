@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import Button from '../Forms/Button'
+import Button from '../../Forms/Button'
 
 const CLEAR = gql`
   mutation clear($address: String) {

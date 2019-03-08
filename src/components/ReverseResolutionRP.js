@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
 import SafeQuery from './SafeQuery'
-import { ReverseRecordQuery } from '../graphql/queries'
+import { REVERSE_RECORD_QUERY } from '../graphql/queries'
 
 class ReverseResolution extends Component {
   render() {
     return (
       <SafeQuery
-        query={ReverseRecordQuery}
+        query={REVERSE_RECORD_QUERY}
         variables={{ address: this.props.address }}
         renderLoading={() =>
           this.props.children({

@@ -5,8 +5,8 @@ import Tooltip from '../Tooltip'
 import ErrorBox from '../ErrorBox'
 import Button from '../Forms/Button'
 import {
-  CreateLoginChallenge,
-  SignChallengeString
+  CREATE_LOGIN_CHALLENGE,
+  SIGN_CHALLENGE_STRING
 } from '../../graphql/mutations'
 import { GlobalConsumer } from '../../GlobalState'
 
@@ -83,9 +83,9 @@ export default class RefreshAuthTokenButton extends Component {
     return (
       <GlobalConsumer>
         {({ reloadUserAddress, setAuthTokenFromSignature, setUserProfile }) => (
-          <SafeMutation mutation={CreateLoginChallenge}>
+          <SafeMutation mutation={CREATE_LOGIN_CHALLENGE}>
             {createLoginChallenge => (
-              <SafeMutation mutation={SignChallengeString}>
+              <SafeMutation mutation={SIGN_CHALLENGE_STRING}>
                 {signChallengeString => (
                   <>
                     <Tooltip text="Please sign the login message using your wallet or Dapp browser">

@@ -2,14 +2,16 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 
 import { amAdmin, getMyParticipantEntry } from '../../utils/parties'
-import { PartyQuery } from '../../graphql/queries'
+import { PARTY_QUERY } from '../../graphql/queries'
+import mq from '../../mediaQuery'
+
+import Loader from '../Loader'
 import ErrorBox from '../ErrorBox'
 import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
 import EventParticipants from './EventParticipants'
 import { GlobalConsumer } from '../../GlobalState'
-import mq from '../../mediaQuery'
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -45,7 +47,7 @@ class SingleEventWrapper extends Component {
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery
-              query={PartyQuery}
+              query={PARTY_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}
@@ -55,7 +57,7 @@ class SingleEventWrapper extends Component {
                 // no party?
                 if (!party) {
                   if (loading) {
-                    return 'Loading ...'
+                    return <Loader />
                   } else {
                     return (
                       <ErrorBox>
