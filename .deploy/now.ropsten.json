@@ -12,6 +12,7 @@
     { "src": "/team", "dest": "build/index.html" },
     { "src": "/terms", "dest": "build/index.html" },
     { "src": "/privacy", "dest": "build/index.html" },
+    { "src": "/pricing", "dest": "build/index.html" },
     { "src": "/create/?", "dest": "build/index.html" },
     { "src": "/deploy/?", "dest": "build/index.html" },
     { "src": "/events/?", "dest": "build/index.html" },

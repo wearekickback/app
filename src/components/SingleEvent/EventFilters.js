@@ -20,6 +20,8 @@ const Filter = styled('div')`
   margin-bottom: 20px;
 `
 
+const EventFiltersContainer = styled('div')``
+
 class EventFilters extends Component {
   state = {}
 
@@ -44,8 +46,8 @@ class EventFilters extends Component {
     })
   }
 
-  _onSearch = event => {
-    this.props.handleSearch(event.target.value)
+  _onSearch = val => {
+    this.props.handleSearch(val)
   }
 
   render() {
@@ -54,12 +56,13 @@ class EventFilters extends Component {
       enableQrCodeScanner,
       handleFilterChange,
       amAdmin,
-      ended
+      ended,
+      className
     } = this.props
     const { scanError } = this.state
 
     return (
-      <EventFiltersContainer>
+      <EventFiltersContainer className={className}>
         {amAdmin && !ended && (
           <Filter>
             <Label>Filters</Label>
@@ -81,7 +84,7 @@ class EventFilters extends Component {
         <Search
           type="text"
           Icon={SearchIcon}
-          onChange={this._onSearch}
+          onUpdate={this._onSearch}
           value={search}
           placeholder="Search for names or addresses"
           wide
@@ -106,7 +109,5 @@ class EventFilters extends Component {
     )
   }
 }
-
-const EventFiltersContainer = styled('div')``
 
 export default EventFilters

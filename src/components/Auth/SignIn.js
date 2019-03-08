@@ -5,7 +5,10 @@ import styled from 'react-emotion'
 import Button from '../Forms/Button'
 import ProfileForm from '../Profile/ProfileForm'
 import { UPDATE_USER_PROFILE, LOGIN_USER } from '../../graphql/mutations'
-import { USER_PROFILE_QUERY } from '../../graphql/queries'
+import {
+  USER_PROFILE_QUERY,
+  LEGAL_AGREEMENTS_QUERY
+} from '../../graphql/queries'
 import SafeMutation from '../SafeMutation'
 import SafeQuery from '../SafeQuery'
 import { GlobalConsumer } from '../../GlobalState'
@@ -25,12 +28,16 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
+const SignUpButtonDiv = styled('div')`
+  margin-top: 30px;
+`
+
 export default class SignIn extends Component {
   render() {
     return (
       <SignInContainer data-testid="sign-in-modal">
         <GlobalConsumer>
-          {({ userAddress, toggleModal }) => (
+          {({ userAddress, closeModal }) => (
             <SafeQuery
               query={USER_PROFILE_QUERY}
               variables={{ address: userAddress }}
@@ -39,9 +46,9 @@ export default class SignIn extends Component {
                 const hasProfile = !!_.get(result, 'data.profile.username')
 
                 if (hasProfile) {
-                  return this.renderSignIn(userAddress, toggleModal)
+                  return this.renderSignIn(userAddress, closeModal)
                 } else {
-                  return this.renderSignUp(userAddress, toggleModal)
+                  return this.renderSignUp(userAddress, closeModal)
                 }
               }}
             </SafeQuery>
@@ -51,41 +58,46 @@ export default class SignIn extends Component {
     )
   }
 
-  renderSignUp(userAddress, toggleModal) {
+  renderSignUp(userAddress, closeModal) {
     return (
       <>
         <H2>
           <Pencil />
           Create account
         </H2>
-        <ProfileForm
-          userAddress={userAddress}
-          renderSubmitButton={(profile, isValid) => (
-            <SafeMutation
-              mutation={UPDATE_USER_PROFILE}
-              variables={{ profile }}
-            >
-              {updateUserProfile =>
-                isValid ? (
-                  <RefreshAuthTokenButton
-                    onClick={this.signInOrSignUp({
-                      fetchUserProfileFromServer: updateUserProfile,
-                      toggleModal
-                    })}
-                    title="Create account"
-                  />
-                ) : (
-                  <Button type="disabled">Create account</Button>
-                )
-              }
-            </SafeMutation>
+        <SafeQuery query={LEGAL_AGREEMENTS_QUERY}>
+          {({ data: { legal: latestLegal } }) => (
+            <ProfileForm
+              userAddress={userAddress}
+              latestLegal={latestLegal}
+              renderSubmitButton={(isValid, prepareValuesFn) => (
+                <SafeMutation mutation={UPDATE_USER_PROFILE}>
+                  {updateUserProfile => (
+                    <SignUpButtonDiv>
+                      {isValid ? (
+                        <RefreshAuthTokenButton
+                          onClick={this.signInOrSignUp({
+                            prepareValuesFn,
+                            sendDataToServer: updateUserProfile,
+                            closeModal
+                          })}
+                          title="Create account"
+                        />
+                      ) : (
+                        <Button type="disabled">Create account</Button>
+                      )}
+                    </SignUpButtonDiv>
+                  )}
+                </SafeMutation>
+              )}
+            />
           )}
-        />
+        </SafeQuery>
       </>
     )
   }
 
-  renderSignIn(userAddress, toggleModal) {
+  renderSignIn(userAddress, closeModal) {
     return (
       <>
         <H2>Sign in</H2>
@@ -94,8 +106,8 @@ export default class SignIn extends Component {
           {loginUser => (
             <RefreshAuthTokenButton
               onClick={this.signInOrSignUp({
-                fetchUserProfileFromServer: loginUser,
-                toggleModal
+                sendDataToServer: loginUser,
+                closeModal
               })}
             />
           )}
@@ -105,10 +117,26 @@ export default class SignIn extends Component {
   }
 
   signInOrSignUp = ({
-    fetchUserProfileFromServer,
-    toggleModal
+    prepareValuesFn,
+    sendDataToServer,
+    closeModal
   }) => async refreshAuthToken => {
-    await refreshAuthToken({ fetchUserProfileFromServer })
-    toggleModal({ name: SIGN_IN })
+    const dataToSend = !prepareValuesFn
+      ? undefined
+      : {
+          variables: {
+            profile: prepareValuesFn()
+          }
+        }
+
+    await refreshAuthToken({
+      fetchUserProfileFromServer: () => sendDataToServer(dataToSend)
+    })
+
+    this.close(closeModal)
+  }
+
+  close = closeModal => {
+    closeModal({ name: SIGN_IN })
   }
 }
