@@ -7,12 +7,20 @@ const InputContainer = styled('div')`
   position: relative;
 `
 
+const InputWrapper = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`
+
 const Prefix = styled('span')`
   display: inline-block;
   margin-right: 10px;
   font-size: 14px;
   color: #000;
   font-weight: bold;
+  flex: 0;
 `
 
 const Input = styled('input')`
@@ -20,6 +28,7 @@ const Input = styled('input')`
   height: 40px;
   font-size: 14px;
   color: #1e1e1e;
+  flex: 1;
   border-radius: 2px;
   border: 1px solid ${({ hasError }) => (hasError ? '#f00' : '#edeef4')};
   padding-left: 30px;
@@ -45,7 +54,13 @@ const SearchInput = styled(Input)`
 
 export class Search extends Component {
   render() {
-    const { placeholder = '', Icon, innerRef, onUpdate, ...props } = this.props
+    const {
+      placeholder = '',
+      Icon,
+      innerRef,
+      onChangeText,
+      ...props
+    } = this.props
 
     let SearchIcon
     if (Icon) {
@@ -71,7 +86,7 @@ export class Search extends Component {
   }
 
   _onChange = e => {
-    this.props.onUpdate(e.target.value)
+    this.props.onChangeText(e.target.value)
   }
 }
 
@@ -81,25 +96,31 @@ export default class TextInput extends Component {
       errors,
       placeholder = '',
       innerRef,
-      onUpdate,
       prefix,
-      onChange,
+      onChangeText,
+      className,
       ...props
     } = this.props
 
     return (
-      <InputContainer {...props}>
-        {prefix ? <Prefix>{prefix}</Prefix> : null}
-        <Input
-          type="text"
-          placeholder={placeholder}
-          innerRef={innerRef}
-          hasError={!!errors}
-          {...props}
-          onChange={onChange}
-        />
+      <InputContainer className={className}>
+        <InputWrapper>
+          {prefix ? <Prefix>{prefix}</Prefix> : null}
+          <Input
+            type="text"
+            placeholder={placeholder}
+            innerRef={innerRef}
+            hasError={!!errors}
+            {...props}
+            onChange={this._onChange}
+          />
+        </InputWrapper>
         <FieldErrors errors={errors} />
       </InputContainer>
     )
+  }
+
+  _onChange = e => {
+    this.props.onChangeText(e.target.value)
   }
 }
