@@ -1,6 +1,7 @@
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-const TextArea = styled('textarea')`
+const DefaultTextArea = styled('textarea')`
   width: 400px;
   font-size: 14px;
   padding: 10px;
@@ -19,4 +20,14 @@ const TextArea = styled('textarea')`
   }
 `
 
-export default TextArea
+export default class TextArea extends Component {
+  render() {
+    const { onChangeText, ...props } = this.props
+
+    return <DefaultTextArea {...props} onChange={this._onChange} />
+  }
+
+  _onChange = e => {
+    this.props.onChangeText(e.target.value)
+  }
+}

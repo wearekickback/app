@@ -67,7 +67,7 @@ class EventFilters extends Component {
           <Filter>
             <Label>Filters</Label>
             <Select
-              onChange={handleFilterChange}
+              onChangeText={handleFilterChange}
               placeholder="Choose"
               options={[
                 { label: 'All', value: 'all' },
@@ -84,7 +84,7 @@ class EventFilters extends Component {
         <Search
           type="text"
           Icon={SearchIcon}
-          onUpdate={this._onSearch}
+          onChangeText={this._onSearch}
           value={search}
           placeholder="Search for names or addresses"
           wide

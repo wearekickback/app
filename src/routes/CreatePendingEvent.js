@@ -31,7 +31,7 @@ class Create extends Component {
             <label>SECRET PASSWORD:</label>
             <input
               value={password}
-              onChange={e => this.setState({ password: e.target.value })}
+              onChangeText={val => this.setState({ password: val })}
               type="password"
             />
           </p>

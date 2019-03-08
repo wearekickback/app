@@ -129,9 +129,7 @@ export default class ProfileForm extends Component {
                 placeholder="username"
                 data-testid="username"
                 value={username}
-                onChange={e =>
-                  this.handleUsernameChange(apolloClient)(e.target.value)
-                }
+                onChangeText={this.handleUsernameChange(apolloClient)}
                 errors={errors.username}
               />
               <Explanation>
@@ -145,7 +143,7 @@ export default class ProfileForm extends Component {
                 placeholder="Joe Bloggs"
                 value={realName}
                 data-testid="realname"
-                onChange={e => this.handleRealNameChange(e.target.value)}
+                onChangeText={this.handleRealNameChange}
                 errors={errors.realName}
               />
               <Explanation>
@@ -159,7 +157,7 @@ export default class ProfileForm extends Component {
                 placeholder="alice@gmail.com"
                 data-testid="email"
                 value={email}
-                onChange={e => this.handleEmailChange(e.target.value)}
+                onChangeText={this.handleEmailChange}
                 errors={errors.email}
               />
               <Explanation>
@@ -174,7 +172,7 @@ export default class ProfileForm extends Component {
                 prefix="@"
                 placeholder="jack"
                 value={twitter}
-                onChange={e => this.handleTwitterChange(e.target.value)}
+                onChangeText={this.handleTwitterChange}
                 errors={errors.twitter}
               />
               <Explanation>
@@ -187,11 +185,9 @@ export default class ProfileForm extends Component {
                 value={TERMS_AND_CONDITIONS}
                 checked={!!terms}
                 testId="terms"
-                onChange={() =>
-                  this.handleTermsCheck(
-                    getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
-                  )
-                }
+                onChange={this.handleTermsCheck(
+                  getLegalAgreement(latestLegal, TERMS_AND_CONDITIONS)
+                )}
               >
                 I agree with the{' '}
                 <Link to="/terms" target="_blank" rel="noopener noreferrer">
@@ -204,11 +200,9 @@ export default class ProfileForm extends Component {
                 value={PRIVACY_POLICY}
                 checked={!!privacy}
                 testId="privacy"
-                onChange={e =>
-                  this.handlePrivacyCheck(
-                    getLegalAgreement(latestLegal, PRIVACY_POLICY)
-                  )(e.target.value)
-                }
+                onChange={this.handlePrivacyCheck(
+                  getLegalAgreement(latestLegal, PRIVACY_POLICY)
+                )}
               >
                 I agree with the{' '}
                 <Link to="/privacy" target="_blank" rel="noopener noreferrer">
@@ -220,11 +214,9 @@ export default class ProfileForm extends Component {
               value={MARKETING_INFO}
               checked={!!marketing}
               testId="marketing"
-              onChange={e =>
-                this.handleMarketingCheck(
-                  getLegalAgreement(latestLegal, MARKETING_INFO)
-                )(e.target.value)
-              }
+              onChange={this.handleMarketingCheck(
+                getLegalAgreement(latestLegal, MARKETING_INFO)
+              )}
             >
               I am happy to receive marketing info (optional)
             </Checkbox>

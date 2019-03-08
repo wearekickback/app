@@ -23,7 +23,7 @@ const SetLimit = ({ address }) => {
       <Mutation mutation={SET_LIMIT}>
         {setLimitOfParticipants => (
           <>
-            <TextInput type="text" onChange={e => setText(e.target.value)} />
+            <TextInput type="text" onChangeText={setText} />
             <Button
               analyticsId="Set Event Limit"
               onClick={() =>
