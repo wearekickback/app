@@ -4,12 +4,16 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import Button from '../../Forms/Button'
-import TextInput from '../../Forms/TextInput'
+import DefaultTextInput from '../../Forms/TextInput'
 
 const SET_LIMIT = gql`
   mutation setLimitOfParticipants($limit: String, $address: String) {
     setLimitOfParticipants(limit: $limit, address: $address) @client
   }
+`
+
+const TextInput = styled(DefaultTextInput)`
+  margin-bottom: 10px;
 `
 
 const SetLimit = ({ address }) => {
