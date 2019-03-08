@@ -81,7 +81,7 @@ const cells = [
   { label: 'Address', value: 'user.address' },
   { label: 'Email' },
   { label: 'Twitter' },
-  { label: 'Status', value: 'status' }
+  { label: 'Status', value: 'status', hidden: true }
 ]
 
 function getEmail(email) {
@@ -100,13 +100,18 @@ function getEmail(email) {
 
 class SingleEventWrapper extends Component {
   state = {
-    search: ''
+    search: '',
+    selectedFilter: null
   }
 
   handleSearch = value => {
     this.setState({
       search: value
     })
+  }
+
+  handleFilterChange = selectedFilter => {
+    this.setState({ selectedFilter })
   }
 
   downloadCSV(csv, filename) {
@@ -157,7 +162,7 @@ class SingleEventWrapper extends Component {
 
   render() {
     const { search } = this.state
-    const { handleSearch } = this
+    const { handleSearch, handleFilterChange } = this
     const { address } = this.props
 
     return (
@@ -223,14 +228,24 @@ class SingleEventWrapper extends Component {
                         >
                           Download as CSV
                         </DownloadButton>
-                        <EventFilters handleSearch={handleSearch} />
+                        <EventFilters
+                          handleSearch={handleSearch}
+                          handleFilterChange={handleFilterChange}
+                          amAdmin={amAdmin}
+                          search={this.state.search}
+                          enableQrCodeScanner={amAdmin}
+                          ended={ended}
+                        />
                         <Table>
                           <Tbody>
                             <TR>
-                              <TH data-csv="no">Marked attended</TH>
-                              {cells.map(cell => (
-                                <TH key={cell.label}>{cell.label}</TH>
-                              ))}
+                              <TH data-csv="no">Status</TH>
+                              {cells.map(
+                                cell =>
+                                  !cell.hidden && (
+                                    <TH key={cell.label}>{cell.label}</TH>
+                                  )
+                              )}
                               <TH>Marketing</TH>
                             </TR>
 
@@ -336,6 +351,8 @@ class SingleEventWrapper extends Component {
                                             )}
                                           </TD>
                                         )
+                                      } else if (cell.hidden === true) {
+                                        return
                                       }
                                       return (
                                         <TD key={i}>
