@@ -34,7 +34,7 @@ function UpdatePartyMetaComponent({ address }) {
             <PartyForm
               mutation={UPDATE_PARTY_META}
               name={party.name}
-              type="Update Party Meta"
+              type="Update Event"
               address={address}
               {...party}
             />
