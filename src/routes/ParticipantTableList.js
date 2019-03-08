@@ -367,7 +367,7 @@ class SingleEventWrapper extends Component {
                                           </TD>
                                         )
                                       } else if (cell.hidden === true) {
-                                        return
+                                        return null
                                       }
                                       return (
                                         <TD key={i}>
