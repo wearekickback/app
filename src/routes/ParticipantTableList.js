@@ -80,8 +80,7 @@ const cells = [
   { label: 'Real Name', value: 'user.realName' },
   { label: 'Address', value: 'user.address' },
   { label: 'Email' },
-  { label: 'Twitter' },
-  { label: 'Status', value: 'status', hidden: true }
+  { label: 'Twitter' }
 ]
 
 function getEmail(email) {
