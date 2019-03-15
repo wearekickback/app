@@ -62,6 +62,7 @@ const MarkedAttendedInfo = styled('div')`
   margin-bottom: 20px;
 
   p {
+    margin-top: 0;
     margin-bottom: 20px;
   }
 `

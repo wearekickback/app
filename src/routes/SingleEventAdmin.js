@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import mq from '../mediaQuery'
 import { Route, Link } from 'react-router-dom'
 import { ReactComponent as DefaultBackArrow } from '../components/svg/arrowBack.svg'
 
 import ParticipantTableList from '../components/SingleEvent/ParticipantTableList'
-import AdminPanel from '../components/SingleEvent/Admin/AdminPanel'
+import SmartContractFunctions from '../components/SingleEvent/Admin/SmartContractFunctions'
 import ErrorBox from '../components/ErrorBox'
 import { PARTY_QUERY } from '../graphql/queries'
 import { amAdmin } from '../utils/parties'
@@ -12,25 +13,50 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
+const SingleEventAdminContainer = styled('div')`
+  position: relative;
+`
+
+const TabContent = styled('div')`
+  position: relative;
+  left: 0;
+  ${mq.medium`
+    
+    left: 150px;
+  `}
+`
+
 const TabNavigation = styled('div')`
-  margin-bottom: 20px;
   display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  ${mq.medium`
+    justify-content: flex-start;
+    position: absolute;
+    flex-direction: column;
+    left: 0;
+    top: 0;
+  `}
 `
 
 const ToggleLink = styled(Link)`
-  padding: 20px 30px;
   display: flex;
+  transition: 0.2s;
+  color: #aaa;
+  padding-right: 20px;
+
+  ${mq.medium`
+    margin-bottom: 20px;
+  `}
 
   &:hover {
-    color: white;
-    background: #6e76ff;
+    color: #6e76ff;
   }
 
   ${p =>
     p.active &&
     `
-    color: white;
-    background: #6e76ff;
+    color: #6e76ff;;
   `};
 `
 
@@ -98,7 +124,7 @@ class SingleEvent extends Component {
                   }
 
                   return (
-                    <>
+                    <SingleEventAdminContainer>
                       <TabNavigation>
                         <ToggleLink
                           active={pathname === `/event/${address}/admin`}
@@ -122,24 +148,28 @@ class SingleEvent extends Component {
                           Smart Contract
                         </ToggleLink>
                       </TabNavigation>
-                      <Route
-                        path={`/event/${address}/admin`}
-                        exact
-                        render={() => (
-                          <ParticipantTableList address={address} />
-                        )}
-                      />
-                      <Route
-                        path={`/event/${address}/admin/edit`}
-                        exact
-                        render={() => <UpdatePartyMeta address={address} />}
-                      />
-                      <Route
-                        path={`/event/${address}/admin/smart-contract`}
-                        exact
-                        render={() => <AdminPanel party={party} />}
-                      />
-                    </>
+                      <TabContent>
+                        <Route
+                          path={`/event/${address}/admin`}
+                          exact
+                          render={() => (
+                            <ParticipantTableList address={address} />
+                          )}
+                        />
+                        <Route
+                          path={`/event/${address}/admin/edit`}
+                          exact
+                          render={() => <UpdatePartyMeta address={address} />}
+                        />
+                        <Route
+                          path={`/event/${address}/admin/smart-contract`}
+                          exact
+                          render={() => (
+                            <SmartContractFunctions party={party} />
+                          )}
+                        />
+                      </TabContent>
+                    </SingleEventAdminContainer>
                   )
                 }}
               </SafeQuery>
