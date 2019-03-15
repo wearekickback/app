@@ -13,6 +13,11 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
 
+const primary1 = `hsla(237, 100%, 72%, 1)`
+const primary2 = `hsla(237, 75%, 72%, 1)`
+const primary3 = `hsla(237, 50%, 72%, 1)`
+const primary4 = `hsla(237, 25%, 72%, 1)`
+
 const SingleEventAdminContainer = styled('div')`
   position: relative;
 `
@@ -22,7 +27,7 @@ const TabContent = styled('div')`
   left: 0;
   ${mq.medium`
     max-width: calc(100% - 150px);
-    left: 150px;
+    left: 200px;
   `}
 `
 
@@ -42,15 +47,16 @@ const TabNavigation = styled('div')`
 const ToggleLink = styled(Link)`
   display: flex;
   transition: 0.2s;
-  color: #aaa;
+  color: ${primary4};
   padding-right: 20px;
+  font-size: 16px;
 
   ${mq.medium`
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   `}
 
   &:hover {
-    color: #6e76ff;
+    color: ${primary1};
   }
 
   ${p =>
@@ -61,34 +67,31 @@ const ToggleLink = styled(Link)`
 `
 
 const BackToEventButton = styled(Link)`
-  border: solid 1px #6e76ff;
-  padding: 10px 20px;
+  color: ${primary2};
+  padding: 10px 20px 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 12px;
   margin-bottom: 20px;
   border-radius: 10px;
   display: flex;
   transition: 0.2s;
-  width: 210px;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   &:hover {
-    color: white;
-    background: #6e76ff;
-
-    path {
-      fill: #ffffff;
-    }
+    text-decoration: underline;
   }
 `
 
 const BackArrow = styled(DefaultBackArrow)`
   path {
-    fill: #6e76ff;
+    fill: ${primary3};
   }
   width: 20px;
   margin-top: 4px;
+  margin-right: 10px;
   margin-left: -4px;
-  margin-right: 5px;
 `
 
 class SingleEvent extends Component {
@@ -105,7 +108,7 @@ class SingleEvent extends Component {
           ) : (
             <>
               <BackToEventButton to={`/event/${address}`}>
-                <BackArrow /> Back to Event Page
+                <BackArrow /> Back to Event
               </BackToEventButton>
               <SafeQuery
                 query={PARTY_QUERY}
