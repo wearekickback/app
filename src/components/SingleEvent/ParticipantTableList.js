@@ -63,6 +63,11 @@ const MarkedAttendedInfo = styled('div')`
   margin-bottom: 20px;
 
   p {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b2b2b;
+    letter-spacing: 0.04em;
     margin-top: 0;
     margin-bottom: 20px;
   }
@@ -76,7 +81,10 @@ const Tick = () => (
 
 const DownloadButton = styled(Button)`
   margin-bottom: 20px;
-  justify-content: center;
+  max-width: 200px;
+  position: absolute;
+  right: 0;
+  top: 0;
 `
 
 const cells = [
@@ -243,13 +251,14 @@ class SingleEventWrapper extends Component {
                     {participants.length > 0 ? (
                       <>
                         <DownloadButton
+                          type="hollow"
                           onClick={() => {
                             const html = document.querySelector('table')
                               .outerHTML
                             this.exportTableToCSV(html, 'event.csv')
                           }}
                         >
-                          Download as CSV
+                          Download CSV
                         </DownloadButton>
                         <EventFilters
                           handleSearch={handleSearch}
@@ -259,6 +268,7 @@ class SingleEventWrapper extends Component {
                           enableQrCodeScanner={amAdmin}
                           ended={ended}
                         />
+
                         <Table>
                           <Tbody>
                             <TR>
