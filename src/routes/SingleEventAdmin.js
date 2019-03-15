@@ -21,7 +21,7 @@ const TabContent = styled('div')`
   position: relative;
   left: 0;
   ${mq.medium`
-    
+    max-width: calc(100% - 150px);
     left: 150px;
   `}
 `
