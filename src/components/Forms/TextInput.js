@@ -45,6 +45,7 @@ const Input = styled('input')`
 
 const SearchContainer = styled(InputContainer)`
   background-color: rgba(243, 243, 249, 0.5);
+  margin-bottom: 20px;
 `
 
 const SearchInput = styled(Input)`
