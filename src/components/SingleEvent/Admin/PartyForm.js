@@ -14,7 +14,9 @@ import TextArea from '../../Forms/TextArea'
 import Label from '../../Forms/Label'
 import { H2 } from '../../Typography/Basic'
 
-const PartyFormContainer = styled('div')``
+const PartyFormContainer = styled('div')`
+  max-width: 768px;
+`
 const PartyFormContent = styled('div')``
 
 const InputWrapper = styled('div')`
@@ -38,13 +40,27 @@ const NoImage = styled('div')`
 `
 
 const ImageWrapper = styled('div')`
+  display: flex;
+
+  &:before {
+    content: "${p => p.text}";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.2s;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    width: 100%;
+    height: 100%;
+    background: rgba(110, 118, 255, 0.85);
+  }
   &:hover {
+    cursor: pointer;
     &:before {
-      content: '';
-      width: 100%;
-      height: 100%;
-      background: #6e76ff;
-      opacity: 0.85;
+      opacity: 1;
     }
   }
 `
@@ -53,8 +69,8 @@ const DropZoneWrapper = styled('div')`
   margin-bottom: 20px;
 `
 
-const UploadedImage = ({ src }) => (
-  <ImageWrapper>
+const UploadedImage = ({ src, text }) => (
+  <ImageWrapper text={text}>
     <img alt="event" src={src} />
   </ImageWrapper>
 )
@@ -67,7 +83,7 @@ const Actions = styled('div')`
 function getButtonText(type) {
   return {
     create: 'Create Event',
-    edit: 'Edit event'
+    edit: 'Update Event'
   }[type]
 }
 
@@ -211,12 +227,15 @@ class PartyForm extends Component {
                     accept="image/*"
                   >
                     {headerImg ? (
-                      <UploadedImage src={headerImg} />
+                      <UploadedImage
+                        src={headerImg}
+                        text="Click or drop a file to change photo"
+                      />
                     ) : (
                       <NoImage>
                         {this.state.imageUploading
                           ? 'Uploading...'
-                          : 'Click here to upload a photo'}
+                          : 'Click or drop a file to change photo'}
                       </NoImage>
                     )}
                   </Dropzone>
