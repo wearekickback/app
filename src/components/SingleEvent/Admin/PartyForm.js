@@ -17,6 +17,10 @@ import { H2 } from '../../Typography/Basic'
 const PartyFormContainer = styled('div')``
 const PartyFormContent = styled('div')``
 
+const InputWrapper = styled('div')`
+  margin-bottom: 20px;
+`
+
 const NoImage = styled('div')`
   color: white;
   background: #6e76ff;
@@ -54,6 +58,18 @@ const UploadedImage = ({ src }) => (
     <img alt="event" src={src} />
   </ImageWrapper>
 )
+
+const Actions = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+`
+
+function getButtonText(type) {
+  return {
+    create: 'Create Event',
+    edit: 'Edit event'
+  }[type]
+}
 
 class PartyForm extends Component {
   constructor(props) {
@@ -109,7 +125,7 @@ class PartyForm extends Component {
     } = this.state
 
     const {
-      type = 'Create Pending Party',
+      type = 'create',
       onCompleted,
       mutation,
       address,
@@ -130,128 +146,136 @@ class PartyForm extends Component {
       <PartyFormContainer>
         <H2>Event Details</H2>
         <PartyFormContent>
-          <Label>Event Name</Label>
-          <TextInput
-            wide
-            value={name}
-            onChangeText={val => this.setState({ name: val })}
-            type="text"
-            placeholder="Name of the event"
-          />
-          <Label>Description</Label>
-          <TextArea
-            wide
-            value={description}
-            onChangeText={val => this.setState({ description: val })}
-            type="text"
-            placeholder="Description of the event"
-            rows="10"
-          >
-            {description}
-          </TextArea>
-          <Label>Location</Label>
-          <TextInput
-            wide
-            value={location}
-            onChangeText={val => this.setState({ location: val })}
-            type="text"
-            placeholder="Location of the event"
-          />
-          <Label>Start date</Label>
-          <DateTimePicker
-            onChange={d => this.setState({ start: d.toISOString() })}
-            value={new Date(start)}
-          />
-          <Label>End date</Label>
-          <DateTimePicker
-            onChange={d => this.setState({ end: d.toISOString() })}
-            value={new Date(end)}
-          />
-          <Label>Arrive by</Label>
-          <DateTimePicker
-            onChange={d => this.setState({ arriveBy: d.toISOString() })}
-            value={new Date(arriveBy || start)}
-          />
-          <br />
-          <Label>Image</Label>
-          <DropZoneWrapper>
-            <Mutation mutation={SINGLE_UPLOAD}>
-              {mutate => (
-                <Dropzone
-                  className="dropzone"
-                  onDrop={files => this.onDrop(files, mutate)}
-                  accept="image/*"
-                >
-                  {headerImg ? (
-                    <UploadedImage src={headerImg} />
-                  ) : (
-                    <NoImage>
-                      {this.state.imageUploading
-                        ? 'Uploading...'
-                        : 'Click here to upload a photo'}
-                    </NoImage>
-                  )}
-                </Dropzone>
-              )}
-            </Mutation>
-          </DropZoneWrapper>
-          {type === 'Create Pending Party' && (
+          <InputWrapper>
+            <Label>Event Name</Label>
+            <TextInput
+              wide
+              value={name}
+              onChangeText={val => this.setState({ name: val })}
+              type="text"
+              placeholder="Name of the event"
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Description</Label>
+            <TextArea
+              wide
+              value={description}
+              onChangeText={val => this.setState({ description: val })}
+              type="text"
+              placeholder="Description of the event"
+              rows="10"
+            >
+              {description}
+            </TextArea>
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Location</Label>
+            <TextInput
+              wide
+              value={location}
+              onChangeText={val => this.setState({ location: val })}
+              type="text"
+              placeholder="Location of the event"
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Start date</Label>
+            <DateTimePicker
+              onChange={d => this.setState({ start: d.toISOString() })}
+              value={new Date(start)}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>End date</Label>
+            <DateTimePicker
+              onChange={d => this.setState({ end: d.toISOString() })}
+              value={new Date(end)}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Arrive by</Label>
+            <DateTimePicker
+              onChange={d => this.setState({ arriveBy: d.toISOString() })}
+              value={new Date(arriveBy || start)}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Image</Label>
+            <DropZoneWrapper>
+              <Mutation mutation={SINGLE_UPLOAD}>
+                {mutate => (
+                  <Dropzone
+                    className="dropzone"
+                    onDrop={files => this.onDrop(files, mutate)}
+                    accept="image/*"
+                  >
+                    {headerImg ? (
+                      <UploadedImage src={headerImg} />
+                    ) : (
+                      <NoImage>
+                        {this.state.imageUploading
+                          ? 'Uploading...'
+                          : 'Click here to upload a photo'}
+                      </NoImage>
+                    )}
+                  </Dropzone>
+                )}
+              </Mutation>
+            </DropZoneWrapper>
+          </InputWrapper>
+          {type === 'create' && (
             <>
-              <Label>Commitment</Label>
-              <TextInput
-                value={deposit}
-                onChangeText={val => this.setState({ deposit: val })}
-                type="text"
-                placeholder="ETH"
-              />
-              <Label>Limit of participants</Label>
-              <TextInput
-                value={limitOfParticipants}
-                onChangeText={val =>
-                  this.setState({ limitOfParticipants: val })
-                }
-                type="text"
-                placeholder="number of participants"
-              />
-              <Label>Cooling period</Label>
-              <TextInput
-                value={coolingPeriod}
-                onChangeText={val =>
-                  this.setState({
-                    coolingPeriod: 0 < parseInt(val) ? val : '1'
-                  })
-                }
-                type="text"
-                placeholder="Cooling period in seconds"
-              />
+              <InputWrapper>
+                <Label>Commitment</Label>
+                <TextInput
+                  value={deposit}
+                  onChangeText={val => this.setState({ deposit: val })}
+                  type="text"
+                  placeholder="ETH"
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Label>Available spots</Label>
+                <TextInput
+                  value={limitOfParticipants}
+                  onChangeText={val =>
+                    this.setState({ limitOfParticipants: val })
+                  }
+                  type="text"
+                  placeholder="number of participants"
+                />
+              </InputWrapper>
             </>
           )}
         </PartyFormContent>
 
         {children}
 
-        <SafeMutation
-          mutation={mutation}
-          resultKey="id"
-          variables={variables}
-          onCompleted={
-            onCompleted
-              ? ({ id }) =>
-                  onCompleted(
-                    { id },
-                    deposit,
-                    limitOfParticipants,
-                    coolingPeriod
-                  )
-              : null
-          }
-        >
-          {mutate => (
-            <Button onClick={mutate} analyticsId={type}>
-              {type}
-            </Button>
-          )}
-        </SafeMutation>
+        <Actions>
+          <SafeMutation
+            mutation={mutation}
+            resultKey="id"
+            variables={variables}
+            onCompleted={
+              onCompleted
+                ? ({ id }) =>
+                    onCompleted(
+                      { id },
+                      deposit,
+                      limitOfParticipants,
+                      coolingPeriod
+                    )
+                : null
+            }
+          >
+            {mutate => (
+              <Button onClick={mutate} analyticsId={type}>
+                {getButtonText(type)}
+              </Button>
+            )}
+          </SafeMutation>
+        </Actions>
       </PartyFormContainer>
     )
   }
