@@ -139,7 +139,7 @@ class SingleEvent extends Component {
                           active={pathname === `/event/${address}/admin/edit`}
                           to={`/event/${address}/admin/edit`}
                         >
-                          Edit Details
+                          Event Details
                         </ToggleLink>
                         <ToggleLink
                           active={
