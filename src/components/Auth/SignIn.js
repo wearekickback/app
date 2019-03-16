@@ -28,6 +28,11 @@ const H2 = styled(DefaultH2)`
   align-items: center;
 `
 
+const P = styled('p')`
+  white-space: nowrap;
+  margin-bottom: 10px;
+`
+
 const SignUpButtonDiv = styled('div')`
   margin-top: 30px;
 `
@@ -101,7 +106,7 @@ export default class SignIn extends Component {
     return (
       <>
         <H2>Sign in</H2>
-        <div>{userAddress}</div>
+        <P>Account detected: {userAddress}</P>
         <SafeMutation mutation={LOGIN_USER}>
           {loginUser => (
             <RefreshAuthTokenButton

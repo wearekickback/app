@@ -22,7 +22,7 @@ export const P = styled('p')`
   font-weight: 400;
   font-size: 14px;
   color: #3d3f50;
-  line-height: 21px;
+  line-height: 1.8em;
   max-width: 600px;
   margin-bottom: 1.8em;
 `
