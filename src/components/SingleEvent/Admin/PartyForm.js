@@ -23,9 +23,11 @@ const InputWrapper = styled('div')`
   margin-bottom: 20px;
 `
 
+const primary2 = `hsla(237, 75%, 72%, 1)`
+
 const NoImage = styled('div')`
   color: white;
-  background: #6e76ff;
+  background: ${primary2};
   max-width: 100%;
   height: 300px;
   padding: 40px;
@@ -33,6 +35,8 @@ const NoImage = styled('div')`
   justify-content: center;
   align-items: center;
   font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
 
   &:hover {
     cursor: pointer;
@@ -41,9 +45,11 @@ const NoImage = styled('div')`
 
 const ImageWrapper = styled('div')`
   display: flex;
+  border-radius: 6px;
 
   &:before {
     content: "${p => p.text}";
+    border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,6 +62,7 @@ const ImageWrapper = styled('div')`
     width: 100%;
     height: 100%;
     background: rgba(110, 118, 255, 0.85);
+    box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
   }
   &:hover {
     cursor: pointer;

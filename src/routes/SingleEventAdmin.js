@@ -12,11 +12,9 @@ import { amAdmin } from '../utils/parties'
 import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
+import colours from '../colours'
 
-const primary1 = `hsla(237, 100%, 72%, 1)`
-const primary2 = `hsla(237, 75%, 72%, 1)`
-const primary3 = `hsla(237, 50%, 72%, 1)`
-const primary4 = `hsla(237, 25%, 72%, 1)`
+const { primary500, primary400, primary300, primary200 } = colours
 
 const SingleEventAdminContainer = styled('div')`
   position: relative;
@@ -47,7 +45,7 @@ const TabNavigation = styled('div')`
 const ToggleLink = styled(Link)`
   display: flex;
   transition: 0.2s;
-  color: ${primary4};
+  color: ${primary200};
   padding-right: 20px;
   font-size: 16px;
 
@@ -56,7 +54,7 @@ const ToggleLink = styled(Link)`
   `}
 
   &:hover {
-    color: ${primary1};
+    color: ${primary500};
   }
 
   ${p =>
@@ -67,7 +65,7 @@ const ToggleLink = styled(Link)`
 `
 
 const BackToEventButton = styled(Link)`
-  color: ${primary2};
+  color: ${primary400};
   padding: 10px 20px 10px 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -80,18 +78,18 @@ const BackToEventButton = styled(Link)`
   align-items: center;
 
   &:hover {
-    color: ${primary1};
+    color: ${primary500};
     text-decoration: underline;
 
     path {
-      fill: ${primary2};
+      fill: ${primary400};
     }
   }
 `
 
 const BackArrow = styled(DefaultBackArrow)`
   path {
-    fill: ${primary3};
+    fill: ${primary300};
   }
   width: 20px;
   margin-top: 4px;

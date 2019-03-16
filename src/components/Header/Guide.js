@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import c from '../../colours'
 
 const GuideWrapper = styled('div')`
   margin-right: 2em;
-
+  position: relative;
   & > a,
   & > div > a {
     color: white;
@@ -12,24 +13,28 @@ const GuideWrapper = styled('div')`
 
 const Menu = styled('div')`
   position: absolute;
-  background: #6e76ff;
+  border-radius: 6px;
+  background: #f4f5ff;
+  box-shadow: 0 4px 6px hsla(0, 0%, 0%, 0.1);
+  white-space: nowrap;
+  top: 100%;
+  transform: translateY(10px);
 `
 
 const List = styled('ul')`
   list-style-type: none;
-  margin-top: 1em;
-  margin-bottom: 0;
+  margin: 0;
   & li:not(:first-child) {
-    border-top: 0.5px solid white;
+    border-top: #eee solid 1px;
   }
 `
 
 const ListItem = styled('li')`
-  padding: 0.5em;
+  padding: 10px 20px;
 `
 
 const Link = styled('a')`
-  color: white;
+  color: ${c.primary400};
 `
 
 export const links = [
