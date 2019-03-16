@@ -80,7 +80,12 @@ const BackToEventButton = styled(Link)`
   align-items: center;
 
   &:hover {
+    color: ${primary1};
     text-decoration: underline;
+
+    path {
+      fill: ${primary2};
+    }
   }
 `
 
