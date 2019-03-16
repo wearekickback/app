@@ -34,7 +34,7 @@ const SingleEventContainer = styled('div')`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto 0;
   flex-direction: column;
   ${mq.medium`
@@ -50,6 +50,7 @@ const NoParticipants = styled('div')``
 
 const TableList = styled('div')`
   display: flex;
+  max-width: 100%;
   flex-direction: column;
 `
 
@@ -62,6 +63,12 @@ const MarkedAttendedInfo = styled('div')`
   margin-bottom: 20px;
 
   p {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b2b2b;
+    letter-spacing: 0.04em;
+    margin-top: 0;
     margin-bottom: 20px;
   }
 `
@@ -74,7 +81,10 @@ const Tick = () => (
 
 const DownloadButton = styled(Button)`
   margin-bottom: 20px;
-  justify-content: center;
+  max-width: 200px;
+  position: absolute;
+  right: 0;
+  top: 0;
 `
 
 const cells = [
@@ -96,6 +106,26 @@ function getEmail(email) {
     return email.pending
   } else {
     return null
+  }
+}
+
+function getTableCell(cell, i, participant) {
+  const cells = {
+    Email: <TD key={i}>{getEmail(participant.user.email)}</TD>,
+    Twitter: <TD key={i}>{getSocialId(participant.user.social, 'twitter')}</TD>,
+    Address: (
+      <TD key={i} limit>
+        {participant.user.address}
+      </TD>
+    )
+  }
+
+  if (cells[cell.label]) {
+    return cells[cell.label]
+  } else if (cell.hidden === true) {
+    return null
+  } else {
+    return <TD key={i}>{_.get(participant, cell.value)}</TD>
   }
 }
 
@@ -221,13 +251,14 @@ class SingleEventWrapper extends Component {
                     {participants.length > 0 ? (
                       <>
                         <DownloadButton
+                          type="hollow"
                           onClick={() => {
                             const html = document.querySelector('table')
                               .outerHTML
                             this.exportTableToCSV(html, 'event.csv')
                           }}
                         >
-                          Download as CSV
+                          Download CSV
                         </DownloadButton>
                         <EventFilters
                           handleSearch={handleSearch}
@@ -237,6 +268,7 @@ class SingleEventWrapper extends Component {
                           enableQrCodeScanner={amAdmin}
                           ended={ended}
                         />
+
                         <Table>
                           <Tbody>
                             <TR>
@@ -327,31 +359,9 @@ class SingleEventWrapper extends Component {
                                         </>
                                       )}
                                     </TD>
-                                    {cells.map((cell, i) => {
-                                      if (cell.label === 'Email') {
-                                        return (
-                                          <TD key={i}>
-                                            {getEmail(participant.user.email)}
-                                          </TD>
-                                        )
-                                      } else if (cell.label === 'Twitter') {
-                                        return (
-                                          <TD key={i}>
-                                            {getSocialId(
-                                              participant.user.social,
-                                              'twitter'
-                                            )}
-                                          </TD>
-                                        )
-                                      } else if (cell.hidden === true) {
-                                        return null
-                                      }
-                                      return (
-                                        <TD key={i}>
-                                          {_.get(participant, cell.value)}
-                                        </TD>
-                                      )
-                                    })}
+                                    {cells.map((cell, i) =>
+                                      getTableCell(cell, i, participant)
+                                    )}
                                     <TD>
                                       {participant.user.legal &&
                                       participant.user.legal[2] &&

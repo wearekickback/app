@@ -5,15 +5,16 @@ import RSVPPng from '../assets/guide/rsvp.png'
 import MarkPng from '../assets/guide/mark.png'
 import WithdrawPng from '../assets/guide/withdraw.png'
 import styled from 'react-emotion'
+import { P, H3, H1 } from '../components/Typography/Basic'
 
 const ImageWrapper = styled('div')`
-  max-width: 640px;
+  max-width: 100%;
   margin: 50px auto 0;
 `
 
 const WalletsWrapper = styled('div')`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 `
 
 const WalletColumn = styled('div')`
@@ -28,28 +29,33 @@ const Img = styled('img')`
   display: block;
 `
 
+const GettingStartedContainer = styled('div')`
+  max-width: 720px;
+  margin: 0 auto 0;
+`
+
 class GettingStarted extends Component {
   render() {
     return (
-      <div className="gettingstarted">
-        <h1>Getting Started</h1>
+      <GettingStartedContainer className="gettingstarted">
+        <H1>Getting Started</H1>
 
-        <h2>How it works</h2>
-        <p>
+        <H3>How it works</H3>
+        <P>
           Everyone commits a small amount of ETH when they RSVP, which is
           refunded after the event check-in. Any no-shows lose their ETH, which
           can then be split amongst the attendees.
-        </p>
+        </P>
 
-        <h2>How to connect</h2>
+        <H3>How to connect</H3>
 
-        <p>
+        <P>
           To use our service, you have to access our site with an Ethereum
           Wallet.
-        </p>
+        </P>
         <WalletsWrapper>
           <WalletColumn>
-            <h3>From Desktop</h3>
+            <H3>From Desktop</H3>
             <ul>
               <li>
                 <a href="https://metamask.io">Metamask</a> Chrome extension
@@ -63,7 +69,7 @@ class GettingStarted extends Component {
             </ul>
           </WalletColumn>
           <WalletColumn>
-            <h3>From Mobile phone</h3>
+            <H3>From Mobile phone</H3>
             <ul>
               <li>
                 <a href="https://status.im">Status.im</a>
@@ -77,62 +83,62 @@ class GettingStarted extends Component {
             </ul>
           </WalletColumn>
         </WalletsWrapper>
-        <p>Or any other your favorite wallets</p>
+        <P>Or any other your favorite wallets</P>
 
-        <p>
+        <P>
           Make sure you are connected to the correct network (mainnet unless you
           are testing something) and have enough ETH loaded on the wallet
-        </p>
+        </P>
 
         <ImageWrapper>
           <Img src={ConnectPng} />
         </ImageWrapper>
 
-        <h2>How to sign in</h2>
+        <H3>How to sign in</H3>
 
-        <p>
+        <P>
           After clicking “Sign in”, and fill in your detail, you will be asked
           to sign digital signature to confirm your sign in.
-        </p>
+        </P>
 
         <ImageWrapper>
           <Img src={SignInPng} />
         </ImageWrapper>
 
-        <h2>How to RSVP</h2>
+        <H3>How to RSVP</H3>
 
-        <p>
+        <P>
           After you signed in , click “RSVP” which asks you to confirm the
           transaction.
-        </p>
+        </P>
 
         <ImageWrapper>
           <Img src={RSVPPng} />
         </ImageWrapper>
 
-        <h2>When you are at the event</h2>
+        <H3>When you are at the event</H3>
 
-        <p>
+        <P>
           Once at the event, make sure that the event organisers checked you in.
           Otherwise, your ETH will be split among other attendees.
-        </p>
+        </P>
 
         <ImageWrapper>
           <Img src={MarkPng} />
         </ImageWrapper>
 
-        <h2>How to get your ETH back</h2>
+        <H3>How to get your ETH back</H3>
 
-        <p>
+        <P>
           After the event is over, you will receive email that you can now
           withdraw your ETH. Make sure that you withdraw within the cooling
           period unless you want to give it away to the organisers.
-        </p>
+        </P>
 
         <ImageWrapper>
           <Img src={WithdrawPng} />
         </ImageWrapper>
-      </div>
+      </GettingStartedContainer>
     )
   }
 }

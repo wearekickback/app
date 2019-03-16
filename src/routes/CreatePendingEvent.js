@@ -21,7 +21,6 @@ class Create extends Component {
 
     return (
       <CreateContainer>
-        <h1>Create a new party</h1>
         <PartyForm
           onCompleted={this._onCreated}
           mutation={CREATE_PENDING_PARTY}

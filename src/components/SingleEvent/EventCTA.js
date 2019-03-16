@@ -61,21 +61,6 @@ const Reference = styled('p')`
   }
 `
 
-// const Deposit = styled('div')`
-//   font-family: Muli;
-//   font-weight: 500;
-//   font-size: 13px;
-//   color: #6e76ff;
-//   letter-spacing: 0;
-//   text-align: center;
-//   line-height: 21px;
-//   padding: 10px 20px;
-//   width: 100px;
-//   background: rgba(233, 234, 255, 0.5);
-//   border: 1px solid rgba(233, 234, 255, 0.5);
-//   border-radius: 4px;
-// `
-
 const RSVP = styled(DefaultRSVP)`
   width: 100%;
 `

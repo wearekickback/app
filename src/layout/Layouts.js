@@ -8,12 +8,13 @@ import { GlobalConsumer } from '../GlobalState'
 
 const Container = styled('main')`
   background: white;
-  padding: 0 20px 60px;
+  padding: 0 0 60px;
 `
 
 export const ContainerInner = styled('div')`
   max-width: 1200px;
   margin: 0 auto 0;
+  padding: 0 20px 0;
 `
 
 const DefaultLayout = ({ children }) => {
