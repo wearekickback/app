@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
+import Header from '../layout/Header'
 import backgroundDark from '../assets/backgroundDark.svg'
 import backgroundLight from '../assets/backgroundLight.svg'
 import Logo from '../components/Icons/LogoFull'
@@ -177,10 +178,7 @@ class Home extends Component {
       <>
         <Hero>
           <ContainerInner>
-            <TopRow>
-              <Logo />
-              <Link to="/events">Events</Link>
-            </TopRow>
+            <Header noMargin={true} noBackground={true} />
             <h2>Say hello to Kickback!</h2>
             <p>
               Event no shows? No problem. Meet Kickback—an Ethereum-based event
