@@ -63,7 +63,7 @@ const ModalContent = styled('div')`
   padding: 40px;
   width: 100%;
   overflow-y: scroll;
-  height: 100%;
+  max-height: 100%;
   ${mq.medium`
     width: 70%;
   `};
