@@ -4,7 +4,7 @@ import { P, H3, H1 } from '../components/Typography/Basic'
 
 const PricingContainer = styled('div')`
   margin: 0 auto 0;
-  max-width: 720px;
+  max-width: 680px;
   ul {
     padding-left: 2em;
   }

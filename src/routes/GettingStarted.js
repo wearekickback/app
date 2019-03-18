@@ -30,7 +30,7 @@ const Img = styled('img')`
 `
 
 const GettingStartedContainer = styled('div')`
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto 0;
 `
 

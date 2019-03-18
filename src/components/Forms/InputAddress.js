@@ -4,7 +4,7 @@ import ReverseResolution from '../ReverseResolutionRP'
 
 const InputAddressContainer = styled('div')`
   border: 1px solid #edeef4;
-  padding: 10px;
+  padding: 10px 15px;
   margin-bottom: 20px;
 `
 const Name = styled('div')``
