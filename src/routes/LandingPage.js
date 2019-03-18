@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { Link as DefaultLink } from 'react-router-dom'
 
 import Header from '../layout/Header'
 import backgroundDark from '../assets/backgroundDark.svg'
 import backgroundLight from '../assets/backgroundLight.svg'
-import Logo from '../components/Icons/LogoFull'
 import { ContainerInner } from '../layout/Layouts'
 import LaptopPng from '../assets/laptop.png'
 import { ButtonLink } from '../components/Forms/Button'
@@ -58,16 +56,6 @@ const Hero = styled('section')`
     max-width: 500px;
     margin: 0 auto 0;
   }
-`
-
-const TopRow = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const Link = styled(DefaultLink)`
-  color: white;
 `
 
 const LaptopWrapper = styled('div')`
