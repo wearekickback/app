@@ -1,6 +1,8 @@
 import styled from 'react-emotion'
 
-export const Table = styled('table')``
+export const Table = styled('table')`
+  overflow-x: scroll;
+`
 export const Tbody = styled('tbody')``
 export const TR = styled('tr')``
 export const TH = styled('th')`

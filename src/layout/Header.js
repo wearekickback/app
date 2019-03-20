@@ -15,6 +15,8 @@ const HeaderContainer = styled('header')`
   height: 70px;
   background: #6e76ff;
   margin-bottom: 50px;
+  ${p => p.noMargin && 'margin-bottom: 0;'}
+  ${p => p.noBackground && 'background: 0;'}
 `
 
 const HeaderInner = styled('div')`
@@ -23,7 +25,6 @@ const HeaderInner = styled('div')`
   max-width: 1200px;
   height: 100%;
   display: flex;
-  background: #6e76ff;
   justify-content: space-between;
   align-items: center;
 `
@@ -42,12 +43,12 @@ const NavLink = styled(Link)`
   margin-right: 30px;
 `
 
-function Header() {
+function Header({ noMargin, noBackground }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
   return (
-    <HeaderContainer>
+    <HeaderContainer noMargin={noMargin} noBackground={noBackground}>
       <HeaderInner>
         <Logo />
         {isMinMedium && (

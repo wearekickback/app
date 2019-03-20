@@ -27,7 +27,7 @@ const SubmitButton = styled(DefaultButton)`
   margin-top: 30px;
 `
 
-export default class SignIn extends Component {
+export default class EditProfile extends Component {
   state = {
     email: '',
     realName: '',

@@ -11,14 +11,16 @@ const InputWrapper = styled('div')`
   display: flex;
   flex-direction: row;
   align-items: center;
+  position: relative;
   justify-content: flex-start;
 `
 
 const Prefix = styled('span')`
   display: inline-block;
-  margin-right: 10px;
+  position: absolute;
+  left: 15px;
   font-size: 14px;
-  color: #000;
+  color: hsla(0, 0%, 75%, 1);
   font-weight: bold;
   flex: 0;
 `
@@ -31,7 +33,7 @@ const Input = styled('input')`
   flex: 1;
   border-radius: 2px;
   border: 1px solid ${({ hasError }) => (hasError ? '#f00' : '#edeef4')};
-  padding-left: 30px;
+  padding-left: ${p => (p.hasPrefix ? '27px' : '15px')};
   ${({ wide }) => wide && `width: 100%`};
   &:focus {
     outline: 0;
@@ -45,6 +47,7 @@ const Input = styled('input')`
 
 const SearchContainer = styled(InputContainer)`
   background-color: rgba(243, 243, 249, 0.5);
+  margin-bottom: 20px;
 `
 
 const SearchInput = styled(Input)`
@@ -107,6 +110,7 @@ export default class TextInput extends Component {
         <InputWrapper>
           {prefix ? <Prefix>{prefix}</Prefix> : null}
           <Input
+            hasPrefix={prefix}
             type="text"
             placeholder={placeholder}
             innerRef={innerRef}

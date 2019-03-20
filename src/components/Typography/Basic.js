@@ -20,10 +20,9 @@ export const H3 = styled('h3')`
 export const P = styled('p')`
   font-family: Muli;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 18px;
   color: #3d3f50;
-  line-height: 21px;
-  max-width: 600px;
+  line-height: 2em;
   margin-bottom: 1.8em;
 `
 
