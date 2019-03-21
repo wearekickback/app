@@ -11,7 +11,7 @@ import 'rc-time-picker/assets/index.css'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime
-} from '../../../utils/parties'
+} from '../../../utils/dates'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
 
