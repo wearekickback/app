@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 
-import { useMediaMin, useMediaMax } from '../mediaQuery'
+import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
 
 import Logo from '../components/Icons/LogoFull'
 import GuideDropdown from '../components/Header/Guide'
@@ -34,6 +34,12 @@ const HeaderInner = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${p =>
+    p.positionAbsolute &&
+    mq.xLarge`
+    padding: 50px 20px;
+  `}
 `
 
 const RightBar = styled('div')`
@@ -60,7 +66,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
       noBackground={noBackground}
       positionAbsolute={positionAbsolute}
     >
-      <HeaderInner>
+      <HeaderInner positionAbsolute={positionAbsolute}>
         <Logo />
         {isMinMedium && (
           <RightBar>
