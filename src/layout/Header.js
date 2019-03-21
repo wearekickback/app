@@ -27,6 +27,7 @@ const HeaderInner = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${p => p.noPadding && 'padding: 0;'}
 `
 
 const RightBar = styled('div')`
@@ -43,13 +44,13 @@ const NavLink = styled(Link)`
   margin-right: 30px;
 `
 
-function Header({ noMargin, noBackground }) {
+function Header({ noMargin, noBackground, noPadding }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
   return (
     <HeaderContainer noMargin={noMargin} noBackground={noBackground}>
-      <HeaderInner>
+      <HeaderInner noPadding={noPadding}>
         <Logo />
         {isMinMedium && (
           <RightBar>

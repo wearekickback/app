@@ -166,7 +166,7 @@ class Home extends Component {
       <>
         <Hero>
           <ContainerInner>
-            <Header noMargin={true} noBackground={true} />
+            <Header noMargin={true} noBackground={true} noPadding={true} />
             <h2>Say hello to Kickback!</h2>
             <p>
               Event no shows? No problem. Meet Kickback—an Ethereum-based event
