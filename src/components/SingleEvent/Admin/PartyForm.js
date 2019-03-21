@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import Dropzone from 'react-dropzone'
-import 'rc-time-picker/assets/index.css'
 import { Mutation } from 'react-apollo'
+import moment from 'moment'
+import DayPickerInput from 'react-day-picker/DayPickerInput'
+import 'react-day-picker/lib/style.css'
+import TimePicker from 'rc-time-picker'
+import 'rc-time-picker/assets/index.css'
+
+import {
+  getDayAndTimeFromDate,
+  getDateFromDayAndTime
+} from '../../../utils/parties'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
-import DateTimePicker from 'react-datetime-picker'
 
 import SafeMutation from '../../SafeMutation'
 import Button from '../../Forms/Button'
@@ -110,13 +118,20 @@ class PartyForm extends Component {
       limitOfParticipants = 20
     } = props
 
+    const [startDay, startTime] = getDayAndTimeFromDate(start)
+    const [endDay, endTime] = getDayAndTimeFromDate(end)
+    const [arriveByDay, arriveByTime] = getDayAndTimeFromDate(arriveBy)
+
     this.state = {
       name,
       description,
       location,
-      start,
-      end,
-      arriveBy,
+      startDay: new Date(startDay),
+      startTime: moment(startTime),
+      endDay: new Date(endDay),
+      endTime: moment(endTime),
+      arriveByDay: new Date(arriveByDay),
+      arriveByTime: moment(arriveByTime),
       headerImg,
       deposit,
       coolingPeriod,
@@ -138,9 +153,12 @@ class PartyForm extends Component {
       name,
       description,
       location,
-      start,
-      end,
-      arriveBy,
+      startDay,
+      startTime,
+      endDay,
+      endTime,
+      arriveByDay,
+      arriveByTime,
       headerImg,
       deposit,
       limitOfParticipants,
@@ -156,8 +174,20 @@ class PartyForm extends Component {
       variables: extraVariables = {}
     } = this.props
 
+    const start = getDateFromDayAndTime(startDay, startTime.valueOf())
+    const end = getDateFromDayAndTime(endDay, endTime.valueOf())
+    const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
+
     const variables = {
-      meta: { name, description, location, start, end, arriveBy, headerImg },
+      meta: {
+        name,
+        description,
+        location,
+        start,
+        end,
+        arriveBy,
+        headerImg
+      },
       ...extraVariables
     }
 
@@ -203,24 +233,63 @@ class PartyForm extends Component {
             />
           </InputWrapper>
           <InputWrapper>
-            <Label>Start date</Label>
-            <DateTimePicker
-              onChange={d => this.setState({ start: d.toISOString() })}
-              value={new Date(start)}
+            <Label>Start Day</Label>
+            <DayPickerInput
+              value={startDay}
+              onDayChange={day => this.setState({ startDay: day })}
+            />
+            <Label>Start Time</Label>
+            <TimePicker
+              showSecond={false}
+              defaultValue={startTime}
+              onChange={value => {
+                if (value) {
+                  this.setState({ startTime: value })
+                } else {
+                  this.setState({ startTime: moment() })
+                }
+              }}
+              format="h:mm a"
             />
           </InputWrapper>
           <InputWrapper>
-            <Label>End date</Label>
-            <DateTimePicker
-              onChange={d => this.setState({ end: d.toISOString() })}
-              value={new Date(end)}
+            <Label>End Day</Label>
+            <DayPickerInput
+              value={endDay}
+              onDayChange={day => this.setState({ endDay: day })}
+            />
+            <Label>End Time</Label>
+            <TimePicker
+              showSecond={false}
+              defaultValue={endTime}
+              onChange={value => {
+                if (value) {
+                  this.setState({ endTime: value })
+                } else {
+                  this.setState({ endTime: moment() })
+                }
+              }}
+              format="h:mm a"
             />
           </InputWrapper>
           <InputWrapper>
-            <Label>Arrive by</Label>
-            <DateTimePicker
-              onChange={d => this.setState({ arriveBy: d.toISOString() })}
-              value={new Date(arriveBy || start)}
+            <Label>Arrive By Day</Label>
+            <DayPickerInput
+              value={arriveByDay}
+              onDayChange={day => this.setState({ arriveByDay: day })}
+            />
+            <Label>Arrive By Time</Label>
+            <TimePicker
+              showSecond={false}
+              defaultValue={arriveByTime}
+              onChange={value => {
+                if (value) {
+                  this.setState({ arriveByTime: value })
+                } else {
+                  this.setState({ arriveByTime: moment() })
+                }
+              }}
+              format="h:mm a"
             />
           </InputWrapper>
           <InputWrapper>
