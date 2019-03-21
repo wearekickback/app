@@ -31,7 +31,7 @@
     "rc-time-picker": "^3.6.2",
     "react": "^16.8.1",
     "react-apollo": "^2.2.4",
-    "react-datetime-picker": "^2.1.1",
+    "react-day-picker": "^7.3.0",
     "react-dom": "^16.8.1",
     "react-dropzone": "^7.0.1",
     "react-emotion": "^9.2.6",
