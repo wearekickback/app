@@ -11702,6 +11702,13 @@ react-style-proptype@^3.0.0:
   dependencies:
     prop-types "^15.5.4"
 
+react-timezone@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-timezone/-/react-timezone-2.3.0.tgz#3dbc39bd737d541e70b92680515aaa207119cf81"
+  integrity sha512-0pdWAePPj4xlHFLSgPJuWQBaQBqwj2uIt194bMP0aJq7I5lnWdEdWIEeLaPauhxyQxn5vDVCqtTv4TmupF2TlA==
+  dependencies:
+    prop-types "^15.6.1"
+
 react-tooltip@^3.9.0:
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.9.0.tgz#d874df922c3b34b2e547ec62ff8b2eef42017b51"
