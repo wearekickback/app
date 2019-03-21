@@ -17,6 +17,13 @@ const HeaderContainer = styled('header')`
   margin-bottom: 50px;
   ${p => p.noMargin && 'margin-bottom: 0;'}
   ${p => p.noBackground && 'background: 0;'}
+  ${p =>
+    p.positionAbsolute &&
+    `
+    position: absolute;
+    left: 0;
+    top: 0;
+  `}
 `
 
 const HeaderInner = styled('div')`
@@ -27,7 +34,6 @@ const HeaderInner = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${p => p.noPadding && 'padding: 0;'}
 `
 
 const RightBar = styled('div')`
@@ -44,13 +50,17 @@ const NavLink = styled(Link)`
   margin-right: 30px;
 `
 
-function Header({ noMargin, noBackground, noPadding }) {
+function Header({ noMargin, noBackground, positionAbsolute }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
   return (
-    <HeaderContainer noMargin={noMargin} noBackground={noBackground}>
-      <HeaderInner noPadding={noPadding}>
+    <HeaderContainer
+      noMargin={noMargin}
+      noBackground={noBackground}
+      positionAbsolute={positionAbsolute}
+    >
+      <HeaderInner>
         <Logo />
         {isMinMedium && (
           <RightBar>
