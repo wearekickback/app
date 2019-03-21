@@ -19,8 +19,8 @@ const Hero = styled('section')`
   background: url(${backgroundDark});
   height: 600px;
   background-size: cover;
-  padding-top: 20px;
-  padding: 20px 20px 0;
+  padding: 5px 20px;
+  position: relative;
 
   ${mq.medium`
   `} h3 {
@@ -165,8 +165,8 @@ class Home extends Component {
     return (
       <>
         <Hero>
+          <Header noMargin={true} noBackground={true} positionAbsolute={true} />
           <ContainerInner>
-            <Header noMargin={true} noBackground={true} />
             <h2>Say hello to Kickback!</h2>
             <p>
               Event no shows? No problem. Meet Kickback—an Ethereum-based event

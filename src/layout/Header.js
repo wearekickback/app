@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 
-import { useMediaMin, useMediaMax } from '../mediaQuery'
+import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
 
 import Logo from '../components/Icons/LogoFull'
 import GuideDropdown from '../components/Header/Guide'
@@ -17,6 +17,13 @@ const HeaderContainer = styled('header')`
   margin-bottom: 50px;
   ${p => p.noMargin && 'margin-bottom: 0;'}
   ${p => p.noBackground && 'background: 0;'}
+  ${p =>
+    p.positionAbsolute &&
+    `
+    position: absolute;
+    left: 0;
+    top: 0;
+  `}
 `
 
 const HeaderInner = styled('div')`
@@ -27,6 +34,12 @@ const HeaderInner = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${p =>
+    p.positionAbsolute &&
+    mq.xLarge`
+    padding: 50px 20px;
+  `}
 `
 
 const RightBar = styled('div')`
@@ -43,13 +56,17 @@ const NavLink = styled(Link)`
   margin-right: 30px;
 `
 
-function Header({ noMargin, noBackground }) {
+function Header({ noMargin, noBackground, positionAbsolute }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
   return (
-    <HeaderContainer noMargin={noMargin} noBackground={noBackground}>
-      <HeaderInner>
+    <HeaderContainer
+      noMargin={noMargin}
+      noBackground={noBackground}
+      positionAbsolute={positionAbsolute}
+    >
+      <HeaderInner positionAbsolute={positionAbsolute}>
         <Logo />
         {isMinMedium && (
           <RightBar>
