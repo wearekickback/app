@@ -7,6 +7,7 @@ import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
 import TimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
+import TimezonePicker, { timezones } from 'react-timezone'
 
 import {
   getDayAndTimeFromDate,
@@ -112,6 +113,7 @@ class PartyForm extends Component {
       start = new Date(),
       end = new Date(),
       arriveBy = new Date(),
+      timezone = '',
       headerImg = '',
       deposit = '0.02',
       coolingPeriod = `${60 * 60 * 24 * 7}`,
@@ -126,6 +128,7 @@ class PartyForm extends Component {
       name,
       description,
       location,
+      timezone,
       startDay: new Date(startDay),
       startTime: moment(startTime),
       endDay: new Date(endDay),
@@ -153,6 +156,7 @@ class PartyForm extends Component {
       name,
       description,
       location,
+      timezone,
       startDay,
       startTime,
       endDay,
@@ -232,6 +236,17 @@ class PartyForm extends Component {
               placeholder="Location of the event"
             />
           </InputWrapper>
+          <TimezonePicker
+            style={{ zIndex: 100000 }}
+            value="Asia/Yerevan"
+            onChange={timezone =>
+              console.log('New Timezone Selected:', timezone)
+            }
+            inputProps={{
+              placeholder: 'Select Timezone...',
+              name: 'timezone'
+            }}
+          />
           <InputWrapper>
             <Label>Start Day</Label>
             <DayPickerInput
