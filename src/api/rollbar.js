@@ -1,4 +1,4 @@
-import { ROLLBAR, API_URL } from '../config'
+import { ROLLBAR } from '../config'
 
 export const setup = () => {
   if (ROLLBAR && ROLLBAR.TOKEN) {
