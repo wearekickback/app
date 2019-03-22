@@ -3,7 +3,7 @@ import React, { createContext, Component } from 'react'
 import { withApollo } from 'react-apollo'
 import jwt from 'jsonwebtoken'
 
-import * as LogRocket from './logRocket'
+import { identify as logRocketIdentify } from './api/logRocket'
 import * as LocalStorage from './api/localStorage'
 import { getAccount } from './api/web3'
 import { SIGN_IN } from './modals'
@@ -111,7 +111,7 @@ class Provider extends Component {
   setUserProfile = profile => {
     console.log('Current user', profile)
 
-    LogRocket.identify(profile)
+    logRocketIdentify(profile)
 
     this.setState(
       state => ({
