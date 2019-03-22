@@ -11,7 +11,8 @@ import TimezonePicker, { timezones } from 'react-timezone'
 
 import {
   getDayAndTimeFromDate,
-  getDateFromDayAndTime
+  getDateFromDayAndTime,
+  getLocalTimezoneOffset
 } from '../../../utils/dates'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
@@ -113,7 +114,7 @@ class PartyForm extends Component {
       start = new Date(),
       end = new Date(),
       arriveBy = new Date(),
-      timezone = '',
+      timezone = getLocalTimezoneOffset(),
       headerImg = '',
       deposit = '0.02',
       coolingPeriod = `${60 * 60 * 24 * 7}`,
@@ -181,12 +182,14 @@ class PartyForm extends Component {
     const start = getDateFromDayAndTime(startDay, startTime.valueOf())
     const end = getDateFromDayAndTime(endDay, endTime.valueOf())
     const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
+    console.log(timezones)
 
     const variables = {
       meta: {
         name,
         description,
         location,
+        timezone,
         start,
         end,
         arriveBy,
@@ -238,10 +241,8 @@ class PartyForm extends Component {
           </InputWrapper>
           <TimezonePicker
             style={{ zIndex: 100000 }}
-            value="Asia/Yerevan"
-            onChange={timezone =>
-              console.log('New Timezone Selected:', timezone)
-            }
+            value={timezone}
+            onChange={timezone => this.setState({ timezone })}
             inputProps={{
               placeholder: 'Select Timezone...',
               name: 'timezone'
