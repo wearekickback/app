@@ -24,6 +24,7 @@ try {
   /* do nothing */
 }
 
+appConfig.ENV = 'local'
 appConfig.API_URL = 'http://localhost:3001'
 
 if (undefined === appConfig.NUM_CONFIRMATIONS) {
@@ -31,30 +32,24 @@ if (undefined === appConfig.NUM_CONFIRMATIONS) {
 }
 
 if (argv.ropsten) {
+  appConfig.ENV = 'ropsten'
   appConfig.API_URL = 'https://ropsten.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-ropsten'
-  appConfig.ROLLBAR = {
-    TOKEN: '37e0bca9006a4a348e244ae2d233d660',
-    ENV: 'staging'
-  }
+  appConfig.ROLLBAR_TOKEN = '37e0bca9006a4a348e244ae2d233d660'
 } else if (argv.rinkeby) {
+  appConfig.ENV = 'rinkeby'
   appConfig.API_URL = 'https://rinkeby.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-rinkeby'
-  appConfig.ROLLBAR = {
-    TOKEN: 'e676d64e462b48d098a12db8a173598a',
-    ENV: 'staging'
-  }
+  appConfig.ROLLBAR_TOKEN = 'e676d64e462b48d098a12db8a173598a'
 } else if (argv.live) {
+  appConfig.ENV = 'live'
   appConfig.API_URL = 'https://live.api.kickback.events'
   appConfig.GIT_COMMIT = getGitCommit()
   appConfig.MIXPANEL_ID = '11a2f7a59470cdb46cb611c5d22876f2'
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-live'
-  appConfig.ROLLBAR = {
-    TOKEN: 'bfb8dfff7ff44f6fa6a13d4571447c28',
-    ENV: 'production'
-  }
+  appConfig.ROLLBAR_TOKEN = 'bfb8dfff7ff44f6fa6a13d4571447c28'
 }
 
 const str = JSON.stringify(appConfig, null, 2)

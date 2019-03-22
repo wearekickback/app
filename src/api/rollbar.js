@@ -1,13 +1,13 @@
-import { ROLLBAR } from '../config'
+import { ROLLBAR_TOKEN, ENV } from '../config'
 
 export const setup = () => {
-  if (ROLLBAR && ROLLBAR.TOKEN) {
+  if (ROLLBAR_TOKEN) {
     let _rollbarConfig = {
-      accessToken: ROLLBAR.TOKEN,
+      accessToken: ROLLBAR_TOKEN,
       captureUncaught: true,
       captureUnhandledRejections: true,
       payload: {
-        environment: ROLLBAR.ENV
+        environment: ENV
       }
     }
     /* eslint-disable */
