@@ -5,9 +5,9 @@ import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
-import TimePicker from 'rc-time-picker'
+import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
-import TimezonePicker, { timezones } from 'react-timezone'
+import DefaultTimezonePicker from 'react-timezone'
 
 import {
   getDayAndTimeFromDate,
@@ -31,6 +31,37 @@ const PartyFormContent = styled('div')``
 
 const InputWrapper = styled('div')`
   margin-bottom: 20px;
+`
+
+const TimezonePicker = styled(DefaultTimezonePicker)`
+  z-index: 1;
+  input[type='text'] {
+    border-radius: 6px;
+    width: 300px;
+  }
+`
+
+const DayPickerInputWrapper = styled('div')`
+  margin-right: 10px;
+  input {
+    border: 1px solid #edeef4;
+    border-radius: 6px;
+    color: #2b2b2b;
+    height: 40px;
+    font-size: 14px;
+    padding-left: 17px;
+  }
+`
+
+const TimePicker = styled(DefaultTimePicker)`
+  input {
+    border-radius: 6px;
+    border: 1px solid #edeef4;
+    color: #2b2b2b;
+    height: 40px;
+    font-size: 14px;
+    padding-left: 17px;
+  }
 `
 
 const primary2 = `hsla(237, 75%, 72%, 1)`
@@ -103,6 +134,10 @@ function getButtonText(type) {
     edit: 'Update Event'
   }[type]
 }
+
+const DateContent = styled('div')`
+  display: flex;
+`
 
 class PartyForm extends Component {
   constructor(props) {
@@ -238,74 +273,85 @@ class PartyForm extends Component {
               placeholder="Location of the event"
             />
           </InputWrapper>
-          <TimezonePicker
-            style={{ zIndex: 100000 }}
-            value={timezone}
-            onChange={timezone => this.setState({ timezone })}
-            inputProps={{
-              placeholder: 'Select Timezone...',
-              name: 'timezone'
-            }}
-          />
           <InputWrapper>
-            <Label>Start Day</Label>
-            <DayPickerInput
-              value={startDay}
-              onDayChange={day => this.setState({ startDay: day })}
-            />
-            <Label>Start Time</Label>
-            <TimePicker
-              showSecond={false}
-              defaultValue={startTime}
-              onChange={value => {
-                if (value) {
-                  this.setState({ startTime: value })
-                } else {
-                  this.setState({ startTime: moment() })
-                }
+            <Label>Timezone</Label>
+            <TimezonePicker
+              value={timezone}
+              onChange={timezone => this.setState({ timezone })}
+              inputProps={{
+                placeholder: 'Select Timezone...',
+                name: 'timezone'
               }}
-              format="h:mm a"
             />
           </InputWrapper>
           <InputWrapper>
-            <Label>End Day</Label>
-            <DayPickerInput
-              value={endDay}
-              onDayChange={day => this.setState({ endDay: day })}
-            />
-            <Label>End Time</Label>
-            <TimePicker
-              showSecond={false}
-              defaultValue={endTime}
-              onChange={value => {
-                if (value) {
-                  this.setState({ endTime: value })
-                } else {
-                  this.setState({ endTime: moment() })
-                }
-              }}
-              format="h:mm a"
-            />
+            <Label>Start Date</Label>
+            <DateContent>
+              <DayPickerInputWrapper>
+                <DayPickerInput
+                  value={startDay}
+                  onDayChange={day => this.setState({ startDay: day })}
+                />
+              </DayPickerInputWrapper>
+              <TimePicker
+                showSecond={false}
+                defaultValue={startTime}
+                onChange={value => {
+                  if (value) {
+                    this.setState({ startTime: value })
+                  } else {
+                    this.setState({ startTime: moment() })
+                  }
+                }}
+                format="h:mm a"
+              />
+            </DateContent>
           </InputWrapper>
           <InputWrapper>
-            <Label>Arrive By Day</Label>
-            <DayPickerInput
-              value={arriveByDay}
-              onDayChange={day => this.setState({ arriveByDay: day })}
-            />
-            <Label>Arrive By Time</Label>
-            <TimePicker
-              showSecond={false}
-              defaultValue={arriveByTime}
-              onChange={value => {
-                if (value) {
-                  this.setState({ arriveByTime: value })
-                } else {
-                  this.setState({ arriveByTime: moment() })
-                }
-              }}
-              format="h:mm a"
-            />
+            <Label>End Date</Label>
+            <DateContent>
+              <DayPickerInputWrapper>
+                <DayPickerInput
+                  value={endDay}
+                  onDayChange={day => this.setState({ endDay: day })}
+                />
+              </DayPickerInputWrapper>
+              <TimePicker
+                showSecond={false}
+                defaultValue={endTime}
+                onChange={value => {
+                  if (value) {
+                    this.setState({ endTime: value })
+                  } else {
+                    this.setState({ endTime: moment() })
+                  }
+                }}
+                format="h:mm a"
+              />
+            </DateContent>
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Arrive By Date</Label>
+            <DateContent>
+              <DayPickerInputWrapper>
+                <DayPickerInput
+                  value={arriveByDay}
+                  onDayChange={day => this.setState({ arriveByDay: day })}
+                />
+              </DayPickerInputWrapper>
+              <TimePicker
+                showSecond={false}
+                defaultValue={arriveByTime}
+                onChange={value => {
+                  if (value) {
+                    this.setState({ arriveByTime: value })
+                  } else {
+                    this.setState({ arriveByTime: moment() })
+                  }
+                }}
+                format="h:mm a"
+              />
+            </DateContent>
           </InputWrapper>
           <InputWrapper>
             <Label>Image</Label>

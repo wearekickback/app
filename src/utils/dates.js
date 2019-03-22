@@ -1,8 +1,8 @@
-import format from 'date-fns/format'
+import moment from 'moment'
 import { timezones } from 'react-timezone'
 
 export const toPrettyDate = strOrDate =>
-  format(new Date(strOrDate), 'MMM Do, YYYY @ H:mm a')
+  moment(new Date(strOrDate)).format('MMM Do, YYYY @ H:mm a')
 
 export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
