@@ -1,4 +1,5 @@
 import format from 'date-fns/format'
+import { timezones } from 'react-timezone'
 
 export const toPrettyDate = strOrDate =>
   format(new Date(strOrDate), 'MMM Do, YYYY @ H:mm a')
@@ -13,4 +14,8 @@ export const getDayAndTimeFromDate = isoString => {
 
 export const getDateFromDayAndTime = (day, time) => {
   return new Date(new Date(day).setHours(0, 0, 0, 0) + time)
+}
+
+export function getLocalTimezoneOffset() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone
 }
