@@ -131,11 +131,11 @@ class PartyForm extends Component {
       location,
       timezone,
       startDay: new Date(startDay),
-      startTime: moment(startTime),
+      startTime: moment(startTime).utcOffset('+00:00'),
       endDay: new Date(endDay),
-      endTime: moment(endTime),
+      endTime: moment(endTime).utcOffset('+00:00'),
       arriveByDay: new Date(arriveByDay),
-      arriveByTime: moment(arriveByTime),
+      arriveByTime: moment(arriveByTime).utcOffset('+00:00'),
       headerImg,
       deposit,
       coolingPeriod,
@@ -182,7 +182,6 @@ class PartyForm extends Component {
     const start = getDateFromDayAndTime(startDay, startTime.valueOf())
     const end = getDateFromDayAndTime(endDay, endTime.valueOf())
     const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
-    console.log(timezones)
 
     const variables = {
       meta: {
