@@ -4,7 +4,7 @@ import { LOGROCKET_TOKEN } from '../config'
 
 export const setup = () => {
   if (LOGROCKET_TOKEN) {
-    LogRocket.init()
+    LogRocket.init(LOGROCKET_TOKEN)
   }
   // add to rollbar
   if (typeof window.Rollbar === 'undefined') {
