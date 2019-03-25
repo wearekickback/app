@@ -9,7 +9,7 @@ const Span = styled('span')`
 `
 
 const EventDate = ({ event, className }) => (
-  <Span className={className}>{toPrettyDate(event.start)}</Span>
+  <Span className={className}>{toPrettyDate(event.start, event.timezone)}</Span>
 )
 
 export default EventDate

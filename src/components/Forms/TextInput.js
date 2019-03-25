@@ -31,7 +31,7 @@ const Input = styled('input')`
   font-size: 14px;
   color: #1e1e1e;
   flex: 1;
-  border-radius: 2px;
+  border-radius: 6px;
   border: 1px solid ${({ hasError }) => (hasError ? '#f00' : '#edeef4')};
   padding-left: ${p => (p.hasPrefix ? '27px' : '15px')};
   ${({ wide }) => wide && `width: 100%`};

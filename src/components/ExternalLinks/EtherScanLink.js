@@ -18,7 +18,7 @@ const EtherScanLink = ({ address, tx, children }) => (
 
       let link
       if (address) {
-        link = `https://${prefix}etherscan.io/address/${address}`
+        link = `https://${prefix}.etherscan.io/address/${address}`
       } else if (tx) {
         link = `https://${prefix}.etherscan.io/tx/${tx}`
       }
