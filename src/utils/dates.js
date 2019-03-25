@@ -1,5 +1,8 @@
 import moment from 'moment'
+<<<<<<< HEAD
 import { timezones } from 'react-timezone'
+=======
+>>>>>>> Timepicker (#122)
 
 export const toPrettyDate = strOrDate =>
   moment(new Date(strOrDate)).format('MMM Do, YYYY @ H:mm a')
