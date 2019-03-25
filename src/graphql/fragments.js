@@ -44,6 +44,7 @@ export const PartyFields = gql`
     address
     name
     description
+    timezone
     start
     end
     arriveBy
