@@ -42,8 +42,7 @@ describe('Sign up', () => {
     const username = `joel${randomAccount}`
     cy.wait(1000)
     cy.getByText('Sign in', { exact: false }).click()
-
-    cy.get('input[data-testid="username"]').type(username)
+    cy.get('input[data-testid="username"]', { timeout: 5000 }).type(username)
     cy.get('input[data-testid="realname"]').type('Joel Bloggs')
     cy.get('input[data-testid="email"]').type('joel@gmail.com')
     cy.get('input[data-testid="terms"]').click()
