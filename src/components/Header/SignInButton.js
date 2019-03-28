@@ -7,6 +7,7 @@ import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
 import { EDIT_PROFILE } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
+import Assist from './Assist'
 
 const Account = styled('div')`
   display: flex;
@@ -33,11 +34,14 @@ function SignInButton() {
     reloadUserAddress
   }) => async () => {
     hideTooltip()
-
+    Assist({ expectedNetworkId: networkState.expectedNetworkId })
     const address = await reloadUserAddress()
 
     if (!networkState.allGood || !address) {
+      console.log('not good')
       return showTooltip()
+    } else {
+      console.log('good')
     }
 
     signIn()
