@@ -87,7 +87,9 @@ describe('Admin create, RSVP and finalise', () => {
     }).should('exist')
 
     // Finalise Event //
-    cy.queryByText('Finalize', { exact: false }).click()
+    cy.getByText('Admin Panel').click()
+    cy.getByText('Smart Contract', { exact: false }).click()
+    cy.getByTestId('finalize', { exact: false }).click()
     cy.queryByText('Finalize and enable payouts', { exact: false }).click()
     cy.wait(CONFIRMATION_TIME)
     cy.getByText('Finalized!', {

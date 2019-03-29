@@ -21,6 +21,7 @@ function Finalize({ party }) {
       {!ended ? (
         <>
           <Button
+            data-testid="finalize"
             onClick={() => {
               showModal({
                 name: CONFIRM_TRANSACTION,
