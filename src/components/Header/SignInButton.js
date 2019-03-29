@@ -35,6 +35,7 @@ function SignInButton() {
   }) => async () => {
     hideTooltip()
     let assist = await Assist({
+      action: 'Sign in',
       expectedNetworkId: networkState.expectedNetworkId
     })
     console.log({ assist })
@@ -60,7 +61,9 @@ function SignInButton() {
         showModal
       }) => {
         const twitterProfile =
-          userProfile && userProfile.social.find(s => s.type === 'twitter')
+          userProfile &&
+          userProfile.social &&
+          userProfile.social.find(s => s.type === 'twitter')
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
