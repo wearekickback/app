@@ -20,6 +20,7 @@ const Assist = async ({ expectedNetworkId }) => {
     }
   })
   assistInstance.getState().then(function(state) {
+    console.log('getState')
     console.log({ state })
     if (state.mobileDevice) {
       console.log('this is mobile')
