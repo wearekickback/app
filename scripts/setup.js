@@ -45,6 +45,7 @@ if (argv.ropsten) {
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-rinkeby'
   appConfig.ROLLBAR_TOKEN = 'e676d64e462b48d098a12db8a173598a'
   appConfig.BLOCKNATIVE_DAPPID = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
+  appConfig.MIXPANEL_ID = '28243587317e7b2d8a669dcce23302cb'
 } else if (argv.live) {
   appConfig.ENV = 'live'
   appConfig.API_URL = 'https://live.api.kickback.events'

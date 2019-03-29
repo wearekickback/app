@@ -2,8 +2,11 @@ import getWeb3 from '../../api/web3'
 import assist from 'bnc-assist'
 import { BLOCKNATIVE_DAPPID } from '../../config'
 import CONFIG from '../../config'
+import { track } from '../../api/analytics'
+
 console.log({ CONFIG, BLOCKNATIVE_DAPPID })
 const Assist = async ({ action, expectedNetworkId }) => {
+  let msg
   const web3 = await getWeb3()
   // dappid is mandatory so will have throw away id for local usage.
   let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
@@ -33,17 +36,18 @@ const Assist = async ({ action, expectedNetworkId }) => {
         result.status = 'Wrong Network'
       }
     }
-    console.log(`Connect Web3:mobile:${action}:${result.status}`, result)
-    return result
+    msg = `Connect Web3:mobile:${action}:${result.status}`
   } else {
     try {
       result.status = await assistInstance.onboard()
     } catch (error) {
       result.status = error
     } finally {
-      console.log(`Connect web3:desktop:${action}:${result.status}`, result)
-      return result
+      msg = `Connect web3:desktop:${action}:${result.status}`
     }
   }
+  console.log(msg, result)
+  track(msg, result)
+  return result
 }
 export default Assist
