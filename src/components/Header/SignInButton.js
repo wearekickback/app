@@ -26,20 +26,12 @@ const Username = styled('div')`
 `
 
 function SignInButton() {
-  const _signIn = ({
-    showTooltip,
-    hideTooltip,
-    signIn,
-    networkState,
-    reloadUserAddress
-  }) => async () => {
-    hideTooltip()
-    Assist({ expectedNetworkId: networkState.expectedNetworkId })
+  const _signIn = ({ signIn, networkState, reloadUserAddress }) => async () => {
+    await Assist({ expectedNetworkId: networkState.expectedNetworkId })
     const address = await reloadUserAddress()
 
     if (!networkState.allGood || !address) {
       console.log('not good')
-      return showTooltip()
     } else {
       console.log('good')
     }
@@ -76,24 +68,17 @@ function SignInButton() {
             </Account>
           </>
         ) : (
-          <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
-            {({ tooltipElement, showTooltip, hideTooltip }) => (
-              <Button
-                type="light"
-                onClick={_signIn({
-                  showTooltip,
-                  hideTooltip,
-                  signIn,
-                  reloadUserAddress,
-                  networkState
-                })}
-                analyticsId="Sign In"
-              >
-                {tooltipElement}
-                Sign in
-              </Button>
-            )}
-          </Tooltip>
+          <Button
+            type="light"
+            onClick={_signIn({
+              signIn,
+              reloadUserAddress,
+              networkState
+            })}
+            analyticsId="Sign In"
+          >
+            Sign in
+          </Button>
         )
       }}
     </GlobalConsumer>
