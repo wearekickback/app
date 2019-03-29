@@ -5,7 +5,6 @@ const Assist = async ({ expectedNetworkId }) => {
   const web3 = await getWeb3()
   let assistInstance = assist.init({
     dappId: 'c212885d-e81d-416f-ac37-06d9ad2cf5af',
-    minimumBalance: '10000',
     web3: web3,
     networkId: expectedNetworkId,
     images: {
