@@ -33,7 +33,6 @@ function SignInButton() {
     networkState,
     reloadUserAddress
   }) => async () => {
-    console.log('signIn')
     hideTooltip()
     let assist = await Assist({
       expectedNetworkId: networkState.expectedNetworkId
@@ -46,6 +45,7 @@ function SignInButton() {
         return showTooltip()
       }
     }
+
     signIn()
   }
 
