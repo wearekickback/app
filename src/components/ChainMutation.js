@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
+
 import {
   CANNOT_RESOLVE_ACCOUNT_ADDRESS,
   CANNOT_RESOLVE_CORRECT_NETWORK
@@ -269,6 +270,7 @@ export class ChainMutationButton extends Component {
           })
         }
       }
+
       postMutation()
     })
   }
