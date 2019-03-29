@@ -18,22 +18,20 @@ const Assist = async ({ expectedNetworkId }) => {
       }
     }
   })
-  assistInstance.getState().then(function(state) {
-    console.log('getState')
-    console.log({ state })
-    if (state.mobileDevice) {
-      console.log('this is mobile')
-    } else {
-      console.log('this is desktop')
-      assistInstance
-        .onboard()
-        .then(function(success) {
-          console.log({ success })
-        })
-        .catch(function(error) {
-          console.log({ error })
-        })
+  let state = await assistInstance.getState()
+  console.log('getState')
+  console.log({ state })
+  if (state.mobileDevice) {
+    console.log('this is mobile')
+    return { state, mobile: true }
+  } else {
+    console.log('this is desktop')
+    try {
+      let onboardResult = await assistInstance.onboard()
+      return { state, onboardResult }
+    } catch (error) {
+      return { state, error }
     }
-  })
+  }
 }
 export default Assist

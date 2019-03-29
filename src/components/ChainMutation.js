@@ -2,6 +2,10 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
+import {
+  CANNOT_RESOLVE_ACCOUNT_ADDRESS,
+  CANNOT_RESOLVE_CORRECT_NETWORK
+} from '../utils/errors'
 import Assist from './Header/Assist'
 import { events, getTransactionReceipt } from '../api/web3'
 import { GlobalConsumer } from '../GlobalState'
@@ -251,7 +255,20 @@ export class ChainMutationButton extends Component {
   _onClick = ({ networkState, reloadUserAddress, postMutation }) => {
     this.setState({ notReadyError: null }, async () => {
       const address = await reloadUserAddress()
-      Assist({ expectedNetworkId: networkState.expectedNetworkId })
+      let assist = Assist({ expectedNetworkId: networkState.expectedNetworkId })
+      if (assist.mobile) {
+        if (!address) {
+          return this.setState({
+            notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
+          })
+        }
+
+        if (!networkState.allGood) {
+          return this.setState({
+            notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
+          })
+        }
+      }
       postMutation()
     })
   }

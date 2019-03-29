@@ -7,6 +7,7 @@ import styled from 'react-emotion'
 
 const DefaultTooltip = styled(ReactTooltip)`
   z-index: 1;
+  max-width: 80%;
 `
 
 export default class Tooltip extends Component {
