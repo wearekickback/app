@@ -241,9 +241,10 @@ class PartyForm extends Component {
         <H2>Event Details</H2>
         <PartyFormContent>
           <InputWrapper>
-            <Label>Event Name</Label>
+            <Label forLabel="eventName">Event Name</Label>
             <TextInput
               wide
+              id="eventName"
               value={name}
               onChangeText={val => this.setState({ name: val })}
               type="text"
@@ -251,8 +252,9 @@ class PartyForm extends Component {
             />
           </InputWrapper>
           <InputWrapper>
-            <Label>Description</Label>
+            <Label forLabel="description">Description</Label>
             <TextArea
+              id="description"
               wide
               value={description}
               onChangeText={val => this.setState({ description: val })}
@@ -264,8 +266,9 @@ class PartyForm extends Component {
             </TextArea>
           </InputWrapper>
           <InputWrapper>
-            <Label>Location</Label>
+            <Label forLabel="location">Location</Label>
             <TextInput
+              id="location"
               wide
               value={location}
               onChangeText={val => this.setState({ location: val })}
@@ -274,8 +277,9 @@ class PartyForm extends Component {
             />
           </InputWrapper>
           <InputWrapper>
-            <Label>Timezone</Label>
+            <Label forLabel="timezone">Timezone</Label>
             <TimezonePicker
+              id="timezone"
               value={timezone}
               onChange={timezone => this.setState({ timezone })}
               inputProps={{
@@ -289,11 +293,13 @@ class PartyForm extends Component {
             <DateContent>
               <DayPickerInputWrapper>
                 <DayPickerInput
+                  data-testid="start-day-picker"
                   value={startDay}
                   onDayChange={day => this.setState({ startDay: day })}
                 />
               </DayPickerInputWrapper>
               <TimePicker
+                data-testid="start-time-picker"
                 showSecond={false}
                 defaultValue={startTime}
                 onChange={value => {
@@ -312,11 +318,13 @@ class PartyForm extends Component {
             <DateContent>
               <DayPickerInputWrapper>
                 <DayPickerInput
+                  data-testid="end-day-picker"
                   value={endDay}
                   onDayChange={day => this.setState({ endDay: day })}
                 />
               </DayPickerInputWrapper>
               <TimePicker
+                data-testid="end-time-picker"
                 showSecond={false}
                 defaultValue={endTime}
                 onChange={value => {
@@ -335,11 +343,13 @@ class PartyForm extends Component {
             <DateContent>
               <DayPickerInputWrapper>
                 <DayPickerInput
+                  data-testid="arrive-day-picker"
                   value={arriveByDay}
                   onDayChange={day => this.setState({ arriveByDay: day })}
                 />
               </DayPickerInputWrapper>
               <TimePicker
+                data-testid="arrive-time-picker"
                 showSecond={false}
                 defaultValue={arriveByTime}
                 onChange={value => {

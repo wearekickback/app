@@ -34,7 +34,7 @@ beforeEach(() => {
 })
 
 const CONFIRMATION_TIME = 15000
-const randomAccount = _.random(5, 500)
+const randomAccount = _.random(5, 100)
 
 describe('Sign up', () => {
   it('sign up', () => {
@@ -58,7 +58,7 @@ describe('Admin create, RSVP and finalise', () => {
     cy.visit(`http://localhost:3000/create?account=${randomAccount}`)
     const eventName = `Super awesome event ${randomAccount}`
     // Fill in form
-    cy.getByLabelText('Name')
+    cy.getByLabelText('Event Name', { selector: 'input' })
       .click()
       .type(eventName)
     cy.getByLabelText('Description')
@@ -69,7 +69,7 @@ describe('Admin create, RSVP and finalise', () => {
       .type('London')
 
     // Deploy pending event to server //
-    cy.getByText('Create Pending Party').click()
+    cy.getByText('Create Event').click()
     signIn()
     // Deploy to network //
     cy.getByText('Deploy').click()

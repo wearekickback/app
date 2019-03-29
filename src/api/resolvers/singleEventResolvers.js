@@ -145,8 +145,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
+      const gas = await contract.register().estimateGas({ value: deposit })
+      console.log(gas)
       try {
         const tx = await contract.register().send({
+          gas,
           from: account,
           value: deposit
         })
