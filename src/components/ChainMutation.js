@@ -223,6 +223,7 @@ export class ChainMutationButton extends Component {
       notReadyError ||
       tooltip ||
       'Please sign the created transaction using your wallet or Dapp browser'
+
     return (
       <GlobalConsumer>
         {({ networkState, reloadUserAddress }) => (
@@ -256,7 +257,8 @@ export class ChainMutationButton extends Component {
   _onClick = ({ networkState, reloadUserAddress, postMutation, action }) => {
     this.setState({ notReadyError: null }, async () => {
       const address = await reloadUserAddress()
-      let assist = Assist({
+
+      let assist = await Assist({
         expectedNetworkId: networkState.expectedNetworkId,
         action
       })
@@ -273,7 +275,6 @@ export class ChainMutationButton extends Component {
           })
         }
       }
-
       postMutation()
     })
   }

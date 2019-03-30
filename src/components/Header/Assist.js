@@ -4,7 +4,6 @@ import { BLOCKNATIVE_DAPPID } from '../../config'
 import CONFIG from '../../config'
 import { track } from '../../api/analytics'
 
-console.log({ CONFIG, BLOCKNATIVE_DAPPID })
 const Assist = async ({ action, expectedNetworkId }) => {
   let msg
   const web3 = await getWeb3()
