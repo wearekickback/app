@@ -1,11 +1,9 @@
 import getWeb3 from '../../api/web3'
 import assist from 'bnc-assist'
 import { BLOCKNATIVE_DAPPID } from '../../config'
-import CONFIG from '../../config'
 import { track } from '../../api/analytics'
 
 const Assist = async ({ action, expectedNetworkId }) => {
-  let msg
   const web3 = await getWeb3()
   // dappid is mandatory so will have throw away id for local usage.
   let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
