@@ -6,8 +6,8 @@ export const setup = () => {
   }
 }
 
-export const track = event => {
+export const track = (event, props) => {
   if (MIXPANEL_ID) {
-    window.mixpanel.track(event)
+    window.mixpanel.track(event, props)
   }
 }
