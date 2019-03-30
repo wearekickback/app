@@ -50,6 +50,8 @@ const Assist = async ({ action, expectedNetworkId }) => {
       web3Wallet,
       ...result
     }
+    // Making sure that current provider is set.
+    result.currentProvider = state.currentProvider
   }
   if (state.mobileDevice) {
     if (!state.web3Wallet) {
