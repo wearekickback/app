@@ -38,7 +38,6 @@ function SignInButton() {
       action: 'Sign in',
       expectedNetworkId: networkState.expectedNetworkId
     })
-    console.log({ assist })
     const address = await reloadUserAddress()
 
     if (assist.mobileDevice) {
