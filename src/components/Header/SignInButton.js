@@ -41,7 +41,7 @@ function SignInButton() {
     console.log({ assist })
     const address = await reloadUserAddress()
 
-    if (assist.mobile) {
+    if (assist.mobileDevice) {
       if (!networkState.allGood || !address) {
         return showTooltip()
       }

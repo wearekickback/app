@@ -260,7 +260,7 @@ export class ChainMutationButton extends Component {
         expectedNetworkId: networkState.expectedNetworkId,
         action
       })
-      if (assist.mobile) {
+      if (assist.mobileDevice) {
         if (!address) {
           return this.setState({
             notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
