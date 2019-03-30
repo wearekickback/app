@@ -274,9 +274,12 @@ export class ChainMutationButton extends Component {
             notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
           })
         }
-      }
-      if (!assist.error) {
+        // Do not check assist.error as blocknative may incorrectly detect as error
         postMutation()
+      } else {
+        if (!assist.error) {
+          postMutation()
+        }
       }
     })
   }
