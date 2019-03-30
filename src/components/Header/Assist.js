@@ -36,14 +36,18 @@ const Assist = async ({ action, expectedNetworkId }) => {
         result.status = 'Wrong Network'
       }
     }
-    msg = `Connect Web3:mobile:${action}:${result.status}`
+    msg = `Connect Web3:mobile:${action}:${state.currentProvider}:${
+      result.status
+    }`
   } else {
     try {
       result.status = await assistInstance.onboard()
     } catch (error) {
       result.status = error
     } finally {
-      msg = `Connect web3:desktop:${action}:${result.status}`
+      msg = `Connect web3:desktop:${action}:${state && state.currentProvider}:${
+        result.status
+      }`
     }
   }
   console.log(msg, result)
