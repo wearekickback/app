@@ -23,7 +23,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
     }
   })
   let state = await assistInstance.getState()
-  let result = { status: 'Already on boarded', action }
+  let result = { status: 'Already on boarded', action, error: false }
   if (state) {
     let {
       correctNetwork,
@@ -54,9 +54,11 @@ const Assist = async ({ action, expectedNetworkId }) => {
   if (state.mobileDevice) {
     if (!state.web3Wallet) {
       result.status = 'Mobile wallet not detected'
+      result.error = true
     } else {
       if (state.userCurrentNetworkId !== expectedNetworkId) {
         result.status = 'Wrong Network'
+        result.error = true
       }
     }
   } else {
@@ -64,6 +66,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
       result.status = await assistInstance.onboard()
     } catch (error) {
       result.status = error
+      result.error = true
     }
   }
   track('Connect to web3', result)

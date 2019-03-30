@@ -275,8 +275,9 @@ export class ChainMutationButton extends Component {
           })
         }
       }
-
-      postMutation()
+      if (!assist.error) {
+        postMutation()
+      }
     })
   }
 }
