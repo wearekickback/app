@@ -275,6 +275,7 @@ export class ChainMutationButton extends Component {
           })
         }
       }
+
       postMutation()
     })
   }
