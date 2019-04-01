@@ -5,7 +5,7 @@ import { timezones } from 'react-timezone'
 >>>>>>> Timepicker (#122)
 
 export const toPrettyDate = strOrDate =>
-  moment.utc(strOrDate).format('MMM Do, YYYY @ H:mm a')
+  moment.parseZone(strOrDate).format('MMM Do, YYYY @ H:mm a')
 
 export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
