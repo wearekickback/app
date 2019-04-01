@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export const toPrettyDate = strOrDate =>
-  moment(strOrDate).format('MMM Do, YYYY @ H:mm a')
+  moment.utc(strOrDate).format('MMM Do, YYYY @ H:mm a')
 
 export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
