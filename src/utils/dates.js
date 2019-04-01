@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 export const toPrettyDate = strOrDate =>
-  moment.parseZone(strOrDate).format('MMM Do, YYYY @ H:mm a')
+  moment.utc(strOrDate).format('MMM Do, YYYY @ H:mm a')
 
 export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
@@ -12,7 +12,9 @@ export const getDayAndTimeFromDate = isoString => {
 }
 
 export const getDateFromDayAndTime = (day, time) => {
-  return new Date(new Date(day).setHours(0, 0, 0, 0) + time)
+  const utc = Date.UTC(day.getFullYear(), day.getMonth(), day.getDay())
+  const date = new Date(utc + time)
+  return date
 }
 
 export function getLocalTimezoneOffset() {
