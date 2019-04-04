@@ -8,6 +8,7 @@ branches:
     - dev
     - master
 script:
+  - yarn start
   - $(npm bin)/cypress run --record
   - yarn deploy
 notifications:
