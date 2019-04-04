@@ -75,6 +75,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
     }
     // Making sure that current provider is set.
     result.currentProvider = state.currentProvider
+    result.navigatorUserAgent = navigator && navigator.userAgent
     // We want to know whether the users have any balances in their walllet
     // but don't want to know how much they do.
     result.hasBalance = parseInt(state.accountBalance || 0) > 0
