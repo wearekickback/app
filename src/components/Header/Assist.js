@@ -63,7 +63,12 @@ const Assist = async ({ action, expectedNetworkId }) => {
     }
     // Making sure that current provider is set.
     result.currentProvider = state.currentProvider
+    console.log(
+      'currentProvider',
+      JSON.stringify([state.currentProvider, result])
+    )
   } else {
+    console.log('no state', JSON.stringify([result]))
     result.status = 'Problem getting state'
     result.error = true
     result.fallback = true
