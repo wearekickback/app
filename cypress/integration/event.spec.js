@@ -34,7 +34,7 @@ beforeEach(() => {
 })
 
 const CONFIRMATION_TIME = 15000
-const randomAccount = _.random(5, 500)
+const randomAccount = _.random(5, 100)
 
 describe('Sign up', () => {
   it('sign up', () => {
@@ -42,8 +42,7 @@ describe('Sign up', () => {
     const username = `joel${randomAccount}`
     cy.wait(1000)
     cy.getByText('Sign in', { exact: false }).click()
-
-    cy.get('input[data-testid="username"]').type(username)
+    cy.get('input[data-testid="username"]', { timeout: 5000 }).type(username)
     cy.get('input[data-testid="realname"]').type('Joel Bloggs')
     cy.get('input[data-testid="email"]').type('joel@gmail.com')
     cy.get('input[data-testid="terms"]').click()
@@ -59,7 +58,7 @@ describe('Admin create, RSVP and finalise', () => {
     cy.visit(`http://localhost:3000/create?account=${randomAccount}`)
     const eventName = `Super awesome event ${randomAccount}`
     // Fill in form
-    cy.getByLabelText('Name')
+    cy.getByLabelText('Event Name', { selector: 'input' })
       .click()
       .type(eventName)
     cy.getByLabelText('Description')
@@ -70,7 +69,7 @@ describe('Admin create, RSVP and finalise', () => {
       .type('London')
 
     // Deploy pending event to server //
-    cy.getByText('Create Pending Party').click()
+    cy.getByText('Create Event').click()
     signIn()
     // Deploy to network //
     cy.getByText('Deploy').click()
@@ -88,7 +87,9 @@ describe('Admin create, RSVP and finalise', () => {
     }).should('exist')
 
     // Finalise Event //
-    cy.queryByText('Finalize', { exact: false }).click()
+    cy.getByText('Admin Panel').click()
+    cy.getByText('Smart Contract', { exact: false }).click()
+    cy.getByTestId('finalize', { exact: false }).click()
     cy.queryByText('Finalize and enable payouts', { exact: false }).click()
     cy.wait(CONFIRMATION_TIME)
     cy.getByText('Finalized!', {

@@ -145,8 +145,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
+      const gas = await contract.register().estimateGas({ value: deposit })
+      console.log(gas)
       try {
         const tx = await contract.register().send({
+          gas,
           from: account,
           value: deposit
         })
@@ -161,10 +164,14 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
+      const gas = await contract
+        .finalize(maps.map(m => toBN(m).toString(10)))
+        .estimateGas()
       try {
         const tx = await contract
           .finalize(maps.map(m => toBN(m).toString(10)))
           .send({
+            gas,
             from: account
           })
 

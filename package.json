@@ -75,7 +75,7 @@
     "@storybook/addon-links": "^3.4.11",
     "@storybook/react": "^3.4.11",
     "babel-plugin-macros": "^2.4.2",
-    "cypress": "^3.1.2",
+    "cypress": "^3.2.0",
     "cypress-testing-library": "^2.3.3",
     "ganache-cli": "^6.1.8",
     "graphql-request": "^1.8.2",

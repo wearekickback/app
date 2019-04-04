@@ -16,8 +16,8 @@ const SecondaryText = styled('span')`
   margin-left: 5px;
 `
 
-const Label = ({ children, optional = false }) => (
-  <LabelContainer>
+const Label = ({ children, optional = false, forLabel }) => (
+  <LabelContainer for={forLabel}>
     {children}
     <SecondaryText>{optional ? '(optional)' : null}</SecondaryText>
   </LabelContainer>
