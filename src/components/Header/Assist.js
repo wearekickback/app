@@ -85,7 +85,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
       result.status = 'Mobile wallet not detected'
       result.error = true
     } else {
-      if (state.userCurrentNetworkId !== expectedNetworkId) {
+      if (state.userCurrentNetworkId !== parseInt(expectedNetworkId)) {
         result.status = 'Wrong Network'
         result.error = true
       }
