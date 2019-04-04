@@ -1,0 +1,68 @@
+build_environment: &build_environment
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.11.4
+    - image: circleci/postgres:10-alpine-ram
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: kickback-test
+
+commands:
+  yarn:
+    parameters:
+      cache-prefix:
+        type: string
+        default: ''
+    steps:
+      - restore_cache:
+          name: Restore yarn cache
+          key: << parameters.cache-prefix >>yarn-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn
+      - save_cache:
+          name: Save yarn cache
+          key: << parameters.cache-prefix >>yarn-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ~/.yarn
+
+version: 2.1
+
+jobs:
+  build:
+    <<: *build_environment
+    steps:
+      - run:
+          name: Checkout server
+          command: git clone git@github.com:wearekickback/server.git
+      - yarn:
+          cache-prefix: 'build'
+      - run:
+          name: Run tests with coverage
+          command: yarn test:coverage
+      - run:
+          name: Upload coverage report
+          command: cat test-coverage/lcov.info | node_modules/.bin/coveralls
+  deploy:
+    <<: *build_environment
+    steps:
+      - checkout
+      - yarn:
+          cache-prefix: 'deploy'
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Deploy
+          command: yarn deploy
+
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
