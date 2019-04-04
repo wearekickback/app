@@ -39,7 +39,6 @@ function SignInButton() {
       expectedNetworkId: networkState.expectedNetworkId
     })
     const address = await reloadUserAddress()
-    console.log({ networkState })
     if (!networkState.allGood || !address) {
       if (assist.fallback) {
         return showTooltip()

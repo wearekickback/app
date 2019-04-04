@@ -42,6 +42,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
     console.log('Blocknative failing to get State', e)
   }
   if (state) {
+    console.log('state', JSON.stringify(state.userAgent))
     console.log('state', state)
     let {
       correctNetwork,
@@ -54,7 +55,8 @@ const Assist = async ({ action, expectedNetworkId }) => {
       supportedNetwork,
       accountAddress,
       web3Version,
-      web3Wallet
+      web3Wallet,
+      userAgent
     } = state
     result = {
       correctNetwork,
@@ -68,6 +70,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
       accountAddress,
       web3Version,
       web3Wallet,
+      userAgent,
       ...result
     }
     // Making sure that current provider is set.
