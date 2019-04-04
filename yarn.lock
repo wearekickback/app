@@ -3391,10 +3391,10 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.10.0, bn.js@^4.11.3, bn.js@^4
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
 
-bnc-assist@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/bnc-assist/-/bnc-assist-0.4.0.tgz#d5df5ba34162998004e49580299cd61ba13a9660"
-  integrity sha512-T+M8aIHV48IHCrgopwc6n6PONVyje6EE7kd1/xuF6tlY6q51pTWTUfHduXdUANsOVfUh8YH7s3DMhtfjUIWPKQ==
+bnc-assist@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/bnc-assist/-/bnc-assist-0.5.0.tgz#651c85926af550d5f7cd94d9f50df057115695b7"
+  integrity sha512-aHAQhztFLQeqVXtl5BCP4I7DKCtQe+v+Qcs+bZSYH8/2xbympW0Yj9BuYukioWY3CfxUbiJu+EKXjvt2uUhmcQ==
   dependencies:
     "@babel/polyfill" "^7.0.0"
     babel-eslint "^10.0.1"
