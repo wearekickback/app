@@ -22,8 +22,19 @@ const Assist = async ({ action, expectedNetworkId }) => {
       }
     }
   })
-  let state = await assistInstance.getState()
-  let result = { status: 'Already on boarded', action, error: false }
+  let state
+  let result = {
+    status: 'Already on boarded',
+    action,
+    error: false,
+    fallback: false
+  }
+
+  try {
+    state = await assistInstance.getState()
+  } catch (e) {
+    console.log('Blocknative failing to get State', e)
+  }
   if (state) {
     let {
       correctNetwork,
@@ -52,8 +63,12 @@ const Assist = async ({ action, expectedNetworkId }) => {
     }
     // Making sure that current provider is set.
     result.currentProvider = state.currentProvider
+  } else {
+    result.status = 'Problem getting state'
+    result.error = true
+    result.fallback = true
   }
-  if (state.mobileDevice) {
+  if (state && state.mobileDevice) {
     if (!state.web3Wallet) {
       result.status = 'Mobile wallet not detected'
       result.error = true
@@ -63,6 +78,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
         result.error = true
       }
     }
+    result.fallback = true
   } else {
     try {
       result.status = await assistInstance.onboard()
@@ -71,6 +87,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
       result.error = true
     }
   }
+  console.log('Connect to web3', JSON.stringify(result))
   track('Connect to web3', result)
   return result
 }
