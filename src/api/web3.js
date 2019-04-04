@@ -60,10 +60,12 @@ const isLocalNetwork = id => {
 }
 
 async function getWeb3() {
+  console.log('getWeb31')
   if (!web3) {
+    console.log('getWeb32')
     try {
       networkState = {}
-
+      console.log('getWeb33')
       const result = await clientInstance.query({
         query: NETWORK_ID_QUERY
       })
@@ -71,17 +73,22 @@ async function getWeb3() {
       if (result.error) {
         throw new Error(result.error)
       }
-
+      console.log('getWeb34')
       networkState.expectedNetworkId = result.data.networkId
       networkState.expectedNetworkName = getNetworkName(
         networkState.expectedNetworkId
       )
+      console.log('getWeb35')
       if (window.ethereum) {
+        console.log('getWeb36')
         web3 = new Web3(window.ethereum)
+        console.log('getWeb37')
       } else if (window.web3 && window.web3.currentProvider) {
+        console.log('getWeb38')
         web3 = new Web3(window.web3.currentProvider)
         networkState.readOnly = false
       } else {
+        console.log('getWeb39')
         //local node
         const url = 'http://localhost:8545'
 
@@ -109,17 +116,21 @@ async function getWeb3() {
             console.log('Success: Cloud node active')
           }
         }
+        console.log('getWeb310')
       }
-
+      console.log('getWeb371', web3)
       networkState.networkId = `${await web3.eth.net.getId()}`
+      console.log('getWeb372')
       networkState.networkName = getNetworkName(networkState.networkId)
+      console.log('getWeb373')
       networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
-
+      console.log('getWeb374')
       if (networkState.networkId !== networkState.expectedNetworkId) {
+        console.log('getWeb375')
         networkState.wrongNetwork = true
         web3 = null
       }
-
+      console.log('getWeb376')
       // if web3 not set then something failed
       if (!web3) {
         throw new Error('Error setting up web3')
