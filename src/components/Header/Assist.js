@@ -55,8 +55,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
       supportedNetwork,
       accountAddress,
       web3Version,
-      web3Wallet,
-      userAgent
+      web3Wallet
     } = state
     result = {
       correctNetwork,
@@ -70,14 +69,10 @@ const Assist = async ({ action, expectedNetworkId }) => {
       accountAddress,
       web3Version,
       web3Wallet,
-      userAgent,
       ...result
     }
     // Making sure that current provider is set.
     result.currentProvider = state.currentProvider
-    // the parsed user agent by mixpanel and blocknative seems wrong.
-    // Get the agent data directly
-    result.navigatorUserAgent = navigator && navigator.userAgent
     // We want to know whether the users have any balances in their walllet
     // but don't want to know how much they do.
     result.hasBalance = parseInt(state.accountBalance || 0) > 0
