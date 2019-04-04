@@ -1,12 +1,14 @@
 language: node_js
 node_js:
-  - "8.11.4"
+  - '8.11.4'
 cache: yarn
 branches:
   only:
+    - travis
     - dev
     - master
 script:
+  - $(npm bin)/cypress run --record
   - yarn deploy
 notifications:
   email:
