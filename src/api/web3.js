@@ -64,7 +64,7 @@ async function getWeb3() {
   if (!web3) {
     console.log('getWeb32')
     try {
-      networkState = {}
+      networkState = { allGood: true }
       console.log('getWeb33')
       const result = await clientInstance.query({
         query: NETWORK_ID_QUERY
@@ -128,14 +128,13 @@ async function getWeb3() {
       if (networkState.networkId !== networkState.expectedNetworkId) {
         console.log('getWeb375')
         networkState.wrongNetwork = true
-        web3 = null
+        networkState.allGood = false
       }
       console.log('getWeb376')
       // if web3 not set then something failed
       if (!web3) {
+        networkState.allGood = false
         throw new Error('Error setting up web3')
-      } else {
-        networkState.allGood = true
       }
 
       // poll for blocks
