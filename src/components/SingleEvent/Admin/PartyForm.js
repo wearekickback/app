@@ -12,8 +12,7 @@ import DefaultTimezonePicker from 'react-timezone'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
-  getLocalTimezoneOffset,
-  getLocallyFormattedDate
+  getLocalTimezoneOffset
 } from '../../../utils/dates'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
