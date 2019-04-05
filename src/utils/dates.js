@@ -1,5 +1,4 @@
 import moment from 'moment-timezone'
-import { timezones } from 'react-timezone'
 
 export const toPrettyDate = (strOrDate, timezone = '') => {
   return (
