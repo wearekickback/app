@@ -12,7 +12,8 @@ import DefaultTimezonePicker from 'react-timezone'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
-  getLocalTimezoneOffset
+  getLocalTimezoneOffset,
+  getLocallyFormattedDate
 } from '../../../utils/dates'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
@@ -235,6 +236,8 @@ class PartyForm extends Component {
     if (address) {
       variables.address = address
     }
+    console.log(startDay)
+    //console.log(getLocallyFormattedDate(startDay))
 
     return (
       <PartyFormContainer>

@@ -11,11 +11,16 @@ export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
   const hours = date.getUTCHours() * 60 * 60 * 1000
   const minutes = date.getUTCMinutes() * 60 * 1000
-  const day = date.setHours(0, 0, 0, 0)
+  const day = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDay()
+  )
   return [day, hours + minutes]
 }
 
-export const getDateFromDayAndTime = (day, time) => {
+export const getDateFromDayAndTime = (dayUTCString, time) => {
+  const day = new Date(dayUTCString)
   const utc = Date.UTC(day.getFullYear(), day.getMonth(), day.getDay())
   const date = new Date(utc + time)
   return date
@@ -24,3 +29,6 @@ export const getDateFromDayAndTime = (day, time) => {
 export function getLocalTimezoneOffset() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone
 }
+
+export const getLocallyFormattedDate = d =>
+  d ? moment(d.split('T')[0]).toDate() : new Date()
