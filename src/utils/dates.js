@@ -1,18 +1,32 @@
 import moment from 'moment'
 
-export const toPrettyDate = strOrDate =>
-  moment(new Date(strOrDate)).format('MMM Do, YYYY @ H:mm a')
+export const toPrettyDate = (strOrDate, timezone = '') => {
+  return (
+    moment.utc(strOrDate).format('MMM Do, YYYY @ H:mm a') +
+    ' ' +
+    moment()
+      .tz(timezone)
+      .format('zZ')
+  )
+}
 
 export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
-  const hours = date.getHours() * 60 * 60 * 1000
-  const minutes = date.getMinutes() * 60 * 1000
-  const day = date.setHours(0, 0, 0, 0)
+  const hours = date.getUTCHours() * 60 * 60 * 1000
+  const minutes = date.getUTCMinutes() * 60 * 1000
+  const day = Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDay()
+  )
   return [day, hours + minutes]
 }
 
-export const getDateFromDayAndTime = (day, time) => {
-  return new Date(new Date(day).setHours(0, 0, 0, 0) + time)
+export const getDateFromDayAndTime = (dayUTCString, time) => {
+  const day = new Date(dayUTCString)
+  const utc = Date.UTC(day.getFullYear(), day.getMonth(), day.getDay())
+  const date = new Date(utc + time)
+  return date
 }
 
 export function getLocalTimezoneOffset() {

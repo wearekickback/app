@@ -235,6 +235,8 @@ class PartyForm extends Component {
     if (address) {
       variables.address = address
     }
+    console.log(startDay)
+    //console.log(getLocallyFormattedDate(startDay))
 
     return (
       <PartyFormContainer>
