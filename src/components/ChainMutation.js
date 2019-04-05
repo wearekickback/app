@@ -7,6 +7,7 @@ import {
   CANNOT_RESOLVE_ACCOUNT_ADDRESS,
   CANNOT_RESOLVE_CORRECT_NETWORK
 } from '../utils/errors'
+import Assist from './Header/Assist'
 import { events, getTransactionReceipt } from '../api/web3'
 import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from './SafeQuery'
@@ -235,7 +236,8 @@ export class ChainMutationButton extends Component {
                     this._onClick({
                       networkState,
                       reloadUserAddress,
-                      postMutation: onClick
+                      postMutation: onClick,
+                      action: props.analyticsId
                     })
                   }
                   disabled={!!(loading || progress)}
@@ -252,23 +254,33 @@ export class ChainMutationButton extends Component {
     )
   }
 
-  _onClick = ({ networkState, reloadUserAddress, postMutation }) => {
+  _onClick = ({ networkState, reloadUserAddress, postMutation, action }) => {
     this.setState({ notReadyError: null }, async () => {
       const address = await reloadUserAddress()
 
-      if (!address) {
-        return this.setState({
-          notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
-        })
-      }
+      let assist = await Assist({
+        expectedNetworkId: networkState.expectedNetworkId,
+        action
+      })
+      if (assist.fallback) {
+        if (!address) {
+          return this.setState({
+            notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
+          })
+        }
 
-      if (!networkState.allGood) {
-        return this.setState({
-          notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
-        })
+        if (!networkState.allGood) {
+          return this.setState({
+            notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
+          })
+        }
+        // Do not check assist.error as blocknative may incorrectly detect as error
+        postMutation()
+      } else {
+        if (!assist.error) {
+          postMutation()
+        }
       }
-
-      postMutation()
     })
   }
 }
