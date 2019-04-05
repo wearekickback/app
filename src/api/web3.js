@@ -62,8 +62,7 @@ const isLocalNetwork = id => {
 async function getWeb3() {
   if (!web3) {
     try {
-      networkState = {}
-
+      networkState = { allGood: true }
       const result = await clientInstance.query({
         query: NETWORK_ID_QUERY
       })
@@ -71,7 +70,6 @@ async function getWeb3() {
       if (result.error) {
         throw new Error(result.error)
       }
-
       networkState.expectedNetworkId = result.data.networkId
       networkState.expectedNetworkName = getNetworkName(
         networkState.expectedNetworkId
@@ -110,21 +108,17 @@ async function getWeb3() {
           }
         }
       }
-
       networkState.networkId = `${await web3.eth.net.getId()}`
       networkState.networkName = getNetworkName(networkState.networkId)
       networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
-
       if (networkState.networkId !== networkState.expectedNetworkId) {
         networkState.wrongNetwork = true
-        web3 = null
+        networkState.allGood = false
       }
-
       // if web3 not set then something failed
       if (!web3) {
+        networkState.allGood = false
         throw new Error('Error setting up web3')
-      } else {
-        networkState.allGood = true
       }
 
       // poll for blocks
@@ -199,7 +193,7 @@ export async function getAccount() {
       return accounts[accountIndex]
     } else {
       try {
-        const accounts = await window.ethereum.enable()
+        const accounts = await window.ethereum.send('eth_requestAccounts')
         return accounts[accountIndex]
       } catch (error) {
         console.warn('Did not allow app to access dapp browser')

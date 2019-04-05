@@ -7,6 +7,7 @@ import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
 import { EDIT_PROFILE } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
+import Assist from './Assist'
 
 const Account = styled('div')`
   display: flex;
@@ -33,14 +34,18 @@ function SignInButton() {
     reloadUserAddress
   }) => async () => {
     hideTooltip()
-
+    let assist = await Assist({
+      action: 'Sign in',
+      expectedNetworkId: networkState.expectedNetworkId
+    })
     const address = await reloadUserAddress()
-
     if (!networkState.allGood || !address) {
-      return showTooltip()
+      if (assist.fallback) {
+        return showTooltip()
+      }
+    } else {
+      signIn()
     }
-
-    signIn()
   }
 
   return (
@@ -54,7 +59,9 @@ function SignInButton() {
         showModal
       }) => {
         const twitterProfile =
-          userProfile && userProfile.social.find(s => s.type === 'twitter')
+          userProfile &&
+          userProfile.social &&
+          userProfile.social.find(s => s.type === 'twitter')
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
