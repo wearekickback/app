@@ -268,7 +268,7 @@ class Terms extends Component {
 
         <h2 id="9-refund-policy">9. Refund policy</h2>
         <p>
-          Kickback software requires that you commit a small payment when you
+          Kickback software requires that you make a small commitment when you
           RSVP to reserve your spot. Event attendance is determined by the event
           organisers or an event admin.
         </p>
@@ -587,8 +587,7 @@ class Terms extends Component {
           shall not exceed the greater of:
         </p>
         <p>
-          (a) $1, and; (b) the total amount paid and payable to us under the
-          contract.
+          (a) $1, and; (b) the total amount committed to us under the contract.
         </p>
         <h2 id="15-indemnity">15. Indemnity</h2>
         <p>
@@ -751,7 +750,7 @@ class Terms extends Component {
           English language only.
         </p>
         <p>
-          <strong>26.3</strong> Our VAT number is .
+          <strong>26.3</strong> Our VAT number is 309229016.
         </p>
         <h2 id="27-our-details">27. Our details</h2>
         <p>
