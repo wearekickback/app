@@ -25,6 +25,3 @@ export const getDateFromDayAndTime = (dayUTCString, time) => {
 export function getLocalTimezoneOffset() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone
 }
-
-export const getLocallyFormattedDate = d =>
-  d ? moment(d.split('T')[0]).toDate() : new Date()
