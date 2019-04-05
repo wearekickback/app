@@ -1,11 +1,14 @@
 import moment from 'moment'
-<<<<<<< HEAD
-import { timezones } from 'react-timezone'
-=======
->>>>>>> Timepicker (#122)
 
-export const toPrettyDate = strOrDate =>
-  moment.utc(strOrDate).format('MMM Do, YYYY @ H:mm a')
+export const toPrettyDate = (strOrDate, timezone = '') => {
+  return (
+    moment.utc(strOrDate).format('MMM Do, YYYY @ H:mm a') +
+    ' ' +
+    moment()
+      .tz(timezone)
+      .format('zZ')
+  )
+}
 
 export const getDayAndTimeFromDate = isoString => {
   const date = new Date(isoString)
