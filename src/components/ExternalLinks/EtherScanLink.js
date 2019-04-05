@@ -14,13 +14,13 @@ const EtherScanLink = ({ address, tx, children }) => (
   <GlobalConsumer>
     {({ networkState: { expectedNetworkName, expectedNetworkId } }) => {
       const prefix =
-        '1' === expectedNetworkId ? '' : `${expectedNetworkName.toLowerCase()}`
+        '1' === expectedNetworkId ? '' : `${expectedNetworkName.toLowerCase()}.`
 
       let link
       if (address) {
-        link = `https://${prefix}.etherscan.io/address/${address}`
+        link = `https://${prefix}etherscan.io/address/${address}`
       } else if (tx) {
-        link = `https://${prefix}.etherscan.io/tx/${tx}`
+        link = `https://${prefix}etherscan.io/tx/${tx}`
       }
       return link ? (
         <Link target="_blank" href={link}>
