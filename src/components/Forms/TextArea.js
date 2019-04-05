@@ -6,7 +6,7 @@ const DefaultTextArea = styled('textarea')`
   font-size: 14px;
   padding: 10px;
   width: 100%;
-  border-radius: 2px;
+  border-radius: 6px;
   border: 1px solid #edeef4;
   padding-left: 20px;
   &:focus {
