@@ -177,6 +177,10 @@ class Provider extends Component {
     this.setState({ networkState })
   }
 
+  setAssistState = assist => {
+    this.setState({ assist })
+  }
+
   reloadUserAddress = async () => {
     const address = await getAccount()
 
@@ -213,7 +217,8 @@ class Provider extends Component {
           showModal: this.showModal,
           closeModal: this.closeModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
-          setUserProfile: this.setUserProfile
+          setUserProfile: this.setUserProfile,
+          assist: this.state.assist
         }}
       >
         {this.props.children}

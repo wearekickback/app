@@ -1,5 +1,6 @@
 import merge from 'lodash/merge'
 import { Deployer } from '@wearekickback/contracts'
+import { getProvider } from '../GlobalState'
 
 import eventsList from '../fixtures/events.json'
 import getWeb3, {
@@ -67,7 +68,12 @@ const resolvers = {
 
       const deployerAddress = await getDeployerAddress()
 
-      const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
+      const provider = await getProvider()
+      const contract = provider.state.assist
+        ? provider.state.assist.Contract(
+            new web3.eth.Contract(deployerAbi, deployerAddress)
+          )
+        : new web3.eth.Contract(deployerAbi, deployerAddress)
 
       try {
         const tx = await contract.methods

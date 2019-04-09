@@ -2,6 +2,7 @@ import { toBN } from 'web3-utils'
 import getWeb3, { getAccount } from '../web3'
 import { Conference } from '@wearekickback/contracts'
 import events from '../../fixtures/events.json'
+import { getProvider } from '../../GlobalState'
 
 const abi = Conference.abi
 
@@ -127,7 +128,10 @@ const resolvers = {
 
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const provider = await getProvider()
+      const { methods: contract } = provider.state.assist.Contract(
+        new web3.eth.Contract(abi, address)
+      )
       try {
         const tx = await contract.grant(userAddresses).send({
           from: account
@@ -143,7 +147,10 @@ const resolvers = {
     async rsvp(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const provider = await getProvider()
+      const { methods: contract } = provider.state.assist
+        ? provider.state.assist.Contract(new web3.eth.Contract(abi, address))
+        : new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
       try {
         const tx = await contract.register().send({
@@ -160,7 +167,10 @@ const resolvers = {
     async finalize(_, { address, maps }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const provider = await getProvider()
+      const { methods: contract } = provider.state.assist
+        ? provider.state.assist.Contract(new web3.eth.Contract(abi, address))
+        : new web3.eth.Contract(abi, address)
       try {
         const tx = await contract
           .finalize(maps.map(m => toBN(m).toString(10)))
@@ -178,7 +188,10 @@ const resolvers = {
     async withdrawPayout(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const provider = await getProvider()
+      const { methods: contract } = provider.state.assist
+        ? provider.state.assist.Contract(new web3.eth.Contract(abi, address))
+        : new web3.eth.Contract(abi, address)
       try {
         const tx = await contract.withdraw().send({
           from: account
@@ -195,7 +208,10 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       console.log(address)
-      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const provider = await getProvider()
+      const { methods: contract } = provider.state.assist
+        ? provider.state.assist.Contract(new web3.eth.Contract(abi, address))
+        : new web3.eth.Contract(abi, address)
       try {
         const tx = await contract
           .setLimitOfParticipants(limit)
@@ -210,7 +226,10 @@ const resolvers = {
     async clear(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const provider = await getProvider()
+      const { methods: contract } = provider.state.assist
+        ? provider.state.assist.Contract(new web3.eth.Contract(abi, address))
+        : new web3.eth.Contract(abi, address)
       try {
         const tx = await contract.clear().send({ from: account })
 

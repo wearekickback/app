@@ -185,10 +185,12 @@ class DummyParty {
       console.log(`Admin account ${admin.username} already exists`)
     }
 
-    const deployer = new this.web3.eth.Contract(
-      DeployerABI,
-      DEPLOYER_CONTRACT_ADDRESS
-    )
+    const provider = await getProvider()
+    const deployer = provider.state.assist
+      ? provider.state.assist.Contract(
+          new this.web3.eth.Contract(DeployerABI, DEPLOYER_CONTRACT_ADDRESS)
+        )
+      : new this.web3.eth.Contract(DeployerABI, DEPLOYER_CONTRACT_ADDRESS)
     const args = [
       id,
       new EthVal(0.02, 'eth').toWei().toString(16),
@@ -202,7 +204,11 @@ class DummyParty {
     const newPartyAddress = extractNewPartyAddressFromTx(tx)
 
     console.log(`Deployed new party at address: ${newPartyAddress}`)
-    this.party = new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
+    this.party = provider.state.assist
+      ? provider.state.assist.Contract(
+          new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
+        )
+      : new this.web3.eth.Contract(ConferenceABI, newPartyAddress)
     this.deposit = await this.party.methods.deposit().call()
     return this.party
   }

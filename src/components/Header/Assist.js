@@ -2,6 +2,13 @@ import getWeb3 from '../../api/web3'
 import assist from 'bnc-assist'
 import { BLOCKNATIVE_DAPPID } from '../../config'
 import { track } from '../../api/analytics'
+import { getProvider } from '../../GlobalState'
+
+const updateGlobalState = assistInstance => {
+  getProvider().then(provider => {
+    provider.setAssistState({ ...assistInstance })
+  })
+}
 
 const Assist = async ({ action, expectedNetworkId }) => {
   let web3
@@ -27,6 +34,9 @@ const Assist = async ({ action, expectedNetworkId }) => {
       }
     }
   })
+
+  updateGlobalState(assistInstance)
+
   let state
   let result = {
     status: 'Already on boarded',

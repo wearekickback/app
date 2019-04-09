@@ -161,15 +161,19 @@ export async function getTransactionReceipt(txHash) {
 
 export async function getEvents(address, abi) {
   return new Promise(function(resolve, reject) {
-    const Contract = window.web3.eth.contract(abi)
-    const instance = Contract.at(address)
-    const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
-    events.get(function(error, result) {
-      if (error) {
-        reject(error)
-      }
+    getProvider().then(provider => {
+      const Contract = provider.state.assist
+        ? provider.state.assist.Contract(window.web3.eth.contract(abi))
+        : window.web3.eth.contract(abi)
+      const instance = Contract.at(address)
+      const events = instance.allEvents({ fromBlock: 0, toBlock: 'latest' })
+      events.get(function(error, result) {
+        if (error) {
+          reject(error)
+        }
 
-      resolve(result)
+        resolve(result)
+      })
     })
   })
 }
