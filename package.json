@@ -46,7 +46,8 @@
     "truffle": "^5.0.0-beta.0",
     "uuid": "^3.3.2",
     "web3": "^1.0.0-beta.36",
-    "web3-utils": "^1.0.0-beta.36"
+    "web3-utils": "^1.0.0-beta.36",
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "setup": "scripts/setup.js",

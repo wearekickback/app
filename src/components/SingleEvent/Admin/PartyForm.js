@@ -8,7 +8,7 @@ import 'react-day-picker/lib/style.css'
 import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
-
+import getEtherPrice from '../../../api/price'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
@@ -151,7 +151,7 @@ class PartyForm extends Component {
       arriveBy = new Date(),
       timezone = getLocalTimezoneOffset(),
       headerImg = '',
-      deposit = '0.02',
+      deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
@@ -187,6 +187,23 @@ class PartyForm extends Component {
     })
   }
 
+  componentDidMount() {
+    let klass = this
+    if (!this.state.deposit) {
+      getEtherPrice().then(r => {
+        if (r && r.result && r.result.ethusd) {
+          const unit = 10 // $10 as a guide price
+          const price = parseFloat(r.result.ethusd)
+          const base = 1000
+          const ethCommitment = Math.round((unit / price) * base) / base
+          klass.setState({ deposit: ethCommitment })
+        } else {
+          // falls back to default
+          klass.setState({ deposit: 0.02 })
+        }
+      })
+    }
+  }
   render() {
     const {
       name,
