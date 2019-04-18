@@ -11,8 +11,7 @@ import DefaultLayout from './layout/Layouts'
 import { HomePageLayout } from './layout/Layouts'
 
 import AllEvents from './routes/AllEvents'
-import CreatePendingEvent from './routes/CreatePendingEvent'
-import DeployPendingEvent from './routes/DeployPendingEvent'
+import CreateEvent from './routes/CreateEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import LandingPage from './routes/LandingPage'
@@ -68,8 +67,7 @@ class App extends Component {
                 path="/event/:address/admin"
                 component={SingleEventAdmin}
               />
-              <Route path="/create" component={CreatePendingEvent} />
-              <Route path="/deploy" component={DeployPendingEvent} />
+              <Route path="/create" component={CreateEvent} />
               <Route path="/faq" component={Faq} />
               <Route path="/terms" component={Terms} />
               <Route path="/privacy" component={Privacy} />
