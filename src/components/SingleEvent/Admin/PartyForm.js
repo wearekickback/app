@@ -14,6 +14,7 @@ import {
   getDateFromDayAndTime,
   getLocalTimezoneOffset
 } from '../../../utils/dates'
+import mq from '../../../mediaQuery'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
 
@@ -139,6 +140,15 @@ const DateContent = styled('div')`
   display: flex;
 `
 
+const CommitmentInput = styled(TextInput)`
+  width: 170px;
+  display: inline-table;
+`
+
+const CommitmentInUsd = styled('span')`
+  padding-left: 1em;
+`
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -152,6 +162,7 @@ class PartyForm extends Component {
       timezone = getLocalTimezoneOffset(),
       headerImg = '',
       deposit = null,
+      price = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
@@ -189,19 +200,20 @@ class PartyForm extends Component {
 
   componentDidMount() {
     let klass = this
-    if (!this.state.deposit) {
-      getEtherPrice().then(r => {
-        if (r && r.result && r.result.ethusd) {
-          const unit = 10 // $10 as a guide price
-          const price = parseFloat(r.result.ethusd)
+    getEtherPrice().then(r => {
+      if (r && r.result && r.result.ethusd) {
+        const unit = 10 // $10 as a guide price
+        const price = parseFloat(r.result.ethusd)
+        klass.setState({ price: price })
+        if (!this.state.deposit) {
           const ethCommitment = (unit / price).toFixed(2)
           klass.setState({ deposit: ethCommitment })
-        } else {
-          // falls back to default
-          klass.setState({ deposit: 0.02 })
         }
-      })
-    }
+      } else {
+        // falls back to default
+        klass.setState({ deposit: 0.02 })
+      }
+    })
   }
   render() {
     const {
@@ -401,13 +413,18 @@ class PartyForm extends Component {
           {type === 'create' && (
             <>
               <InputWrapper>
-                <Label>Commitment ($10 is the suggested amount)</Label>
-                <TextInput
+                <Label>
+                  Commitment ($10 worth ETH is the suggested amount)
+                </Label>
+                <CommitmentInput
                   value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                   placeholder="ETH"
                 />
+                <CommitmentInUsd>
+                  ETH (${(this.state.deposit * this.state.price).toFixed(2)})
+                </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
