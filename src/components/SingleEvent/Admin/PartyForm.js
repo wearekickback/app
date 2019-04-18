@@ -14,19 +14,19 @@ import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
   getLocalTimezoneOffset
-} from '../../../utils/dates'
+} from 'utils/dates'
 import { extractNewPartyAddressFromTx } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
 
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
-import SafeMutation from '../../SafeMutation'
-import Button from '../../Forms/Button'
-import TextInput from '../../Forms/TextInput'
-import TextArea from '../../Forms/TextArea'
-import Label from '../../Forms/Label'
-import { H2 } from '../../Typography/Basic'
+import SafeMutation from 'components/SafeMutation'
+import Button from 'components/Forms/Button'
+import TextInput from 'components/Forms/TextInput'
+import TextArea from 'components/Forms/TextArea'
+import Label from 'components/Forms/Label'
+import { H2 } from 'components/Typography/Basic'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
