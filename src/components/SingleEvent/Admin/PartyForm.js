@@ -194,8 +194,7 @@ class PartyForm extends Component {
         if (r && r.result && r.result.ethusd) {
           const unit = 10 // $10 as a guide price
           const price = parseFloat(r.result.ethusd)
-          const base = 1000
-          const ethCommitment = Math.round((unit / price) * base) / base
+          const ethCommitment = (unit / price).toFixed(2)
           klass.setState({ deposit: ethCommitment })
         } else {
           // falls back to default
@@ -402,7 +401,7 @@ class PartyForm extends Component {
           {type === 'create' && (
             <>
               <InputWrapper>
-                <Label>Commitment</Label>
+                <Label>Commitment ($10 is the suggested amount)</Label>
                 <TextInput
                   value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
