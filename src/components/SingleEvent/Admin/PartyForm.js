@@ -14,7 +14,6 @@ import {
   getDateFromDayAndTime,
   getLocalTimezoneOffset
 } from '../../../utils/dates'
-import mq from '../../../mediaQuery'
 
 import { SINGLE_UPLOAD } from '../../../graphql/mutations'
 
@@ -162,7 +161,6 @@ class PartyForm extends Component {
       timezone = getLocalTimezoneOffset(),
       headerImg = '',
       deposit = null,
-      price = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
@@ -184,6 +182,7 @@ class PartyForm extends Component {
       arriveByTime: moment(arriveByTime).utcOffset('+00:00'),
       headerImg,
       deposit,
+      price: null,
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false
@@ -199,19 +198,18 @@ class PartyForm extends Component {
   }
 
   componentDidMount() {
-    let klass = this
     getEtherPrice().then(r => {
       if (r && r.result && r.result.ethusd) {
         const unit = 10 // $10 as a guide price
         const price = parseFloat(r.result.ethusd)
-        klass.setState({ price: price })
+        this.setState({ price: price })
         if (!this.state.deposit) {
           const ethCommitment = (unit / price).toFixed(2)
-          klass.setState({ deposit: ethCommitment })
+          this.setState({ deposit: ethCommitment })
         }
       } else {
         // falls back to default
-        klass.setState({ deposit: 0.02 })
+        this.setState({ deposit: 0.02 })
       }
     })
   }
@@ -413,9 +411,7 @@ class PartyForm extends Component {
           {type === 'create' && (
             <>
               <InputWrapper>
-                <Label>
-                  Commitment ($10 worth ETH is the suggested amount)
-                </Label>
+                <Label>Commitment</Label>
                 <CommitmentInput
                   value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
