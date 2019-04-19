@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { withRouter } from 'react-router-dom'
-import TextInput from '../components/Forms/TextInput'
+import DefaultTextInput from '../components/Forms/TextInput'
 import Label from '../components/Forms/Label'
 
 import PartyForm from '../components/SingleEvent/Admin/PartyForm'
@@ -11,6 +11,10 @@ const CreateContainer = styled('div')`
   display: flex;
   max-width: 800px;
   flex-direction: column;
+`
+
+const TextInput = styled(DefaultTextInput)`
+  margin-bottom: 20px;
 `
 
 class Create extends Component {
@@ -27,6 +31,7 @@ class Create extends Component {
           onCompleted={this._onCreated}
           mutation={CREATE_PENDING_PARTY}
           variables={{ password }}
+          type="create"
         >
           <Label>SECRET PASSWORD:</Label>
           <TextInput
