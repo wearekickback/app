@@ -2,12 +2,12 @@ import React, { Component, Fragment } from 'react'
 import styled from 'react-emotion'
 import EthVal from 'ethval'
 import { amAdmin, getMyParticipantEntry } from '../../utils/parties'
-import { PARTY_QUERY } from '../../graphql/queries'
+// import { PARTY_QUERY } from '../../graphql/queries'
 import mq from '../../mediaQuery'
 
-import Loader from '../Loader'
-import ErrorBox from '../ErrorBox'
-import SafeQuery from '../SafeQuery'
+// import Loader from '../Loader'
+// import ErrorBox from '../ErrorBox'
+// import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
 import EventParticipants from './EventParticipants'
@@ -41,7 +41,7 @@ const RightContainer = styled('div')`
 
 class SingleEventWrapper extends Component {
   render() {
-    const loading = false
+    // const loading = false
     const data = queryString.parse(window.location.search)
     const party = {
       address: '0x',

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
-import DepositValue from '../Utils/DepositValue'
 import DefaultRSVP from './RSVP'
 import WithdrawPayout from './WithdrawPayout'
 import {

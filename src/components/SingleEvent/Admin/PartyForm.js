@@ -11,21 +11,21 @@ import DefaultTimezonePicker from 'react-timezone'
 import getEtherPrice from '../../../api/price'
 import queryString from 'query-string'
 
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
   getLocalTimezoneOffset
 } from 'utils/dates'
-import { extractNewPartyAddressFromTx } from 'api/utils'
+// import { extractNewPartyAddressFromTx } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
-import { CREATE_PARTY } from 'graphql/mutations'
+// import { CREATE_PARTY } from 'graphql/mutations'
 
-import SafeMutation from '../../SafeMutation'
-import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
-import Button from '../../Forms/Button'
+// import SafeMutation from '../../SafeMutation'
+// import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
+// import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
 import TextArea from '../../Forms/TextArea'
 import Label from '../../Forms/Label'
@@ -132,18 +132,18 @@ const UploadedImage = ({ src, text }) => (
   </ImageWrapper>
 )
 
-const Actions = styled('div')`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`
+// const Actions = styled('div')`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-end;
+// `
 
-function getButtonText(type) {
-  return {
-    create: 'Create Event',
-    edit: 'Update Event'
-  }[type]
-}
+// function getButtonText(type) {
+//   return {
+//     create: 'Create Event',
+//     edit: 'Update Event'
+//   }[type]
+// }
 
 const DateContent = styled('div')`
   display: flex;
@@ -253,13 +253,13 @@ class PartyForm extends Component {
       deposit,
       eventFee,
       eventType,
-      limitOfParticipants,
-      coolingPeriod
+      limitOfParticipants
+      // coolingPeriod
     } = this.state
 
     const {
       type = 'create',
-      mutation,
+      // mutation,
       address,
       children,
       variables: extraVariables = {}

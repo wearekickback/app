@@ -3,7 +3,6 @@ import React from 'react'
 import { PARTY_QUERY } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import DepositValue from '../Utils/DepositValue'
-import { toEthVal } from '../../utils/units'
 import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 
