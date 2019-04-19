@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'react-emotion'
+// import React from 'react'
+// import styled from 'react-emotion'
 
-import { GlobalConsumer } from '../../GlobalState'
+// import { GlobalConsumer } from '../../GlobalState'
 
-const Link = styled('a')`
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
+// const Link = styled('a')`
+//   display: inline-block;
+//   overflow: hidden;
+//   white-space: nowrap;
+//   text-overflow: ellipsis;
+// `
 // const EtherScanLink = ({ address, tx, children }) => (
 const EtherScanLink = () => null
 // <GlobalConsumer>
