@@ -129,7 +129,8 @@ const UploadedImage = ({ src, text }) => (
 
 const Actions = styled('div')`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 `
 
 function getButtonText(type) {
@@ -430,6 +431,7 @@ class PartyForm extends Component {
                         <ChainMutationButton
                           analyticsId="Deploy Event Contract"
                           result={result}
+                          type={address ? 'disabled' : ''}
                           onClick={() => {
                             mutate().then(({ data: { id } }) => {
                               createParty({
@@ -447,7 +449,7 @@ class PartyForm extends Component {
                         />
                         {address ? (
                           <p>
-                            Event at {address}!{' '}
+                            Event deployed at {address}!{' '}
                             <Link to={`/event/${address}`}>
                               View event page
                             </Link>

@@ -195,10 +195,7 @@ export const ChainMutationResult = ({ children, result }) => {
     extraContent = <div>Sending transaction</div>
   } else if (progress) {
     extraContent = (
-      <div>
-        Awaiting confirmation ({progress.percentComplete}
-        %)
-      </div>
+      <div>Awaiting confirmation ({progress.percentComplete}%)</div>
     )
   } else if (data) {
     extraContent = <div>Success!</div>
