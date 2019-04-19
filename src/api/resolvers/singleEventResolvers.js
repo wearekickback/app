@@ -1,17 +1,14 @@
 import { toBN } from 'web3-utils'
-import getWeb3, { getAccount } from '../web3'
+import { Deployer } from '@wearekickback/contracts'
 import { Conference } from '@wearekickback/contracts'
+
+import getWeb3, { getAccount, getDeployerAddress } from '../web3'
 import events from '../../fixtures/events.json'
+import { txHelper } from '../utils'
+import { toEthVal } from '../../utils/units'
 
+const deployerAbi = Deployer.abi
 const abi = Conference.abi
-
-function txHelper(web3TxObj) {
-  return new Promise(resolve => {
-    web3TxObj.on('transactionHash', hash => {
-      resolve(hash)
-    })
-  })
-}
 
 export const defaults = {
   markedAttendedList: []
@@ -127,6 +124,47 @@ const resolvers = {
   },
 
   Mutation: {
+    async createParty(_, args) {
+      console.log(`Deploying party`, args)
+
+      const { id, deposit, limitOfParticipants, coolingPeriod } = args
+
+      const web3 = await getWeb3()
+      const account = await getAccount()
+
+      const deployerAddress = await getDeployerAddress()
+
+      const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
+
+      try {
+        const tx = await new Promise((resolve, reject) =>
+          contract.methods
+            .deploy(
+              id,
+              toEthVal(deposit, 'eth')
+                .toWei()
+                .toString(16),
+              toEthVal(limitOfParticipants).toString(16),
+              toEthVal(coolingPeriod).toString(16)
+            )
+            .send({
+              gas: 3000000,
+              from: account
+            })
+            .on('transactionHash', hash => {
+              resolve(hash)
+            })
+        )
+
+        console.log('tx', tx)
+
+        return tx
+      } catch (e) {
+        console.log('error', e)
+
+        throw new Error(`Failed to deploy party: ${e}`)
+      }
+    },
     async addAdmins(_, { address, userAddresses }) {
       console.log(`Adding admins:\n${userAddresses.join('\n')}`)
 
@@ -205,7 +243,6 @@ const resolvers = {
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      console.log(address)
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(

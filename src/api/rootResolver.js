@@ -8,7 +8,6 @@ import getWeb3, {
   getDeployerAddress,
   isLocalEndpoint
 } from './web3'
-import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
@@ -57,47 +56,6 @@ const resolvers = {
   },
 
   Mutation: {
-    async createParty(_, args) {
-      console.log(`Deploying party`, args)
-
-      const { id, deposit, limitOfParticipants, coolingPeriod } = args
-
-      const web3 = await getWeb3()
-      const account = await getAccount()
-
-      const deployerAddress = await getDeployerAddress()
-
-      const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
-
-      try {
-        const tx = await new Promise((resolve, reject) =>
-          contract.methods
-            .deploy(
-              id,
-              toEthVal(deposit, 'eth')
-                .toWei()
-                .toString(16),
-              toEthVal(limitOfParticipants).toString(16),
-              toEthVal(coolingPeriod).toString(16)
-            )
-            .send({
-              gas: 3000000,
-              from: account
-            })
-            .on('transactionHash', hash => {
-              resolve(hash)
-            })
-        )
-
-        console.log('tx', tx)
-
-        return tx
-      } catch (e) {
-        console.log('error', e)
-
-        throw new Error(`Failed to deploy party: ${e}`)
-      }
-    },
     async signChallengeString(_, { challengeString }) {
       const web3 = await getWeb3()
       const address = await getAccount()
