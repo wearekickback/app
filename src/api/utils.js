@@ -13,3 +13,11 @@ export const extractNewPartyAddressFromTx = tx => {
   const [event] = parseLog(tx.logs || [], [events.NewParty])
   return event ? event.args.deployedAddress : null
 }
+
+export function txHelper(web3TxObj) {
+  return new Promise(resolve => {
+    web3TxObj.on('transactionHash', hash => {
+      resolve(hash)
+    })
+  })
+}
