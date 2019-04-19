@@ -13,6 +13,7 @@ import { HomePageLayout } from './layout/Layouts'
 import AllEvents from './routes/AllEvents'
 import CreateEvent from './routes/CreateEvent'
 import SingleEvent from './routes/SingleEvent'
+import PreviewEvent from './components/SingleEvent/PreviewEventWrapper'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import LandingPage from './routes/LandingPage'
 import Team from './routes/Team'
@@ -63,6 +64,7 @@ class App extends Component {
               />
               <Route exact path="/events" component={AllEvents} />
               <Route exact path="/event/:address" component={SingleEvent} />
+              <Route exact path="/preview" component={PreviewEvent} />
               <Route
                 path="/event/:address/admin"
                 component={SingleEventAdmin}

@@ -28,7 +28,7 @@
     "marked": "^0.6.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
-    "query-string": "^6.2.0",
+    "query-string": "^6.4.2",
     "rc-time-picker": "^3.6.2",
     "react": "^16.8.1",
     "react-apollo": "^2.2.4",

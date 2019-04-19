@@ -17,6 +17,7 @@
     { "src": "/deploy/?", "dest": "build/index.html" },
     { "src": "/events/?", "dest": "build/index.html" },
     { "src": "/event/.+", "dest": "build/index.html" },
+    { "src": "/preview/.+", "dest": "build/index.html" },
     { "src": "/service-worker.js", "dest": "build/service-worker.js", "headers": { "cache-control": "no-cache" } },
     { "src": "/(.+)", "dest": "build/$1" }
   ]

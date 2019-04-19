@@ -9,6 +9,7 @@ import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
 import getEtherPrice from '../../../api/price'
+import queryString from 'query-string'
 
 import { Link } from 'react-router-dom'
 
@@ -157,6 +158,18 @@ const CommitmentInUsd = styled('span')`
   padding-left: 1em;
 `
 
+const PreviewButton = styled('a')`
+  background-color: #6e76ff;
+  border-radius: 4px;
+  border: 1px solid #6e76ff;
+  font-size: 14px;
+  font-family: Muli;
+  padding: 10px 20px;
+  color: white;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+`
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -285,7 +298,21 @@ class PartyForm extends Component {
     if (address) {
       variables.address = address
     }
-
+    console.log('STATE', this.state)
+    const previewParams = {
+      start,
+      end,
+      arriveBy,
+      kickback,
+      kickback80percent,
+      kickback50percent,
+      platformFee,
+      yourReturn,
+      kickbackReturn,
+      eventFee,
+      ...this.state
+    }
+    console.log({ previewParams })
     return (
       <PartyFormContainer>
         <H2>Event Details</H2>
@@ -529,7 +556,14 @@ class PartyForm extends Component {
 
         {children}
 
-        <Actions>
+        <PreviewButton
+          href={`/preview?${queryString.stringify(previewParams)}`}
+          target="_blank"
+        >
+          Preview
+        </PreviewButton>
+
+        {/* <Actions>
           <SafeMutation
             mutation={mutation}
             resultKey="id"
@@ -583,7 +617,7 @@ class PartyForm extends Component {
               )
             }
           </SafeMutation>
-        </Actions>
+        </Actions> */}
       </PartyFormContainer>
     )
   }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
-
+import DepositValue from '../Utils/DepositValue'
 import DefaultRSVP from './RSVP'
 import WithdrawPayout from './WithdrawPayout'
 import {
@@ -20,6 +20,14 @@ const Button = styled(DefaultButton)`
   a {
     color: white;
   }
+`
+
+const Label = styled('span')`
+  background-color: ${props => (props.free ? 'green' : 'orange')};
+  border-radius: 10px;
+  color: white;
+  margin-left: 5px;
+  padding: 5px;
 `
 
 const CTA = styled('div')`
@@ -103,33 +111,92 @@ class EventCTA extends Component {
   _renderActiveRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants, participantLimit }
+      party: {
+        address,
+        deposit,
+        participants,
+        participantLimit,
+        eventType,
+        kickback,
+        kickback50percent,
+        kickback80percent,
+        price,
+        yourReturn,
+        kickbackReturn
+      }
     } = this.props
-
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
         return (
           <>
-            <RSVP address={address} deposit={deposit} />
+            <RSVP address={address} deposit={deposit} price={price} />
             <CTAInfo>
               <strong>Kickback rules:</strong>
-              <ul>
-                <li>Everyone commits a small amount of ETH when they RSVP.</li>
-                <li>
-                  Any no-shows lose their ETH, which will be
-                  <strong> split amongst the attendees</strong>.
-                </li>
-                <li>
-                  After the event you can withdraw your post-event payout.
-                </li>
-              </ul>
+              <Label free={eventType === 'free'}>
+                {eventType === 'free' ? 'Free' : 'Paid'}
+              </Label>
+              <Label free={eventType !== 'full'}>
+                {eventType !== 'full' ? 'Kickback' : 'No Kickback'}
+              </Label>
+              <p>This is a {eventType === 'free' ? 'free' : 'paid'} event</p>
+              {eventType !== 'full' ? (
+                <ul>
+                  <li>
+                    Any no-shows lose their ETH, which will be
+                    <strong> split amongst the attendees</strong>.
+                  </li>
+                  <li>
+                    After the event you can withdraw your post-event return of
+                  </li>
+                  <ul>
+                    <li>
+                      {kickback.toFixed(3)} ETH ($
+                      {(kickback * price).toFixed(2)}) if 100% of people turn
+                      up.
+                    </li>
+                    <li>
+                      {kickback80percent.toFixed(5)} ETH ($
+                      {(kickback80percent * price).toFixed(2)}) if 80% of people
+                      turn up.
+                    </li>
+                    <li>
+                      {kickback50percent.toFixed(5)} ETH ($
+                      {(kickback50percent * price).toFixed(2)}) if 50% of people
+                      turn up.
+                    </li>
+                  </ul>
+                </ul>
+              ) : (
+                ''
+              )}
+
+              {eventType !== 'free' ? (
+                <span>
+                  If everybody({participantLimit}) commits{' '}
+                  {toEthVal(deposit)
+                    .toEth()
+                    .toFixed(2)}{' '}
+                  ETH, the event organiser takes {yourReturn.toFixed(3)} ETH ($
+                  {(yourReturn * price).toFixed(2)})
+                  <br />
+                  Kickback takes it's 5 % ({kickbackReturn.toFixed(3)} ETH = $
+                  {(kickbackReturn * price).toFixed(2)}) as a service fee.
+                </span>
+              ) : (
+                ''
+              )}
+
               <p>Please remember:</p>
               <ul>
                 <li>Once you RSVP, you cannot cancel.</li>
-                <li>
-                  The event organiser must mark you as attended in order for you
-                  to qualify for the payout.
-                </li>
+                {eventType !== 'full' ? (
+                  <li>
+                    The event organiser must mark you as attended in order for
+                    you to qualify for the payout.
+                  </li>
+                ) : (
+                  ''
+                )}
                 <li>
                   You must withdraw your payout within the post-event cooling
                   period.
