@@ -20,7 +20,7 @@ class Radio extends Component {
                 type="radio"
                 name={className}
                 value={option.value}
-                checked={this.state.selected == i ? true : false}
+                checked={this.state.selected === i ? true : false}
                 onChange={this._onChange}
               />
               {option.text}

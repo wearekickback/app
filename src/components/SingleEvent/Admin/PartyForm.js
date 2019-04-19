@@ -257,7 +257,7 @@ class PartyForm extends Component {
     const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
     const platformFee = eventFee * 0.05
     let kickback
-    if (eventType == 'full') {
+    if (eventType === 'full') {
       kickback = 0
     } else {
       kickback = deposit - eventFee - platformFee
