@@ -14456,7 +14456,7 @@ web3-utils@1.0.0-beta.52:
     randomhex "0.1.5"
     utf8 "2.1.1"
 
-web3@^1.0.0-beta.52:
+web3@^1.0.0-beta.36:
   version "1.0.0-beta.52"
   resolved "https://registry.yarnpkg.com/web3/-/web3-1.0.0-beta.52.tgz#a524888b84206d1ceea8abe1d6056bd7a0a8e33f"
   integrity sha512-IWBV1gS7sElHqD2mkwjdyeEmY4YhWn7C+b+pdOWgDJ6j70ux2bqVMfsP0saZ9nWeF1TWMvUnrFsyZ7C4/VnhTA==

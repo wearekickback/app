@@ -23,6 +23,7 @@ import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
 
 import SafeMutation from '../../SafeMutation'
+import ChainMutation, { ChainMutationButton } from '../../ChainMutation'
 import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
 import TextArea from '../../Forms/TextArea'

@@ -15,6 +15,7 @@ import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 import qrCodeResolvers, {
   defaults as qrCodeDefaults
 } from './resolvers/qrCodeResolvers'
+import { toEthVal } from '../utils/units'
 
 const deployerAbi = Deployer.abi
 
