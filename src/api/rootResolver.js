@@ -70,19 +70,26 @@ const resolvers = {
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
 
       try {
-        const tx = await contract.methods
-          .deploy(
-            id,
-            toEthVal(deposit, 'eth')
-              .toWei()
-              .toString(16),
-            toEthVal(limitOfParticipants).toString(16),
-            toEthVal(coolingPeriod).toString(16)
-          )
-          .send({
-            gas: 3000000,
-            from: account
-          })
+        const tx = await new Promise((resolve, reject) =>
+          contract.methods
+            .deploy(
+              id,
+              toEthVal(deposit, 'eth')
+                .toWei()
+                .toString(16),
+              toEthVal(limitOfParticipants).toString(16),
+              toEthVal(coolingPeriod).toString(16)
+            )
+            .send({
+              gas: 3000000,
+              from: account
+            })
+            .on('transactionHash', hash => {
+              resolve(hash)
+            })
+        )
+
+        console.log('tx', tx)
 
         return tx
       } catch (e) {
