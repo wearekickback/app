@@ -11,7 +11,7 @@ import { PARTY_QUERY } from '../graphql/queries'
 import { amAdmin } from '../utils/parties'
 import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
-import UpdatePartyMeta from '../components/SingleEvent/Admin/UpdatePartyMeta'
+import EventEdit from '../components/SingleEvent/Admin/EventEdit'
 import colours from '../colours'
 
 const { primary500, primary400, primary300, primary200 } = colours
@@ -165,7 +165,7 @@ class SingleEvent extends Component {
                         <Route
                           path={`/event/${address}/admin/edit`}
                           exact
-                          render={() => <UpdatePartyMeta address={address} />}
+                          render={() => <EventEdit address={address} />}
                         />
                         <Route
                           path={`/event/${address}/admin/smart-contract`}
