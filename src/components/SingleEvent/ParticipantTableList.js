@@ -204,7 +204,7 @@ class SingleEventWrapper extends Component {
               query={PARTY_ADMIN_VIEW_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
-              pollInterval={60000}
+              pollInterval={30000}
             >
               {({
                 data: { partyAdminView: party },

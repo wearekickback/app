@@ -47,7 +47,7 @@ function AddAdmin({ address }) {
         userAddresses: (userAddresses || '').map(s => s.trim())
       }}
       refetchQueries={[{ query: PARTY_QUERY, variables: { address } }]}
-      onCompleted={() => this.setState({ userAddresses: null })}
+      onTransactionHash={() => setAddresses([''])}
     >
       {(mutate, result) => (
         <AddPartyAdminsContainer>

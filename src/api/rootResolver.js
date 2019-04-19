@@ -8,7 +8,6 @@ import getWeb3, {
   getDeployerAddress,
   isLocalEndpoint
 } from './web3'
-import { toEthVal } from '../utils/units'
 import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'

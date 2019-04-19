@@ -34,6 +34,16 @@ export default class ChainMutation extends Component {
   }
 
   async _updateState(tx, blockNumber) {
+    // getReceipt
+    let receipt
+    if (!tx.blockNumber) {
+      receipt = await getTransactionReceipt(tx.transactionHash)
+      console.log(receipt)
+      if (receipt) {
+        tx.blockNumber = receipt.blockNumber
+      }
+    }
+
     // confirmations
     const confirmationsSoFar =
       blockNumber >= tx.blockNumber ? blockNumber - tx.blockNumber : 0
@@ -47,22 +57,40 @@ export default class ChainMutation extends Component {
     if (!stillLoading) {
       const real = await getTransactionReceipt(tx.transactionHash)
       error = _.get(real, 'status') ? undefined : new Error('Transaction error')
+
+      this._onConfirmed()
     }
 
-    this.setState({
-      tx,
-      progress: stillLoading
-        ? {
-            numConfirmations: confirmationsSoFar,
-            percentComplete
-          }
-        : null,
-      error
-    })
+    if (receipt) {
+      this.setState({
+        tx,
+        progress: stillLoading
+          ? {
+              numConfirmations: confirmationsSoFar,
+              percentComplete
+            }
+          : null,
+        error,
+        receipt
+      })
+    } else {
+      this.setState({
+        tx,
+        progress: stillLoading
+          ? {
+              numConfirmations: confirmationsSoFar,
+              percentComplete
+            }
+          : null,
+        error
+      })
+    }
   }
 
   _onNewBlock = async block => {
     const { tx, progress } = this.state
+
+    console.log('onNEwBLock', tx, block, progress)
 
     if (tx && progress) {
       await this._updateState(tx, block.number)
@@ -76,14 +104,26 @@ export default class ChainMutation extends Component {
   }
 
   _onCompleted = async result => {
-    const { resultKey, onCompleted } = this.props
+    const { resultKey, onTransactionHash } = this.props
 
     const tx = result[resultKey]
 
-    await this._updateState(tx, tx.blockNumber)
+    await this._updateState(
+      {
+        transactionHash: tx,
+        blockNumber: undefined
+      },
+      0
+    )
+    if (onTransactionHash) {
+      onTransactionHash(tx)
+    }
+  }
 
-    if (onCompleted) {
-      onCompleted(result)
+  _onConfirmed = () => {
+    const { onConfirmed } = this.props
+    if (onConfirmed) {
+      onConfirmed(this.state.receipt)
     }
   }
 
@@ -111,12 +151,12 @@ export default class ChainMutation extends Component {
       ...otherProps
     } = this.props
 
-    const { tx, progress, error } = this.state
-    const succeeded = tx && !error && !progress
+    const { receipt, progress, error } = this.state
+    const succeeded = receipt && !error && !progress
     const successProps = succeeded
       ? {
-          [resultKey]: tx,
-          data: tx
+          [resultKey]: receipt,
+          data: receipt
         }
       : null
 
@@ -155,10 +195,7 @@ export const ChainMutationResult = ({ children, result }) => {
     extraContent = <div>Sending transaction</div>
   } else if (progress) {
     extraContent = (
-      <div>
-        Awaiting confirmation ({progress.percentComplete}
-        %)
-      </div>
+      <div>Awaiting confirmation ({progress.percentComplete}%)</div>
     )
   } else if (data) {
     extraContent = <div>Success!</div>
