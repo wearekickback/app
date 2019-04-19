@@ -61,6 +61,7 @@ const resolvers = {
       console.log(`Deploying party`, args)
 
       const { id, deposit, limitOfParticipants, coolingPeriod } = args
+      // const { id, deposit, limitOfParticipants, coolingPeriod, eventFee, platformFee } = args
 
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -68,7 +69,8 @@ const resolvers = {
       const deployerAddress = await getDeployerAddress()
 
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
-
+      const eventFee = 0
+      const platformFee = 0
       try {
         const tx = await contract.methods
           .deploy(
@@ -77,7 +79,13 @@ const resolvers = {
               .toWei()
               .toString(16),
             toEthVal(limitOfParticipants).toString(16),
-            toEthVal(coolingPeriod).toString(16)
+            toEthVal(coolingPeriod).toString(16),
+            toEthVal(eventFee, 'eth')
+              .toWei()
+              .toString(16),
+            toEthVal(platformFee, 'eth')
+              .toWei()
+              .toString(16)
           )
           .send({
             gas: 3000000,

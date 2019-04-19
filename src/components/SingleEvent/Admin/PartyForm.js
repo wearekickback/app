@@ -22,6 +22,7 @@ import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
 import TextArea from '../../Forms/TextArea'
 import Label from '../../Forms/Label'
+import Radio from '../../Forms/Radio'
 import { H2 } from '../../Typography/Basic'
 
 const PartyFormContainer = styled('div')`
@@ -31,6 +32,7 @@ const PartyFormContent = styled('div')``
 
 const InputWrapper = styled('div')`
   margin-bottom: 20px;
+  opacity: ${props => (props.disable ? 0.3 : 1)};
 `
 
 const TimezonePicker = styled(DefaultTimezonePicker)`
@@ -183,6 +185,8 @@ class PartyForm extends Component {
       headerImg,
       deposit,
       price: null,
+      eventType: 'free',
+      eventFee: null,
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false
@@ -227,6 +231,8 @@ class PartyForm extends Component {
       arriveByTime,
       headerImg,
       deposit,
+      eventFee,
+      eventType,
       limitOfParticipants,
       coolingPeriod
     } = this.state
@@ -243,7 +249,19 @@ class PartyForm extends Component {
     const start = getDateFromDayAndTime(startDay, startTime.valueOf())
     const end = getDateFromDayAndTime(endDay, endTime.valueOf())
     const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
-
+    const platformFee = eventFee * 0.05
+    let kickback
+    if (eventType == 'full') {
+      kickback = 0
+    } else {
+      kickback = deposit - eventFee - platformFee
+    }
+    const kickback80percent =
+      (kickback * limitOfParticipants) / (limitOfParticipants * 0.8)
+    const kickback50percent =
+      (kickback * limitOfParticipants) / (limitOfParticipants * 0.5)
+    const yourReturn = eventFee * limitOfParticipants
+    const kickbackReturn = platformFee * limitOfParticipants
     const variables = {
       meta: {
         name,
@@ -263,6 +281,7 @@ class PartyForm extends Component {
     }
     console.log(startDay)
     //console.log(getLocallyFormattedDate(startDay))
+    console.log({ eventType })
 
     return (
       <PartyFormContainer>
@@ -411,6 +430,17 @@ class PartyForm extends Component {
           {type === 'create' && (
             <>
               <InputWrapper>
+                <Label>Available spots</Label>
+                <TextInput
+                  value={limitOfParticipants}
+                  onChangeText={val =>
+                    this.setState({ limitOfParticipants: val })
+                  }
+                  type="text"
+                  placeholder="number of participants"
+                />
+              </InputWrapper>
+              <InputWrapper>
                 <Label>Commitment</Label>
                 <CommitmentInput
                   value={deposit}
@@ -423,15 +453,72 @@ class PartyForm extends Component {
                 </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
-                <Label>Available spots</Label>
-                <TextInput
-                  value={limitOfParticipants}
-                  onChangeText={val =>
-                    this.setState({ limitOfParticipants: val })
-                  }
-                  type="text"
-                  placeholder="number of participants"
+                <Label>Event Type</Label>
+                <Radio
+                  options={[
+                    { value: 'free', text: 'Free' },
+                    { value: 'half', text: 'Paid (with Kickback)' },
+                    { value: 'full', text: 'Paid (no Kickback)' }
+                  ]}
+                  className="event-type"
+                  onChange={target => {
+                    console.log(target['value'])
+                    if (target['value'] === 'free') {
+                      this.setState({ eventFee: 0 })
+                    }
+                    if (target['value'] === 'half') {
+                      this.setState({ eventFee: deposit * 0.5 })
+                    }
+                    if (target['value'] === 'full') {
+                      this.setState({ eventFee: deposit - deposit * 0.05 })
+                    }
+                    this.setState({ eventType: target['value'] })
+                  }}
                 />
+              </InputWrapper>
+              <InputWrapper disable={eventType === 'free'}>
+                <Label>Event Fee</Label>
+                <CommitmentInput
+                  value={eventFee}
+                  onChangeText={val => this.setState({ eventFee: val })}
+                  type="text"
+                  placeholder="ETH"
+                />
+                <CommitmentInUsd>
+                  ETH (${(eventFee * this.state.price).toFixed(2)})
+                </CommitmentInUsd>
+              </InputWrapper>
+              <InputWrapper disable={eventType === 'free'}>
+                <Label>How much will you earn?</Label>
+                If everybody({limitOfParticipants}) commits {deposit} ETH, you
+                will earn {yourReturn.toFixed(3)} ETH ($
+                {(yourReturn * this.state.price).toFixed(2)})
+                <br />
+                Kickback takes it's 5 % ({kickbackReturn.toFixed(3)} ETH = $
+                {(kickbackReturn * this.state.price).toFixed(2)}) as a service
+                fee.
+              </InputWrapper>
+              <InputWrapper disable={eventType === 'full'}>
+                <Label>How much return will each attendee get?</Label>
+                With the same scenario above, each attendee can withdraw the
+                return of
+                <ul>
+                  <li>
+                    {kickback.toFixed(3)} ETH ($
+                    {(kickback * this.state.price).toFixed(2)}) if 100% of
+                    people turn up.
+                  </li>
+                  <li>
+                    {kickback80percent.toFixed(5)} ETH ($
+                    {(kickback80percent * this.state.price).toFixed(2)}) if 80%
+                    of people turn up.
+                  </li>
+                  <li>
+                    {kickback50percent.toFixed(5)} ETH ($
+                    {(kickback50percent * this.state.price).toFixed(2)}) if 50%
+                    of people turn up.
+                  </li>
+                </ul>
               </InputWrapper>
             </>
           )}
