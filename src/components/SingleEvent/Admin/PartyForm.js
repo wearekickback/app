@@ -524,7 +524,7 @@ class PartyForm extends Component {
                 will earn {yourReturn.toFixed(3)} ETH ($
                 {(yourReturn * this.state.price).toFixed(2)})
                 <br />
-                Kickback takes it's 5 % ({kickbackReturn.toFixed(3)} ETH = $
+                Kickback takes 5 % ({kickbackReturn.toFixed(3)} ETH = $
                 {(kickbackReturn * this.state.price).toFixed(2)}) as a service
                 fee.
               </InputWrapper>

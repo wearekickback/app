@@ -178,7 +178,7 @@ class EventCTA extends Component {
                   ETH, the event organiser takes {yourReturn.toFixed(3)} ETH ($
                   {(yourReturn * price).toFixed(2)})
                   <br />
-                  Kickback takes it's 5 % ({kickbackReturn.toFixed(3)} ETH = $
+                  Kickback takes 5 % ({kickbackReturn.toFixed(3)} ETH = $
                   {(kickbackReturn * price).toFixed(2)}) as a service fee.
                 </span>
               ) : (
