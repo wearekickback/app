@@ -523,10 +523,20 @@ class PartyForm extends Component {
                 If everybody({limitOfParticipants}) commits {deposit} ETH, you
                 will earn {yourReturn.toFixed(3)} ETH ($
                 {(yourReturn * this.state.price).toFixed(2)})
-                <br />
-                Kickback takes 5 % ({kickbackReturn.toFixed(3)} ETH = $
-                {(kickbackReturn * this.state.price).toFixed(2)}) as a service
-                fee.
+              </InputWrapper>
+              <InputWrapper>
+                <Label>How much will Kickback take?</Label>
+                {eventType === 'free' ? (
+                  <>
+                    We will charge $1 worth of ETH per turn up when you finalise
+                  </>
+                ) : (
+                  <>
+                    Kickback takes 5 % ({kickbackReturn.toFixed(3)} ETH = $
+                    {(kickbackReturn * this.state.price).toFixed(2)}) per RSVP
+                    as a service fee.
+                  </>
+                )}
               </InputWrapper>
               <InputWrapper disable={eventType === 'full'}>
                 <Label>How much return will each attendee get?</Label>
