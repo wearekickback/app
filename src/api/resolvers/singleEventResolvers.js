@@ -1,12 +1,14 @@
 import { toBN } from 'web3-utils'
-import getWeb3, { getAccount } from '../web3'
+import { Deployer } from '@wearekickback/contracts'
 import { Conference } from '@wearekickback/contracts'
+
+import getWeb3, { getAccount, getDeployerAddress } from '../web3'
 import events from '../../fixtures/events.json'
+import { txHelper } from '../utils'
+import { toEthVal } from '../../utils/units'
 
+const deployerAbi = Deployer.abi
 const abi = Conference.abi
-
-// TODO: check if local storage has been called for this contract
-// let hydrated = {}
 
 export const defaults = {
   markedAttendedList: []
@@ -122,6 +124,47 @@ const resolvers = {
   },
 
   Mutation: {
+    async createParty(_, args) {
+      console.log(`Deploying party`, args)
+
+      const { id, deposit, limitOfParticipants, coolingPeriod } = args
+
+      const web3 = await getWeb3()
+      const account = await getAccount()
+
+      const deployerAddress = await getDeployerAddress()
+
+      const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
+
+      try {
+        const tx = await new Promise((resolve, reject) =>
+          contract.methods
+            .deploy(
+              id,
+              toEthVal(deposit, 'eth')
+                .toWei()
+                .toString(16),
+              toEthVal(limitOfParticipants).toString(16),
+              toEthVal(coolingPeriod).toString(16)
+            )
+            .send({
+              gas: 3000000,
+              from: account
+            })
+            .on('transactionHash', hash => {
+              resolve(hash)
+            })
+        )
+
+        console.log('tx', tx)
+
+        return tx
+      } catch (e) {
+        console.log('error', e)
+
+        throw new Error(`Failed to deploy party: ${e}`)
+      }
+    },
     async addAdmins(_, { address, userAddresses }) {
       console.log(`Adding admins:\n${userAddresses.join('\n')}`)
 
@@ -129,9 +172,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.grant(userAddresses).send({
-          from: account
-        })
+        const tx = await txHelper(
+          contract.grant(userAddresses).send({
+            from: account
+          })
+        )
 
         return tx
       } catch (err) {
@@ -146,10 +191,12 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const deposit = await contract.deposit().call()
       try {
-        const tx = await contract.register().send({
-          from: account,
-          value: deposit
-        })
+        const tx = await txHelper(
+          contract.register().send({
+            from: account,
+            value: deposit
+          })
+        )
         return tx
       } catch (err) {
         console.error(err)
@@ -162,11 +209,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract
-          .finalize(maps.map(m => toBN(m).toString(10)))
-          .send({
+        const tx = await txHelper(
+          contract.finalize(maps.map(m => toBN(m).toString(10))).send({
             from: account
           })
+        )
 
         return tx
       } catch (err) {
@@ -180,9 +227,11 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.withdraw().send({
-          from: account
-        })
+        const tx = await txHelper(
+          contract.withdraw().send({
+            from: account
+          })
+        )
 
         return tx
       } catch (err) {
@@ -194,12 +243,11 @@ const resolvers = {
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      console.log(address)
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract
-          .setLimitOfParticipants(limit)
-          .send({ from: account })
+        const tx = await txHelper(
+          contract.setLimitOfParticipants(limit).send({ from: account })
+        )
 
         return tx
       } catch (e) {
@@ -212,7 +260,7 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await contract.clear().send({ from: account })
+        const tx = await txHelper(contract.clear().send({ from: account }))
 
         return tx
       } catch (e) {

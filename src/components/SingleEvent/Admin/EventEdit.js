@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { UPDATE_PARTY_META } from '../../../graphql/mutations'
+import { UPDATE_EVENT_META } from '../../../graphql/mutations'
 import { PARTY_QUERY } from '../../../graphql/queries'
 
 import Loader from '../../Loader'
@@ -14,7 +14,6 @@ function UpdatePartyMetaComponent({ address }) {
       query={PARTY_QUERY}
       variables={{ address }}
       fetchPolicy="cache-and-network"
-      pollInterval={60000}
     >
       {({ data: { party }, loading }) => {
         // no party?
@@ -32,7 +31,7 @@ function UpdatePartyMetaComponent({ address }) {
         return (
           <>
             <PartyForm
-              mutation={UPDATE_PARTY_META}
+              mutation={UPDATE_EVENT_META}
               name={party.name}
               type="edit"
               address={address}

@@ -9,20 +9,24 @@ import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
 import getEtherPrice from '../../../api/price'
+import { Link } from 'react-router-dom'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
   getLocalTimezoneOffset
-} from '../../../utils/dates'
+} from 'utils/dates'
+import { extractNewPartyAddressFromTx } from 'api/utils'
 
-import { SINGLE_UPLOAD } from '../../../graphql/mutations'
+import { SINGLE_UPLOAD } from 'graphql/mutations'
+import { CREATE_PARTY } from 'graphql/mutations'
 
-import SafeMutation from '../../SafeMutation'
-import Button from '../../Forms/Button'
-import TextInput from '../../Forms/TextInput'
-import TextArea from '../../Forms/TextArea'
-import Label from '../../Forms/Label'
-import { H2 } from '../../Typography/Basic'
+import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
+import SafeMutation from 'components/SafeMutation'
+import Button from 'components/Forms/Button'
+import TextInput from 'components/Forms/TextInput'
+import TextArea from 'components/Forms/TextArea'
+import Label from 'components/Forms/Label'
+import { H2 } from 'components/Typography/Basic'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -125,7 +129,8 @@ const UploadedImage = ({ src, text }) => (
 
 const Actions = styled('div')`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 `
 
 function getButtonText(type) {
@@ -236,7 +241,6 @@ class PartyForm extends Component {
 
     const {
       type = 'create',
-      onCompleted,
       mutation,
       address,
       children,
@@ -264,8 +268,6 @@ class PartyForm extends Component {
     if (address) {
       variables.address = address
     }
-    console.log(startDay)
-    //console.log(getLocallyFormattedDate(startDay))
 
     return (
       <PartyFormContainer>
@@ -450,23 +452,54 @@ class PartyForm extends Component {
             mutation={mutation}
             resultKey="id"
             variables={variables}
-            onCompleted={
-              onCompleted
-                ? ({ id }) =>
-                    onCompleted(
-                      { id },
-                      deposit,
-                      limitOfParticipants,
-                      coolingPeriod
-                    )
-                : null
-            }
           >
-            {mutate => (
-              <Button onClick={mutate} analyticsId={type}>
-                {getButtonText(type)}
-              </Button>
-            )}
+            {mutate =>
+              type === 'create' ? (
+                <ChainMutation mutation={CREATE_PARTY} resultKey="create">
+                  {(createParty, result) => {
+                    const address = result.data
+                      ? extractNewPartyAddressFromTx(result.data)
+                      : null
+
+                    return (
+                      <>
+                        <ChainMutationButton
+                          analyticsId="Deploy Event Contract"
+                          result={result}
+                          type={address ? 'disabled' : ''}
+                          onClick={() => {
+                            mutate().then(({ data: { id } }) => {
+                              createParty({
+                                variables: {
+                                  id,
+                                  deposit,
+                                  limitOfParticipants,
+                                  coolingPeriod
+                                }
+                              })
+                            })
+                          }}
+                          preContent={getButtonText(type)}
+                          postContent="Deployed!"
+                        />
+                        {address ? (
+                          <p>
+                            Event deployed at {address}!{' '}
+                            <Link to={`/event/${address}`}>
+                              View event page
+                            </Link>
+                          </p>
+                        ) : null}
+                      </>
+                    )
+                  }}
+                </ChainMutation>
+              ) : (
+                <Button onClick={mutate} analyticsId={type}>
+                  {getButtonText(type)}
+                </Button>
+              )
+            }
           </SafeMutation>
         </Actions>
       </PartyFormContainer>
