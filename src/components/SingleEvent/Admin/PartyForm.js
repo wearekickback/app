@@ -198,20 +198,23 @@ class PartyForm extends Component {
   }
 
   componentDidMount() {
-    getEtherPrice().then(r => {
-      if (r && r.result && r.result.ethusd) {
-        const unit = 10 // $10 as a guide price
-        const price = parseFloat(r.result.ethusd)
-        this.setState({ price: price })
-        if (!this.state.deposit) {
-          const ethCommitment = (unit / price).toFixed(2)
-          this.setState({ deposit: ethCommitment })
+    getEtherPrice()
+      .then(r => {
+        if (r && r.result && r.result.ethusd) {
+          const unit = 10 // $10 as a guide price
+          const price = parseFloat(r.result.ethusd)
+          this.setState({ price: price })
+          if (!this.state.deposit) {
+            const ethCommitment = (unit / price).toFixed(2)
+            this.setState({ deposit: ethCommitment })
+          }
         }
-      } else {
-        // falls back to default
-        this.setState({ deposit: 0.02 })
-      }
-    })
+      })
+      .finally(() => {
+        if (!this.state.deposit) {
+          this.setState({ deposit: 0.02 })
+        }
+      })
   }
   render() {
     const {
@@ -419,7 +422,10 @@ class PartyForm extends Component {
                   placeholder="ETH"
                 />
                 <CommitmentInUsd>
-                  ETH (${(this.state.deposit * this.state.price).toFixed(2)})
+                  ETH
+                  {this.state.price
+                    ? `(${(this.state.deposit * this.state.price).toFixed(2)})`
+                    : ''}
                 </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
