@@ -8,8 +8,8 @@ import 'react-day-picker/lib/style.css'
 import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
+import getEtherPrice from '../../../api/price'
 import { Link } from 'react-router-dom'
-
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
@@ -144,6 +144,15 @@ const DateContent = styled('div')`
   display: flex;
 `
 
+const CommitmentInput = styled(TextInput)`
+  width: 170px;
+  display: inline-table;
+`
+
+const CommitmentInUsd = styled('span')`
+  padding-left: 1em;
+`
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -156,7 +165,7 @@ class PartyForm extends Component {
       arriveBy = new Date(),
       timezone = getLocalTimezoneOffset(),
       headerImg = '',
-      deposit = '0.02',
+      deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
@@ -178,6 +187,7 @@ class PartyForm extends Component {
       arriveByTime: moment(arriveByTime).utcOffset('+00:00'),
       headerImg,
       deposit,
+      price: null,
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false
@@ -192,6 +202,25 @@ class PartyForm extends Component {
     })
   }
 
+  componentDidMount() {
+    getEtherPrice()
+      .then(r => {
+        if (r && r.result && r.result.ethusd) {
+          const unit = 10 // $10 as a guide price
+          const price = parseFloat(r.result.ethusd)
+          this.setState({ price: price })
+          if (!this.state.deposit) {
+            const ethCommitment = (unit / price).toFixed(2)
+            this.setState({ deposit: ethCommitment })
+          }
+        }
+      })
+      .finally(() => {
+        if (!this.state.deposit) {
+          this.setState({ deposit: 0.02 })
+        }
+      })
+  }
   render() {
     const {
       name,
@@ -388,12 +417,18 @@ class PartyForm extends Component {
             <>
               <InputWrapper>
                 <Label>Commitment</Label>
-                <TextInput
+                <CommitmentInput
                   value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                   placeholder="ETH"
                 />
+                <CommitmentInUsd>
+                  ETH
+                  {this.state.price
+                    ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
+                    : ''}
+                </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
