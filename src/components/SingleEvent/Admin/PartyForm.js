@@ -170,15 +170,6 @@ const PreviewButton = styled('a')`
   transition: 0.2s ease-out;
 `
 
-const CommitmentInput = styled(TextInput)`
-  width: 170px;
-  display: inline-table;
-`
-
-const CommitmentInUsd = styled('span')`
-  padding-left: 1em;
-`
-
 class PartyForm extends Component {
   constructor(props) {
     super(props)
