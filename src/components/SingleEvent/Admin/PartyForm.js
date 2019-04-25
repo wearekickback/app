@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import Dropzone from 'react-dropzone'
-import { Mutation } from 'react-apollo'
+// import Dropzone from 'react-dropzone'
+// import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
@@ -20,7 +20,7 @@ import {
 } from 'utils/dates'
 // import { extractNewPartyAddressFromTx } from 'api/utils'
 
-import { SINGLE_UPLOAD } from 'graphql/mutations'
+// import { SINGLE_UPLOAD } from 'graphql/mutations'
 // import { CREATE_PARTY } from 'graphql/mutations'
 
 // import SafeMutation from '../../SafeMutation'
@@ -73,64 +73,64 @@ const TimePicker = styled(DefaultTimePicker)`
   }
 `
 
-const primary2 = `hsla(237, 75%, 72%, 1)`
+// const primary2 = `hsla(237, 75%, 72%, 1)`
 
-const NoImage = styled('div')`
-  color: white;
-  background: ${primary2};
-  max-width: 100%;
-  height: 300px;
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  border-radius: 6px;
-  box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
+// const NoImage = styled('div')`
+//   color: white;
+//   background: ${primary2};
+//   max-width: 100%;
+//   height: 300px;
+//   padding: 40px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   font-weight: bold;
+//   border-radius: 6px;
+//   box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
 
-  &:hover {
-    cursor: pointer;
-  }
-`
+//   &:hover {
+//     cursor: pointer;
+//   }
+// `
 
-const ImageWrapper = styled('div')`
-  display: flex;
-  border-radius: 6px;
+// const ImageWrapper = styled('div')`
+//   display: flex;
+//   border-radius: 6px;
 
-  &:before {
-    content: "${p => p.text}";
-    border-radius: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: 0.2s;
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: white;
-    width: 100%;
-    height: 100%;
-    background: rgba(110, 118, 255, 0.85);
-    box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
-  }
-  &:hover {
-    cursor: pointer;
-    &:before {
-      opacity: 1;
-    }
-  }
-`
+//   &:before {
+//     content: "${p => p.text}";
+//     border-radius: 6px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     opacity: 0;
+//     transition: 0.2s;
+//     position: absolute;
+//     left: 0;
+//     top: 0;
+//     color: white;
+//     width: 100%;
+//     height: 100%;
+//     background: rgba(110, 118, 255, 0.85);
+//     box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
+//   }
+//   &:hover {
+//     cursor: pointer;
+//     &:before {
+//       opacity: 1;
+//     }
+//   }
+// `
 
-const DropZoneWrapper = styled('div')`
-  margin-bottom: 20px;
-`
+// const DropZoneWrapper = styled('div')`
+//   margin-bottom: 20px;
+// `
 
-const UploadedImage = ({ src, text }) => (
-  <ImageWrapper text={text}>
-    <img alt="event" src={src} />
-  </ImageWrapper>
-)
+// const UploadedImage = ({ src, text }) => (
+//   <ImageWrapper text={text}>
+//     <img alt="event" src={src} />
+//   </ImageWrapper>
+// )
 
 // const Actions = styled('div')`
 //   display: flex;
@@ -206,6 +206,7 @@ class PartyForm extends Component {
       deposit,
       price: null,
       eventType: 'free',
+      minimumPlatformFee: null,
       eventFee: null,
       coolingPeriod,
       limitOfParticipants,
@@ -230,6 +231,9 @@ class PartyForm extends Component {
         if (!this.state.deposit) {
           const ethCommitment = (unit / price).toFixed(2)
           this.setState({ deposit: ethCommitment })
+          const minimumPlatformFee = 1 / price
+          console.log('***', minimumPlatformFee)
+          this.setState({ minimumPlatformFee: minimumPlatformFee })
         }
       } else {
         // falls back to default
@@ -253,7 +257,8 @@ class PartyForm extends Component {
       deposit,
       eventFee,
       eventType,
-      limitOfParticipants
+      limitOfParticipants,
+      minimumPlatformFee
       // coolingPeriod
     } = this.state
 
@@ -280,7 +285,7 @@ class PartyForm extends Component {
     const kickback50percent =
       (kickback * limitOfParticipants) / (limitOfParticipants * 0.5)
     const yourReturn = eventFee * limitOfParticipants
-    const kickbackReturn = platformFee * limitOfParticipants
+    const kickbackReturn = platformFee
     const variables = {
       meta: {
         name,
@@ -310,6 +315,7 @@ class PartyForm extends Component {
       yourReturn,
       kickbackReturn,
       eventFee,
+      minimumPlatformFee,
       ...this.state
     }
     console.log({ previewParams })
@@ -430,7 +436,7 @@ class PartyForm extends Component {
               />
             </DateContent>
           </InputWrapper>
-          <InputWrapper>
+          {/* <InputWrapper>
             <Label>Image</Label>
             <DropZoneWrapper>
               <Mutation mutation={SINGLE_UPLOAD}>
@@ -456,7 +462,7 @@ class PartyForm extends Component {
                 )}
               </Mutation>
             </DropZoneWrapper>
-          </InputWrapper>
+          </InputWrapper> */}
           {type === 'create' && (
             <>
               <InputWrapper>
@@ -487,6 +493,10 @@ class PartyForm extends Component {
                 <Radio
                   options={[
                     { value: 'free', text: 'Free' },
+                    {
+                      value: 'small',
+                      text: 'Paid (to cover Kickback service fee)'
+                    },
                     { value: 'half', text: 'Paid (with Kickback)' },
                     { value: 'full', text: 'Paid (no Kickback)' }
                   ]}
@@ -496,6 +506,10 @@ class PartyForm extends Component {
                     if (target['value'] === 'free') {
                       this.setState({ eventFee: 0 })
                     }
+                    if (target['value'] === 'small') {
+                      this.setState({ eventFee: 1 / this.state.price })
+                    }
+
                     if (target['value'] === 'half') {
                       this.setState({ eventFee: deposit * 0.5 })
                     }
@@ -528,13 +542,15 @@ class PartyForm extends Component {
                 <Label>How much will Kickback take?</Label>
                 {eventType === 'free' ? (
                   <>
-                    We will charge $1 worth of ETH per turn up when you finalise
+                    Kicback takes $1 worth of ETH per turn up as a service fee
+                    when you finalise
                   </>
                 ) : (
                   <>
-                    Kickback takes 5 % ({kickbackReturn.toFixed(3)} ETH = $
+                    Kickback takes 5 % ({kickbackReturn.toFixed(4)} ETH = $
                     {(kickbackReturn * this.state.price).toFixed(2)}) per RSVP
-                    as a service fee.
+                    (or $1 worth of ETH per turn up, whichever the higher) as a
+                    service fee when you finalize.
                   </>
                 )}
               </InputWrapper>
