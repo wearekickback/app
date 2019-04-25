@@ -8,21 +8,25 @@ import 'react-day-picker/lib/style.css'
 import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
-
+import getEtherPrice from '../../../api/price'
+import { Link } from 'react-router-dom'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
   getLocalTimezoneOffset
-} from '../../../utils/dates'
+} from 'utils/dates'
+import { extractNewPartyAddressFromTx } from 'api/utils'
 
-import { SINGLE_UPLOAD } from '../../../graphql/mutations'
+import { SINGLE_UPLOAD } from 'graphql/mutations'
+import { CREATE_PARTY } from 'graphql/mutations'
 
-import SafeMutation from '../../SafeMutation'
-import Button from '../../Forms/Button'
-import TextInput from '../../Forms/TextInput'
-import TextArea from '../../Forms/TextArea'
-import Label from '../../Forms/Label'
-import { H2 } from '../../Typography/Basic'
+import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
+import SafeMutation from 'components/SafeMutation'
+import Button from 'components/Forms/Button'
+import TextInput from 'components/Forms/TextInput'
+import TextArea from 'components/Forms/TextArea'
+import Label from 'components/Forms/Label'
+import { H2 } from 'components/Typography/Basic'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -125,7 +129,8 @@ const UploadedImage = ({ src, text }) => (
 
 const Actions = styled('div')`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 `
 
 function getButtonText(type) {
@@ -137,6 +142,15 @@ function getButtonText(type) {
 
 const DateContent = styled('div')`
   display: flex;
+`
+
+const CommitmentInput = styled(TextInput)`
+  width: 170px;
+  display: inline-table;
+`
+
+const CommitmentInUsd = styled('span')`
+  padding-left: 1em;
 `
 
 class PartyForm extends Component {
@@ -151,7 +165,7 @@ class PartyForm extends Component {
       arriveBy = new Date(),
       timezone = getLocalTimezoneOffset(),
       headerImg = '',
-      deposit = '0.02',
+      deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20
     } = props
@@ -173,6 +187,7 @@ class PartyForm extends Component {
       arriveByTime: moment(arriveByTime).utcOffset('+00:00'),
       headerImg,
       deposit,
+      price: null,
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false
@@ -187,6 +202,25 @@ class PartyForm extends Component {
     })
   }
 
+  componentDidMount() {
+    getEtherPrice()
+      .then(r => {
+        if (r && r.result && r.result.ethusd) {
+          const unit = 10 // $10 as a guide price
+          const price = parseFloat(r.result.ethusd)
+          this.setState({ price: price })
+          if (!this.state.deposit) {
+            const ethCommitment = (unit / price).toFixed(2)
+            this.setState({ deposit: ethCommitment })
+          }
+        }
+      })
+      .finally(() => {
+        if (!this.state.deposit) {
+          this.setState({ deposit: 0.02 })
+        }
+      })
+  }
   render() {
     const {
       name,
@@ -207,7 +241,6 @@ class PartyForm extends Component {
 
     const {
       type = 'create',
-      onCompleted,
       mutation,
       address,
       children,
@@ -235,8 +268,6 @@ class PartyForm extends Component {
     if (address) {
       variables.address = address
     }
-    console.log(startDay)
-    //console.log(getLocallyFormattedDate(startDay))
 
     return (
       <PartyFormContainer>
@@ -386,12 +417,18 @@ class PartyForm extends Component {
             <>
               <InputWrapper>
                 <Label>Commitment</Label>
-                <TextInput
+                <CommitmentInput
                   value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                   placeholder="ETH"
                 />
+                <CommitmentInUsd>
+                  ETH
+                  {this.state.price
+                    ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
+                    : ''}
+                </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
@@ -415,23 +452,54 @@ class PartyForm extends Component {
             mutation={mutation}
             resultKey="id"
             variables={variables}
-            onCompleted={
-              onCompleted
-                ? ({ id }) =>
-                    onCompleted(
-                      { id },
-                      deposit,
-                      limitOfParticipants,
-                      coolingPeriod
-                    )
-                : null
-            }
           >
-            {mutate => (
-              <Button onClick={mutate} analyticsId={type}>
-                {getButtonText(type)}
-              </Button>
-            )}
+            {mutate =>
+              type === 'create' ? (
+                <ChainMutation mutation={CREATE_PARTY} resultKey="create">
+                  {(createParty, result) => {
+                    const address = result.data
+                      ? extractNewPartyAddressFromTx(result.data)
+                      : null
+
+                    return (
+                      <>
+                        <ChainMutationButton
+                          analyticsId="Deploy Event Contract"
+                          result={result}
+                          type={address ? 'disabled' : ''}
+                          onClick={() => {
+                            mutate().then(({ data: { id } }) => {
+                              createParty({
+                                variables: {
+                                  id,
+                                  deposit,
+                                  limitOfParticipants,
+                                  coolingPeriod
+                                }
+                              })
+                            })
+                          }}
+                          preContent={getButtonText(type)}
+                          postContent="Deployed!"
+                        />
+                        {address ? (
+                          <p>
+                            Event deployed at {address}!{' '}
+                            <Link to={`/event/${address}`}>
+                              View event page
+                            </Link>
+                          </p>
+                        ) : null}
+                      </>
+                    )
+                  }}
+                </ChainMutation>
+              ) : (
+                <Button onClick={mutate} analyticsId={type}>
+                  {getButtonText(type)}
+                </Button>
+              )
+            }
           </SafeMutation>
         </Actions>
       </PartyFormContainer>
