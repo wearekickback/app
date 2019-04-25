@@ -426,7 +426,7 @@ class PartyForm extends Component {
                 <CommitmentInUsd>
                   ETH
                   {this.state.price
-                    ? `(${(this.state.deposit * this.state.price).toFixed(2)})`
+                    ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
                     : ''}
                 </CommitmentInUsd>
               </InputWrapper>
