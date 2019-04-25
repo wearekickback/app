@@ -90,8 +90,6 @@ export default class ChainMutation extends Component {
   _onNewBlock = async block => {
     const { tx, progress } = this.state
 
-    console.log('onNEwBLock', tx, block, progress)
-
     if (tx && progress) {
       await this._updateState(tx, block.number)
     }

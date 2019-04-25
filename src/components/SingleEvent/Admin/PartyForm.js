@@ -170,6 +170,15 @@ const PreviewButton = styled('a')`
   transition: 0.2s ease-out;
 `
 
+const CommitmentInput = styled(TextInput)`
+  width: 170px;
+  display: inline-table;
+`
+
+const CommitmentInUsd = styled('span')`
+  padding-left: 1em;
+`
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -223,23 +232,26 @@ class PartyForm extends Component {
   }
 
   componentDidMount() {
-    getEtherPrice().then(r => {
-      if (r && r.result && r.result.ethusd) {
-        const unit = 10 // $10 as a guide price
-        const price = parseFloat(r.result.ethusd)
-        this.setState({ price: price })
-        if (!this.state.deposit) {
-          const ethCommitment = (unit / price).toFixed(2)
-          this.setState({ deposit: ethCommitment })
-          const minimumPlatformFee = 1 / price
-          console.log('***', minimumPlatformFee)
-          this.setState({ minimumPlatformFee: minimumPlatformFee })
+    getEtherPrice()
+      .then(r => {
+        if (r && r.result && r.result.ethusd) {
+          const unit = 10 // $10 as a guide price
+          const price = parseFloat(r.result.ethusd)
+          this.setState({ price: price })
+          if (!this.state.deposit) {
+            const ethCommitment = (unit / price).toFixed(2)
+            this.setState({ deposit: ethCommitment })
+            const minimumPlatformFee = 1 / price
+            console.log('***', minimumPlatformFee)
+            this.setState({ minimumPlatformFee: minimumPlatformFee })
+          }
         }
-      } else {
-        // falls back to default
-        this.setState({ deposit: 0.02 })
-      }
-    })
+      })
+      .finally(() => {
+        if (!this.state.deposit) {
+          this.setState({ deposit: 0.02 })
+        }
+      })
   }
   render() {
     const {
@@ -485,7 +497,10 @@ class PartyForm extends Component {
                   placeholder="ETH"
                 />
                 <CommitmentInUsd>
-                  ETH (${(this.state.deposit * this.state.price).toFixed(2)})
+                  ETH
+                  {this.state.price
+                    ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
+                    : ''}
                 </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
