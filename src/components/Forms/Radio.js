@@ -1,4 +1,9 @@
+import styled from 'react-emotion'
 import React, { Component } from 'react'
+
+const RadioItemContainer = styled('div')`
+  margin: 1px;
+`
 
 class Radio extends Component {
   constructor() {
@@ -14,17 +19,19 @@ class Radio extends Component {
       <div className={className}>
         {options.map((option, i) => {
           return (
-            <label>
-              <input
-                data-order={i}
-                type="radio"
-                name={className}
-                value={option.value}
-                checked={this.state.selected === i ? true : false}
-                onChange={this._onChange}
-              />
-              {option.text}
-            </label>
+            <RadioItemContainer>
+              <label>
+                <input
+                  data-order={i}
+                  type="radio"
+                  name={className}
+                  value={option.value}
+                  checked={this.state.selected === i ? true : false}
+                  onChange={this._onChange}
+                />
+                {option.text}
+              </label>
+            </RadioItemContainer>
           )
         })}
       </div>
