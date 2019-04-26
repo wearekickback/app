@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-// import Dropzone from 'react-dropzone'
-// import { Mutation } from 'react-apollo'
+import Dropzone from 'react-dropzone'
+import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
@@ -20,7 +20,7 @@ import {
 } from 'utils/dates'
 // import { extractNewPartyAddressFromTx } from 'api/utils'
 
-// import { SINGLE_UPLOAD } from 'graphql/mutations'
+import { SINGLE_UPLOAD } from 'graphql/mutations'
 // import { CREATE_PARTY } from 'graphql/mutations'
 
 // import SafeMutation from '../../SafeMutation'
@@ -73,64 +73,64 @@ const TimePicker = styled(DefaultTimePicker)`
   }
 `
 
-// const primary2 = `hsla(237, 75%, 72%, 1)`
+const primary2 = `hsla(237, 75%, 72%, 1)`
 
-// const NoImage = styled('div')`
-//   color: white;
-//   background: ${primary2};
-//   max-width: 100%;
-//   height: 300px;
-//   padding: 40px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-weight: bold;
-//   border-radius: 6px;
-//   box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
+const NoImage = styled('div')`
+  color: white;
+  background: ${primary2};
+  max-width: 100%;
+  height: 300px;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
 
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `
+  &:hover {
+    cursor: pointer;
+  }
+`
 
-// const ImageWrapper = styled('div')`
-//   display: flex;
-//   border-radius: 6px;
+const ImageWrapper = styled('div')`
+  display: flex;
+  border-radius: 6px;
 
-//   &:before {
-//     content: "${p => p.text}";
-//     border-radius: 6px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     opacity: 0;
-//     transition: 0.2s;
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     color: white;
-//     width: 100%;
-//     height: 100%;
-//     background: rgba(110, 118, 255, 0.85);
-//     box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
-//   }
-//   &:hover {
-//     cursor: pointer;
-//     &:before {
-//       opacity: 1;
-//     }
-//   }
-// `
+  &:before {
+    content: "${p => p.text}";
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.2s;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    width: 100%;
+    height: 100%;
+    background: rgba(110, 118, 255, 0.85);
+    box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
+  }
+  &:hover {
+    cursor: pointer;
+    &:before {
+      opacity: 1;
+    }
+  }
+`
 
-// const DropZoneWrapper = styled('div')`
-//   margin-bottom: 20px;
-// `
+const DropZoneWrapper = styled('div')`
+  margin-bottom: 20px;
+`
 
-// const UploadedImage = ({ src, text }) => (
-//   <ImageWrapper text={text}>
-//     <img alt="event" src={src} />
-//   </ImageWrapper>
-// )
+const UploadedImage = ({ src, text }) => (
+  <ImageWrapper text={text}>
+    <img alt="event" src={src} />
+  </ImageWrapper>
+)
 
 // const Actions = styled('div')`
 //   display: flex;
@@ -312,6 +312,7 @@ class PartyForm extends Component {
       end,
       arriveBy,
       kickback,
+      headerImg,
       kickback80percent,
       kickback50percent,
       platformFee,
@@ -439,33 +440,35 @@ class PartyForm extends Component {
               />
             </DateContent>
           </InputWrapper>
-          {/* <InputWrapper>
+          <InputWrapper>
             <Label>Image</Label>
             <DropZoneWrapper>
               <Mutation mutation={SINGLE_UPLOAD}>
-                {mutate => (
-                  <Dropzone
-                    className="dropzone"
-                    onDrop={files => this.onDrop(files, mutate)}
-                    accept="image/*"
-                  >
-                    {headerImg ? (
-                      <UploadedImage
-                        src={headerImg}
-                        text="Click or drop a file to change photo"
-                      />
-                    ) : (
-                      <NoImage>
-                        {this.state.imageUploading
-                          ? 'Uploading...'
-                          : 'Click or drop a file to change photo'}
-                      </NoImage>
-                    )}
-                  </Dropzone>
-                )}
+                {mutate => {
+                  return (
+                    <Dropzone
+                      className="dropzone"
+                      onDrop={files => this.onDrop(files, mutate)}
+                      accept="image/*"
+                    >
+                      {headerImg ? (
+                        <UploadedImage
+                          src={headerImg}
+                          text="Click or drop a file to change photo"
+                        />
+                      ) : (
+                        <NoImage>
+                          {this.state.imageUploading
+                            ? 'Uploading...'
+                            : 'Click or drop a file to change photo'}
+                        </NoImage>
+                      )}
+                    </Dropzone>
+                  )
+                }}
               </Mutation>
             </DropZoneWrapper>
-          </InputWrapper> */}
+          </InputWrapper>
           {type === 'create' && (
             <>
               <InputWrapper>

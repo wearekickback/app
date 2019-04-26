@@ -55,7 +55,7 @@ class SingleEventWrapper extends Component {
       roles: [],
       end: data.end,
       ended: false,
-      headerImg: '',
+      headerImg: data.headerImg,
       id: '85c2248f-fc1a-4180-aae3-4314283ec05f',
       location: data.location,
       name: data.name,
