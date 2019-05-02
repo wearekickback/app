@@ -176,6 +176,7 @@ export async function getEvents(address, abi) {
 
 export async function getAccount() {
   let accountIndex = 0
+  let accounts
   /* Query params account switch for testing */
   if (localEndpoint === true) {
     const query = window.location.search
@@ -187,21 +188,21 @@ export async function getAccount() {
   }
   try {
     const web3 = await getWeb3()
-    const accounts = await web3.eth.getAccounts()
-
-    if (accounts.length > 0) {
-      return accounts[accountIndex]
-    } else {
-      try {
-        const accounts = await window.ethereum.send('eth_requestAccounts')
-        return accounts[accountIndex]
-      } catch (error) {
-        console.warn('Did not allow app to access dapp browser')
-        throw error
-      }
+    accounts = await web3.eth.getAccounts()
+  } catch (error) {
+    console.warn('Cannot get accounts', error)
+  }
+  if (accounts && accounts.length > 0) {
+    return accounts[accountIndex]
+  } else {
+    try {
+      const accounts = await window.ethereum.enable()
+      console.log({ accounts })
+      // When user denies
+      return accounts && accounts[accountIndex]
+    } catch (error) {
+      console.warn('Did not allow app to access dapp browser', error)
     }
-  } catch (_) {
-    return null
   }
 }
 
