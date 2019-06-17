@@ -1,5 +1,36 @@
 import React from 'react'
+import styled from 'react-emotion'
+import { Query } from 'react-apollo'
+import Loader from '../components/Loader'
 
-export default function UserProfile() {
-  return <div>User profile</div>
+import {
+  USER_PROFILE_DETAILED_QUERY,
+  USER_PROFILE_QUERY
+} from '../graphql/queries'
+
+const UserProfileContainer = styled('article')``
+
+function UserProfile({ profile }) {
+  return (
+    <UserProfileContainer>
+      <h2>{profile.id}</h2>
+    </UserProfileContainer>
+  )
+}
+
+export default function UserProfileData(props) {
+  const { username } = props.match.params
+  return (
+    <Query query={USER_PROFILE_DETAILED_QUERY} variables={{ username }}>
+      {({ data, loading, error }) => {
+        if (loading) return <Loader />
+        if (error) {
+          console.log(error)
+          return <div>Could not find user of the username: {username}</div>
+        }
+        console.log(data)
+        return <UserProfile profile={data.profile} />
+      }}
+    </Query>
+  )
 }

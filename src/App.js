@@ -68,7 +68,7 @@ class App extends Component {
                 path="/event/:address/admin"
                 component={SingleEventAdmin}
               />
-              <Route path="/user/:id" component={UserProfile} />
+              <Route path="/user/:username" component={UserProfile} />
               <Route path="/create" component={CreateEvent} />
               <Route path="/faq" component={Faq} />
               <Route path="/terms" component={Terms} />
