@@ -1,22 +1,12 @@
 import React from 'react'
-import styled from 'react-emotion'
 import { Query } from 'react-apollo'
 import Loader from '../components/Loader'
+import UserProfile from '../components/UserProfile'
 
 import {
   USER_PROFILE_DETAILED_QUERY,
   USER_PROFILE_QUERY
 } from '../graphql/queries'
-
-const UserProfileContainer = styled('article')``
-
-function UserProfile({ profile }) {
-  return (
-    <UserProfileContainer>
-      <h2>{profile.id}</h2>
-    </UserProfileContainer>
-  )
-}
 
 export default function UserProfileData(props) {
   const { username } = props.match.params
