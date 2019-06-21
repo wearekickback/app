@@ -18,7 +18,7 @@ const TwitterAvatar = ({ className, user }) => {
   let props = { src: avatarUrl }
 
   if (avatarId) {
-    props.href = `https://twitter.com/${avatarId}`
+    props.username = user.username
   }
 
   return <Avatar className={className} {...props} />
