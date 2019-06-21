@@ -76,5 +76,8 @@ export const ProfileFieldsDetailed = gql`
     eventsAttended {
       ...PartyFields
     }
+    eventsHosted {
+      ...PartyFields
+    }
   }
 `

@@ -23,6 +23,10 @@ export default function UserProfile({ profile: p }) {
       {p.eventsAttended.map(event => (
         <EventAttended event={event} />
       ))}
+      <H3>Events Hosted ({p.eventsHosted.length})</H3>
+      {p.eventsHosted.map(event => (
+        <EventAttended event={event} />
+      ))}
     </UserProfileContainer>
   )
 }
