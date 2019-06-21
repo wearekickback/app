@@ -18,7 +18,6 @@ export default function UserProfileData(props) {
           console.log(error)
           return <div>Could not find user of the username: {username}</div>
         }
-        console.log(data)
         return <UserProfile profile={data.profile} />
       }}
     </Query>

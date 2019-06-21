@@ -8,7 +8,7 @@ export default function EventAttended({ event }) {
   console.log('compne', event)
   return (
     <EventAttendedContainer>
-      <Link to={`/event/${event.id}`}>{event.name}</Link>
+      <Link to={`/event/${event.address}`}>{event.name}</Link>
     </EventAttendedContainer>
   )
 }
