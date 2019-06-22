@@ -48,6 +48,7 @@ if (!network) {
 
 // mutlisend contract address are all the same
 // https://etherscan.io/address/0x5fcc77ce412131daeb7654b3d18ee89b13d86cbf#code
+// https://www.reddit.com/r/ethereum/comments/8m8uk3/how_to_easily_send_eth_payments_to_500_different/dzm9y04/
 const address = '0x5fcc77ce412131daeb7654b3d18ee89b13d86cbf'
 const abi = [
   {
