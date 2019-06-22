@@ -41,10 +41,7 @@ program
 const address_file = program.addresses
 const address = program.partyid
 
-const addresses = fs
-  .readFileSync(address_file, 'utf8')
-  .split('\n')
-  .map(a => a.toLowerCase())
+const addresses = fs.readFileSync(address_file, 'utf8').split('\n')
 const ropsten = program.ropsten
 const rinkeby = program.rinkeby
 const mainnet = program.mainnet
@@ -77,23 +74,30 @@ async function init() {
   const { party } = await this.client.request(GetParty, { address })
   return party
 }
-
 init().then(result => {
   const disrepancy = 0
+  const notWithdrawn = []
   const array = result.participants.map(r => {
     var status = r.status
     var username = r.user.username
     var address = r.user.address
-    var withdrawn = addresses.includes(address)
+    var withdrawn = addresses.map(a => a.toLowerCase()).includes(address)
+    var result = [status, username, address, withdrawn].join(',')
     if (['REGISTERED', 'SHOWED_UP'].includes(status) && withdrawn) {
       console.log(`${username} is ${status} but already withdrawn`)
     }
     if (['WITHDRAWN_PAYOUT'].includes(status) && !withdrawn) {
       console.log(`${username} is ${status} but NOT withdrawn yet`)
     }
+    if (['SHOWED_UP'].includes(status) && !withdrawn) {
+      notWithdrawn.push([address, username].join(','))
+    }
     return [status, username, address, withdrawn].join(',')
   })
   const outputfile = 'tmp/array.csv'
-  console.log(`Saving the result into ${outputfile}`)
+  const notwithdrawnfile = 'tmp/notwithdrawn.csv'
+  console.log(`Saving all the result into ${outputfile}`)
+  console.log(`Saving not withdrawn into ${notwithdrawnfile}`)
   fs.writeFileSync(outputfile, array.join('\n'))
+  fs.writeFileSync(notwithdrawnfile, notWithdrawn.join('\n'))
 })
