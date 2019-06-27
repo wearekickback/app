@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'react-emotion'
 import { getSocialId } from '@wearekickback/shared'
 import EventAttended from './EventAttended'
-import { H2, H3, P } from '../Typography/Basic'
+import { H2, H3 } from '../Typography/Basic'
 
 const UserProfileContainer = styled('article')``
 const Avatar = styled('img')`
