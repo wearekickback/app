@@ -255,6 +255,24 @@ const resolvers = {
         return null
       }
     },
+    async changeDeposit(_, { address, deposit }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const depositInWei = toEthVal(deposit, 'eth')
+        .toWei()
+        .toString(16)
+      try {
+        const tx = await txHelper(
+          contract.changeDeposit(depositInWei).send({ from: account })
+        )
+
+        return tx
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
     async clear(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
