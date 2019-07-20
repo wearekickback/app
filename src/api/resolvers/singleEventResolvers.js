@@ -196,12 +196,13 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      const deposit = await contract.deposit().call()
+      // const deposit = await contract.deposit().call()
       try {
         const tx = await txHelper(
           contract.register().send({
-            from: account,
-            value: deposit
+            from: account
+            // ,
+            // value: deposit
           })
         )
         return tx

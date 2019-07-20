@@ -138,3 +138,17 @@ export const SINGLE_UPLOAD = gql`
     singleUpload(file: $file)
   }
 `
+
+export const APPROVE_TOKEN = gql`
+  mutation approveToken(
+    $tokenAddress: String
+    $address: String
+    $deposit: String
+  ) {
+    approveToken(
+      tokenAddress: $tokenAddress
+      address: $address
+      deposit: $deposit
+    ) @client
+  }
+`

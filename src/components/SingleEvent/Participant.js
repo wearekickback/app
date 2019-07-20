@@ -81,14 +81,13 @@ function Participant({ participant, party, amAdmin }) {
             attended ? (
               <Status type="won">{`${
                 withdrawn ? ' Withdrew' : 'Won'
-              } ${payout} ETH `}</Status>
+              } ${payout}`}</Status>
             ) : (
               <Status type="lost">
                 Lost{' '}
                 {toEthVal(deposit)
                   .toEth()
                   .toString()}{' '}
-                ETH
               </Status>
             )
           ) : (

@@ -187,7 +187,7 @@ class EventInfo extends Component {
                   .mul(party.participants.length)
                   .toEth()
                   .toFixed(2)}{' '}
-                ETH
+                {/* ETH */}
               </span>
             </TotalPot>
             <Deposit>

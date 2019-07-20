@@ -52,6 +52,7 @@ export const PartyFields = gql`
     headerImg
     balance
     deposit
+    tokenAddress
     coolingPeriod
     participantLimit
     ended

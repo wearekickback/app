@@ -5,6 +5,7 @@ import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
 
 import DefaultRSVP from './RSVP'
+import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
 import {
   calculateWinningShare,
@@ -65,6 +66,11 @@ const RSVP = styled(DefaultRSVP)`
   width: 100%;
 `
 
+const Approve = styled(DefaultApprove)`
+  width: 100%;
+  margin-bottom: 1em;
+`
+
 const MarkAttended = styled('div')``
 
 class EventCTA extends Component {
@@ -103,13 +109,18 @@ class EventCTA extends Component {
   _renderActiveRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants, participantLimit }
+      party: { tokenAddress, address, deposit, participants, participantLimit }
     } = this.props
-
+    console.log({ tokenAddress, address, deposit })
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
         return (
           <>
+            <Approve
+              tokenAddress={tokenAddress}
+              address={address}
+              deposit={deposit}
+            />
             <RSVP address={address} deposit={deposit} />
             <CTAInfo>
               <strong>Kickback rules:</strong>
@@ -207,14 +218,16 @@ class EventCTA extends Component {
     let {
       party: { ended, cancelled, participants, balance }
     } = this.props
-
-    const cleared =
-      balance &&
-      toEthVal(balance)
-        .toEth()
-        .toNumber() === 0 &&
-      ended
-
+    console.log({ ended, cancelled, participants, balance })
+    // const cleared =
+    //   balance &&
+    //   toEthVal(balance)
+    //     .toEth()
+    //     .toNumber() === 0 &&
+    //   ended
+    // ERC20 has no balance hence always 0
+    // TODO: Refactor balance function
+    const cleared = false
     return (
       <EventCTAContainer>
         <RSVPContainer>
