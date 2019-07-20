@@ -8,12 +8,14 @@ export const CREATE_PARTY = gql`
     $deposit: String
     $limitOfParticipants: String
     $coolingPeriod: String
+    $tokenAddress: String
   ) {
     create: createParty(
       id: $id
       deposit: $deposit
       limitOfParticipants: $limitOfParticipants
       coolingPeriod: $coolingPeriod
+      tokenAddress: $tokenAddress
     ) @client @requireAuth
   }
 `

@@ -167,7 +167,8 @@ class PartyForm extends Component {
       headerImg = '',
       deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
-      limitOfParticipants = 20
+      limitOfParticipants = 20,
+      tokenAddress = ''
     } = props
 
     const [startDay, startTime] = getDayAndTimeFromDate(start)
@@ -187,6 +188,7 @@ class PartyForm extends Component {
       arriveByTime: moment(arriveByTime).utcOffset('+00:00'),
       headerImg,
       deposit,
+      tokenAddress,
       price: null,
       coolingPeriod,
       limitOfParticipants,
@@ -235,6 +237,7 @@ class PartyForm extends Component {
       arriveByTime,
       headerImg,
       deposit,
+      tokenAddress,
       limitOfParticipants,
       coolingPeriod
     } = this.state
@@ -416,19 +419,26 @@ class PartyForm extends Component {
           {type === 'create' && (
             <>
               <InputWrapper>
+                <Label>Token Address</Label>
+                <CommitmentInput
+                  value={tokenAddress}
+                  onChangeText={val => this.setState({ tokenAddress: val })}
+                  type="text"
+                  placeholder="Token Address"
+                />
+              </InputWrapper>
+              <InputWrapper>
                 <Label>Commitment</Label>
                 <CommitmentInput
-                  value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
-                  placeholder="ETH"
                 />
-                <CommitmentInUsd>
+                {/* <CommitmentInUsd>
                   ETH
                   {this.state.price
                     ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
                     : ''}
-                </CommitmentInUsd>
+                </CommitmentInUsd> */}
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
@@ -474,7 +484,8 @@ class PartyForm extends Component {
                                   id,
                                   deposit,
                                   limitOfParticipants,
-                                  coolingPeriod
+                                  coolingPeriod,
+                                  tokenAddress
                                 }
                               })
                             })

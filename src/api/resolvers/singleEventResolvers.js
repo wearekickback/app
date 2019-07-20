@@ -127,7 +127,13 @@ const resolvers = {
     async createParty(_, args) {
       console.log(`Deploying party`, args)
 
-      const { id, deposit, limitOfParticipants, coolingPeriod } = args
+      const {
+        id,
+        deposit,
+        limitOfParticipants,
+        coolingPeriod,
+        tokenAddress
+      } = args
 
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -145,7 +151,8 @@ const resolvers = {
                 .toWei()
                 .toString(16),
               toEthVal(limitOfParticipants).toString(16),
-              toEthVal(coolingPeriod).toString(16)
+              toEthVal(coolingPeriod).toString(16),
+              tokenAddress
             )
             .send({
               gas: 3000000,
