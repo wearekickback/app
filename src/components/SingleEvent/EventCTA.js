@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
-
+import { TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
+import SafeQuery from '../SafeQuery'
+
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
@@ -111,48 +113,71 @@ class EventCTA extends Component {
       myParticipantEntry,
       party: { tokenAddress, address, deposit, participants, participantLimit }
     } = this.props
-    console.log({ tokenAddress, address, deposit })
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
         return (
-          <>
-            <Approve
-              tokenAddress={tokenAddress}
-              address={address}
-              deposit={deposit}
-            />
-            <RSVP address={address} deposit={deposit} />
-            <CTAInfo>
-              <strong>Kickback rules:</strong>
-              <ul>
-                <li>Everyone commits a small amount of ETH when they RSVP.</li>
-                <li>
-                  Any no-shows lose their ETH, which will be
-                  <strong> split amongst the attendees</strong>.
-                </li>
-                <li>
-                  After the event you can withdraw your post-event payout.
-                </li>
-              </ul>
-              <p>Please remember:</p>
-              <ul>
-                <li>Once you RSVP, you cannot cancel.</li>
-                <li>
-                  The event organiser must mark you as attended in order for you
-                  to qualify for the payout.
-                </li>
-                <li>
-                  You must withdraw your payout within the post-event cooling
-                  period.
-                </li>
-              </ul>
-              <Reference>
-                For more detail please see{' '}
-                <Link to="/gettingstarted">Getting started</Link> and{' '}
-                <Link to="/terms">Terms and conditions</Link>.
-              </Reference>
-            </CTAInfo>
-          </>
+          <SafeQuery
+            query={TOKEN_ALLOWANCE_QUERY}
+            variables={{ tokenAddress, partyAddress: address }}
+          >
+            {({
+              data: {
+                tokenAllowance: { allowance }
+              },
+              loading
+            }) => {
+              console.log('data', allowance)
+              // const allowance = data
+              const isAllowed = parseInt(allowance) > 0
+              return (
+                <>
+                  <Approve
+                    tokenAddress={tokenAddress}
+                    address={address}
+                    deposit={deposit}
+                    isAllowed={isAllowed}
+                  />
+                  <RSVP
+                    address={address}
+                    deposit={deposit}
+                    isAllowed={isAllowed}
+                  />
+                  <CTAInfo>
+                    <strong>Kickback rules:</strong>
+                    <ul>
+                      <li>
+                        Everyone commits a small amount of ETH when they RSVP.
+                      </li>
+                      <li>
+                        Any no-shows lose their ETH, which will be
+                        <strong> split amongst the attendees</strong>.
+                      </li>
+                      <li>
+                        After the event you can withdraw your post-event payout.
+                      </li>
+                    </ul>
+                    <p>Please remember:</p>
+                    <ul>
+                      <li>Once you RSVP, you cannot cancel.</li>
+                      <li>
+                        The event organiser must mark you as attended in order
+                        for you to qualify for the payout.
+                      </li>
+                      <li>
+                        You must withdraw your payout within the post-event
+                        cooling period.
+                      </li>
+                    </ul>
+                    <Reference>
+                      For more detail please see{' '}
+                      <Link to="/gettingstarted">Getting started</Link> and{' '}
+                      <Link to="/terms">Terms and conditions</Link>.
+                    </Reference>
+                  </CTAInfo>
+                </>
+              )
+            }}
+          </SafeQuery>
         )
       }
 

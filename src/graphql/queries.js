@@ -83,3 +83,12 @@ export const QR_QUERY = gql`
     qrCode: scanQRCode @client
   }
 `
+
+export const TOKEN_ALLOWANCE_QUERY = gql`
+  query getTokenAllowance($tokenAddress: String!, $partyAddress: String!) {
+    tokenAllowance: getTokenAllowance(
+      tokenAddress: $tokenAddress
+      partyAddress: $partyAddress
+    ) @client
+  }
+`
