@@ -126,8 +126,6 @@ class EventCTA extends Component {
               },
               loading
             }) => {
-              console.log('data', allowance)
-              // const allowance = data
               const isAllowed = parseInt(allowance) > 0
               return (
                 <>
@@ -244,7 +242,6 @@ class EventCTA extends Component {
     let {
       party: { ended, cancelled, participants, balance }
     } = this.props
-    console.log({ ended, cancelled, participants, balance })
     // const cleared =
     //   balance &&
     //   toEthVal(balance)

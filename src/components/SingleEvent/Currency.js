@@ -4,7 +4,6 @@ import { TOKEN_QUERY } from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
 
 const Currency = ({ tokenAddress, deposit }) => {
-  console.log('Currency', { tokenAddress, deposit })
   return (
     <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
       {({
