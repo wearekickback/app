@@ -138,6 +138,7 @@ class EventCTA extends Component {
                     isAllowed={isAllowed}
                   />
                   <RSVP
+                    tokenAddress={tokenAddress}
                     address={address}
                     deposit={deposit}
                     isAllowed={isAllowed}

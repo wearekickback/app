@@ -6,10 +6,30 @@ import DepositValue from '../Utils/DepositValue'
 import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 import Button from '../Forms/Button'
+import Currency from './Currency'
+import styled from 'react-emotion'
 
-const RSVP = ({ address, className, deposit, isAllowed }) => {
+const RSVPText = styled(`span`)`
+  margin-right: 0.5em;
+`
+
+const RSVP = ({ address, tokenAddress, className, deposit, isAllowed }) => {
+  const ButtonText = () => {
+    return (
+      <>
+        <RSVPText>RSVP with</RSVPText>
+        {DepositValue({ value: deposit })}
+        <Currency tokenAddress={tokenAddress} />
+      </>
+    )
+  }
+
   if (!isAllowed) {
-    return <Button disabled={true}>RSVP</Button>
+    return (
+      <Button disabled={true}>
+        <ButtonText />
+      </Button>
+    )
   } else {
     return (
       <ChainMutation
@@ -24,8 +44,13 @@ const RSVP = ({ address, className, deposit, isAllowed }) => {
             onClick={rsvp}
             result={result}
             className={className}
-            // preContent={<span>RSVP - {DepositValue({ value: deposit })}</span>}
-            preContent={<span>RSVP</span>}
+            preContent={
+              <span>
+                RSVP -{DepositValue({ value: deposit })}
+                <Currency tokenAddress={tokenAddress} />
+              </span>
+            }
+            preContent={<ButtonText />}
             postContent={<Going>You are going!</Going>}
           />
         )}

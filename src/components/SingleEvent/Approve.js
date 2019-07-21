@@ -22,7 +22,7 @@ const Approve = ({ tokenAddress, address, className, deposit, isAllowed }) => {
             onClick={approve}
             result={result}
             className={className}
-            preContent={<span>Activate Token registration</span>}
+            preContent={<span>Allow RSVP with Token</span>}
             postContent={<Going>You can now RSVP</Going>}
           />
         )}

@@ -84,6 +84,12 @@ export const QR_QUERY = gql`
   }
 `
 
+export const TOKEN_QUERY = gql`
+  query getToken($tokenAddress: String!) {
+    token: getToken(tokenAddress: $tokenAddress) @client
+  }
+`
+
 export const TOKEN_ALLOWANCE_QUERY = gql`
   query getTokenAllowance($tokenAddress: String!, $partyAddress: String!) {
     tokenAllowance: getTokenAllowance(

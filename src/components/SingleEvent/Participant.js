@@ -9,6 +9,7 @@ import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import { GlobalConsumer } from '../../GlobalState'
 import tick from '../svg/tick.svg'
+import Currency from './Currency'
 
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
@@ -79,15 +80,17 @@ function Participant({ participant, party, amAdmin }) {
           </ParticipantId>
           {ended ? (
             attended ? (
-              <Status type="won">{`${
-                withdrawn ? ' Withdrew' : 'Won'
-              } ${payout}`}</Status>
+              <Status type="won">
+                {`${withdrawn ? ' Withdrew' : 'Won'} ${payout}`}{' '}
+                <Currency tokenAddress={party.tokenAddress} />
+              </Status>
             ) : (
               <Status type="lost">
                 Lost{' '}
                 {toEthVal(deposit)
                   .toEth()
                   .toString()}{' '}
+                <Currency tokenAddress={party.tokenAddress} />{' '}
               </Status>
             )
           ) : (

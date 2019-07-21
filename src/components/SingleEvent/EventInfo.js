@@ -13,6 +13,7 @@ import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
+import Currency from './Currency'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
@@ -112,12 +113,6 @@ const TotalPot = styled('div')`
     align-items: center;
     margin-right: 10px;
   }
-
-  span {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-  }
 `
 
 const EventDescription = styled('div')`
@@ -187,13 +182,14 @@ class EventInfo extends Component {
                   .mul(party.participants.length)
                   .toEth()
                   .toFixed(2)}{' '}
-                {/* ETH */}
+                <Currency tokenAddress={party.tokenAddress} />
               </span>
             </TotalPot>
             <Deposit>
               <strong>RSVP: </strong>
               <span>
                 <DepositValue value={party.deposit} />
+                <Currency tokenAddress={party.tokenAddress} />
               </span>
             </Deposit>
           </Pot>

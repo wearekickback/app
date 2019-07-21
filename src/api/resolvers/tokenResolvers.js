@@ -3,6 +3,7 @@ import { Token } from '@wearekickback/contracts'
 import { txHelper } from '../utils'
 export const defaults = {}
 const abi = Token.abi
+let token
 
 const resolvers = {
   Query: {
@@ -28,6 +29,34 @@ const resolvers = {
           ...obj,
           allowance: null
         }
+      }
+    },
+    async getToken(_, { tokenAddress }) {
+      if (token) {
+        return token
+      }
+      if (!tokenAddress) {
+        return {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      }
+      const web3 = await getWeb3()
+      const { methods: contract } = new web3.eth.Contract(abi, tokenAddress)
+
+      try {
+        const name = await contract.name().call()
+        const symbol = await contract.symbol().call()
+        const demicals = await contract.decimals().call()
+        token = {
+          name: name,
+          symbol: symbol,
+          decimals: demicals
+        }
+        return token
+      } catch (err) {
+        throw new Error(`Failed to get Token`)
       }
     }
   },
