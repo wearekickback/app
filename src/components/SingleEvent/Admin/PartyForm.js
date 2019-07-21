@@ -27,6 +27,7 @@ import TextInput from 'components/Forms/TextInput'
 import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
+import Web3 from 'web3'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -433,12 +434,16 @@ class PartyForm extends Component {
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                 />
-                {/* <CommitmentInUsd>
-                  ETH
-                  {this.state.price
-                    ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
-                    : ''}
-                </CommitmentInUsd> */}
+                {!Web3.utils.isAddress(this.state.tokenAddress) ? (
+                  <CommitmentInUsd>
+                    ETH
+                    {this.state.price
+                      ? `($${(this.state.deposit * this.state.price).toFixed(
+                          2
+                        )})`
+                      : ''}
+                  </CommitmentInUsd>
+                ) : null}
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>

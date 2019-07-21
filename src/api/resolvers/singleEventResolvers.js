@@ -4,7 +4,7 @@ import { Conference } from '@wearekickback/contracts'
 
 import getWeb3, { getAccount, getDeployerAddress } from '../web3'
 import events from '../../fixtures/events.json'
-import { txHelper } from '../utils'
+import { txHelper, EMPTY_ADDRESS } from '../utils'
 import { toEthVal } from '../../utils/units'
 
 const deployerAbi = Deployer.abi
@@ -127,16 +127,15 @@ const resolvers = {
     async createParty(_, args) {
       console.log(`Deploying party`, args)
 
-      const {
-        id,
-        deposit,
-        limitOfParticipants,
-        coolingPeriod,
-        tokenAddress
-      } = args
+      const { id, deposit, limitOfParticipants, coolingPeriod } = args
+      let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
       const account = await getAccount()
+
+      if (tokenAddress === '') {
+        tokenAddress = EMPTY_ADDRESS
+      }
 
       const deployerAddress = await getDeployerAddress()
 
@@ -196,13 +195,18 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      // const deposit = await contract.deposit().call()
+      const tokenAddress = contract.tokenAddress().call()
+      let deposit
+      if (tokenAddress != EMPTY_ADDRESS) {
+        deposit = await contract.deposit().call()
+      } else {
+        deposit = 0
+      }
       try {
         const tx = await txHelper(
           contract.register().send({
-            from: account
-            // ,
-            // value: deposit
+            from: account,
+            value: deposit
           })
         )
         return tx
