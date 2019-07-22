@@ -139,7 +139,7 @@ class EventCTA extends Component {
               loading
             }) => {
               const isAllowed = parseInt(allowance) > 0
-              this._renderActiveRsvp({
+              return this._renderActiveRsvp({
                 myParticipantEntry,
                 tokenAddress,
                 address,
