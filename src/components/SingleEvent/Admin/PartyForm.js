@@ -19,7 +19,7 @@ import { extractNewPartyAddressFromTx } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-
+import { TOKEN_SYMBOL_QUERY } from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
@@ -28,6 +28,7 @@ import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
 import Web3 from 'web3'
+import SafeQuery from '../../SafeQuery'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -190,6 +191,8 @@ class PartyForm extends Component {
       headerImg,
       deposit,
       tokenAddress,
+      daiAddress: '',
+      currencyType: 'ETH',
       price: null,
       coolingPeriod,
       limitOfParticipants,
@@ -271,6 +274,19 @@ class PartyForm extends Component {
 
     if (address) {
       variables.address = address
+    }
+
+    const onChange = e => {
+      this.setState({ currencyType: e.target.value })
+      if (e.target.value == 'ETH') {
+        this.setState({ tokenAddress: null })
+      } else {
+        this.setState({ tokenAddress: this.state.daiAddress })
+      }
+    }
+
+    const isChecked = currencyType => {
+      return this.state.currencyType == currencyType
     }
 
     return (
@@ -419,31 +435,63 @@ class PartyForm extends Component {
           </InputWrapper>
           {type === 'create' && (
             <>
-              <InputWrapper>
-                <Label>Token Address</Label>
-                <CommitmentInput
-                  value={tokenAddress}
-                  onChangeText={val => this.setState({ tokenAddress: val })}
-                  type="text"
-                  placeholder="Token Address"
-                />
-              </InputWrapper>
+              <SafeQuery
+                query={TOKEN_SYMBOL_QUERY}
+                variables={{ symbol: 'DAI' }}
+              >
+                {({
+                  data: {
+                    token: { address }
+                  },
+                  loading
+                }) => {
+                  if (address && !this.state.daiAddress) {
+                    this.setState({ daiAddress: address })
+                  }
+                  return (
+                    <>
+                      <InputWrapper>
+                        <Label>Currency</Label>
+                        <label class="container">
+                          ETH
+                          <input
+                            type="radio"
+                            onChange={onChange}
+                            checked={isChecked('ETH')}
+                            name="radio"
+                            value="ETH"
+                          />
+                        </label>
+                        <label class="container">
+                          DAI
+                          <input
+                            type="radio"
+                            onChange={onChange}
+                            checked={isChecked('DAI')}
+                            name="radio"
+                            value="DAI"
+                          />
+                        </label>
+                      </InputWrapper>
+                    </>
+                  )
+                }}
+              </SafeQuery>
               <InputWrapper>
                 <Label>Commitment</Label>
                 <CommitmentInput
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                 />
-                {!Web3.utils.isAddress(this.state.tokenAddress) ? (
-                  <CommitmentInUsd>
-                    ETH
-                    {this.state.price
-                      ? `($${(this.state.deposit * this.state.price).toFixed(
-                          2
-                        )})`
-                      : ''}
-                  </CommitmentInUsd>
-                ) : null}
+                <CommitmentInUsd>
+                  {!Web3.utils.isAddress(this.state.tokenAddress)
+                    ? this.state.price
+                      ? `ETH ($${(
+                          this.state.deposit * this.state.price
+                        ).toFixed(2)})`
+                      : 'ETH'
+                    : `DAI`}
+                </CommitmentInUsd>
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>

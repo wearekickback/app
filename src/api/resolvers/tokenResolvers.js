@@ -1,4 +1,4 @@
-import getWeb3, { getAccount } from '../web3'
+import getWeb3, { getAccount, getTokenBySymbol } from '../web3'
 import { Token } from '@wearekickback/contracts'
 import { txHelper, EMPTY_ADDRESS } from '../utils'
 export const defaults = {}
@@ -7,6 +7,13 @@ let token
 
 const resolvers = {
   Query: {
+    async getTokenBySymbol(_, { symbol }) {
+      const address = await getTokenBySymbol(symbol)
+      return {
+        address,
+        __typename: 'Token'
+      }
+    },
     async getTokenAllowance(_, { tokenAddress, partyAddress }) {
       const obj = {
         account,

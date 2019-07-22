@@ -2,7 +2,7 @@ import { Deployer } from '@wearekickback/contracts'
 import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
 
-import { DEPLOYER_CONTRACT_ADDRESS } from '../config'
+import { DEPLOYER_CONTRACT_ADDRESS, DAI_CONTRACT_ADDRESS } from '../config'
 import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
@@ -148,6 +148,19 @@ export async function getDeployerAddress() {
     DEPLOYER_CONTRACT_ADDRESS ||
     Deployer.networks[networkState.expectedNetworkId].address
   )
+}
+
+export async function getTokenBySymbol(symbol) {
+  switch (networkState.expectedNetworkId) {
+    case '1':
+      return '0x8f2e097e79b1c51be9cba42658862f0192c3e487'
+    case '3':
+      return '' // TODO
+    case '4':
+      return '' // TODO
+    default:
+      return DAI_CONTRACT_ADDRESS
+  }
 }
 
 export async function getTransactionReceipt(txHash) {
