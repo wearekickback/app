@@ -43,15 +43,13 @@ const resolvers = {
       const contract = getTokenContract(web3, tokenAddress)
 
       try {
-        const name = await contract.name().call()
-        const symbol = await contract.symbol().call()
-        const demicals = await contract.decimals().call()
-        token = {
-          name: name,
-          symbol: symbol,
-          decimals: demicals
-        }
-        return token
+        const [name, symbol, decimals] = await Promise.all([
+          contract.name().call(),
+          contract.symbol().call(),
+          contract.decimals().call()
+        ])
+
+        return { name, symbol, decimals }
       } catch (err) {
         throw new Error(`Failed to get Token`)
       }
