@@ -5,6 +5,10 @@ export const defaults = {}
 const abi = Token.abi
 let token
 
+const getTokenContract = (web3, address) => {
+  return new web3.eth.Contract(abi, address).methods
+}
+
 const resolvers = {
   Query: {
     async getTokenBySymbol(_, { symbol }) {
@@ -13,7 +17,7 @@ const resolvers = {
     },
     async getTokenAllowance(_, { tokenAddress, partyAddress }) {
       const web3 = await getWeb3()
-      const { methods: contract } = new web3.eth.Contract(abi, tokenAddress)
+      const contract = getTokenContract(web3, tokenAddress)
       try {
         const account = await getAccount()
         const allowance = await contract.allowance(account, partyAddress).call()
@@ -36,7 +40,7 @@ const resolvers = {
         }
       }
       const web3 = await getWeb3()
-      const { methods: contract } = new web3.eth.Contract(abi, tokenAddress)
+      const contract = getTokenContract(web3, tokenAddress)
 
       try {
         const name = await contract.name().call()
@@ -57,7 +61,7 @@ const resolvers = {
     async approveToken(_, { tokenAddress, deposit, address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, tokenAddress)
+      const contract = getTokenContract(web3, tokenAddress)
       try {
         const tx = await txHelper(
           contract.approve(address, deposit).send({
