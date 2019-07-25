@@ -277,12 +277,9 @@ class PartyForm extends Component {
     }
 
     const onChange = e => {
-      this.setState({ currencyType: e.target.value })
-      if (e.target.value == 'ETH') {
-        this.setState({ tokenAddress: null })
-      } else {
-        this.setState({ tokenAddress: this.state.daiAddress })
-      }
+      const currencyType = e.target.value
+      const tokenAddress = currencyType != 'ETH' ? this.state.daiAddress : null
+      this.setState({ currencyType, tokenAddress })
     }
 
     const isChecked = currencyType => {
