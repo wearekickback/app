@@ -29,6 +29,7 @@ import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
 import Web3 from 'web3'
 import SafeQuery from '../../SafeQuery'
+import CurrencyPicker from './CurrencyPicker'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -283,16 +284,6 @@ class PartyForm extends Component {
       variables.address = address
     }
 
-    const onChange = e => {
-      const currencyType = e.target.value
-      const tokenAddress = currencyType != 'ETH' ? this.state.daiAddress : null
-      this.setState({ currencyType, tokenAddress })
-    }
-
-    const isChecked = currencyType => {
-      return this.state.currencyType == currencyType
-    }
-
     return (
       <PartyFormContainer>
         <H2>Event Details</H2>
@@ -453,31 +444,20 @@ class PartyForm extends Component {
                     this.setState({ daiAddress: address })
                   }
                   return (
-                    <>
-                      <InputWrapper>
-                        <Label>Currency</Label>
-                        <label class="container">
-                          ETH
-                          <input
-                            type="radio"
-                            onChange={onChange}
-                            checked={isChecked('ETH')}
-                            name="radio"
-                            value="ETH"
-                          />
-                        </label>
-                        <label class="container">
-                          DAI
-                          <input
-                            type="radio"
-                            onChange={onChange}
-                            checked={isChecked('DAI')}
-                            name="radio"
-                            value="DAI"
-                          />
-                        </label>
-                      </InputWrapper>
-                    </>
+                    <InputWrapper>
+                      <Label>Currency</Label>
+                      <CurrencyPicker
+                        currencyType={this.state.currencyType}
+                        daiAddress={this.state.daiAddress}
+                        onChange={({ currencyType, tokenAddress }) => {
+                          console.log('onChange', {
+                            currencyType,
+                            tokenAddress
+                          })
+                          this.setState({ currencyType, tokenAddress })
+                        }}
+                      />
+                    </InputWrapper>
                   )
                 }}
               </SafeQuery>
