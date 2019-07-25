@@ -9,33 +9,18 @@ const resolvers = {
   Query: {
     async getTokenBySymbol(_, { symbol }) {
       const address = await getTokenBySymbol(symbol)
-      return {
-        address,
-        __typename: 'Token'
-      }
+      return { address }
     },
     async getTokenAllowance(_, { tokenAddress, partyAddress }) {
-      const obj = {
-        account,
-        __typename: 'Token'
-      }
       const web3 = await getWeb3()
-      const account = await getAccount()
-
       const { methods: contract } = new web3.eth.Contract(abi, tokenAddress)
       try {
         const account = await getAccount()
         const allowance = await contract.allowance(account, partyAddress).call()
-        return {
-          ...obj,
-          allowance
-        }
+        return { allowance }
       } catch (err) {
         console.log('Failed to fetch tokenAllowance', err)
-        return {
-          ...obj,
-          allowance: null
-        }
+        return { allowance: null }
       }
     },
     async getToken(_, { tokenAddress }) {
