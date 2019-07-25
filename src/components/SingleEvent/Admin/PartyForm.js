@@ -151,9 +151,16 @@ const CommitmentInput = styled(TextInput)`
   display: inline-table;
 `
 
-const CommitmentInUsd = styled('span')`
+const CommitmentInUsdContainer = styled('span')`
   padding-left: 1em;
 `
+
+const commitmentInUsd = ({ tokenAddress, price, deposit }) => {
+  if (Web3.utils.isAddress(tokenAddress)) return 'DAI'
+  if (!price) return 'ETH'
+  const totalPrice = (deposit * price).toFixed(2)
+  return `ETH ($${totalPrice})`
+}
 
 class PartyForm extends Component {
   constructor(props) {
@@ -480,15 +487,13 @@ class PartyForm extends Component {
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                 />
-                <CommitmentInUsd>
-                  {!Web3.utils.isAddress(this.state.tokenAddress)
-                    ? this.state.price
-                      ? `ETH ($${(
-                          this.state.deposit * this.state.price
-                        ).toFixed(2)})`
-                      : 'ETH'
-                    : `DAI`}
-                </CommitmentInUsd>
+                <CommitmentInUsdContainer>
+                  {commitmentInUsd({
+                    tokenAddress: this.state.tokenAddress,
+                    price: this.state.price,
+                    deposit: this.state.deposit
+                  })}
+                </CommitmentInUsdContainer>
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
