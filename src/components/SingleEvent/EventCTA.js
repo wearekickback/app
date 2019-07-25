@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { toEthVal } from '../../utils/units'
-import { EMPTY_ADDRESS } from '../../api/utils'
+import { isEmptyAddress } from '../../api/utils'
 import { TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
@@ -116,7 +116,7 @@ class EventCTA extends Component {
     } = this.props
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
-        if (!tokenAddress || tokenAddress === EMPTY_ADDRESS) {
+        if (isEmptyAddress(tokenAddress)) {
           return this._renderActiveRsvp({
             myParticipantEntry,
             tokenAddress,
@@ -167,7 +167,7 @@ class EventCTA extends Component {
   }
 
   _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed }) {
-    const isToken = tokenAddress && tokenAddress !== EMPTY_ADDRESS
+    const isToken = !isEmptyAddress(tokenAddress)
     return (
       <>
         {isToken ? (

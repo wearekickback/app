@@ -1,6 +1,6 @@
 import getWeb3, { getAccount, getTokenBySymbol } from '../web3'
 import { Token } from '@wearekickback/contracts'
-import { txHelper, EMPTY_ADDRESS } from '../utils'
+import { txHelper, isEmptyAddress } from '../utils'
 export const defaults = {}
 const abi = Token.abi
 let token
@@ -28,11 +28,8 @@ const resolvers = {
       }
     },
     async getToken(_, { tokenAddress }) {
-      if (token) {
-        return token
-      }
-
-      if (!tokenAddress || tokenAddress === EMPTY_ADDRESS) {
+      if (token) return token
+      if (isEmptyAddress(tokenAddress)) {
         return {
           name: 'Ether',
           symbol: 'ETH',
