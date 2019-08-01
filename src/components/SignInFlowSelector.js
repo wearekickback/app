@@ -3,6 +3,8 @@ import Button from './Forms/Button'
 import Assist from './Header/Assist'
 import { GlobalConsumer } from '../GlobalState'
 import { SIGN_IN_CHOICE, UNIVERSAL_LOGIN } from '../modals'
+import Tooltip from './Tooltip'
+import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../utils/errors'
 
 export default class SignInFlowSelector extends Component {
   renderUniversalLogin(showModal, closeModal) {
@@ -55,19 +57,23 @@ export default class SignInFlowSelector extends Component {
             >
               UNIVERSAL LOGIN
             </Button>
-            <Button
-              onClick={() =>
-                this.onMetaMaskClick(
-                  networkState,
-                  reloadUserAddress,
-                  () => {},
-                  signIn,
-                  closeModal
-                )
-              }
-            >
-              META MASK
-            </Button>
+            <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
+              {({ showTooltip }) => (
+                <Button
+                  onClick={() =>
+                    this.onMetaMaskClick(
+                      networkState,
+                      reloadUserAddress,
+                      showTooltip,
+                      signIn,
+                      closeModal
+                    )
+                  }
+                >
+                  META MASK
+                </Button>
+              )}
+            </Tooltip>
           </div>
         )}
       </GlobalConsumer>
