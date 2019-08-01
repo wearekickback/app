@@ -5,7 +5,7 @@ import { GlobalConsumer } from '../../GlobalState'
 import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
-import { EDIT_PROFILE } from '../../modals'
+import { EDIT_PROFILE, SIGN_IN_CHOICE } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import Assist from './Assist'
 
@@ -26,14 +26,17 @@ const Username = styled('div')`
 `
 
 function SignInButton() {
-  const _signIn = ({
+  const _signIn = ({ hideTooltip, showModal }) => async () => {
+    hideTooltip()
+    await showModal({ name: SIGN_IN_CHOICE })
+  }
+
+  const metaMaskFlow = async (
     showTooltip,
-    hideTooltip,
     signIn,
     networkState,
     reloadUserAddress
-  }) => async () => {
-    hideTooltip()
+  ) => {
     let assist = await Assist({
       action: 'Sign in',
       expectedNetworkId: networkState.expectedNetworkId
@@ -47,7 +50,6 @@ function SignInButton() {
       signIn()
     }
   }
-
   return (
     <GlobalConsumer>
       {({
@@ -88,7 +90,8 @@ function SignInButton() {
                   hideTooltip,
                   signIn,
                   reloadUserAddress,
-                  networkState
+                  networkState,
+                  showModal
                 })}
                 analyticsId="Sign In"
               >
