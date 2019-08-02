@@ -12,8 +12,8 @@ const UniversalLoginOnboarding = () => {
     <div>
       <Onboarding
         sdk={sdk}
-        onConnectClick={() => {}}
-        onCreateClick={() => {
+        onConnect={() => {}}
+        onCreate={() => {
           console.log('created')
         }}
         domains={['poppularapp.test']}

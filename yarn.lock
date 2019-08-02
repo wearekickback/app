@@ -1530,34 +1530,37 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@universal-login/commons@^0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.8.tgz#015c46e50a4ab774cc9fbccb5f383d57cfb28ac6"
-  integrity sha512-A2/uGB+z1i9hxWsYRNh0cb9OeiFLKOinaP4ALs9NVgzVfnHgfXTZ4uVMOJHG+zZkxz9LIJOBf0FOY6vaZ0UzeQ==
-
-"@universal-login/contracts@^0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.8.tgz#84bb66ac43df9f61d49f4645f239d77a53e90eb1"
-  integrity sha512-W6Io7NMJyw6IW6Ae6tMWMbQIOeVZEYsZ9vX1ER9JsQnsfEvMBvwlLLZeaMK6FM0er+JxmJ5C7XTibl0sR9Sjaw==
+"@universal-login/commons@^0.3.12":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.12.tgz#67c6e1408fbb39737f04768a9d42427b353a48c4"
+  integrity sha512-P/YPPuxKt/2kB6BMkHOriZB2ls1cDuj6DIzLp22U7Q1WqmFIiaEPn78vxua1DVCWvW/mVhw2gyqNIjEtxHvXgA==
   dependencies:
-    "@universal-login/commons" "^0.3.8"
+    ethers "^4.0"
+    openzeppelin-solidity "^2.1.1"
+
+"@universal-login/contracts@^0.3.12":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.12.tgz#3dbb1355dec953a01fcafa9b1a372edc11e0e328"
+  integrity sha512-LnPnHbFOLrzYGbWKZ8ZQP0WeDfgqP6UtpGLDrWU3jgblK0UW6DPm64/IIg4NOyxKeP+yb1Qwo1PpXKmDa0pZLQ==
+  dependencies:
+    "@universal-login/commons" "^0.3.12"
     ens-builder "^2.0.0"
 
-"@universal-login/react@^0.3.7":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.8.tgz#0cbcd66417ed1b5b79b2f2e416146c7b1b8e1dbd"
-  integrity sha512-FqOd4vZLhppHFWqsvKvyF9IbPuuBFZ8Exx2FAmMMHuIT3SjAqeYRa2M8rof72wLsmuzXNdzhbtgBlVYHAsT7Hw==
+"@universal-login/react@^0.3.12":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.12.tgz#73fc63ac14fb2530ecd43f3713402e87caa26c07"
+  integrity sha512-975IJWuNs5Wy+pzYtOEh+6hl5PCpb2+DYgUZc1lN01nQPffduVYV7dTSH4dp6bKvafGbOsr0n8U0UdmfxDBoKg==
   dependencies:
-    "@universal-login/commons" "^0.3.8"
-    "@universal-login/sdk" "^0.3.8"
+    "@universal-login/commons" "^0.3.12"
+    "@universal-login/sdk" "^0.3.12"
 
-"@universal-login/sdk@^0.3.7", "@universal-login/sdk@^0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.8.tgz#3aaee5abda2855cbe1414f67a219ce595d13f8f9"
-  integrity sha512-3niVsvt1N3vj0YjoYB9HTfmuNUgzqDcQFTWsx08B6C53HmIGVkt3e7egfNQ7jG9KlxommOiS/ccaCvjUEsEx9g==
+"@universal-login/sdk@^0.3.12":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.12.tgz#0030a0235f37e035449eb6f6c67ef7a7ba17139c"
+  integrity sha512-TRRPx4t0dI6tGorkQ9Fj5YhKykpwkRsP6XqI+wX8+AX0h0FQLDOYy+SLSHyGrzAUlYdfmzjqfoLIC+gpKsUUCA==
   dependencies:
-    "@universal-login/commons" "^0.3.8"
-    "@universal-login/contracts" "^0.3.8"
+    "@universal-login/commons" "^0.3.12"
+    "@universal-login/contracts" "^0.3.12"
     deep-equal "^1.0.1"
     ethers "^4.0"
     fbemitter "^2.1.1"
@@ -10004,6 +10007,11 @@ onetime@^2.0.0:
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-2.0.1.tgz#067428230fd67443b2794b22bba528b6867962d4"
   dependencies:
     mimic-fn "^1.0.0"
+
+openzeppelin-solidity@^2.1.1:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.3.0.tgz#1ab7b4cc3782a5472ed61eb740c56a8bfdd74119"
+  integrity sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw==
 
 opn@5.2.0:
   version "5.2.0"
