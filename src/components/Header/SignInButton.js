@@ -33,16 +33,9 @@ function SignInButton() {
     networkState,
     reloadUserAddress
   }) => async () => {
-    hideTooltip()
-    let assist = await Assist({
-      action: 'Sign in',
-      expectedNetworkId: networkState.expectedNetworkId
-    })
     const address = await reloadUserAddress()
     if (!networkState.allGood || !address) {
-      if (assist.fallback) {
-        return showTooltip()
-      }
+      window.ethereum.enable()
     } else {
       signIn()
     }

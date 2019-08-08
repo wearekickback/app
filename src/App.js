@@ -5,6 +5,8 @@ import {
   Switch
 } from 'react-router-dom'
 
+import { injectWeb3 } from 'authereum'
+
 import { RouteAnalytics } from './components/Analytics'
 
 import DefaultLayout from './layout/Layouts'
@@ -28,6 +30,9 @@ import EditProfile from './components/Profile/EditProfile'
 import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
 
 import './App.css'
+
+// Authereum integration
+injectWeb3('rinkeby')
 
 const Route = ({
   component: Component,
