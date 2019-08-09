@@ -9,6 +9,11 @@ import { getAccount } from './api/web3'
 import { SIGN_IN } from './modals'
 import { LOGIN_USER_NO_AUTH } from './graphql/mutations'
 import { buildAuthHeaders } from './utils/requests'
+import {
+  isUsingUniversalLogin,
+  getApplicationWallet,
+  useUniversalLogin
+} from './universal-login'
 
 const GlobalContext = createContext({})
 
@@ -165,6 +170,9 @@ class Provider extends Component {
   }
 
   async componentDidMount() {
+    if (await getApplicationWallet()) {
+      useUniversalLogin()
+    }
     await this.reloadUserAddress()
 
     // try and sign in!
@@ -178,7 +186,12 @@ class Provider extends Component {
   }
 
   reloadUserAddress = async () => {
-    const address = await getAccount()
+    let address
+    if (isUsingUniversalLogin()) {
+      address = await getApplicationWallet().contractAddress
+    } else {
+      address = await getAccount()
+    }
 
     if (address) {
       await new Promise(resolve => {

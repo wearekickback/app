@@ -26,80 +26,35 @@ const Username = styled('div')`
 `
 
 function SignInButton() {
-  const _signIn = ({ hideTooltip, showModal }) => async () => {
-    hideTooltip()
-    await showModal({ name: SIGN_IN_CHOICE })
-  }
-
-  const metaMaskFlow = async (
-    showTooltip,
-    signIn,
-    networkState,
-    reloadUserAddress
-  ) => {
-    let assist = await Assist({
-      action: 'Sign in',
-      expectedNetworkId: networkState.expectedNetworkId
-    })
-    const address = await reloadUserAddress()
-    if (!networkState.allGood || !address) {
-      if (assist.fallback) {
-        return showTooltip()
-      }
-    } else {
-      signIn()
-    }
-  }
   return (
     <GlobalConsumer>
-      {({
-        reloadUserAddress,
-        userProfile,
-        networkState,
-        loggedIn,
-        signIn,
-        showModal
-      }) => {
+      {({ userProfile, loggedIn, showModal }) => {
         const twitterProfile =
           userProfile &&
           userProfile.social &&
           userProfile.social.find(s => s.type === 'twitter')
+
         return loggedIn ? (
-          <>
-            {/* <Notifications>Notification</Notifications> */}
-            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
-              {userProfile ? (
-                <Username data-testid="userprofile-name">
-                  {userProfile.username}
-                </Username>
-              ) : null}
-              <Avatar
-                src={`https://avatars.io/twitter/${
-                  twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
-                }/medium`}
-              />
-            </Account>
-          </>
+          <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
+            {userProfile ? (
+              <Username data-testid="userprofile-name">
+                {userProfile.username}
+              </Username>
+            ) : null}
+            <Avatar
+              src={`https://avatars.io/twitter/${
+                twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
+              }/medium`}
+            />
+          </Account>
         ) : (
-          <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
-            {({ tooltipElement, showTooltip, hideTooltip }) => (
-              <Button
-                type="light"
-                onClick={_signIn({
-                  showTooltip,
-                  hideTooltip,
-                  signIn,
-                  reloadUserAddress,
-                  networkState,
-                  showModal
-                })}
-                analyticsId="Sign In"
-              >
-                {tooltipElement}
-                Sign in
-              </Button>
-            )}
-          </Tooltip>
+          <Button
+            type="light"
+            onClick={() => showModal({ name: SIGN_IN_CHOICE })}
+            analyticsId="Sign In"
+          >
+            Sign in
+          </Button>
         )
       }}
     </GlobalConsumer>

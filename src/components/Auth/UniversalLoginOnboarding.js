@@ -1,24 +1,30 @@
 import React from 'react'
 import { Onboarding } from '@universal-login/react'
-import UniversalLoginSDK from '@universal-login/sdk'
+import { universalLoginSdk, saveApplicationWallet } from '../../universal-login'
+import { GlobalConsumer } from '../../GlobalState'
+import { UNIVERSAL_LOGIN, SIGN_IN } from '../../modals'
 
 const UniversalLoginOnboarding = () => {
-  const sdk = new UniversalLoginSDK(
-    'https://relayer-rinkeby.herokuapp.com',
-    'https://rinkeby.infura.io'
-  )
+  const onCreate = async (wallet, showModal, closeModal, reloadUserAddress) => {
+    saveApplicationWallet(wallet)
+    await reloadUserAddress(wallet.contractAddress)
+    closeModal({ name: UNIVERSAL_LOGIN })
+    showModal({ name: SIGN_IN })
+  }
 
   return (
-    <div>
-      <Onboarding
-        sdk={sdk}
-        onConnect={() => {}}
-        onCreate={() => {
-          console.log('created')
-        }}
-        domains={['poppularapp.test']}
-      />
-    </div>
+    <GlobalConsumer>
+      {({ showModal, closeModal, reloadUserAddress }) => (
+        <Onboarding
+          sdk={universalLoginSdk}
+          onConnect={() => {}}
+          onCreate={wallet =>
+            onCreate(wallet, showModal, closeModal, reloadUserAddress)
+          }
+          domains={['poppularapp.test']}
+        />
+      )}
+    </GlobalConsumer>
   )
 }
 

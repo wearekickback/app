@@ -5,9 +5,11 @@ import { GlobalConsumer } from '../GlobalState'
 import { SIGN_IN_CHOICE, UNIVERSAL_LOGIN } from '../modals'
 import Tooltip from './Tooltip'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../utils/errors'
+import { useUniversalLogin } from '../universal-login'
 
 export default class SignInFlowSelector extends Component {
   renderUniversalLogin(showModal, closeModal) {
+    useUniversalLogin()
     closeModal({ name: SIGN_IN_CHOICE })
     showModal({ name: UNIVERSAL_LOGIN })
   }
@@ -30,9 +32,11 @@ export default class SignInFlowSelector extends Component {
     networkState,
     reloadUserAddress,
     showTooltip,
+    hideTooltip,
     signIn,
     closeModal
   ) {
+    hideTooltip()
     this.renderMetaMask(networkState, reloadUserAddress, showTooltip, signIn)
     closeModal({ name: SIGN_IN_CHOICE })
   }
@@ -58,13 +62,14 @@ export default class SignInFlowSelector extends Component {
               UNIVERSAL LOGIN
             </Button>
             <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
-              {({ showTooltip }) => (
+              {({ showTooltip, hideTooltip }) => (
                 <Button
                   onClick={() =>
                     this.onMetaMaskClick(
                       networkState,
                       reloadUserAddress,
                       showTooltip,
+                      hideTooltip,
                       signIn,
                       closeModal
                     )

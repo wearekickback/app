@@ -9,6 +9,11 @@ import {
   SIGN_CHALLENGE_STRING
 } from '../../graphql/mutations'
 import { GlobalConsumer } from '../../GlobalState'
+import {
+  isUsingUniversalLogin,
+  getApplicationWallet,
+  signMessage
+} from '../../universal-login'
 
 export default class RefreshAuthTokenButton extends Component {
   state = {}
@@ -38,25 +43,30 @@ export default class RefreshAuthTokenButton extends Component {
         throw new Error('Failed to obtain login challenge!')
       }
 
-      showTooltip()
-
       const {
         challenge: { str }
       } = result1.data
 
-      const result2 = await signChallengeString({
-        variables: {
-          challengeString: str
+      let signature
+
+      if (isUsingUniversalLogin()) {
+        const { privateKey } = await getApplicationWallet()
+        signature = await signMessage(str, privateKey)
+      } else {
+        showTooltip()
+        const result2 = await signChallengeString({
+          variables: {
+            challengeString: str
+          }
+        })
+
+        if (result2.errors) {
+          throw new Error('Failed to obtain signature!')
         }
-      })
 
-      hideTooltip()
-
-      if (result2.errors) {
-        throw new Error('Failed to obtain signature!')
+        ;({ signature } = result2.data)
+        hideTooltip()
       }
-
-      const { signature } = result2.data
 
       await setAuthTokenFromSignature(address, signature)
 
