@@ -43,7 +43,7 @@ const ChangeDeposit = ({ address, currentDeposit, numParticipants }) => {
                   }
                 })
               }
-              disabled={numParticipants >= 0}
+              disabled={numParticipants >= 1}
             >
               Change Deposit
             </Button>
