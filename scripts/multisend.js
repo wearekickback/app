@@ -12,11 +12,13 @@ program
   .option('-g, --gasPrice <gasPrice>', 'gwei amount of gasPrice')
   .option('--ropsten', 'Use Ropsten instead of local development network')
   .option('--rinkeby', 'Use Rinkeby instead of local development network')
+  .option('--kovan', 'Use Kovan instead of local development network')
   .option('--mainnet', 'Use Mainnet instead of local development network')
   .parse(process.argv)
 
 const ropsten = program.ropsten
 const rinkeby = program.rinkeby
+const kovan = program.kovan
 const mainnet = program.mainnet
 const gasPrice = program.gasPrice
 
@@ -26,6 +28,8 @@ const network = ropsten
   ? 'live'
   : rinkeby
   ? 'rinkeby'
+  : kovan
+  ? 'kovan'
   : null
 
 const addressFile = program.addresses
