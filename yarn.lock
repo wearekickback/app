@@ -1530,10 +1530,12 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@wearekickback/contracts@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.1.4.tgz#279cebfd4682b3033f1bdd9e02e278c6257dd386"
-  integrity sha512-wTSuH+rAIfzYk9oPdtxCbA6xs1NplM1SsUj++QBI0YG+uT62aSUHUBdlEcWq/psW7O7AtxGsULE0eM6+yPAosQ==
+"@wearekickback/contracts@npm:@wearekickback/contracts-integration@1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-integration/-/contracts-integration-1.1.5.tgz#52263c101ae2ce1685996cb3c5a954b4766845d1"
+  integrity sha512-Cjmce4rJhO64IPt0FacRyVFQy10Le7nRMD3xLNfwf1zb4PsnOs+z1AdmFa8wKrvsYa/wanUh1VgZvJ8Or3qwPQ==
+  dependencies:
+    openzeppelin-solidity "^2.3.0"
 
 "@wearekickback/shared@^1.13.0":
   version "1.13.0"
@@ -9936,6 +9938,11 @@ onetime@^2.0.0:
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-2.0.1.tgz#067428230fd67443b2794b22bba528b6867962d4"
   dependencies:
     mimic-fn "^1.0.0"
+
+openzeppelin-solidity@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.3.0.tgz#1ab7b4cc3782a5472ed61eb740c56a8bfdd74119"
+  integrity sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw==
 
 opn@5.2.0:
   version "5.2.0"
