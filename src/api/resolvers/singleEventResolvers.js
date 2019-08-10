@@ -197,7 +197,7 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const tokenAddress = contract.tokenAddress().call()
       let deposit
-      if (tokenAddress != EMPTY_ADDRESS) {
+      if (tokenAddress !== EMPTY_ADDRESS) {
         deposit = await contract.deposit().call()
       } else {
         deposit = 0

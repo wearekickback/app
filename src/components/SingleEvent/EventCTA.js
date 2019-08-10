@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
-import { toEthVal } from '../../utils/units'
 import { isEmptyAddress } from '../../api/utils'
 import { TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
@@ -265,7 +264,8 @@ class EventCTA extends Component {
 
   render() {
     let {
-      party: { ended, cancelled, participants, balance }
+      // party: { ended, cancelled, participants, balance }
+      party: { ended, cancelled, participants }
     } = this.props
     // const cleared =
     //   balance &&

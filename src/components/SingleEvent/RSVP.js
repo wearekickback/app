@@ -44,12 +44,6 @@ const RSVP = ({ address, tokenAddress, className, deposit, isAllowed }) => {
             onClick={rsvp}
             result={result}
             className={className}
-            preContent={
-              <span>
-                RSVP -{DepositValue({ value: deposit })}
-                <Currency tokenAddress={tokenAddress} />
-              </span>
-            }
             preContent={<ButtonText />}
             postContent={<Going>You are going!</Going>}
           />

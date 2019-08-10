@@ -3,12 +3,12 @@ import React from 'react'
 const CurrencyPicker = ({ daiAddress, onChange, currencyType }) => {
   const onChangeHandler = e => {
     currencyType = e.target.value
-    const tokenAddress = currencyType != 'ETH' ? daiAddress : null
+    const tokenAddress = currencyType !== 'ETH' ? daiAddress : null
     onChange({ currencyType, tokenAddress })
   }
 
   const isChecked = checkedType => {
-    return currencyType == checkedType
+    return currencyType === checkedType
   }
 
   return (
