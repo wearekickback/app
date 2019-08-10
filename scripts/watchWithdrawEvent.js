@@ -16,6 +16,7 @@ program
   .option('-b, --block <block>', 'Starting block number to watch events')
   .option('--ropsten', 'Use Ropsten instead of local development network')
   .option('--rinkeby', 'Use Rinkeby instead of local development network')
+  .option('--kovan', 'Use Kovan instead of local development network')
   .option('--mainnet', 'Use Mainnet instead of local development network')
   .parse(process.argv)
 
@@ -28,6 +29,7 @@ if (!id) {
 
 const ropsten = program.ropsten
 const rinkeby = program.rinkeby
+const kovan = program.kovan
 const mainnet = program.mainnet
 
 console.log(
@@ -41,6 +43,8 @@ Network:                ${
       ? 'mainnet'
       : rinkeby
       ? 'rinkeby'
+      : kovan
+      ? 'kovan'
       : 'development'
   }
 Party id:               ${id}
@@ -56,6 +60,8 @@ if (ropsten) {
   provider = networks.ropsten.provider()
 } else if (rinkeby) {
   provider = networks.rinkeby.provider()
+} else if (kovan) {
+  provider = networks.kovan.provider()
 } else if (mainnet) {
   provider = networks.mainnet.provider()
 }

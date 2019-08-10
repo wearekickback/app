@@ -52,6 +52,8 @@ const network = ropsten
   ? 'live'
   : rinkeby
   ? 'rinkeby'
+  : kovan
+  ? 'kovan'
   : null
 
 async function init() {
