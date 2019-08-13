@@ -12,7 +12,7 @@ import { GlobalConsumer } from '../../GlobalState'
 import {
   isUsingUniversalLogin,
   getApplicationWallet,
-  signMessage
+  signString
 } from '../../universal-login'
 
 export default class RefreshAuthTokenButton extends Component {
@@ -51,7 +51,7 @@ export default class RefreshAuthTokenButton extends Component {
 
       if (isUsingUniversalLogin()) {
         const { privateKey } = await getApplicationWallet()
-        signature = await signMessage(str, privateKey)
+        signature = await signString(str, privateKey)
       } else {
         showTooltip()
         const result2 = await signChallengeString({

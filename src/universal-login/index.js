@@ -14,8 +14,9 @@ export const saveApplicationWallet = wallet => {
   const publicKey = new Wallet(wallet.privateKey).address
   LocalStorage.setItem(STORAGE_KEY, {
     privateKey: wallet.privateKey,
-    contractAddress: publicKey,
-    ensName: wallet.ensName
+    contractAddress: wallet.contractAddress,
+    ensName: wallet.ensName,
+    publicKey
   })
 }
 
@@ -29,8 +30,11 @@ export const isUsingUniversalLogin = () => USING_UNIVERSAL_LOGIN
 
 export const useUniversalLogin = () => (USING_UNIVERSAL_LOGIN = true)
 
-export const signMessage = (payload, privateKey) => {
+export const signString = (stringToSign, privateKey) => {
   const signingKey = new utils.SigningKey(privateKey)
-  const signature = signingKey.signDigest(utils.hashMessage(payload))
+  const hash = utils.hexlify(utils.toUtf8Bytes(stringToSign))
+  const signature = signingKey.signDigest(
+    utils.hashMessage(utils.arrayify(hash))
+  )
   return utils.joinSignature(signature)
 }
