@@ -2,12 +2,9 @@ import React from 'react'
 import styled from 'react-emotion'
 
 import { GlobalConsumer } from '../../GlobalState'
-import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
-import { EDIT_PROFILE, SIGN_IN_CHOICE } from '../../modals'
-import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
-import Assist from './Assist'
+import { EDIT_PROFILE, UNIVERSAL_LOGIN } from '../../modals'
 
 const Account = styled('div')`
   display: flex;
@@ -50,7 +47,7 @@ function SignInButton() {
         ) : (
           <Button
             type="light"
-            onClick={() => showModal({ name: SIGN_IN_CHOICE })}
+            onClick={() => showModal({ name: UNIVERSAL_LOGIN })}
             analyticsId="Sign In"
           >
             Sign in
