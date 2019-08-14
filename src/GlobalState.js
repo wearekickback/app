@@ -188,7 +188,7 @@ class Provider extends Component {
   reloadUserAddress = async () => {
     let address
     if (isUsingUniversalLogin()) {
-      address = await getApplicationWallet().contractAddress
+      address = await getApplicationWallet().publicKey
     } else {
       address = await getAccount()
     }
