@@ -159,7 +159,7 @@ export async function getDeployerAddress() {
 export async function getTokenBySymbol(symbol) {
   switch (networkState.expectedNetworkId) {
     case '1':
-      return '0x8f2e097e79b1c51be9cba42658862f0192c3e487'
+      return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
     case '3':
       return '' // TODO
     case '4':
