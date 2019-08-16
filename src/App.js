@@ -90,6 +90,7 @@ class App extends Component {
             <Modal
               name={UNIVERSAL_LOGIN}
               component={UniversalLoginOnboarding}
+              universalLoginColors
             />
           </ScrollToTop>
         </Router>

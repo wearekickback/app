@@ -15,14 +15,22 @@ const UniversalLoginOnboarding = () => {
   return (
     <GlobalConsumer>
       {({ showModal, closeModal, reloadUserAddress }) => (
-        <Onboarding
-          sdk={universalLoginSdk}
-          onConnect={() => {}}
-          onCreate={wallet =>
-            onCreate(wallet, showModal, closeModal, reloadUserAddress)
-          }
-          domains={['poppularapp.test']}
-        />
+        <div>
+          <p style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>
+            Create or connect account
+          </p>
+          <p style={{ color: 'white', fontSize: 15 }}>
+            Type a nickname you want
+          </p>
+          <Onboarding
+            sdk={universalLoginSdk}
+            onConnect={() => {}}
+            onCreate={wallet =>
+              onCreate(wallet, showModal, closeModal, reloadUserAddress)
+            }
+            domains={['poppularapp.test']}
+          />
+        </div>
       )}
     </GlobalConsumer>
   )
