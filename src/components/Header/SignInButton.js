@@ -5,7 +5,7 @@ import { GlobalConsumer } from '../../GlobalState'
 import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
-import { EDIT_PROFILE } from '../../modals'
+import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import Assist from './Assist'
 
@@ -31,11 +31,12 @@ function SignInButton() {
     hideTooltip,
     signIn,
     networkState,
-    reloadUserAddress
+    reloadUserAddress,
+    showModal
   }) => async () => {
     const address = await reloadUserAddress()
     if (!networkState.allGood || !address) {
-      window.ethereum.enable()
+      showModal({ name: WALLET_MODAL })
     } else {
       signIn()
     }
@@ -58,7 +59,7 @@ function SignInButton() {
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
-            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
+            <Account onClick={() => showModal({ name: WALLET_MODAL })}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
                   {userProfile.username}
@@ -81,7 +82,8 @@ function SignInButton() {
                   hideTooltip,
                   signIn,
                   reloadUserAddress,
-                  networkState
+                  networkState,
+                  showModal
                 })}
                 analyticsId="Sign In"
               >

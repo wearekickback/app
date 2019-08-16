@@ -26,13 +26,16 @@ import GettingStarted from './routes/GettingStarted'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
+import WalletModal from './components/Auth/WalletModal'
 import EditProfile from './components/Profile/EditProfile'
-import { SIGN_IN, EDIT_PROFILE, CONFIRM_TRANSACTION } from './modals'
+import {
+  SIGN_IN,
+  EDIT_PROFILE,
+  CONFIRM_TRANSACTION,
+  WALLET_MODAL
+} from './modals'
 
 import './App.css'
-
-// Authereum integration
-injectWeb3('rinkeby')
 
 const Route = ({
   component: Component,
@@ -83,6 +86,7 @@ class App extends Component {
             <Modal name={SIGN_IN} component={SignIn} />
             <Modal name={EDIT_PROFILE} component={EditProfile} />
             <Modal small name={CONFIRM_TRANSACTION} />
+            <Modal name={WALLET_MODAL} component={WalletModal} />
           </ScrollToTop>
         </Router>
       </Fragment>
