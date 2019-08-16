@@ -15,7 +15,7 @@ export const saveApplicationWallet = wallet => {
   LocalStorage.setItem(STORAGE_KEY, {
     privateKey: wallet.privateKey,
     contractAddress: wallet.contractAddress,
-    ensName: wallet.ensName,
+    name: wallet.name,
     publicKey
   })
 }

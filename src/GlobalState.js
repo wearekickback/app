@@ -42,7 +42,8 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    networkState: {}
+    networkState: {},
+    applicationWallet: {}
   }
 
   authToken() {
@@ -170,8 +171,10 @@ class Provider extends Component {
   }
 
   async componentDidMount() {
-    if (await getApplicationWallet()) {
+    const applicationWallet = await getApplicationWallet()
+    if (applicationWallet) {
       useUniversalLogin()
+      this.setState({ applicationWallet })
     }
     await this.reloadUserAddress()
 
@@ -188,7 +191,9 @@ class Provider extends Component {
   reloadUserAddress = async () => {
     let address
     if (isUsingUniversalLogin()) {
-      address = await getApplicationWallet().publicKey
+      const applicationWallet = await getApplicationWallet()
+      address = applicationWallet.publicKey
+      this.setState({ applicationWallet })
     } else {
       address = await getAccount()
     }
@@ -215,6 +220,7 @@ class Provider extends Component {
       <GlobalContext.Provider
         value={{
           apolloClient: this.apolloClient(),
+          applicationWallet: this.state.applicationWallet,
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
           reloadUserAddress: this.reloadUserAddress,

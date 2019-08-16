@@ -16,6 +16,7 @@ import Button from './Forms/Button'
 import ErrorBox from './ErrorBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
+import { isUsingUniversalLogin } from '../universal-login'
 
 export default class ChainMutation extends Component {
   static propTypes = {
@@ -218,9 +219,13 @@ export class ChainMutationButton extends Component {
 
     if (this.tooltip) {
       if (loading || notReadyError) {
-        this.tooltip.show()
+        if (!isUsingUniversalLogin()) {
+          this.tooltip.show()
+        }
       } else {
-        this.tooltip.hide()
+        if (!isUsingUniversalLogin()) {
+          this.tooltip.hide()
+        }
       }
     }
   }

@@ -1103,6 +1103,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@ramp-network/ramp-instant-sdk@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-1.0.1.tgz#e8358392c76156c2f5db9a02aac26fed97ecc660"
+  integrity sha512-Y0nJJnWlkpxPx+IACPH3LgtL3A3Ak4CwpLEgrrEKsdDm6ZkWZJRHnfH2MqZwYwm+yPBz158OciMDRbD87UWRAw==
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -1530,40 +1535,44 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@universal-login/commons@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.12.tgz#67c6e1408fbb39737f04768a9d42427b353a48c4"
-  integrity sha512-P/YPPuxKt/2kB6BMkHOriZB2ls1cDuj6DIzLp22U7Q1WqmFIiaEPn78vxua1DVCWvW/mVhw2gyqNIjEtxHvXgA==
+"@universal-login/commons@^0.3.20":
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.20.tgz#1b061a21a065a27339f390c0645af75de02b60d6"
+  integrity sha512-92f/niJVumqPs743egqwAhmZN3OB9iNxwGJBC4sSrDoURR0aD6T/lrqfG+gl/cAqMXwgCebgPzIZeO3D0ORo2w==
   dependencies:
     ethers "^4.0"
+    lodash.clonedeep "^4.5.0"
     openzeppelin-solidity "^2.1.1"
 
-"@universal-login/contracts@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.12.tgz#3dbb1355dec953a01fcafa9b1a372edc11e0e328"
-  integrity sha512-LnPnHbFOLrzYGbWKZ8ZQP0WeDfgqP6UtpGLDrWU3jgblK0UW6DPm64/IIg4NOyxKeP+yb1Qwo1PpXKmDa0pZLQ==
+"@universal-login/contracts@^0.3.20":
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.20.tgz#390a3c3d620d53fe61725c2c6e26aecbb8eedb2f"
+  integrity sha512-NWzoMaJBlrONfbG1QhV6cjUxuUP1cqleJl94NsdnCJiqvx7Vq7vo3XsqLIhoYPnA/upJeCvJi15SJ8ZFbYurPg==
   dependencies:
-    "@universal-login/commons" "^0.3.12"
+    "@universal-login/commons" "^0.3.20"
     ens-builder "^2.0.0"
 
-"@universal-login/react@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.12.tgz#73fc63ac14fb2530ecd43f3713402e87caa26c07"
-  integrity sha512-975IJWuNs5Wy+pzYtOEh+6hl5PCpb2+DYgUZc1lN01nQPffduVYV7dTSH4dp6bKvafGbOsr0n8U0UdmfxDBoKg==
+"@universal-login/react@^0.3.19":
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.20.tgz#e3ca3c94aaaeee51b84570840872001838ac9859"
+  integrity sha512-/eFT2Ib2bPfTpx3LuvCKml9la4uWl5QBqHlupvTNGPx/H20gTnsAbFQsvSkLZehFnWiw0wjtnncN0kaHfzIpbA==
   dependencies:
-    "@universal-login/commons" "^0.3.12"
-    "@universal-login/sdk" "^0.3.12"
+    "@ramp-network/ramp-instant-sdk" "^1.0.1"
+    "@universal-login/commons" "^0.3.20"
+    "@universal-login/sdk" "^0.3.20"
 
-"@universal-login/sdk@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.12.tgz#0030a0235f37e035449eb6f6c67ef7a7ba17139c"
-  integrity sha512-TRRPx4t0dI6tGorkQ9Fj5YhKykpwkRsP6XqI+wX8+AX0h0FQLDOYy+SLSHyGrzAUlYdfmzjqfoLIC+gpKsUUCA==
+"@universal-login/sdk@^0.3.19", "@universal-login/sdk@^0.3.20":
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.20.tgz#3d48beb51622ac8f47d0783f65b027486cf2f1c7"
+  integrity sha512-jSYbIccBrxrt8Gr936cjqS3xa4Wpz5FldzgIwLlml1MjXN8u0l/IVMvFUS+7ocIb3lMuq785BpmRr+pCSMKykA==
   dependencies:
-    "@universal-login/commons" "^0.3.12"
-    "@universal-login/contracts" "^0.3.12"
+    "@universal-login/commons" "^0.3.20"
+    "@universal-login/contracts" "^0.3.20"
+    cryptocompare "^1.0.0"
     deep-equal "^1.0.1"
     ethers "^4.0"
     fbemitter "^2.1.1"
+    lodash.clonedeep "^4.5.0"
     node-fetch "^2.2.0"
 
 "@wearekickback/contracts@^1.1.3":
@@ -4557,6 +4566,11 @@ crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+cryptocompare@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cryptocompare/-/cryptocompare-1.0.0.tgz#d93bafd037686ec13bbf3cf6b40187310f991a3d"
+  integrity sha512-Xk6+hJJ+XSlWsofIx2WHF2n410ADLkXMfCn/1aLTI4NlWLo2LPtQzw+j3aBEPQ+HVar1dO5HVLAJFBQqGyhdOQ==
 
 css-animation@^1.3.2:
   version "1.5.0"
@@ -8948,6 +8962,11 @@ lodash.assign@^4.0.3, lodash.assign@^4.0.6:
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
