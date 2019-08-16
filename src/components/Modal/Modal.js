@@ -24,6 +24,7 @@ class Modal extends Component {
                 <ModalContent
                   onClick={event => event.stopPropagation()}
                   small={small}
+                  universalLoginColors={this.props.universalLoginColors}
                 >
                   {Component ? (
                     <Component name={name} />
@@ -59,7 +60,10 @@ const ModalContainer = styled('div')`
 `
 
 const ModalContent = styled('div')`
-  background: white;
+  background: ${props =>
+    props.universalLoginColors
+      ? 'radial-gradient(720.65px at 50% 0%, #0C0E57 0%, #14052C 100%)'
+      : 'white'};
   padding: 40px;
   width: 100%;
   overflow-y: scroll;
