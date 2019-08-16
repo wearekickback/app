@@ -1535,39 +1535,39 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@universal-login/commons@^0.3.20":
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.20.tgz#1b061a21a065a27339f390c0645af75de02b60d6"
-  integrity sha512-92f/niJVumqPs743egqwAhmZN3OB9iNxwGJBC4sSrDoURR0aD6T/lrqfG+gl/cAqMXwgCebgPzIZeO3D0ORo2w==
+"@universal-login/commons@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@universal-login/commons/-/commons-0.3.23.tgz#03384a5a0d474f0f7eafc7d1fd13c48a43eda417"
+  integrity sha512-aYb0kYcGtbCiSP++Z+Jyh9iMGk/8bWkhr/hDkhWb8NeGaYN+emEzPrb6J+Vz5GPz+5kMiGCc6eyMULZboLAjVA==
   dependencies:
     ethers "^4.0"
     lodash.clonedeep "^4.5.0"
     openzeppelin-solidity "^2.1.1"
 
-"@universal-login/contracts@^0.3.20":
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.20.tgz#390a3c3d620d53fe61725c2c6e26aecbb8eedb2f"
-  integrity sha512-NWzoMaJBlrONfbG1QhV6cjUxuUP1cqleJl94NsdnCJiqvx7Vq7vo3XsqLIhoYPnA/upJeCvJi15SJ8ZFbYurPg==
+"@universal-login/contracts@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@universal-login/contracts/-/contracts-0.3.23.tgz#8b4912d3870c6358154359afddd1cd34086dfb9c"
+  integrity sha512-PoAxcmZRsbrf1oRJCXQuaX0Fbzfx4p6+VquR0LMIjPyKFghSVybgSf/XxMfTSr336yboyLYlg70NCyI4vCjGYQ==
   dependencies:
-    "@universal-login/commons" "^0.3.20"
+    "@universal-login/commons" "^0.3.23"
     ens-builder "^2.0.0"
 
-"@universal-login/react@^0.3.19":
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.20.tgz#e3ca3c94aaaeee51b84570840872001838ac9859"
-  integrity sha512-/eFT2Ib2bPfTpx3LuvCKml9la4uWl5QBqHlupvTNGPx/H20gTnsAbFQsvSkLZehFnWiw0wjtnncN0kaHfzIpbA==
+"@universal-login/react@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@universal-login/react/-/react-0.3.23.tgz#caa674168a2cedd7ee549ac74c50e64f30fa1067"
+  integrity sha512-muvVA170FORDiLwi+/6jh8xzBfy37SIHfEB/McSKhvawu67mi+kk5RMPfDmC9YGi+ZF3BDLbBFGcRX4McfNi/g==
   dependencies:
     "@ramp-network/ramp-instant-sdk" "^1.0.1"
-    "@universal-login/commons" "^0.3.20"
-    "@universal-login/sdk" "^0.3.20"
+    "@universal-login/commons" "^0.3.23"
+    "@universal-login/sdk" "^0.3.23"
 
-"@universal-login/sdk@^0.3.19", "@universal-login/sdk@^0.3.20":
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.20.tgz#3d48beb51622ac8f47d0783f65b027486cf2f1c7"
-  integrity sha512-jSYbIccBrxrt8Gr936cjqS3xa4Wpz5FldzgIwLlml1MjXN8u0l/IVMvFUS+7ocIb3lMuq785BpmRr+pCSMKykA==
+"@universal-login/sdk@^0.3.23":
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@universal-login/sdk/-/sdk-0.3.23.tgz#8324b0d23afc8d82730d86adf0b6493156c02e80"
+  integrity sha512-7VfjG0F0ciWA4of8wToBnkpamFfXP8HLnJ8U5aRgKFf3gvv4+qDlKd3Kja6qWh7wGz7Cux7z3VnDwY6Aip+6mQ==
   dependencies:
-    "@universal-login/commons" "^0.3.20"
-    "@universal-login/contracts" "^0.3.20"
+    "@universal-login/commons" "^0.3.23"
+    "@universal-login/contracts" "^0.3.23"
     cryptocompare "^1.0.0"
     deep-equal "^1.0.1"
     ethers "^4.0"

@@ -24,6 +24,10 @@ const Username = styled('div')`
   text-overflow: ellipsis;
 `
 
+const UniversalLogin = styled('div')`
+  margin-left: 15px;
+`
+
 function SignInButton() {
   return (
     <GlobalConsumer>
@@ -34,24 +38,30 @@ function SignInButton() {
           userProfile.social.find(s => s.type === 'twitter')
 
         return loggedIn ? (
-          <div>
-            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
-              {userProfile ? (
-                <Username data-testid="userprofile-name">
-                  {userProfile.username}
-                </Username>
-              ) : null}
-              <Avatar
-                src={`https://avatars.io/twitter/${
-                  twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
-                }/medium`}
+          <>
+            <div>
+              <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
+                {userProfile ? (
+                  <Username data-testid="userprofile-name">
+                    {userProfile.username}
+                  </Username>
+                ) : null}
+                <Avatar
+                  src={`https://avatars.io/twitter/${
+                    twitterProfile
+                      ? twitterProfile.value
+                      : 'unknowntwitter123abc'
+                  }/medium`}
+                />
+              </Account>
+            </div>
+            <UniversalLogin>
+              <LogoButton
+                applicationWallet={applicationWallet}
+                sdk={universalLoginSdk}
               />
-            </Account>
-            <LogoButton
-              applicationWallet={applicationWallet}
-              sdk={universalLoginSdk}
-            />
-          </div>
+            </UniversalLogin>
+          </>
         ) : (
           <Button
             type="light"
