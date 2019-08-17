@@ -5,8 +5,6 @@ import {
   Switch
 } from 'react-router-dom'
 
-import { injectWeb3 } from 'authereum'
-
 import { RouteAnalytics } from './components/Analytics'
 
 import DefaultLayout from './layout/Layouts'

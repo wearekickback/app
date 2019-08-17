@@ -16,19 +16,18 @@ export default class WalletModal extends Component {
   }
 
   authereumInit = async () => {
-    console.log('IN?')
-    window.ethereum = undefined
-    window.web3 = undefined
+    window.sessionStorage.setItem('walletSelection', 'authereum')
     await injectWeb3(network)
-    console.log(window.ethereum)
     window.ethereum.enable()
-    console.log(window.ethereum)
   }
   ulInit = async () => {
+    window.sessionStorage.setItem('walletSelection', 'universalLogin')
     console.log('TODO')
   }
-  metamaskInit = async () => {
-    window.ethereum.enable()
+  metamaskInit = async signIn => {
+    window.sessionStorage.setItem('walletSelection', 'metaMask')
+    await window.ethereum.enable()
+    await signIn()
   }
 
   isMetamask = () => {
@@ -40,14 +39,14 @@ export default class WalletModal extends Component {
   render() {
     return (
       <GlobalConsumer>
-        {({ closeModal }) => (
+        {({ signIn, closeModal }) => (
           <>
             <Button onClick={this.authereumInit}>Authereum</Button>
             <Button onClick={this.ulInit}>UL</Button>
             {this.state.isMetamask && (
               <Button
                 onClick={async () => {
-                  await this.metamaskInit()
+                  await this.metamaskInit(signIn)
                   closeModal({ name: WALLET_MODAL })
                 }}
               >

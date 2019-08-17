@@ -7,7 +7,6 @@ import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
 import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
-import Assist from './Assist'
 
 const Account = styled('div')`
   display: flex;
@@ -35,7 +34,8 @@ function SignInButton() {
     showModal
   }) => async () => {
     const address = await reloadUserAddress()
-    if (!networkState.allGood || !address) {
+    const walletSelection = window.sessionStorage.getItem('walletSelection')
+    if (!walletSelection) {
       showModal({ name: WALLET_MODAL })
     } else {
       signIn()
@@ -59,7 +59,7 @@ function SignInButton() {
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
-            <Account onClick={() => showModal({ name: WALLET_MODAL })}>
+            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
                   {userProfile.username}

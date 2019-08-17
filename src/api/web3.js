@@ -7,8 +7,10 @@ import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
 import { NETWORK_ID_QUERY } from '../graphql/queries'
+import { AuthereumProvider } from 'authereum'
 
 let web3
+let web3WalletSelection
 let networkState = {}
 let localEndpoint = false
 
@@ -66,7 +68,12 @@ const isLocalNetwork = id => {
 }
 
 async function getWeb3() {
-  if (!web3) {
+  const walletSelection = window.sessionStorage.getItem('walletSelection')
+
+  // If cached web3 doesn't exist or wallet sellection has changed, get web3
+  if (!web3 || web3WalletSelection != walletSelection) {
+    web3WalletSelection = walletSelection
+
     try {
       networkState = { allGood: true }
       const result = await clientInstance.query({
@@ -80,7 +87,13 @@ async function getWeb3() {
       networkState.expectedNetworkName = getNetworkName(
         networkState.expectedNetworkId
       )
-      if (window.ethereum) {
+
+      if (walletSelection === 'authereum') {
+        const authereumProvider = new AuthereumProvider(
+          networkState.expectedNetworkName.toLowerCase()
+        )
+        web3 = new Web3(authereumProvider)
+      } else if (window.ethereum) {
         web3 = new Web3(window.ethereum)
       } else if (window.web3 && window.web3.currentProvider) {
         web3 = new Web3(window.web3.currentProvider)
