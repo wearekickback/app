@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'react-emotion'
 import { getSocialId } from '@wearekickback/shared'
 import EventList from './EventList'
 import { H2, H3 } from '../Typography/Basic'
 import mq from 'mediaQuery'
+import { EDIT_PROFILE } from '../../modals'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
 
 const UserProfileWrapper = styled('div')`
   display: flex;
@@ -21,6 +24,8 @@ const ProfileDetails = styled('div')`
 
 const Information = styled('div')`
   margin-left: 20px;
+  display: flex;
+  flex-direction: column;
 `
 
 const AvatarWrapper = styled('div')`
@@ -50,8 +55,14 @@ const EventType = styled('div')`
   }
 `
 
+const EditProfile = styled(Button)`
+  margin-top: 20px;
+`
+
 export default function UserProfile({ profile: p }) {
   const twitter = getSocialId(p.social, 'twitter')
+  const { showModal, loggedIn, userProfile } = useContext(GlobalConsumer)
+  console.log(userProfile)
   return (
     <UserProfileWrapper>
       <UserProfileContainer>
@@ -63,6 +74,11 @@ export default function UserProfile({ profile: p }) {
             <H2>{p.username}</H2>
             {twitter && (
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
+            )}
+            {loggedIn && userProfile.username === p.username && (
+              <EditProfile onClick={() => showModal({ name: EDIT_PROFILE })}>
+                Edit Profile
+              </EditProfile>
             )}
           </Information>
         </ProfileDetails>

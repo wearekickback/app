@@ -33,7 +33,6 @@ const DefaultLayout = ({ children }) => {
             networkId,
             networkName,
             expectedNetworkName,
-            expectedNetworkId,
             wrongNetwork,
             readOnly
           }
