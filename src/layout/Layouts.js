@@ -17,6 +17,11 @@ export const ContainerInner = styled('div')`
   padding: 0 20px 0;
 `
 
+const A = styled('a')`
+  color: white;
+  text-decoration: underline;
+`
+
 const DefaultLayout = ({ children }) => {
   return (
     <Fragment>
@@ -40,7 +45,7 @@ const DefaultLayout = ({ children }) => {
           let content
 
           if (wrongNetwork) {
-            content = `You are viewing events on ${expectedNetworkName} (${expectedNetworkId}) but your browser is connected to ${networkName} (${networkId}).`
+            content = `You are viewing events on ${expectedNetworkName} but your browser is connected to ${networkName}. Please switch to the correct network`
           } else {
             if (readOnly || !networkId) {
               content = `Your browser is not connected to the Ethereum network, so you will not be able to sign in or interact with events.`
@@ -51,7 +56,7 @@ const DefaultLayout = ({ children }) => {
             <ErrorBox>
               {content} .
               <br />
-              Not sure what to do? Click <a href="/gettingstarted">here</a> to
+              Not sure what to do? Click <A href="/gettingstarted">here</A> to
               read "Getting started" guide
             </ErrorBox>
           ) : null
