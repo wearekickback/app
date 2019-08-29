@@ -54,7 +54,7 @@ const DefaultLayout = ({ children }) => {
 
           return content ? (
             <ErrorBox>
-              {content} .
+              {content}
               <br />
               Not sure what to do? Click <A href="/gettingstarted">here</A> to
               read "Getting started" guide
