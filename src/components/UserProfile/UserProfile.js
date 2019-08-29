@@ -31,7 +31,8 @@ const Avatar = styled('img')`
   border-radius: 50%;
   width: 100%;
   border: solid 1px #efefef;
-  margin: 0 auto 20px;
+  margin: 0 auto 0;
+  margin-left: -2px;
 `
 
 const Events = styled('div')`
@@ -43,7 +44,7 @@ const Events = styled('div')`
 `
 
 const EventType = styled('div')`
-  margin-right: 20px;
+  margin-right: 25px;
   &:last-child {
     margin-right: 0;
   }
