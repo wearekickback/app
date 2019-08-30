@@ -251,7 +251,7 @@ class Home extends Component {
         </Section>
         <CTA>
           <CTAInner>
-            <h2>Hosting events during DevCon5?</h2>
+            <h2>Hosting events during Devcon5?</h2>
             <p>
               We partnered with local co-working spaces to help you find the
               right place and promote your events on our social event calendar.
