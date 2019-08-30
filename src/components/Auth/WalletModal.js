@@ -5,15 +5,67 @@ import { injectWeb3 } from 'authereum'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
+import mq from '../../mediaQuery'
+
+import { ReactComponent as AuthereumImage } from '../svg/authereum.svg'
+import { ReactComponent as ULImage } from '../svg/ul.svg'
+import { ReactComponent as MetaMaskImage } from '../svg/metamask.svg'
 
 const WalletsContainer = styled('div')`
   display: flex;
   flex-direction: row;
+  justify-content: center;
 `
-const IndividualContainer = styled('div')`
+const LogoContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  width: 125px;
+  align-items: center;
+  width: 140px;
+  height: 140px;
+  margin-right: 25px;
+  /* ${mq.small`
+    width: 75px;
+    height: 75px;
+  `} */
+`
+const AuthereumLogo = styled(AuthereumImage)`
+  max-height: 75px;
+  max-width: 75px;
+  height: 100px;
+  margin-bottom: 5px;
+  /* ${mq.small`
+    max-height: 45px;
+    max-width: 45px;
+    height: 75;
+  `} */
+`
+const ULLogo = styled(ULImage)`
+  max-height: 75px;
+  max-width: 75px;
+  height: 100px;
+  margin-bottom: 5px;
+  /* ${mq.small`
+    max-height: 45px;
+    max-width: 45px;
+    height: 75;
+  `} */
+`
+const MetaMaskLogo = styled(MetaMaskImage)`
+  max-height: 75px;
+  max-width: 75px;
+  height: 100px;
+  margin-bottom: 5px;
+  /* ${mq.small`
+    max-height: 45px;
+    max-width: 45px;
+    height: 75;
+  `} */
+`
+const LogoButton = styled(Button)`
+  width: 140px
+  /* ${mq.small`
+    width: 110px;
+  `} */
 `
 
 export default class WalletModal extends Component {
@@ -51,29 +103,34 @@ export default class WalletModal extends Component {
         {({ signIn, closeModal, networkState }) => (
           <>
             <WalletsContainer>
-              <IndividualContainer>
-                <Button
+              <LogoContainer>
+                <AuthereumLogo />
+                <LogoButton
                   onClick={() => {
                     this.authereumInit({ networkState })
                   }}
                 >
                   Authereum
-                </Button>
-              </IndividualContainer>
-              <IndividualContainer>
-                <Button onClick={this.ulInit}>UL</Button>
-              </IndividualContainer>
+                </LogoButton>
+              </LogoContainer>
+              <LogoContainer>
+                <ULLogo />
+                <LogoButton onClick={this.ulInit}>Univesal Login</LogoButton>
+              </LogoContainer>
               {this.state.isMetamask && (
-                <IndividualContainer>
-                  <Button
-                    onClick={async () => {
-                      await this.metamaskInit(signIn)
-                      closeModal({ name: WALLET_MODAL })
-                    }}
-                  >
-                    MM
-                  </Button>
-                </IndividualContainer>
+                <>
+                  <LogoContainer>
+                    <MetaMaskLogo />
+                    <LogoButton
+                      onClick={async () => {
+                        await this.metamaskInit(signIn)
+                        closeModal({ name: WALLET_MODAL })
+                      }}
+                    >
+                      MetaMask
+                    </LogoButton>
+                  </LogoContainer>
+                </>
               )}
             </WalletsContainer>
           </>
