@@ -1,11 +1,20 @@
 import _ from 'lodash'
+import styled from 'react-emotion'
 import React, { Component } from 'react'
 import { injectWeb3 } from 'authereum'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
 
-const network = 'rinkeby'
+const WalletsContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+`
+const IndividualContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  width: 125px;
+`
 
 export default class WalletModal extends Component {
   constructor() {
@@ -15,9 +24,9 @@ export default class WalletModal extends Component {
     }
   }
 
-  authereumInit = async () => {
+  authereumInit = async networkState => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
-    await injectWeb3(network)
+    await injectWeb3(networkState.networkState.networkName.toLowerCase())
     window.ethereum.enable()
   }
   ulInit = async () => {
@@ -39,20 +48,34 @@ export default class WalletModal extends Component {
   render() {
     return (
       <GlobalConsumer>
-        {({ signIn, closeModal }) => (
+        {({ signIn, closeModal, networkState }) => (
           <>
-            <Button onClick={this.authereumInit}>Authereum</Button>
-            <Button onClick={this.ulInit}>UL</Button>
-            {this.state.isMetamask && (
-              <Button
-                onClick={async () => {
-                  await this.metamaskInit(signIn)
-                  closeModal({ name: WALLET_MODAL })
-                }}
-              >
-                MM
-              </Button>
-            )}
+            <WalletsContainer>
+              <IndividualContainer>
+                <Button
+                  onClick={() => {
+                    this.authereumInit({ networkState })
+                  }}
+                >
+                  Authereum
+                </Button>
+              </IndividualContainer>
+              <IndividualContainer>
+                <Button onClick={this.ulInit}>UL</Button>
+              </IndividualContainer>
+              {this.state.isMetamask && (
+                <IndividualContainer>
+                  <Button
+                    onClick={async () => {
+                      await this.metamaskInit(signIn)
+                      closeModal({ name: WALLET_MODAL })
+                    }}
+                  >
+                    MM
+                  </Button>
+                </IndividualContainer>
+              )}
+            </WalletsContainer>
           </>
         )}
       </GlobalConsumer>
