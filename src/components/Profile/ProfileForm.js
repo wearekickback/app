@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
+import Button from '../Forms/Button'
 
 import {
   assertEmailAddress,
@@ -43,6 +44,15 @@ const TextInput = styled(DefaultTextInput)`
 
 const Checkbox = styled(DefaultCheckbox)`
   margin: 5px 0;
+`
+
+const InvertedButton = styled(Button)`
+  background: white;
+  color: black;
+  margin-bottom: 15px;
+  &:hover {
+    color: white;
+  }
 `
 
 export default class ProfileForm extends Component {
@@ -210,6 +220,11 @@ export default class ProfileForm extends Component {
                 </Link>
               </Checkbox>
             )}
+            {/* Show Wyre widget if logged in */}
+            {privacy && !alreadyAcceptedPrivacy ? null : (
+              <InvertedButton>Buy Crypto With Wyre</InvertedButton>
+            )}
+
             <Checkbox
               value={MARKETING_INFO}
               checked={!!marketing}
