@@ -15,6 +15,10 @@ const WalletsContainer = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const LogoContainer = styled('div')`
   display: flex;
@@ -23,49 +27,33 @@ const LogoContainer = styled('div')`
   width: 140px;
   height: 140px;
   margin-right: 25px;
-  /* ${mq.small`
-    width: 75px;
-    height: 75px;
-  `} */
+  @media (max-width: 576px) {
+    width: 85px;
+    height: 85px;
+    margin-bottom: 25px;
+    margin-right: 0px;
+  }
 `
 const AuthereumLogo = styled(AuthereumImage)`
   max-height: 75px;
   max-width: 75px;
   height: 100px;
   margin-bottom: 5px;
-  /* ${mq.small`
-    max-height: 45px;
-    max-width: 45px;
-    height: 75;
-  `} */
 `
 const ULLogo = styled(ULImage)`
   max-height: 75px;
   max-width: 75px;
   height: 100px;
   margin-bottom: 5px;
-  /* ${mq.small`
-    max-height: 45px;
-    max-width: 45px;
-    height: 75;
-  `} */
 `
 const MetaMaskLogo = styled(MetaMaskImage)`
   max-height: 75px;
   max-width: 75px;
   height: 100px;
   margin-bottom: 5px;
-  /* ${mq.small`
-    max-height: 45px;
-    max-width: 45px;
-    height: 75;
-  `} */
 `
 const LogoButton = styled(Button)`
-  width: 140px
-  /* ${mq.small`
-    width: 110px;
-  `} */
+  width: 140px;
 `
 
 export default class WalletModal extends Component {
