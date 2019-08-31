@@ -6,13 +6,18 @@ import { GlobalConsumer } from '../../GlobalState'
 
 const Authereum = styled('div')`
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   overflow: hidden;
-  background-color: white;
+  margin-left: -18.5px;
+  margin-bottom: -42.5px;
   cursor: pointer;
-  margin-left: 5px;
   padding: 5px;
+  @media (max-width: 576px) {
+    margin-left: -15px;
+    margin-bottom: 0px;
+    margin-top: 17.5px;
+  }
 `
 
 class AuthereumButton extends Component {

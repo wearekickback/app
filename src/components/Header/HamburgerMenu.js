@@ -4,6 +4,8 @@ import styled from 'react-emotion'
 import { links } from './Guide'
 import SignInButton from './SignInButton'
 
+import AuthereumButtom from './AuthereumButton'
+
 const HamburgerMenuContainer = styled('div')`
   display: flex;
   background: #6e76ff;
@@ -18,6 +20,10 @@ const HamburgerMenuContainer = styled('div')`
     padding: 10px 0;
   }
 `
+const LogoProviderContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+`
 
 function isExternal(url) {
   return /^https/.test(url)
@@ -26,7 +32,10 @@ function isExternal(url) {
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
-      <SignInButton />
+      <LogoProviderContainer>
+        <SignInButton />
+        <AuthereumButtom />
+      </LogoProviderContainer>
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
       {links.map(l =>
