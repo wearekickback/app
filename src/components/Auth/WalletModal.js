@@ -6,6 +6,7 @@ import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
 import mq from '../../mediaQuery'
+import SignIn from './SignIn'
 
 import { ReactComponent as AuthereumImage } from '../svg/authereum.svg'
 import { ReactComponent as ULImage } from '../svg/ul.svg'
@@ -19,6 +20,9 @@ const WalletsContainer = styled('div')`
     flex-direction: column;
     align-items: center;
   }
+`
+const TitleContainer = styled('h3')`
+  text-align: center;
 `
 const LogoContainer = styled('div')`
   display: flex;
@@ -53,7 +57,7 @@ const MetaMaskLogo = styled(MetaMaskImage)`
   margin-bottom: 5px;
 `
 const LogoButton = styled(Button)`
-  width: 140px;
+  width: 150px;
 `
 
 export default class WalletModal extends Component {
@@ -90,12 +94,14 @@ export default class WalletModal extends Component {
       <GlobalConsumer>
         {({ signIn, closeModal, networkState }) => (
           <>
+            <TitleContainer>Choose your wallet</TitleContainer>
             <WalletsContainer>
               <LogoContainer>
                 <AuthereumLogo />
                 <LogoButton
                   onClick={() => {
                     this.authereumInit({ networkState })
+                    closeModal({ name: WALLET_MODAL })
                   }}
                 >
                   Authereum
@@ -103,7 +109,14 @@ export default class WalletModal extends Component {
               </LogoContainer>
               <LogoContainer>
                 <ULLogo />
-                <LogoButton onClick={this.ulInit}>Univesal Login</LogoButton>
+                <LogoButton
+                  onClick={() => {
+                    this.authereumInit({ networkState })
+                    closeModal({ name: WALLET_MODAL })
+                  }}
+                >
+                  Universal Login
+                </LogoButton>
               </LogoContainer>
               {this.state.isMetamask && (
                 <>

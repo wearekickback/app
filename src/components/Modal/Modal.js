@@ -65,21 +65,11 @@ const ModalContent = styled('div')`
   overflow-y: scroll;
   max-height: 100%;
   border-radius: 6px;
-  ${mq.medium`
-    width: 70%;
-  `};
-
-  ${mq.large`
-    width: 50%;
-  `};
-
-  ${p =>
-    p.small
-      ? `
-    height: auto;
-    width: auto;
-  `
-      : null};
+  height: auto;
+  width: auto;
+  @media (max-width: 576px) {
+    width: 75%;
+  }
 `
 
 export default Modal
