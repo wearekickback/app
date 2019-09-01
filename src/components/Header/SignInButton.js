@@ -38,7 +38,10 @@ function SignInButton() {
     if (!walletSelection) {
       showModal({ name: WALLET_MODAL })
     } else {
-      signIn()
+      let isSignedIn = await signIn()
+      if (!isSignedIn) {
+        showModal({ name: WALLET_MODAL })
+      }
     }
   }
 

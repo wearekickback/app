@@ -54,13 +54,13 @@ class Provider extends Component {
 
   signIn = async ({ dontForceSignIn } = {}) => {
     if (this.state.loggedIn) {
-      return
+      return false
     }
 
     // let's request user's account address
     const address = await this.reloadUserAddress()
     if (!address) {
-      return
+      return false
     }
 
     console.debug(`Checking if user ${address} is logged in ...`)
