@@ -39,7 +39,7 @@ function SignInButton() {
       showModal({ name: WALLET_MODAL })
     } else {
       let isSignedIn = await signIn()
-      if (!isSignedIn) {
+      if (isSignedIn === false) {
         showModal({ name: WALLET_MODAL })
       }
     }
