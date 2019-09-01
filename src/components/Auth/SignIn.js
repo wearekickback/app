@@ -105,7 +105,7 @@ export default class SignIn extends Component {
   renderSignIn(userAddress, closeModal) {
     return (
       <>
-        <H2>Sign in</H2>
+        <H2>Sign in to Kickback</H2>
         <P>Account detected: {userAddress}</P>
         <SafeMutation mutation={LOGIN_USER}>
           {loginUser => (
