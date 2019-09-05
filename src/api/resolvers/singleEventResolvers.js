@@ -195,10 +195,15 @@ const resolvers = {
       const deposit = await contract.deposit().call()
       try {
         const tx = await txHelper(
-          contract.register().send({
-            from: account,
-            value: deposit
-          })
+          contract
+            .register()
+            .send({
+              from: account,
+              value: deposit
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
         return tx
       } catch (err) {
