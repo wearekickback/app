@@ -65,10 +65,20 @@ export default class WalletModal extends Component {
     }
   }
 
-  authereumInit = async networkState => {
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  authereumInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
     await injectWeb3(networkState.networkState.networkName.toLowerCase())
     window.ethereum.enable()
+    let didCloseModal = false
+    while (didCloseModal === false) {
+      // Wait a reasonable amount of time to see if the popup has closed
+      this.sleep(1000)
+      didCloseModal = await signIn()
+    }
   }
   ulInit = async () => {
     window.sessionStorage.setItem('walletSelection', 'universalLogin')
@@ -97,7 +107,7 @@ export default class WalletModal extends Component {
                 <AuthereumLogo />
                 <LogoButton
                   onClick={() => {
-                    this.authereumInit({ networkState })
+                    this.authereumInit({ networkState }, signIn)
                     closeModal({ name: WALLET_MODAL })
                   }}
                 >
