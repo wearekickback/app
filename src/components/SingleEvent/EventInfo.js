@@ -5,7 +5,7 @@ import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 import marked from 'marked'
 
-import EtherScanLink from '../ExternalLinks/EtherScanLink'
+import DefaultEtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
 import DepositValue from '../Utils/DepositValue'
@@ -18,18 +18,14 @@ import moment from 'moment'
 import { toEthVal } from '../../utils/units'
 
 const EventDate = styled(DefaultEventDate)``
-
-const EventName = styled(H2)``
-const ContractAddress = styled('h3')`
-  overflow: hidden;
+const EtherScanLink = styled('a')`
+  display: block;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-  font-family: Muli;
-  font-weight: 500;
-  font-size: 13px;
-  color: #6e76ff;
-  letter-spacing: 0;
 `
+const EventName = styled(H2)``
+
 const EventImage = styled('img')`
   border-radius: 4px;
   margin-bottom: 20px;
@@ -152,9 +148,6 @@ class EventInfo extends Component {
       <EventInfoContainer className={className}>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
-        <ContractAddress>
-          <EtherScanLink address={address}>{address}</EtherScanLink>
-        </ContractAddress>
         <EventImage
           src={party.headerImg || 'https://placeimg.com/640/480/tech'}
         />
@@ -197,20 +190,29 @@ class EventInfo extends Component {
               </span>
             </Deposit>
           </Pot>
-
-          <strong>
-            Cooling Period{' '}
-            <Link to="/faq#cooling">
-              <InfoIcon />
-            </Link>
-            :{' '}
-          </strong>
-          <span>
-            {moment
-              .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
-              .asDays()}{' '}
-            days
-          </span>
+          <Pot>
+            <Deposit>
+              <strong>
+                Cooling Period{' '}
+                <Link to="/faq#cooling">
+                  <InfoIcon />
+                </Link>
+                :{' '}
+              </strong>
+              <span>
+                {moment
+                  .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+                  .asDays()}{' '}
+                days
+              </span>
+            </Deposit>
+            <Deposit>
+              <strong>Contract Address:</strong>
+              <span>
+                <EtherScanLink address={address}>{address}</EtherScanLink>
+              </span>
+            </Deposit>
+          </Pot>
         </TotalPot>
         <EventDescription
           dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
