@@ -138,6 +138,10 @@ const HostUsername = styled('span')`
   font-weight: bold;
 `
 
+const ContractAddressContainer = styled('div')`
+  margin-bottom: 1em;
+`
+
 class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
@@ -225,6 +229,15 @@ class EventInfo extends Component {
         <Comments>
           <Comment />
         </Comments>
+        <ContractAddressContainer>
+          <h3>Contract address</h3>
+          <ContractAddress>
+            <EtherScanLink address={address}>{address}</EtherScanLink>
+          </ContractAddress>
+          <strong>Warning</strong>: Please do NOT send your commitment directly
+          to the contract address. Please read our{' '}
+          <a href="/gettingstarted">guide</a> for more detail.
+        </ContractAddressContainer>
       </EventInfoContainer>
     )
   }
