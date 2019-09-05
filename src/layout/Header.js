@@ -72,6 +72,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
         <Logo />
         {isMinMedium && (
           <RightBar>
+            <NavLink to="/create">Create</NavLink>
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/pricing">Pricing</NavLink>
             <GuideDropdown />

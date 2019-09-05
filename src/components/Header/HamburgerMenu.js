@@ -36,6 +36,7 @@ function HamburgerMenu({ isMenuOpen }) {
         <SignInButton />
         <AuthereumButtom />
       </LogoProviderContainer>
+      <Link to="/create">Create</Link>
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
       {links.map(l =>
