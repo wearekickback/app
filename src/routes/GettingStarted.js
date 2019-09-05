@@ -38,7 +38,7 @@ const GettingStartedContainer = styled('div')`
 class GettingStarted extends Component {
   render() {
     return (
-      <GettingStartedContainer classid="gettingstarted">
+      <GettingStartedContainer className="gettingstarted">
         <H1>Getting Started</H1>
 
         <H3 id="how-it-works">How it works</H3>
