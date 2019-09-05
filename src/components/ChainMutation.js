@@ -255,10 +255,17 @@ export class ChainMutationButton extends Component {
       content = preContent
     }
 
-    const tip =
-      notReadyError ||
-      tooltip ||
-      'Please sign the created transaction using your wallet or Dapp browser'
+    let tip
+    getWeb3().then(web3 => {
+      if (web3._provider && web3._provider.authereum) {
+        tip = null
+      } else {
+        tip =
+          notReadyError ||
+          tooltip ||
+          'Please sign the created transaction using your wallet or Dapp browser'
+      }
+    })
 
     return (
       <GlobalConsumer>
