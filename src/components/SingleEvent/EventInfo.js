@@ -18,7 +18,7 @@ import moment from 'moment'
 import { toEthVal } from '../../utils/units'
 
 const EventDate = styled(DefaultEventDate)``
-const EtherScanLink = styled('a')`
+const EtherScanLink = styled(DefaultEtherScanLink)`
   display: block;
   white-space: nowrap;
   overflow: hidden;
