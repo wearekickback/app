@@ -13,10 +13,6 @@ const StyledButton = styled(Button)`
 `
 
 class WyreButton extends Component {
-  constructor() {
-    super()
-  }
-
   render() {
     return (
       <GlobalConsumer>

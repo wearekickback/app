@@ -154,6 +154,9 @@ const resolvers = {
             .on('transactionHash', hash => {
               resolve(hash)
             })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         console.log('tx', tx)

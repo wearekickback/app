@@ -33,7 +33,7 @@ function SignInButton() {
     reloadUserAddress,
     showModal
   }) => async () => {
-    const address = await reloadUserAddress()
+    await reloadUserAddress()
     const walletSelection = window.sessionStorage.getItem('walletSelection')
     if (!walletSelection) {
       showModal({ name: WALLET_MODAL })

@@ -1,12 +1,9 @@
-import _ from 'lodash'
 import styled from 'react-emotion'
 import React, { Component } from 'react'
 import { injectWeb3 } from 'authereum'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
-import mq from '../../mediaQuery'
-import SignIn from './SignIn'
 
 import { ReactComponent as AuthereumImage } from '../svg/authereum.svg'
 import { ReactComponent as ULImage } from '../svg/ul.svg'
