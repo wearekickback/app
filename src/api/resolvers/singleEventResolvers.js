@@ -176,9 +176,14 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.grant(userAddresses).send({
-            from: account
-          })
+          contract
+            .grant(userAddresses)
+            .send({
+              from: account
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -218,9 +223,14 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.finalize(maps.map(m => toBN(m).toString(10))).send({
-            from: account
-          })
+          contract
+            .finalize(maps.map(m => toBN(m).toString(10)))
+            .send({
+              from: account
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -236,9 +246,14 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.withdraw().send({
-            from: account
-          })
+          contract
+            .withdraw()
+            .send({
+              from: account
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -254,7 +269,14 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.setLimitOfParticipants(limit).send({ from: account })
+          contract
+            .setLimitOfParticipants(limit)
+            .send({
+              from: account
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -268,7 +290,16 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(contract.clear().send({ from: account }))
+        const tx = await txHelper(
+          contract
+            .clear()
+            .send({
+              from: account
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
+        )
 
         return tx
       } catch (e) {
