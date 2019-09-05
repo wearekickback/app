@@ -4,6 +4,7 @@ import SignInPng from '../assets/guide/signin.png'
 import RSVPPng from '../assets/guide/rsvp.png'
 import MarkPng from '../assets/guide/mark.png'
 import WithdrawPng from '../assets/guide/withdraw.png'
+import InternalTransaction from '../assets/guide/internaltransaction.png'
 import styled from 'react-emotion'
 import { P, H3, H1 } from '../components/Typography/Basic'
 
@@ -37,17 +38,17 @@ const GettingStartedContainer = styled('div')`
 class GettingStarted extends Component {
   render() {
     return (
-      <GettingStartedContainer className="gettingstarted">
+      <GettingStartedContainer classid="gettingstarted">
         <H1>Getting Started</H1>
 
-        <H3>How it works</H3>
+        <H3 id="how-it-works">How it works</H3>
         <P>
           Everyone commits a small amount of ETH when they RSVP, which is
           refunded after the event check-in. Any no-shows lose their ETH, which
           can then be split amongst the attendees.
         </P>
 
-        <H3>How to connect</H3>
+        <H3 id="how-to-connect">How to connect</H3>
 
         <P>
           To use our service, you have to access our site with an Ethereum
@@ -94,7 +95,7 @@ class GettingStarted extends Component {
           <Img src={ConnectPng} />
         </ImageWrapper>
 
-        <H3>How to sign in</H3>
+        <H3 id="how-to-sign-in">How to sign in</H3>
 
         <P>
           After clicking “Sign in”, and fill in your detail, you will be asked
@@ -105,7 +106,7 @@ class GettingStarted extends Component {
           <Img src={SignInPng} />
         </ImageWrapper>
 
-        <H3>How to RSVP</H3>
+        <H3 id="how-to-rsvp">How to RSVP</H3>
 
         <P>
           After you signed in , click “RSVP” which asks you to confirm the
@@ -116,7 +117,7 @@ class GettingStarted extends Component {
           <Img src={RSVPPng} />
         </ImageWrapper>
 
-        <H3>When you are at the event</H3>
+        <H3 id="when-you-are-at-the-event">When you are at the event</H3>
 
         <P>
           Once at the event, make sure that the event organisers checked you in.
@@ -127,7 +128,7 @@ class GettingStarted extends Component {
           <Img src={MarkPng} />
         </ImageWrapper>
 
-        <H3>How to get your ETH back</H3>
+        <H3 id="how-to-get-your-eth-back">How to get your ETH back</H3>
 
         <P>
           After the event is over, you will receive email that you can now
@@ -137,6 +138,17 @@ class GettingStarted extends Component {
 
         <ImageWrapper>
           <Img src={WithdrawPng} />
+        </ImageWrapper>
+
+        <P>
+          You may be surprised when Metamask shows value as 0. It is because
+          Metamask only shows the value you sent, not the value you received
+          triggered by your action. To confirm that you have received your
+          distribution, please check "Internal transaction" section of the event
+          contract address on Etherscan.
+        </P>
+        <ImageWrapper>
+          <Img src={InternalTransaction} />
         </ImageWrapper>
       </GettingStartedContainer>
     )
