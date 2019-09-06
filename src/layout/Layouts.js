@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 
 import Header from './Header'
 import Footer from './Footer'
-import ErrorBox from '../components/ErrorBox'
+import WarningBox from '../components/WarningBox'
 import { GlobalConsumer } from '../GlobalState'
 
 const Container = styled('main')`
@@ -52,12 +52,12 @@ const DefaultLayout = ({ children }) => {
           }
 
           return content ? (
-            <ErrorBox>
+            <WarningBox padding>
               {content}
               <br />
               Not sure what to do? Click <A href="/gettingstarted">here</A> to
               read "Getting started" guide
-            </ErrorBox>
+            </WarningBox>
           ) : null
         }}
       </GlobalConsumer>

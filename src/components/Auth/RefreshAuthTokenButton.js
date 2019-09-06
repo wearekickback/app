@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import SafeMutation from '../SafeMutation'
 import Tooltip from '../Tooltip'
-import ErrorBox from '../ErrorBox'
+import WarningBox from '../WarningBox'
 import Button from '../Forms/Button'
 import {
   CREATE_LOGIN_CHALLENGE,
@@ -112,7 +112,7 @@ export default class RefreshAuthTokenButton extends Component {
                         </Button>
                       )}
                     </Tooltip>
-                    {error ? <ErrorBox>{`${error}`}</ErrorBox> : null}
+                    {error ? <WarningBox>{`${error}`}</WarningBox> : null}
                   </>
                 )}
               </SafeMutation>

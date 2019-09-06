@@ -6,7 +6,7 @@ import { PARTY_QUERY } from '../../graphql/queries'
 import mq from '../../mediaQuery'
 
 import Loader from '../Loader'
-import ErrorBox from '../ErrorBox'
+import WarningBox from '../WarningBox'
 import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
@@ -60,9 +60,9 @@ class SingleEventWrapper extends Component {
                     return <Loader />
                   } else {
                     return (
-                      <ErrorBox>
+                      <WarningBox>
                         We could not find an event at the address {address}!
-                      </ErrorBox>
+                      </WarningBox>
                     )
                   }
                 }
