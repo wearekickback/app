@@ -89,7 +89,9 @@ async function getWeb3() {
       )
 
       if (walletSelection === 'authereum') {
-        const authereum = new Authereum('rinkeby')
+        const authereum = new Authereum(
+          networkState.expectedNetworkName.toLowerCase()
+        )
         const authereumProvider = authereum.getProvider()
         web3 = new Web3(authereumProvider)
       } else if (window.ethereum) {
