@@ -34,7 +34,6 @@ function HamburgerMenu({ isMenuOpen }) {
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
       <LogoProviderContainer>
         <SignInButton />
-        <AuthereumButtom />
       </LogoProviderContainer>
       <Link to="/create">Create</Link>
       <Link to="/events">Events</Link>
