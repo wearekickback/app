@@ -7,6 +7,7 @@ import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
 import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
+import AuthereumButton from './AuthereumButton'
 
 const Account = styled('div')`
   display: flex;
@@ -74,6 +75,7 @@ function SignInButton() {
                 }/medium`}
               />
             </Account>
+            <AuthereumButton />
           </>
         ) : (
           <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
