@@ -71,7 +71,7 @@ function Participant({ participant, party, amAdmin }) {
 
   return (
     <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
-      <TwitterAvatar user={user} />
+      <TwitterAvatar user={user} size={10} scale={6} />
       <ParticipantId>
         <ParticipantUsername>{user.username}</ParticipantUsername>
       </ParticipantId>

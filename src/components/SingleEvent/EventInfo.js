@@ -164,7 +164,7 @@ class EventInfo extends Component {
             {admins.map(user => {
               return (
                 <Organiser key={user.username}>
-                  <UserAvatar user={user} />
+                  <UserAvatar user={user} size={8} scale={5} />
                   <HostUsername>{user.username}</HostUsername>
                 </Organiser>
               )
