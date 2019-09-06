@@ -13,6 +13,7 @@ const Authereum = styled('div')`
   margin-bottom: -42.5px;
   cursor: pointer;
   padding: 5px;
+  background-color: white;
   @media (max-width: 576px) {
     margin-left: -15px;
     margin-bottom: 0px;
