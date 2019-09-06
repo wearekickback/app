@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 
 import { GlobalConsumer } from '../../GlobalState'
 import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
-import { EDIT_PROFILE } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import Assist from './Assist'
 
-const Account = styled('div')`
+const Account = styled(Link)`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -65,7 +65,7 @@ function SignInButton() {
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
-            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
+            <Account to={`/user/${userProfile.username}`}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
                   {userProfile.username}

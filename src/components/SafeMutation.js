@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 
 import Loader from './Loader'
-import ErrorBox from './ErrorBox'
+import WarningBox from './WarningBox'
 
 export const DEFAULT_IS_LOADING = ({ loading }) => loading
 export const DEFAULT_RENDER_ERROR = ({ error }) => {
@@ -17,7 +17,7 @@ export const DEFAULT_RENDER_ERROR = ({ error }) => {
       'We were unable to connect to our backend server. Is your internet connection working?'
   }
 
-  return <ErrorBox>{errStr}</ErrorBox>
+  return <WarningBox>{errStr}</WarningBox>
 }
 export const DEFAULT_RENDER_LOADING = () => <Loader />
 

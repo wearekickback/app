@@ -5,23 +5,32 @@ import { getSocialId } from '@wearekickback/shared'
 import DefaultAvatar from './Avatar'
 
 const Avatar = styled(DefaultAvatar)`
-  height: 35px;
-  width: 35px;
+  height: 40px;
+  width: 40px;
   flex-shrink: 0;
 `
 
-const TwitterAvatar = ({ className, user }) => {
+const TwitterAvatar = ({ className, user, size, scale }) => {
   const avatarId = getSocialId(user.social, 'twitter')
-  const avatarUrl = `https://avatars.io/twitter/${avatarId ||
-    'randomtwitter+12345'}/medium`
-
-  let props = { src: avatarUrl }
+  let avatarUrl
+  let blockies
 
   if (avatarId) {
-    props.href = `https://twitter.com/${avatarId}`
+    avatarUrl = `https://avatars.io/twitter/${avatarId}/medium`
+  } else {
+    blockies = user.address
   }
 
-  return <Avatar className={className} {...props} />
+  return (
+    <Avatar
+      className={className}
+      src={avatarUrl}
+      blockies={blockies}
+      username={user.username}
+      size={size}
+      scale={scale}
+    />
+  )
 }
 
 export default TwitterAvatar

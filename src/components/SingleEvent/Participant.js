@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
@@ -7,7 +8,6 @@ import Status from './ParticipantStatus'
 
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
-import { GlobalConsumer } from '../../GlobalState'
 import tick from '../svg/tick.svg'
 
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
@@ -30,7 +30,7 @@ const Tick = () => (
   </TickContainer>
 )
 
-const ParticipantWrapper = styled('div')`
+const ParticipantWrapper = styled(Link)`
   height: ${p => (p.amAdmin ? '170px' : '120px')};
   display: flex;
   flex-direction: column;
@@ -70,41 +70,37 @@ function Participant({ participant, party, amAdmin }) {
   const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
 
   return (
-    <GlobalConsumer>
-      {({ userAddress, loggedIn }) => (
-        <ParticipantWrapper amAdmin={amAdmin}>
-          <TwitterAvatar user={user} />
-          <ParticipantId>
-            <ParticipantUsername>{user.username}</ParticipantUsername>
-          </ParticipantId>
-          {ended ? (
-            attended ? (
-              <Status type="won">{`${
-                withdrawn ? ' Withdrew' : 'Won'
-              } ${payout} ETH `}</Status>
-            ) : (
-              <Status type="lost">
-                Lost{' '}
-                {toEthVal(deposit)
-                  .toEth()
-                  .toString()}{' '}
-                ETH
-              </Status>
-            )
+    <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
+      <TwitterAvatar user={user} size={10} scale={6} />
+      <ParticipantId>
+        <ParticipantUsername>{user.username}</ParticipantUsername>
+      </ParticipantId>
+      {ended ? (
+        attended ? (
+          <Status type="won">{`${
+            withdrawn ? ' Withdrew' : 'Won'
+          } ${payout} ETH `}</Status>
+        ) : (
+          <Status type="lost">
+            Lost{' '}
+            {toEthVal(deposit)
+              .toEth()
+              .toString()}{' '}
+            ETH
+          </Status>
+        )
+      ) : (
+        <>
+          {attended ? (
+            <Status type="marked">
+              Marked attended <Tick />
+            </Status>
           ) : (
-            <>
-              {attended ? (
-                <Status type="marked">
-                  Marked attended <Tick />
-                </Status>
-              ) : (
-                <Status>Not marked attended</Status>
-              )}
-            </>
+            <Status>Not marked attended</Status>
           )}
-        </ParticipantWrapper>
+        </>
       )}
-    </GlobalConsumer>
+    </ParticipantWrapper>
   )
 }
 
