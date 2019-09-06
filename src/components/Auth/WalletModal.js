@@ -73,6 +73,7 @@ export default class WalletModal extends Component {
     window.sessionStorage.setItem('walletSelection', 'authereum')
     await injectWeb3(networkState.networkState.networkName.toLowerCase())
     window.ethereum.enable()
+    window.ethereum.isMetaMask = false
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed
