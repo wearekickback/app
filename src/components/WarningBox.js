@@ -20,6 +20,8 @@ function getStylesBasedOnWarningLevel(warningLevel) {
       return `
         background: #ffac32;
       `
+    default:
+      return ``
   }
 }
 
