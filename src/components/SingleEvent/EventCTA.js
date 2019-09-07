@@ -76,8 +76,7 @@ class EventCTA extends Component {
   _renderEndedRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants },
-      userAddress
+      party: { address, deposit, participants }
     } = this.props
 
     if (!myParticipantEntry) {
@@ -104,7 +103,8 @@ class EventCTA extends Component {
   _renderActiveRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants, participantLimit }
+      party: { address, deposit, participants, participantLimit },
+      userAddress
     } = this.props
 
     if (!myParticipantEntry) {
