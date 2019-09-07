@@ -283,7 +283,9 @@ export class ChainMutationButton extends Component {
                       action: props.analyticsId
                     })
                   }
-                  disabled={!!(loading || progress)}
+                  disabled={
+                    !!(loading || progress) || props.userAddress === undefined
+                  }
                 >
                   {content}
                   {tooltipElement}

@@ -18,7 +18,7 @@ const RSVP = ({ address, className, deposit, userAddress }) => (
         analyticsId="RSVP"
         onClick={rsvp}
         result={result}
-        disabled={userAddress === undefined}
+        userAddress={userAddress}
         className={className}
         preContent={<span>RSVP - {DepositValue({ value: deposit })}</span>}
         postContent={<Going>You are going!</Going>}
