@@ -65,8 +65,13 @@ export default class WalletModal extends Component {
     }
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
+  sleep(milliseconds) {
+    var start = new Date().getTime()
+    for (var i = 0; i < 1e7; i++) {
+      if (new Date().getTime() - start > milliseconds) {
+        break
+      }
+    }
   }
 
   authereumInit = async (networkState, signIn) => {
@@ -74,6 +79,7 @@ export default class WalletModal extends Component {
     await injectWeb3(networkState.networkState.networkName.toLowerCase())
     window.ethereum.enable()
     window.ethereum.isMetaMask = false
+
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed
