@@ -76,7 +76,8 @@ class EventCTA extends Component {
   _renderEndedRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants }
+      party: { address, deposit, participants },
+      userAddress
     } = this.props
 
     if (!myParticipantEntry) {
@@ -110,7 +111,11 @@ class EventCTA extends Component {
       if (participants.length < participantLimit) {
         return (
           <>
-            <RSVP address={address} deposit={deposit} />
+            <RSVP
+              address={address}
+              deposit={deposit}
+              userAddress={userAddress}
+            />
             <CTAInfo>
               <strong>Kickback rules:</strong>
               <ul>

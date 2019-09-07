@@ -6,7 +6,7 @@ import DepositValue from '../Utils/DepositValue'
 import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 
-const RSVP = ({ address, className, deposit }) => (
+const RSVP = ({ address, className, deposit, userAddress }) => (
   <ChainMutation
     mutation={RSVP_TO_EVENT}
     resultKey="rsvp"
@@ -18,6 +18,7 @@ const RSVP = ({ address, className, deposit }) => (
         analyticsId="RSVP"
         onClick={rsvp}
         result={result}
+        disabled={userAddress === undefined}
         className={className}
         preContent={<span>RSVP - {DepositValue({ value: deposit })}</span>}
         postContent={<Going>You are going!</Going>}
