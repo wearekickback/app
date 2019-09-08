@@ -27,12 +27,14 @@ const LogoContainer = styled('div')`
   align-items: center;
   width: 140px;
   height: 140px;
-  margin-right: 25px;
+  margin-right: 10px;
+  margin-left: 10px;
   @media (max-width: 576px) {
     width: 85px;
     height: 85px;
     margin-bottom: 25px;
     margin-right: 0px;
+    margin-left: 0px;
   }
 `
 const AuthereumLogo = styled(AuthereumImage)`
@@ -121,7 +123,7 @@ export default class WalletModal extends Component {
                   Authereum
                 </LogoButton>
               </LogoContainer>
-              <LogoContainer>
+              {/* <LogoContainer>
                 <ULLogo />
                 <LogoButton
                   onClick={() => {
@@ -131,7 +133,7 @@ export default class WalletModal extends Component {
                 >
                   Universal Login
                 </LogoButton>
-              </LogoContainer>
+              </LogoContainer> */}
               {this.state.isMetamask && (
                 <>
                   <LogoContainer>
