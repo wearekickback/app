@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
 import SignInButton from './SignInButton'
+import LogoutButton from './LogoutButton'
 
 import AuthereumButtom from './AuthereumButton'
 
@@ -35,6 +36,7 @@ function HamburgerMenu({ isMenuOpen }) {
       <LogoProviderContainer>
         <SignInButton />
       </LogoProviderContainer>
+      <LogoutButton />
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
       {links.map(l =>
