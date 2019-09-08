@@ -50,6 +50,7 @@ function Finalize({ party }) {
                             analyticsId="Finalize Event"
                             result={result}
                             onClick={finalize}
+                            userAddress={true}
                             preContent="Finalize and enable payouts"
                             postContent="Finalized!"
                           />
