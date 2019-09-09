@@ -10,7 +10,6 @@ const ErrorDiv = styled('div')`
 `
 
 function getStylesBasedOnWarningLevel(warningLevel) {
-  console.log(warningLevel)
   switch (warningLevel) {
     case 'high':
       return `

@@ -9,7 +9,7 @@ const EventLink = styled(Link)``
 
 export default function EventList({ events }) {
   return events.map(event => (
-    <EventAttendedContainer>
+    <EventAttendedContainer key={event.address}>
       <EventLink to={`/event/${event.address}`}>{event.name}</EventLink>
     </EventAttendedContainer>
   ))

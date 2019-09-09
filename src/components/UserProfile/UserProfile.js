@@ -5,8 +5,9 @@ import EventList from './EventList'
 import { H2, H3 } from '../Typography/Basic'
 import mq from 'mediaQuery'
 import { EDIT_PROFILE } from '../../modals'
-import { GlobalConsumer } from '../../GlobalState'
+import GlobalContext from '../../GlobalState'
 import Button from '../Forms/Button'
+import DefaultTwitterAvatar from '../User/TwitterAvatar'
 
 const UserProfileWrapper = styled('div')`
   display: flex;
@@ -32,12 +33,9 @@ const AvatarWrapper = styled('div')`
   max-width: 150px;
 `
 
-const Avatar = styled('img')`
-  border-radius: 50%;
-  width: 100%;
-  border: solid 1px #efefef;
-  margin: 0 auto 0;
-  margin-left: -2px;
+const TwitterAvatar = styled(DefaultTwitterAvatar)`
+  width: 150px;
+  height: 150px;
 `
 
 const Events = styled('div')`
@@ -61,14 +59,13 @@ const EditProfile = styled(Button)`
 
 export default function UserProfile({ profile: p }) {
   const twitter = getSocialId(p.social, 'twitter')
-  const { showModal, loggedIn, userProfile } = useContext(GlobalConsumer)
-  console.log(userProfile)
+  const { showModal, loggedIn, userProfile } = useContext(GlobalContext)
   return (
     <UserProfileWrapper>
       <UserProfileContainer>
         <ProfileDetails>
           <AvatarWrapper>
-            <Avatar src={`https://avatars.io/twitter/${twitter}`} />
+            <TwitterAvatar user={p} scale={8} size={19} />
           </AvatarWrapper>
           <Information>
             <H2>{p.username}</H2>
