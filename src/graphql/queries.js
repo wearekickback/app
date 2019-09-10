@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { ProfileFields, PartyFields } from './fragments'
+import { ProfileFields, ProfileFieldsDetailed, PartyFields } from './fragments'
 
 export const NETWORK_ID_QUERY = gql`
   query getNetworkId {
@@ -26,9 +26,19 @@ export const LEGAL_AGREEMENTS_QUERY = gql`
 export const USER_PROFILE_QUERY = gql`
   ${ProfileFields}
 
-  query getUserProfile($address: String!) {
-    profile: userProfile(address: $address) {
+  query getUserProfile($address: String, $username: String) {
+    profile: userProfile(address: $address, username: $username) {
       ...ProfileFields
+    }
+  }
+`
+
+export const USER_PROFILE_DETAILED_QUERY = gql`
+  ${ProfileFieldsDetailed}
+
+  query getUserProfile($address: String, $username: String) {
+    profile: userProfile(address: $address, username: $username) {
+      ...ProfileFieldsDetailed
     }
   }
 `

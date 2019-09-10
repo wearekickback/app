@@ -39,7 +39,7 @@ class FAQ extends Component {
           address.
         </h3>
         <p>
-          The profile photo is optionail. It is associated to your twitter
+          The profile photo is optional. It is associated to your twitter
           avatar which you provide during signup.
         </p>
 
