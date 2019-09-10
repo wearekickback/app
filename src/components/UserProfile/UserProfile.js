@@ -72,7 +72,7 @@ export default function UserProfile({ profile: p }) {
             {twitter && (
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
             )}
-            {loggedIn && userProfile.username === p.username && (
+            {loggedIn && userProfile && userProfile.username === p.username && (
               <EditProfile onClick={() => showModal({ name: EDIT_PROFILE })}>
                 Edit Profile
               </EditProfile>

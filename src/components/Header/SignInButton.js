@@ -62,7 +62,7 @@ function SignInButton() {
           userProfile &&
           userProfile.social &&
           userProfile.social.find(s => s.type === 'twitter')
-        return loggedIn ? (
+        return loggedIn && userProfile ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
             <Account to={`/user/${userProfile.username}`}>
