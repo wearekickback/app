@@ -1530,10 +1530,10 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@wearekickback/contracts@npm:@wearekickback/contracts-alpha@1.1.5":
+"@wearekickback/contracts@npm:@wearekickback/contracts-kovan-new@1.1.5":
   version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-alpha/-/contracts-alpha-1.1.5.tgz#c9172e8321ecd65c99743a1a46bfabe79948dd5c"
-  integrity sha512-FiBYoAQlZKgHxh3lQDtU9tVqdRK3tmywvtCKbjMzgf0+LK+6DhOSrh2QAefKw/a00tepsQlWe55PFxU2rezI+g==
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-kovan-new/-/contracts-kovan-new-1.1.5.tgz#218a26b1320d4ba76cbce3b01acbc17ce9cced5f"
+  integrity sha512-dcfpGqy7W1OWgloLF/pwOtrMntTdntXhBypZxeXhhepYkHjl9Wjnn4JYSkjnljW2JS+7DTylvPY1tgmDz6KY7A==
   dependencies:
     openzeppelin-solidity "^2.3.0"
 
