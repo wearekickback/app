@@ -13,6 +13,7 @@ import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
+import WarningBox from '../../components/WarningBox'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
@@ -142,6 +143,10 @@ const HostUsername = styled('span')`
   font-weight: bold;
 `
 
+const ContractAddressContainer = styled('div')`
+  margin-bottom: 1em;
+`
+
 class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
@@ -152,9 +157,6 @@ class EventInfo extends Component {
       <EventInfoContainer className={className}>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
-        <ContractAddress>
-          <EtherScanLink address={address}>{address}</EtherScanLink>
-        </ContractAddress>
         <EventImage
           src={party.headerImg || 'https://placeimg.com/640/480/tech'}
         />
@@ -164,7 +166,7 @@ class EventInfo extends Component {
             {admins.map(user => {
               return (
                 <Organiser key={user.username}>
-                  <UserAvatar user={user} />
+                  <UserAvatar user={user} size={8} scale={5} />
                   <HostUsername>{user.username}</HostUsername>
                 </Organiser>
               )
@@ -223,6 +225,17 @@ class EventInfo extends Component {
         <Comments>
           <Comment />
         </Comments>
+        <ContractAddressContainer>
+          <h3>Contract address</h3>
+          <ContractAddress>
+            <EtherScanLink address={address}>{address}</EtherScanLink>
+          </ContractAddress>
+          <WarningBox warningLevel="medium">
+            <strong>Warning</strong>: Please do NOT send your commitment
+            directly to the contract address. Please read our{' '}
+            <a href="/gettingstarted">guide</a> for more detail.
+          </WarningBox>
+        </ContractAddressContainer>
       </EventInfoContainer>
     )
   }

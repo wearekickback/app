@@ -1,6 +1,6 @@
 # Kickback Dapp
 
-- Dev version: https://dev.kickback.events
+- Dev version: https://rinkeby.kickback.events
 - Live version: https://kickback.events
 
 ## Dev guide

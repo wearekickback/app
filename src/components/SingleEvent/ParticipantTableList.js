@@ -20,7 +20,7 @@ import { PARTY_ADMIN_VIEW_QUERY } from '../../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../Table'
 import DefaultButton from '../Forms/Button'
-import ErrorBox from '../ErrorBox'
+import WarningBox from '../WarningBox'
 import SafeQuery from '../SafeQuery'
 import EventFilters from './EventFilters'
 import { GlobalConsumer } from '../../GlobalState'
@@ -218,9 +218,9 @@ class SingleEventWrapper extends Component {
                     return 'Loading ...'
                   } else {
                     return (
-                      <ErrorBox>
+                      <WarningBox>
                         We could not find an event at the address {address}!
-                      </ErrorBox>
+                      </WarningBox>
                     )
                   }
                 }

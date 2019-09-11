@@ -5,7 +5,7 @@ import { PARTY_QUERY } from '../../../graphql/queries'
 
 import Loader from '../../Loader'
 import PartyForm from './PartyForm'
-import ErrorBox from '../../ErrorBox'
+import WarningBox from '../../WarningBox'
 import SafeQuery from '../../SafeQuery'
 
 function UpdatePartyMetaComponent({ address }) {
@@ -22,9 +22,9 @@ function UpdatePartyMetaComponent({ address }) {
             return <Loader />
           } else {
             return (
-              <ErrorBox>
+              <WarningBox>
                 We could not find an event at the address {address}!
-              </ErrorBox>
+              </WarningBox>
             )
           }
         }

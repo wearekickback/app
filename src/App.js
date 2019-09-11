@@ -21,6 +21,7 @@ import Privacy from './routes/Privacy'
 import Pricing from './routes/Pricing'
 import Terms from './routes/Terms'
 import GettingStarted from './routes/GettingStarted'
+import UserProfile from './routes/UserProfile'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
@@ -67,6 +68,7 @@ class App extends Component {
                 path="/event/:address/admin"
                 component={SingleEventAdmin}
               />
+              <Route path="/user/:username" component={UserProfile} />
               <Route path="/create" component={CreateEvent} />
               <Route path="/faq" component={Faq} />
               <Route path="/terms" component={Terms} />

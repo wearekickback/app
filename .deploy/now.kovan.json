@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "name": "kickback-app-live",
-  "alias": "kickback.events",
+  "name": "kickback-app-kovan",
+  "alias": "kovan.kickback.events",
   "builds": [{ "src": "build/**", "use": "@now/static" }],
   "routes": [
     { "src": "/", "dest": "build/index.html" },

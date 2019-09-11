@@ -5,7 +5,7 @@ import styled from 'react-emotion'
 import { QR_SUPPORTED_QUERY, QR_QUERY } from '../../graphql/queries'
 
 import Button from '../Forms/Button'
-import ErrorBox from '../ErrorBox'
+import WarningBox from '../WarningBox'
 import { Search } from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import Select from '../Forms/Select'
@@ -97,7 +97,9 @@ class EventFilters extends Component {
                   {client => (
                     <QRCodeContainer>
                       <Button onClick={this._scan(client)}>Scan QRCode</Button>
-                      {scanError ? <ErrorBox>{`${scanError}`}</ErrorBox> : null}
+                      {scanError ? (
+                        <WarningBox>{`${scanError}`}</WarningBox>
+                      ) : null}
                     </QRCodeContainer>
                   )}
                 </ApolloConsumer>
