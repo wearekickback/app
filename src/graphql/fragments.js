@@ -68,3 +68,17 @@ export const PartyFields = gql`
     }
   }
 `
+
+export const ProfileFieldsDetailed = gql`
+  ${ProfileFields}
+  ${PartyFields}
+  fragment ProfileFieldsDetailed on UserProfile {
+    ...ProfileFields
+    eventsAttended {
+      ...PartyFields
+    }
+    eventsHosted {
+      ...PartyFields
+    }
+  }
+`

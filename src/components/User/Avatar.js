@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
+import Blockies from 'react-blockies'
 
 const AvatarContainer = styled('div')`
   border-radius: 50%;
@@ -8,24 +10,40 @@ const AvatarContainer = styled('div')`
   overflow: hidden;
 `
 
-const Avatar = ({ href, src, className }) => {
+const Avatar = ({
+  href,
+  username,
+  src,
+  className,
+  blockies,
+  size = 8,
+  scale = 8
+}) => {
   let container
+  let Img = src ? (
+    <img src={src} alt="avatar" />
+  ) : (
+    <Blockies seed={blockies} size={size} scale={scale} />
+  )
 
   if (href) {
     container = (
       <AvatarContainer className={className}>
         <a href={href} target="_blank" rel="noopener noreferrer">
-          <img src={src} alt="avatar" />
+          {Img}
         </a>
       </AvatarContainer>
     )
-  } else {
+  } else if (username) {
     container = (
       <AvatarContainer className={className}>
-        <img src={src} alt="avatar" />
+        <Link to={`/user/${username}`}>{Img}</Link>
       </AvatarContainer>
     )
+  } else {
+    container = <AvatarContainer className={className}>{Img}</AvatarContainer>
   }
+
   return container
 }
 

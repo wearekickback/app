@@ -14,6 +14,7 @@ import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 import Currency from './Currency'
+import WarningBox from '../../components/WarningBox'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
@@ -160,7 +161,7 @@ class EventInfo extends Component {
             {admins.map(user => {
               return (
                 <Organiser key={user.username}>
-                  <UserAvatar user={user} />
+                  <UserAvatar user={user} size={8} scale={5} />
                   <HostUsername>{user.username}</HostUsername>
                 </Organiser>
               )
@@ -225,9 +226,11 @@ class EventInfo extends Component {
           <ContractAddress>
             <EtherScanLink address={address}>{address}</EtherScanLink>
           </ContractAddress>
-          <strong>Warning</strong>: Please do NOT send your commitment directly
-          to the contract address. Please read our{' '}
-          <a href="/gettingstarted">guide</a> for more detail.
+          <WarningBox warningLevel="medium">
+            <strong>Warning</strong>: Please do NOT send your commitment
+            directly to the contract address. Please read our{' '}
+            <a href="/gettingstarted">guide</a> for more detail.
+          </WarningBox>
         </ContractAddressContainer>
       </EventInfoContainer>
     )

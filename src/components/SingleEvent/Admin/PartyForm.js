@@ -163,6 +163,8 @@ const commitmentInUsd = ({ tokenAddress, price, deposit }) => {
   return `ETH ($${totalPrice})`
 }
 
+const unit = 10 // $10 as a guide price
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -220,7 +222,6 @@ class PartyForm extends Component {
     getEtherPrice()
       .then(r => {
         if (r && r.result && r.result.ethusd) {
-          const unit = 10 // $10 as a guide price
           const price = parseFloat(r.result.ethusd)
           this.setState({ price: price })
           if (!this.state.deposit) {
@@ -450,10 +451,6 @@ class PartyForm extends Component {
                         currencyType={this.state.currencyType}
                         daiAddress={this.state.daiAddress}
                         onChange={({ currencyType, tokenAddress }) => {
-                          console.log('onChange', {
-                            currencyType,
-                            tokenAddress
-                          })
                           this.setState({ currencyType, tokenAddress })
                         }}
                       />
@@ -464,6 +461,7 @@ class PartyForm extends Component {
               <InputWrapper>
                 <Label>Commitment</Label>
                 <CommitmentInput
+                  value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
                 />
