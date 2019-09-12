@@ -192,15 +192,20 @@ const resolvers = {
       }
     },
     async rsvp(_, { address }) {
+      let tokenAddress
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      const tokenAddress = await contract.tokenAddress().call()
+      try {
+        tokenAddress = await contract.tokenAddress().call()
+      } catch (err) {
+        console.error(`Failed to get tokenAddress`, err)
+      }
       let deposit
-      if (tokenAddress === EMPTY_ADDRESS) {
-        deposit = await contract.deposit().call()
-      } else {
+      if (tokenAddress && tokenAddress !== EMPTY_ADDRESS) {
         deposit = 0
+      } else {
+        deposit = await contract.deposit().call()
       }
       try {
         const tx = await txHelper(
