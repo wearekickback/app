@@ -5,7 +5,14 @@ import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import { APPROVE_TOKEN } from '../../graphql/mutations'
 import { Going } from './Status'
 
-const Approve = ({ tokenAddress, address, className, deposit, isAllowed }) => {
+const Approve = ({
+  tokenAddress,
+  address,
+  className,
+  deposit,
+  isAllowed,
+  refetch
+}) => {
   if (isAllowed) {
     return <Going>You can now RSVP</Going>
   } else {
@@ -13,6 +20,7 @@ const Approve = ({ tokenAddress, address, className, deposit, isAllowed }) => {
       <ChainMutation
         mutation={APPROVE_TOKEN}
         resultKey="approveToken"
+        onConfirmed={refetch}
         variables={{ tokenAddress, address, deposit }}
         refetchQueries={[{ query: PARTY_QUERY, variables: { address } }]}
       >

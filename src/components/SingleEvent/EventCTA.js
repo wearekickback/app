@@ -135,7 +135,8 @@ class EventCTA extends Component {
               data: {
                 tokenAllowance: { allowance }
               },
-              loading
+              loading,
+              refetch
             }) => {
               const isAllowed = parseInt(allowance) > 0
               return this._renderActiveRsvp({
@@ -145,7 +146,8 @@ class EventCTA extends Component {
                 deposit,
                 participants,
                 participantLimit,
-                isAllowed
+                isAllowed,
+                refetch
               })
             }}
           </SafeQuery>
@@ -165,7 +167,7 @@ class EventCTA extends Component {
     }
   }
 
-  _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed }) {
+  _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed, refetch }) {
     const isToken = !isEmptyAddress(tokenAddress)
     return (
       <>
@@ -175,6 +177,7 @@ class EventCTA extends Component {
             address={address}
             deposit={deposit}
             isAllowed={isAllowed}
+            refetch={refetch}
           />
         ) : null}
         <RSVP
