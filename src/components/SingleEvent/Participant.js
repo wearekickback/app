@@ -95,7 +95,15 @@ function Participant({ participant, party, amAdmin }) {
               </Status>
             )
           ) : (
-            <Status>Not marked attended</Status>
+            <>
+              {attended ? (
+                <Status type="marked">
+                  Marked attended <Tick />
+                </Status>
+              ) : (
+                <Status>Not marked attended</Status>
+              )}
+            </>
           )}
         </ParticipantWrapper>
       )}
