@@ -12,7 +12,7 @@ const Approve = ({ tokenAddress, address, className, deposit, isAllowed }) => {
     return (
       <ChainMutation
         mutation={APPROVE_TOKEN}
-        resultKey="Approve"
+        resultKey="approveToken"
         variables={{ tokenAddress, address, deposit }}
         refetchQueries={[{ query: PARTY_QUERY, variables: { address } }]}
       >
