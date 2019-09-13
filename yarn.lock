@@ -1530,17 +1530,27 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@wearekickback/contracts@npm:@wearekickback/contracts-kovan-new@1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-kovan-new/-/contracts-kovan-new-1.1.5.tgz#218a26b1320d4ba76cbce3b01acbc17ce9cced5f"
-  integrity sha512-dcfpGqy7W1OWgloLF/pwOtrMntTdntXhBypZxeXhhepYkHjl9Wjnn4JYSkjnljW2JS+7DTylvPY1tgmDz6KY7A==
+"@wearekickback/contracts@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.2.0.tgz#aa8a6d9ae9c9e2629f083f0d64fe1325a9ce1456"
+  integrity sha512-kvb8cxWbg6jQe4bN3IMxs6166GcpI12wCVUI3Ld53BQc5Fg5Jlp3YzTObdciwUSmE9ffPhflud0ApvL3cihN0Q==
   dependencies:
+    "@wearekickback/shared" "^1.14.0"
     openzeppelin-solidity "^2.3.0"
 
 "@wearekickback/shared@^1.13.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.13.0.tgz#9126d8077985dc69ef20e1171c488ef0cb553040"
   integrity sha512-adOxLIg+ELfQKbbujK1tVK+RBmTfo17UNtnn11IgrLYKrnEzbIPG5ATyd6O2K90fba+0srh3TWduIKX1ln15GQ==
+  dependencies:
+    lodash.get "^4.4.2"
+    validator "^10.8.0"
+    web3-utils "^1.0.0-beta.36"
+
+"@wearekickback/shared@^1.14.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.0.tgz#97893086c6851904d1ba430679ee25f722a88dd6"
+  integrity sha512-8ahwhjDZEuOVQVJ4TYBAMM3O8OTNpEJyWA64xGJgDqNpit/Xdm+Wwad/zK/hGFhnh7TYAlSfd3iXyedRxmtWbw==
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
