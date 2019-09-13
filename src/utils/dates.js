@@ -31,3 +31,7 @@ export const getDateFromDayAndTime = (dayUTCString, time) => {
 export function getLocalTimezoneOffset() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone
 }
+
+export function getHours(utcString) {
+  return moment.utc(utcString).format('H:mm a')
+}
