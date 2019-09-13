@@ -53,6 +53,13 @@ if (argv.ropsten) {
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-kovan'
   appConfig.ROLLBAR_TOKEN = ''
   appConfig.BLOCKNATIVE_DAPPID = ''
+} else if (argv.alpha) {
+  appConfig.ENV = 'alpha'
+  appConfig.API_URL = 'https://alpha.api.kickback.events'
+  appConfig.GIT_COMMIT = getGitCommit()
+  appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-alpha'
+  appConfig.ROLLBAR_TOKEN = ''
+  appConfig.BLOCKNATIVE_DAPPID = ''
 } else if (argv.live) {
   appConfig.ENV = 'live'
   appConfig.API_URL = 'https://live.api.kickback.events'

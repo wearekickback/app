@@ -9,6 +9,8 @@ import Status from './ParticipantStatus'
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import tick from '../svg/tick.svg'
+import Currency from './Currency'
+import { GlobalConsumer } from '../../GlobalState'
 
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
@@ -70,37 +72,42 @@ function Participant({ participant, party, amAdmin }) {
   const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
 
   return (
-    <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
-      <TwitterAvatar user={user} size={10} scale={6} />
-      <ParticipantId>
-        <ParticipantUsername>{user.username}</ParticipantUsername>
-      </ParticipantId>
-      {ended ? (
-        attended ? (
-          <Status type="won">{`${
-            withdrawn ? ' Withdrew' : 'Won'
-          } ${payout} ETH `}</Status>
-        ) : (
-          <Status type="lost">
-            Lost{' '}
-            {toEthVal(deposit)
-              .toEth()
-              .toString()}{' '}
-            ETH
-          </Status>
-        )
-      ) : (
-        <>
-          {attended ? (
-            <Status type="marked">
-              Marked attended <Tick />
-            </Status>
+    <GlobalConsumer>
+      {({ userAddress, loggedIn }) => (
+        <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
+          <TwitterAvatar user={user} size={10} scale={6} />
+          <ParticipantId>
+            <ParticipantUsername>{user.username}</ParticipantUsername>
+          </ParticipantId>
+          {ended ? (
+            attended ? (
+              <Status type="won">
+                {`${withdrawn ? ' Withdrew' : 'Won'} ${payout}`}{' '}
+                <Currency tokenAddress={party.tokenAddress} />
+              </Status>
+            ) : (
+              <Status type="lost">
+                Lost{' '}
+                {toEthVal(deposit)
+                  .toEth()
+                  .toString()}{' '}
+                <Currency tokenAddress={party.tokenAddress} />{' '}
+              </Status>
+            )
           ) : (
-            <Status>Not marked attended</Status>
+            <>
+              {attended ? (
+                <Status type="marked">
+                  Marked attended <Tick />
+                </Status>
+              ) : (
+                <Status>Not marked attended</Status>
+              )}
+            </>
           )}
-        </>
+        </ParticipantWrapper>
       )}
-    </ParticipantWrapper>
+    </GlobalConsumer>
   )
 }
 

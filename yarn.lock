@@ -1530,15 +1530,27 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@wearekickback/contracts@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.1.4.tgz#279cebfd4682b3033f1bdd9e02e278c6257dd386"
-  integrity sha512-wTSuH+rAIfzYk9oPdtxCbA6xs1NplM1SsUj++QBI0YG+uT62aSUHUBdlEcWq/psW7O7AtxGsULE0eM6+yPAosQ==
+"@wearekickback/contracts@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.2.5.tgz#375f270ace4ca67d473404ecddf25113c03ad829"
+  integrity sha512-DFcliNULXWm/RjkrixDKzmvUJ8FVHjpr2Nx4OZNWfX2geAJoTIXCgAh6yOqUJxyoYFEfw93jjmAjOS5g4hpVhQ==
+  dependencies:
+    "@wearekickback/shared" "^1.14.0"
+    openzeppelin-solidity "^2.3.0"
 
 "@wearekickback/shared@^1.13.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.13.0.tgz#9126d8077985dc69ef20e1171c488ef0cb553040"
   integrity sha512-adOxLIg+ELfQKbbujK1tVK+RBmTfo17UNtnn11IgrLYKrnEzbIPG5ATyd6O2K90fba+0srh3TWduIKX1ln15GQ==
+  dependencies:
+    lodash.get "^4.4.2"
+    validator "^10.8.0"
+    web3-utils "^1.0.0-beta.36"
+
+"@wearekickback/shared@^1.14.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.0.tgz#97893086c6851904d1ba430679ee25f722a88dd6"
+  integrity sha512-8ahwhjDZEuOVQVJ4TYBAMM3O8OTNpEJyWA64xGJgDqNpit/Xdm+Wwad/zK/hGFhnh7TYAlSfd3iXyedRxmtWbw==
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
@@ -9936,6 +9948,11 @@ onetime@^2.0.0:
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-2.0.1.tgz#067428230fd67443b2794b22bba528b6867962d4"
   dependencies:
     mimic-fn "^1.0.0"
+
+openzeppelin-solidity@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.3.0.tgz#1ab7b4cc3782a5472ed61eb740c56a8bfdd74119"
+  integrity sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw==
 
 opn@5.2.0:
   version "5.2.0"

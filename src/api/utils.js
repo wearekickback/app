@@ -21,3 +21,9 @@ export function txHelper(web3TxObj) {
     })
   })
 }
+
+export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+export const isEmptyAddress = address => {
+  return !address || address === EMPTY_ADDRESS
+}
