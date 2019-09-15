@@ -15,6 +15,9 @@ import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 import qrCodeResolvers, {
   defaults as qrCodeDefaults
 } from './resolvers/qrCodeResolvers'
+import tokenResolvers, {
+  defaults as tokenDefaults
+} from './resolvers/tokenResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -73,12 +76,14 @@ const defaults = merge(
   rootDefaults,
   singleEventDefaults,
   ensDefaults,
-  qrCodeDefaults
+  qrCodeDefaults,
+  tokenDefaults
 )
 export default merge(
   resolvers,
   singleEventResolvers,
   ensResolvers,
-  qrCodeResolvers
+  qrCodeResolvers,
+  tokenResolvers
 )
 export { defaults }

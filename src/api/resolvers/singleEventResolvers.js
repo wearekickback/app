@@ -4,7 +4,7 @@ import { Conference } from '@wearekickback/contracts'
 
 import getWeb3, { getAccount, getDeployerAddress } from '../web3'
 import events from '../../fixtures/events.json'
-import { txHelper } from '../utils'
+import { txHelper, EMPTY_ADDRESS } from '../utils'
 import { toEthVal } from '../../utils/units'
 
 const deployerAbi = Deployer.abi
@@ -128,9 +128,14 @@ const resolvers = {
       console.log(`Deploying party`, args)
 
       const { id, deposit, limitOfParticipants, coolingPeriod } = args
+      let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
       const account = await getAccount()
+
+      if (tokenAddress === '') {
+        tokenAddress = EMPTY_ADDRESS
+      }
 
       const deployerAddress = await getDeployerAddress()
 
@@ -145,7 +150,8 @@ const resolvers = {
                 .toWei()
                 .toString(16),
               toEthVal(limitOfParticipants).toString(16),
-              toEthVal(coolingPeriod).toString(16)
+              toEthVal(coolingPeriod).toString(16),
+              tokenAddress
             )
             .send({
               gas: 3000000,
@@ -186,10 +192,21 @@ const resolvers = {
       }
     },
     async rsvp(_, { address }) {
+      let tokenAddress
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      const deposit = await contract.deposit().call()
+      try {
+        tokenAddress = await contract.tokenAddress().call()
+      } catch (err) {
+        console.error(`Failed to get tokenAddress`, err)
+      }
+      let deposit
+      if (tokenAddress && tokenAddress !== EMPTY_ADDRESS) {
+        deposit = 0
+      } else {
+        deposit = await contract.deposit().call()
+      }
       try {
         const tx = await txHelper(
           contract.register().send({
@@ -247,6 +264,24 @@ const resolvers = {
       try {
         const tx = await txHelper(
           contract.setLimitOfParticipants(limit).send({ from: account })
+        )
+
+        return tx
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
+    async changeDeposit(_, { address, deposit }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      const depositInWei = toEthVal(deposit, 'eth')
+        .toWei()
+        .toString(16)
+      try {
+        const tx = await txHelper(
+          contract.changeDeposit(depositInWei).send({ from: account })
         )
 
         return tx
