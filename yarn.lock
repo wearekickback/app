@@ -1530,10 +1530,10 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@wearekickback/contracts@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.2.7.tgz#d65c1870a4d2bd3f159833bb1960ca054466d8e9"
-  integrity sha512-FEKgim+5+ekbPGqi87zwQ2bChz8scp52BDmvc0MkCoxtgcH/ApRoQnsGYdx9UmwzLy+lqXAubJ1p4+5J+Mc8Zg==
+"@wearekickback/contracts@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.2.8.tgz#0cacf31504868ab330dff65d78cad31aec51ef6f"
+  integrity sha512-XAhkpNXE+fwJIvQLa1dO1tz3s8XnxWwtuCpLkFncf575AwLDGMFB+1ZdLZTna/1JmZADWunV6DIg5k2/X3UkPQ==
   dependencies:
     "@wearekickback/shared" "^1.14.0"
     openzeppelin-solidity "^2.3.0"
