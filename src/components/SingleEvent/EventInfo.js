@@ -267,10 +267,12 @@ class EventInfo extends Component {
               <TimeLabel>Start:</TimeLabel>
               <Time>{getHours(party.start)}</Time>
             </InfoGridItem>
-            <InfoGridItem>
-              <TimeLabel>Arrive by: </TimeLabel>
-              <Time>{getHours(party.arriveBy)}</Time>
-            </InfoGridItem>
+            {party.arriveBy && (
+              <InfoGridItem>
+                <TimeLabel>Arrive by: </TimeLabel>
+                <Time>{getHours(party.arriveBy)}</Time>
+              </InfoGridItem>
+            )}
           </InfoGrid>
         </TimeDetails>
         <EventDescription
