@@ -1,11 +1,12 @@
 # Kickback Dapp
 
-- Dev version: https://rinkeby.kickback.events
+- Dev version: https://kovan.kickback.events
 - Live version: https://kickback.events
 
 ## Dev guide
 
-Please read [our full setup guide](https://github.com/wearekickback/docs/blob/master/RunningEverythingLocally.md)
+Currently only frontend is open sourced.
+If you are working on the integration and need to connect to our backend, please contact Kickback team.
 
 **Test creating a event locally**
 

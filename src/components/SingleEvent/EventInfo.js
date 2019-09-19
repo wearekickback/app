@@ -14,6 +14,7 @@ import { ReactComponent as DefaultClockIcon } from '../svg/clock.svg'
 import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
+import Currency from './Currency'
 import WarningBox from '../../components/WarningBox'
 
 import moment from 'moment'

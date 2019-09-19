@@ -16,14 +16,18 @@ const TextInput = styled(DefaultTextInput)`
   margin-bottom: 10px;
 `
 
-const SetLimit = ({ address }) => {
+const SetLimit = ({ address, currentLimit }) => {
   const [text, setText] = useState('')
   return (
     <SetLimitContainer>
       <Mutation mutation={SET_LIMIT}>
         {setLimitOfParticipants => (
           <>
-            <TextInput type="text" onChangeText={setText} />
+            <TextInput
+              type="text"
+              onChangeText={setText}
+              placeholder={currentLimit}
+            />
             <Button
               analyticsId="Set Event Limit"
               onClick={() =>

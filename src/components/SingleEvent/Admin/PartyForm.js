@@ -19,7 +19,7 @@ import { extractNewPartyAddressFromTx } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-
+import { TOKEN_SYMBOL_QUERY } from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
@@ -27,6 +27,9 @@ import TextInput from 'components/Forms/TextInput'
 import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
+import Web3 from 'web3'
+import SafeQuery from '../../SafeQuery'
+import CurrencyPicker from './CurrencyPicker'
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -149,9 +152,18 @@ const CommitmentInput = styled(TextInput)`
   display: inline-table;
 `
 
-const CommitmentInUsd = styled('span')`
+const CommitmentInUsdContainer = styled('span')`
   padding-left: 1em;
 `
+
+const commitmentInUsd = ({ tokenAddress, price, deposit }) => {
+  if (Web3.utils.isAddress(tokenAddress)) return 'DAI'
+  if (!price) return 'ETH'
+  const totalPrice = (deposit * price).toFixed(2)
+  return `ETH ($${totalPrice})`
+}
+
+const unit = 10 // $10 as a guide price
 
 class PartyForm extends Component {
   constructor(props) {
@@ -167,7 +179,8 @@ class PartyForm extends Component {
       headerImg = '',
       deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
-      limitOfParticipants = 20
+      limitOfParticipants = 20,
+      tokenAddress = ''
     } = props
 
     const [startDay, startTime] = getDayAndTimeFromDate(start)
@@ -187,6 +200,9 @@ class PartyForm extends Component {
       arriveByTime: moment(arriveByTime).utcOffset('+00:00'),
       headerImg,
       deposit,
+      tokenAddress,
+      daiAddress: '',
+      currencyType: 'ETH',
       price: null,
       coolingPeriod,
       limitOfParticipants,
@@ -206,7 +222,6 @@ class PartyForm extends Component {
     getEtherPrice()
       .then(r => {
         if (r && r.result && r.result.ethusd) {
-          const unit = 10 // $10 as a guide price
           const price = parseFloat(r.result.ethusd)
           this.setState({ price: price })
           if (!this.state.deposit) {
@@ -235,6 +250,7 @@ class PartyForm extends Component {
       arriveByTime,
       headerImg,
       deposit,
+      tokenAddress,
       limitOfParticipants,
       coolingPeriod
     } = this.state
@@ -415,20 +431,47 @@ class PartyForm extends Component {
           </InputWrapper>
           {type === 'create' && (
             <>
+              <SafeQuery
+                query={TOKEN_SYMBOL_QUERY}
+                variables={{ symbol: 'DAI' }}
+              >
+                {({
+                  data: {
+                    token: { address }
+                  },
+                  loading
+                }) => {
+                  if (address && !this.state.daiAddress) {
+                    this.setState({ daiAddress: address })
+                  }
+                  return (
+                    <InputWrapper>
+                      <Label>Currency</Label>
+                      <CurrencyPicker
+                        currencyType={this.state.currencyType}
+                        daiAddress={this.state.daiAddress}
+                        onChange={({ currencyType, tokenAddress }) => {
+                          this.setState({ currencyType, tokenAddress })
+                        }}
+                      />
+                    </InputWrapper>
+                  )
+                }}
+              </SafeQuery>
               <InputWrapper>
                 <Label>Commitment</Label>
                 <CommitmentInput
                   value={deposit}
                   onChangeText={val => this.setState({ deposit: val })}
                   type="text"
-                  placeholder="ETH"
                 />
-                <CommitmentInUsd>
-                  ETH
-                  {this.state.price
-                    ? `($${(this.state.deposit * this.state.price).toFixed(2)})`
-                    : ''}
-                </CommitmentInUsd>
+                <CommitmentInUsdContainer>
+                  {commitmentInUsd({
+                    tokenAddress: this.state.tokenAddress,
+                    price: this.state.price,
+                    deposit: this.state.deposit
+                  })}
+                </CommitmentInUsdContainer>
               </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
@@ -474,7 +517,8 @@ class PartyForm extends Component {
                                   id,
                                   deposit,
                                   limitOfParticipants,
-                                  coolingPeriod
+                                  coolingPeriod,
+                                  tokenAddress
                                 }
                               })
                             })

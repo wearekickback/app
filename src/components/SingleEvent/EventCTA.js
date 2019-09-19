@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
-import { toEthVal } from '../../utils/units'
-
+import { isEmptyAddress } from '../../api/utils'
+import { TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
+import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
+import SafeQuery from '../SafeQuery'
+
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
@@ -65,6 +68,11 @@ const RSVP = styled(DefaultRSVP)`
   width: 100%;
 `
 
+const Approve = styled(DefaultApprove)`
+  width: 100%;
+  margin-bottom: 1em;
+`
+
 const MarkAttended = styled('div')``
 
 class EventCTA extends Component {
@@ -100,48 +108,49 @@ class EventCTA extends Component {
     }
   }
 
-  _renderActiveRsvp() {
+  _renderActiveRsvpWrapper() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants, participantLimit }
+      party: { tokenAddress, address, deposit, participants, participantLimit }
     } = this.props
-
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
+        if (isEmptyAddress(tokenAddress)) {
+          return this._renderActiveRsvp({
+            myParticipantEntry,
+            tokenAddress,
+            address,
+            deposit,
+            participants,
+            participantLimit,
+            isAllowed: true
+          })
+        }
         return (
-          <>
-            <RSVP address={address} deposit={deposit} />
-            <CTAInfo>
-              <strong>Kickback rules:</strong>
-              <ul>
-                <li>Everyone commits a small amount of ETH when they RSVP.</li>
-                <li>
-                  Any no-shows lose their ETH, which will be
-                  <strong> split amongst the attendees</strong>.
-                </li>
-                <li>
-                  After the event you can withdraw your post-event payout.
-                </li>
-              </ul>
-              <p>Please remember:</p>
-              <ul>
-                <li>Once you RSVP, you cannot cancel.</li>
-                <li>
-                  The event organiser must mark you as attended in order for you
-                  to qualify for the payout.
-                </li>
-                <li>
-                  You must withdraw your payout within the post-event cooling
-                  period.
-                </li>
-              </ul>
-              <Reference>
-                For more detail please see{' '}
-                <Link to="/gettingstarted">Getting started</Link> and{' '}
-                <Link to="/terms">Terms and conditions</Link>.
-              </Reference>
-            </CTAInfo>
-          </>
+          <SafeQuery
+            query={TOKEN_ALLOWANCE_QUERY}
+            variables={{ tokenAddress, partyAddress: address }}
+          >
+            {({
+              data: {
+                tokenAllowance: { allowance }
+              },
+              loading,
+              refetch
+            }) => {
+              const isAllowed = parseInt(allowance) > 0
+              return this._renderActiveRsvp({
+                myParticipantEntry,
+                tokenAddress,
+                address,
+                deposit,
+                participants,
+                participantLimit,
+                isAllowed,
+                refetch
+              })
+            }}
+          </SafeQuery>
         )
       }
 
@@ -156,6 +165,59 @@ class EventCTA extends Component {
       default:
         return ''
     }
+  }
+
+  _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed, refetch }) {
+    const isToken = !isEmptyAddress(tokenAddress)
+    return (
+      <>
+        {isToken ? (
+          <Approve
+            tokenAddress={tokenAddress}
+            address={address}
+            deposit={deposit}
+            isAllowed={isAllowed}
+            refetch={refetch}
+          />
+        ) : null}
+        <RSVP
+          tokenAddress={tokenAddress}
+          address={address}
+          deposit={deposit}
+          isAllowed={isAllowed}
+        />
+        <CTAInfo>
+          <strong>Kickback rules:</strong>
+          <ul>
+            <li>
+              Everyone commits a small amount of ETH/Token when they RSVP.
+            </li>
+            <li>
+              Any no-shows lose their commitment, which will be
+              <strong> split amongst the attendees</strong>.
+            </li>
+            <li>After the event you can withdraw your post-event payout.</li>
+          </ul>
+          <p>Please remember:</p>
+          <ul>
+            <li>Once you RSVP, you cannot cancel.</li>
+            <li>
+              The event organiser must mark you as attended in order for you to
+              qualify for the payout.
+            </li>
+            <li>
+              You must withdraw your payout within the post-event cooling
+              period.
+            </li>
+          </ul>
+          <Reference>
+            For more detail please see{' '}
+            <Link to="/gettingstarted">Getting started</Link> and{' '}
+            <Link to="/terms">Terms and conditions</Link>.
+          </Reference>
+        </CTAInfo>
+      </>
+    )
   }
 
   _renderAdminCTA() {
@@ -205,23 +267,25 @@ class EventCTA extends Component {
 
   render() {
     let {
-      party: { ended, cancelled, participants, balance }
+      // party: { ended, cancelled, participants, balance }
+      party: { ended, cancelled, participants }
     } = this.props
-
-    const cleared =
-      balance &&
-      toEthVal(balance)
-        .toEth()
-        .toNumber() === 0 &&
-      ended
-
+    // const cleared =
+    //   balance &&
+    //   toEthVal(balance)
+    //     .toEth()
+    //     .toNumber() === 0 &&
+    //   ended
+    // ERC20 has no balance hence always 0
+    // TODO: Refactor balance function
+    const cleared = false
     return (
       <EventCTAContainer>
         <RSVPContainer>
           {!cleared
             ? ended
               ? this._renderEndedRsvp()
-              : this._renderActiveRsvp()
+              : this._renderActiveRsvpWrapper()
             : this._renderCleared()}
         </RSVPContainer>
         {ended
