@@ -66,11 +66,6 @@ const Link = styled(DefaultHashLink)`
   margin-top: 2px;
 `
 
-const Pot = styled('div')`
-  display: flex;
-  flex-direction: column;
-`
-
 const Deposit = styled('div')`
   display: flex;
 `
@@ -232,13 +227,14 @@ class EventInfo extends Component {
                     .mul(party.participants.length)
                     .toEth()
                     .toFixed(2)}{' '}
-                  ETH
+                  <Currency tokenAddress={party.tokenAddress} />
                 </span>
               </TotalPot>
               <Deposit>
                 <strong>RSVP: </strong>
                 <span>
                   <DepositValue value={party.deposit} />
+                  <Currency tokenAddress={party.tokenAddress} />
                 </span>
               </Deposit>
             </InfoGridItem>
