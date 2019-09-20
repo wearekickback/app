@@ -10,6 +10,7 @@ import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
 import DepositValue from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
+import { ReactComponent as DefaultClockIcon } from '../svg/clock.svg'
 import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
@@ -18,6 +19,7 @@ import WarningBox from '../../components/WarningBox'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
+import { getHours } from '../../utils/dates'
 
 const EventDate = styled(DefaultEventDate)``
 
@@ -61,13 +63,7 @@ const Organiser = styled('div')`
 `
 
 const Link = styled(DefaultHashLink)`
-  display: flex;
   margin-top: 2px;
-`
-
-const Pot = styled('div')`
-  display: flex;
-  flex-direction: column;
 `
 
 const Deposit = styled('div')`
@@ -105,14 +101,14 @@ const TotalPot = styled('div')`
   color: #3d3f50;
   text-align: left;
   line-height: 21px;
-  display: flex;
-  align-items: flex-start;
 
   strong {
     font-weight: 600;
-    display: flex;
-    align-items: center;
     margin-right: 10px;
+  }
+
+  span {
+    margin-right: 20px;
   }
 `
 
@@ -133,6 +129,53 @@ const PhotoContainer = styled('div')``
 const Photo = styled('img')``
 const Comments = styled('section')``
 const Comment = styled('div')``
+
+const Clock = styled('div')`
+  background: #e9eaff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+`
+
+const ClockSVG = styled(DefaultClockIcon)`
+  width: 15px;
+`
+
+const TimeDetails = styled('div')`
+  margin-top: 25px;
+`
+
+const InfoGrid = styled('div')`
+  display: grid;
+  grid-template-columns: 50px minmax(100px, 170px) minmax(100px, 250px);
+`
+
+const InfoGridItem = styled('div')``
+
+const TimeLabel = styled('span')`
+  font-weight: 600;
+  margin-right: 10px;
+  font-family: Muli;
+  font-weight: 600;
+  font-size: 14px;
+  color: #3d3f50;
+  text-align: left;
+  line-height: 21px;
+`
+
+const Time = styled('span')`
+  font-family: Muli;
+  font-weight: 400;
+  font-size: 14px;
+  color: #3d3f50;
+  text-align: left;
+
+  line-height: 21px;
+`
 
 const HostUsername = styled('span')`
   font-weight: bold;
@@ -174,42 +217,61 @@ class EventInfo extends Component {
           {party.location || '11 Macclesfield St, London W1D 5BW'}
         </Location>
         <TotalPot>
-          <EthIcon />
-
-          <Pot>
-            <TotalPot>
-              <strong>Pot: </strong>
+          <InfoGrid>
+            <EthIcon />
+            <InfoGridItem>
+              <TotalPot>
+                <strong>Pot: </strong>
+                <span>
+                  {toEthVal(party.deposit)
+                    .mul(party.participants.length)
+                    .toEth()
+                    .toFixed(2)}{' '}
+                  <Currency tokenAddress={party.tokenAddress} />
+                </span>
+              </TotalPot>
+              <Deposit>
+                <strong>RSVP: </strong>
+                <span>
+                  <DepositValue value={party.deposit} />
+                  <Currency tokenAddress={party.tokenAddress} />
+                </span>
+              </Deposit>
+            </InfoGridItem>
+            <InfoGridItem>
+              <strong>
+                Cooling Period{' '}
+                <Link to="/faq#cooling">
+                  <InfoIcon />
+                </Link>
+                :{' '}
+              </strong>
               <span>
-                {toEthVal(party.deposit)
-                  .mul(party.participants.length)
-                  .toEth()
-                  .toFixed(2)}{' '}
-                <Currency tokenAddress={party.tokenAddress} />
+                {moment
+                  .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+                  .asDays()}{' '}
+                days
               </span>
-            </TotalPot>
-            <Deposit>
-              <strong>RSVP: </strong>
-              <span>
-                <DepositValue value={party.deposit} />
-                <Currency tokenAddress={party.tokenAddress} />
-              </span>
-            </Deposit>
-          </Pot>
-
-          <strong>
-            Cooling Period{' '}
-            <Link to="/faq#cooling">
-              <InfoIcon />
-            </Link>
-            :{' '}
-          </strong>
-          <span>
-            {moment
-              .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
-              .asDays()}{' '}
-            days
-          </span>
+            </InfoGridItem>
+          </InfoGrid>
         </TotalPot>
+        <TimeDetails>
+          <InfoGrid>
+            <Clock>
+              <ClockSVG />
+            </Clock>
+            <InfoGridItem>
+              <TimeLabel>Start:</TimeLabel>
+              <Time>{getHours(party.start)}</Time>
+            </InfoGridItem>
+            {party.arriveBy && (
+              <InfoGridItem>
+                <TimeLabel>Arrive by: </TimeLabel>
+                <Time>{getHours(party.arriveBy)}</Time>
+              </InfoGridItem>
+            )}
+          </InfoGrid>
+        </TimeDetails>
         <EventDescription
           dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
         />
