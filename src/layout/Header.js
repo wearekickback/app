@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
-import LogoutButton from '../components/Header/LogoutButton'
 import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
 
 import Logo from '../components/Icons/LogoFull'
@@ -73,7 +72,6 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/pricing">Pricing</NavLink>
             <GuideDropdown />
-            <LogoutButton />
             <SignInButton />
           </RightBar>
         )}

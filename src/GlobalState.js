@@ -108,6 +108,14 @@ class Provider extends Component {
     }
   }
 
+  logOut = () => {
+    this.setState({
+      auth: {
+        loggedIn: false
+      }
+    })
+  }
+
   setUserProfile = profile => {
     console.log('Current user', profile)
 
@@ -209,6 +217,7 @@ class Provider extends Component {
           networkState: this.state.networkState,
           loggedIn: this.isLoggedIn(),
           signIn: this.signIn,
+          logOut: this.logOut,
           signInError: this.state.signInError,
           showModal: this.showModal,
           closeModal: this.closeModal,

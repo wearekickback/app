@@ -8,6 +8,7 @@ import Avatar from '../User/Avatar'
 import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import AuthereumButton from './AuthereumButton'
+import LogoutButton from './LogoutButton'
 
 const Account = styled('div')`
   display: flex;
@@ -63,6 +64,7 @@ function SignInButton() {
         return loggedIn ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
+            <LogoutButton />
             <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
