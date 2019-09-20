@@ -14,7 +14,7 @@ import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from './SafeQuery'
 import Tooltip from './Tooltip'
 import Button from './Forms/Button'
-import ErrorBox from './ErrorBox'
+import WarningBox from './WarningBox'
 import { NEW_BLOCK } from '../utils/events'
 import { NUM_CONFIRMATIONS } from '../config'
 
@@ -189,7 +189,7 @@ export const ChainMutationResult = ({ children, result }) => {
   let extraContent = null
 
   if (error) {
-    extraContent = <ErrorBox>{`${error}`}</ErrorBox>
+    extraContent = <WarningBox>{`${error}`}</WarningBox>
   } else if (loading) {
     extraContent = <div>Sending transaction</div>
   } else if (progress) {
@@ -243,7 +243,7 @@ export class ChainMutationButton extends Component {
     } = this.props
 
     let content
-    let after = error ? <ErrorBox>{`${error}`}</ErrorBox> : null
+    let after = error ? <WarningBox>{`${error}`}</WarningBox> : null
 
     if (loading) {
       content = <div>Sending transaction...</div>

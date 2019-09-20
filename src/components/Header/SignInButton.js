@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 
 import { GlobalConsumer } from '../../GlobalState'
 import Tooltip from '../Tooltip'
@@ -10,7 +11,7 @@ import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import AuthereumButton from './AuthereumButton'
 import LogoutButton from './LogoutButton'
 
-const Account = styled('div')`
+const Account = styled(Link)`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -61,11 +62,11 @@ function SignInButton() {
           userProfile &&
           userProfile.social &&
           userProfile.social.find(s => s.type === 'twitter')
-        return loggedIn ? (
+        return loggedIn && userProfile ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
             <LogoutButton />
-            <Account onClick={() => showModal({ name: EDIT_PROFILE })}>
+            <Account to={`/user/${userProfile.username}`}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
                   {userProfile.username}

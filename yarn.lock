@@ -1487,13 +1487,26 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@wearekickback/contracts@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.1.4.tgz#279cebfd4682b3033f1bdd9e02e278c6257dd386"
+"@wearekickback/contracts@^1.2.9":
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.2.9.tgz#18da883dfec169c8c4d407644305844c0fd1f03e"
+  integrity sha512-D+vN4AhQ8/s61uzIAnVVFQeSsbjfRTW/neBPzMkxmPUnPW6HOnnyXrzH+kUfF2QvnhwVUzwz+4+XPPdHCbVUsw==
+  dependencies:
+    "@wearekickback/shared" "^1.14.0"
+    openzeppelin-solidity "^2.3.0"
 
 "@wearekickback/shared@^1.13.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.13.0.tgz#9126d8077985dc69ef20e1171c488ef0cb553040"
+  dependencies:
+    lodash.get "^4.4.2"
+    validator "^10.8.0"
+    web3-utils "^1.0.0-beta.36"
+
+"@wearekickback/shared@^1.14.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.0.tgz#97893086c6851904d1ba430679ee25f722a88dd6"
+  integrity sha512-8ahwhjDZEuOVQVJ4TYBAMM3O8OTNpEJyWA64xGJgDqNpit/Xdm+Wwad/zK/hGFhnh7TYAlSfd3iXyedRxmtWbw==
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
@@ -10925,6 +10938,11 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+openzeppelin-solidity@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.3.0.tgz#1ab7b4cc3782a5472ed61eb740c56a8bfdd74119"
+  integrity sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw==
+
 opn@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.2.0.tgz#71fdf934d6827d676cecbea1531f95d354641225"
@@ -12568,6 +12586,13 @@ react-app-polyfill@^0.2.1:
     promise "8.0.2"
     raf "3.4.1"
     whatwg-fetch "3.0.0"
+
+react-blockies@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-blockies/-/react-blockies-1.4.1.tgz#d4f0faf95ac197213a297a370a4d7f77ea3d0b08"
+  integrity sha512-4N015X5oPNnD3xQPsiqolOFzPZSSWyc5mJhJUZShUCHtiGUxVN+1qsWTcglkHMNySux9hUofaispqcw9QkWP5Q==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-day-picker@^7.3.0:
   version "7.3.0"

@@ -52,6 +52,7 @@ export const PartyFields = gql`
     headerImg
     balance
     deposit
+    tokenAddress
     coolingPeriod
     participantLimit
     ended
@@ -64,6 +65,20 @@ export const PartyFields = gql`
     }
     participants {
       ...ParticipantFields
+    }
+  }
+`
+
+export const ProfileFieldsDetailed = gql`
+  ${ProfileFields}
+  ${PartyFields}
+  fragment ProfileFieldsDetailed on UserProfile {
+    ...ProfileFields
+    eventsAttended {
+      ...PartyFields
+    }
+    eventsHosted {
+      ...PartyFields
     }
   }
 `

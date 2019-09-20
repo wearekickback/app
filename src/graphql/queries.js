@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { ProfileFields, PartyFields } from './fragments'
+import { ProfileFields, ProfileFieldsDetailed, PartyFields } from './fragments'
 
 export const NETWORK_ID_QUERY = gql`
   query getNetworkId {
@@ -26,9 +26,19 @@ export const LEGAL_AGREEMENTS_QUERY = gql`
 export const USER_PROFILE_QUERY = gql`
   ${ProfileFields}
 
-  query getUserProfile($address: String!) {
-    profile: userProfile(address: $address) {
+  query getUserProfile($address: String, $username: String) {
+    profile: userProfile(address: $address, username: $username) {
       ...ProfileFields
+    }
+  }
+`
+
+export const USER_PROFILE_DETAILED_QUERY = gql`
+  ${ProfileFieldsDetailed}
+
+  query getUserProfile($address: String, $username: String) {
+    profile: userProfile(address: $address, username: $username) {
+      ...ProfileFieldsDetailed
     }
   }
 `
@@ -81,5 +91,26 @@ export const QR_SUPPORTED_QUERY = gql`
 export const QR_QUERY = gql`
   query scanQRCode {
     qrCode: scanQRCode @client
+  }
+`
+
+export const TOKEN_QUERY = gql`
+  query getToken($tokenAddress: String!) {
+    token: getToken(tokenAddress: $tokenAddress) @client
+  }
+`
+
+export const TOKEN_ALLOWANCE_QUERY = gql`
+  query getTokenAllowance($tokenAddress: String!, $partyAddress: String!) {
+    tokenAllowance: getTokenAllowance(
+      tokenAddress: $tokenAddress
+      partyAddress: $partyAddress
+    ) @client
+  }
+`
+
+export const TOKEN_SYMBOL_QUERY = gql`
+  query getTokenBySymbol($symbol: String!) {
+    token: getTokenBySymbol(symbol: $symbol) @client
   }
 `

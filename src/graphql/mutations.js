@@ -8,12 +8,14 @@ export const CREATE_PARTY = gql`
     $deposit: String
     $limitOfParticipants: String
     $coolingPeriod: String
+    $tokenAddress: String
   ) {
     create: createParty(
       id: $id
       deposit: $deposit
       limitOfParticipants: $limitOfParticipants
       coolingPeriod: $coolingPeriod
+      tokenAddress: $tokenAddress
     ) @client @requireAuth
   }
 `
@@ -134,5 +136,19 @@ export const WITHDRAW_PAYOUT = gql`
 export const SINGLE_UPLOAD = gql`
   mutation singleUpload($file: Upload!) {
     singleUpload(file: $file)
+  }
+`
+
+export const APPROVE_TOKEN = gql`
+  mutation approveToken(
+    $tokenAddress: String
+    $address: String
+    $deposit: String
+  ) {
+    approveToken(
+      tokenAddress: $tokenAddress
+      address: $address
+      deposit: $deposit
+    ) @client
   }
 `

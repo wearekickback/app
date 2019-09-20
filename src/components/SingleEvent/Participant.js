@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Link } from 'react-router-dom'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
@@ -7,8 +8,9 @@ import Status from './ParticipantStatus'
 
 import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
-import { GlobalConsumer } from '../../GlobalState'
 import tick from '../svg/tick.svg'
+import Currency from './Currency'
+import { GlobalConsumer } from '../../GlobalState'
 
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
@@ -30,7 +32,7 @@ const Tick = () => (
   </TickContainer>
 )
 
-const ParticipantWrapper = styled('div')`
+const ParticipantWrapper = styled(Link)`
   height: ${p => (p.amAdmin ? '170px' : '120px')};
   display: flex;
   flex-direction: column;
@@ -72,23 +74,24 @@ function Participant({ participant, party, amAdmin }) {
   return (
     <GlobalConsumer>
       {({ userAddress, loggedIn }) => (
-        <ParticipantWrapper amAdmin={amAdmin}>
-          <TwitterAvatar user={user} />
+        <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
+          <TwitterAvatar user={user} size={10} scale={6} />
           <ParticipantId>
             <ParticipantUsername>{user.username}</ParticipantUsername>
           </ParticipantId>
           {ended ? (
             attended ? (
-              <Status type="won">{`${
-                withdrawn ? ' Withdrew' : 'Won'
-              } ${payout} ETH `}</Status>
+              <Status type="won">
+                {`${withdrawn ? ' Withdrew' : 'Won'} ${payout}`}{' '}
+                <Currency tokenAddress={party.tokenAddress} />
+              </Status>
             ) : (
               <Status type="lost">
                 Lost{' '}
                 {toEthVal(deposit)
                   .toEth()
                   .toString()}{' '}
-                ETH
+                <Currency tokenAddress={party.tokenAddress} />{' '}
               </Status>
             )
           ) : (

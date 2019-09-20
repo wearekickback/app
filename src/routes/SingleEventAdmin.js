@@ -6,7 +6,7 @@ import { ReactComponent as DefaultBackArrow } from '../components/svg/arrowBack.
 
 import ParticipantTableList from '../components/SingleEvent/ParticipantTableList'
 import SmartContractFunctions from '../components/SingleEvent/Admin/SmartContractFunctions'
-import ErrorBox from '../components/ErrorBox'
+import WarningBox from '../components/WarningBox'
 import { PARTY_QUERY } from '../graphql/queries'
 import { amAdmin } from '../utils/parties'
 import SafeQuery from '../components/SafeQuery'
@@ -107,7 +107,7 @@ class SingleEvent extends Component {
       <GlobalConsumer>
         {({ userAddress }) =>
           !userAddress ? (
-            <ErrorBox>You need to be logged-in to view this page</ErrorBox>
+            <WarningBox>You need to be logged-in to view this page</WarningBox>
           ) : (
             <>
               <BackToEventButton to={`/event/${address}`}>
@@ -123,9 +123,9 @@ class SingleEvent extends Component {
 
                   if (!isAdmin) {
                     return (
-                      <ErrorBox>
+                      <WarningBox>
                         You need to be an admin to view this page
-                      </ErrorBox>
+                      </WarningBox>
                     )
                   }
 
