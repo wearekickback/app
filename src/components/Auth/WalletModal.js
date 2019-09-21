@@ -32,10 +32,19 @@ const LogoContainer = styled('div')`
   margin-left: 10px;
   @media (max-width: 576px) {
     width: 85px;
-    height: 85px;
+    height: 175px;
     margin-bottom: 25px;
     margin-right: 0px;
     margin-left: 0px;
+  }
+`
+const LogoText = styled('div')`
+  font-size: 10px;
+  margin-bottom: 10px;
+  height: 25px;
+  @media (max-width: 576px) {
+    margin-bottom: 15px;
+    width: 100px;
   }
 `
 const AuthereumLogo = styled(AuthereumImage)`
@@ -57,10 +66,14 @@ const MetaMaskLogo = styled(MetaMaskImage)`
   margin-bottom: 5px;
 `
 const WebThreeLogo = styled('img')`
-  max-height: 75px;
-  max-width: 75px;
+  max-height: 60px;
+  max-width: 60px;
   height: 100px;
   margin-bottom: 5px;
+  @media (max-width: 576px) {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 `
 const LogoButton = styled(Button)`
   width: 150px;
@@ -115,6 +128,7 @@ export default class WalletModal extends Component {
             <TitleContainer>Choose your wallet</TitleContainer>
             <WalletsContainer>
               <LogoContainer>
+                <LogoText>I am not connected to an Ethereum wallet</LogoText>
                 <AuthereumLogo />
                 <LogoButton
                   onClick={() => {
@@ -139,6 +153,9 @@ export default class WalletModal extends Component {
               {this.state.isWeb3Injected && (
                 <>
                   <LogoContainer>
+                    <LogoText>
+                      I am connected to Metamask, Status.im, etc.
+                    </LogoText>
                     <WebThreeLogo src={WebThreeImage} />
                     <LogoButton
                       onClick={async () => {
