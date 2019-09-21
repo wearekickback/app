@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
-import DefaultDepositValue from '../Utils/DepositValue.js'
+import { depositValue } from '../Utils/DepositValue.js'
 import DefaultEventDate from '../Utils/EventDate.js'
+import Currency from '../SingleEvent/Currency'
 
 const Link = styled(DefaultLink)`
   color: #2b2b2b;
@@ -43,7 +44,7 @@ const EventDetails = styled('section')`
   padding: 20px;
 `
 
-const DepositValue = styled(DefaultDepositValue)`
+const Deposit = styled('span')`
   font-size: 11px;
   font-style: italic;
 `
@@ -51,7 +52,7 @@ const DepositValue = styled(DefaultDepositValue)`
 class EventCard extends Component {
   render() {
     const { party } = this.props
-    const { address, headerImg, deposit, name } = party
+    const { address, headerImg, deposit, name, tokenAddress } = party
 
     return (
       <EventCardContainer>
@@ -60,7 +61,9 @@ class EventCard extends Component {
           <EventDetails>
             <EventName>{name}</EventName>
             <EventDate event={party} />
-            <DepositValue value={deposit} prefix="RSVP: " />
+            <Deposit>
+              {depositValue(deposit)} <Currency tokenAddress={tokenAddress} />
+            </Deposit>
           </EventDetails>
         </Link>
       </EventCardContainer>
