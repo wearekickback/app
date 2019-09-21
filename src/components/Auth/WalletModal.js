@@ -127,6 +127,24 @@ export default class WalletModal extends Component {
           <>
             <TitleContainer>Choose your wallet</TitleContainer>
             <WalletsContainer>
+              {this.state.isWeb3Injected && (
+                <>
+                  <LogoContainer>
+                    <LogoText>
+                      I am connected to Metamask, Status.im, etc.
+                    </LogoText>
+                    <WebThreeLogo src={WebThreeImage} />
+                    <LogoButton
+                      onClick={async () => {
+                        await this.web3Init(signIn)
+                        closeModal({ name: WALLET_MODAL })
+                      }}
+                    >
+                      Web3
+                    </LogoButton>
+                  </LogoContainer>
+                </>
+              )}
               <LogoContainer>
                 <LogoText>I am not connected to an Ethereum wallet</LogoText>
                 <AuthereumLogo />
@@ -150,24 +168,6 @@ export default class WalletModal extends Component {
                   Universal Login
                 </LogoButton>
               </LogoContainer> */}
-              {this.state.isWeb3Injected && (
-                <>
-                  <LogoContainer>
-                    <LogoText>
-                      I am connected to Metamask, Status.im, etc.
-                    </LogoText>
-                    <WebThreeLogo src={WebThreeImage} />
-                    <LogoButton
-                      onClick={async () => {
-                        await this.web3Init(signIn)
-                        closeModal({ name: WALLET_MODAL })
-                      }}
-                    >
-                      Web3
-                    </LogoButton>
-                  </LogoContainer>
-                </>
-              )}
             </WalletsContainer>
           </>
         )}
