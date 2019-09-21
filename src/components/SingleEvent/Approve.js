@@ -29,6 +29,7 @@ const Approve = ({
             analyticsId="Approve"
             onClick={approve}
             result={result}
+            userAddress={true}
             className={className}
             preContent={<span>Allow RSVP with Token</span>}
             postContent={<Going>You can now RSVP</Going>}

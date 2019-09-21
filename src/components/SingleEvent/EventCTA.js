@@ -124,7 +124,8 @@ class EventCTA extends Component {
             deposit,
             participants,
             participantLimit,
-            isAllowed: true
+            isAllowed: true,
+            userAddress: userAddress
           })
         }
         return (
@@ -147,8 +148,9 @@ class EventCTA extends Component {
                 deposit,
                 participants,
                 participantLimit,
-                isAllowed,
-                refetch
+                isAllowed: isAllowed,
+                refetch: refetch,
+                userAddress: userAddress
               })
             }}
           </SafeQuery>
@@ -168,7 +170,14 @@ class EventCTA extends Component {
     }
   }
 
-  _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed, refetch }) {
+  _renderActiveRsvp({
+    tokenAddress,
+    address,
+    deposit,
+    isAllowed,
+    refetch,
+    userAddress
+  }) {
     const isToken = !isEmptyAddress(tokenAddress)
     return (
       <>
@@ -185,6 +194,7 @@ class EventCTA extends Component {
           tokenAddress={tokenAddress}
           address={address}
           deposit={deposit}
+          userAddress={userAddress}
           isAllowed={isAllowed}
         />
         <CTAInfo>
