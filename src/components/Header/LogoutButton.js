@@ -18,6 +18,7 @@ const StyledButton = styled(Button)`
     text-align: left;
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-right: 10px;
   }
 `
 
@@ -26,9 +27,7 @@ class LogoutButton extends Component {
     window.sessionStorage.setItem('walletSelection', 'authereum')
     await injectWeb3(networkState.networkState.networkName.toLowerCase())
     window.ethereum.disable()
-    console.log('1')
     await logOut()
-    console.log('2')
   }
   render() {
     return (
