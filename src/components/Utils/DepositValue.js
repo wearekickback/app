@@ -7,4 +7,10 @@ const DepositValue = ({ className, value, prefix }) => (
     .toFixed(2)}`}</span>
 )
 
+export function depositValue(value) {
+  return toEthVal(value)
+    .toEth()
+    .toFixed(2)
+}
+
 export default DepositValue

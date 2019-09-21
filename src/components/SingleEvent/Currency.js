@@ -1,24 +1,12 @@
-import React from 'react'
+function getTokenSymbol(tokenAddress) {
+  if (parseInt(tokenAddress, 16) !== 0) {
+    return 'DAI'
+  }
 
-import { TOKEN_QUERY } from '../../graphql/queries'
-import SafeQuery from '../SafeQuery'
+  return 'ETH'
+}
 
-const Currency = ({ tokenAddress, deposit }) => {
-  return (
-    <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
-      {({
-        data: {
-          token: { symbol }
-        },
-        loading
-      }) => {
-        return (
-          <>
-            {deposit} {symbol}
-          </>
-        )
-      }}
-    </SafeQuery>
-  )
+const Currency = ({ tokenAddress }) => {
+  return `${getTokenSymbol(tokenAddress)}`
 }
 export default Currency

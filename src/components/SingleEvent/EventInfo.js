@@ -8,7 +8,7 @@ import marked from 'marked'
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
-import DepositValue from '../Utils/DepositValue'
+import { depositValue } from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultClockIcon } from '../svg/clock.svg'
 import DefaultEventDate from '../Utils/EventDate'
@@ -223,17 +223,14 @@ class EventInfo extends Component {
               <TotalPot>
                 <strong>Pot: </strong>
                 <span>
-                  {toEthVal(party.deposit)
-                    .mul(party.participants.length)
-                    .toEth()
-                    .toFixed(2)}{' '}
+                  {depositValue(party.deposit)}{' '}
                   <Currency tokenAddress={party.tokenAddress} />
                 </span>
               </TotalPot>
               <Deposit>
                 <strong>RSVP: </strong>
                 <span>
-                  <DepositValue value={party.deposit} />
+                  {depositValue(party.deposit)}{' '}
                   <Currency tokenAddress={party.tokenAddress} />
                 </span>
               </Deposit>
