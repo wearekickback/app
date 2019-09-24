@@ -3,11 +3,11 @@ import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 
 import { GlobalConsumer } from '../../GlobalState'
-import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
-import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
-import Assist from './Assist'
+import { EDIT_PROFILE, UNIVERSAL_LOGIN } from '../../modals'
+import { LogoButton } from '@universal-login/react'
+import { universalLoginSdk, useUniversalLogin } from '../../universal-login'
 
 const Account = styled(Link)`
   display: flex;
@@ -25,78 +25,55 @@ const Username = styled('div')`
   text-overflow: ellipsis;
 `
 
-function SignInButton() {
-  const _signIn = ({
-    showTooltip,
-    hideTooltip,
-    signIn,
-    networkState,
-    reloadUserAddress
-  }) => async () => {
-    hideTooltip()
-    let assist = await Assist({
-      action: 'Sign in',
-      expectedNetworkId: networkState.expectedNetworkId
-    })
-    const address = await reloadUserAddress()
-    if (!networkState.allGood || !address) {
-      if (assist.fallback) {
-        return showTooltip()
-      }
-    } else {
-      signIn()
-    }
-  }
+const UniversalLogin = styled('div')`
+  margin-left: 15px;
+`
 
+function SignInButton() {
   return (
     <GlobalConsumer>
-      {({
-        reloadUserAddress,
-        userProfile,
-        networkState,
-        loggedIn,
-        signIn,
-        showModal
-      }) => {
+      {({ userProfile, loggedIn, showModal, applicationWallet }) => {
         const twitterProfile =
           userProfile &&
           userProfile.social &&
           userProfile.social.find(s => s.type === 'twitter')
-        return loggedIn && userProfile ? (
+
+        return loggedIn ? (
           <>
-            {/* <Notifications>Notification</Notifications> */}
-            <Account to={`/user/${userProfile.username}`}>
-              {userProfile ? (
-                <Username data-testid="userprofile-name">
-                  {userProfile.username}
-                </Username>
-              ) : null}
-              <Avatar
-                src={`https://avatars.io/twitter/${
-                  twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
-                }/medium`}
+            <div>
+              <Account to={`/user/${userProfile.username}`}>
+                {userProfile ? (
+                  <Username data-testid="userprofile-name">
+                    {userProfile.username}
+                  </Username>
+                ) : null}
+                <Avatar
+                  src={`https://avatars.io/twitter/${
+                    twitterProfile
+                      ? twitterProfile.value
+                      : 'unknowntwitter123abc'
+                  }/medium`}
+                />
+              </Account>
+            </div>
+            <UniversalLogin>
+              <LogoButton
+                applicationWallet={applicationWallet}
+                sdk={universalLoginSdk}
               />
-            </Account>
+            </UniversalLogin>
           </>
         ) : (
-          <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
-            {({ tooltipElement, showTooltip, hideTooltip }) => (
-              <Button
-                type="light"
-                onClick={_signIn({
-                  showTooltip,
-                  hideTooltip,
-                  signIn,
-                  reloadUserAddress,
-                  networkState
-                })}
-                analyticsId="Sign In"
-              >
-                {tooltipElement}
-                Sign in
-              </Button>
-            )}
-          </Tooltip>
+          <Button
+            type="light"
+            onClick={() => {
+              useUniversalLogin()
+              showModal({ name: UNIVERSAL_LOGIN })
+            }}
+            analyticsId="Sign In"
+          >
+            Sign in
+          </Button>
         )
       }}
     </GlobalConsumer>

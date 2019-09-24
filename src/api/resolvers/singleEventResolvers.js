@@ -6,6 +6,13 @@ import getWeb3, { getAccount, getDeployerAddress } from '../web3'
 import events from '../../fixtures/events.json'
 import { txHelper, EMPTY_ADDRESS } from '../utils'
 import { toEthVal } from '../../utils/units'
+import {
+  isUsingUniversalLogin,
+  universalLoginSdk,
+  getDeposit,
+  registerToEvent,
+  getApplicationWallet
+} from '../../universal-login'
 
 const deployerAbi = Deployer.abi
 const abi = Conference.abi
@@ -208,16 +215,29 @@ const resolvers = {
         deposit = await contract.deposit().call()
       }
       try {
-        const tx = await txHelper(
-          contract.register().send({
-            from: account,
-            value: deposit
-          })
-        )
-        return tx
+        if (isUsingUniversalLogin()) {
+          const deposit = await getDeposit(address, abi)
+          return await registerToEvent(
+            await getApplicationWallet(),
+            address,
+            abi,
+            deposit
+          )
+        } else {
+          const web3 = await getWeb3()
+          const account = await getAccount()
+          const { methods: contract } = new web3.eth.Contract(abi, address)
+          const deposit = await contract.deposit().call()
+          const tx = await txHelper(
+            contract.register().send({
+              from: account,
+              value: deposit
+            })
+          )
+          return tx
+        }
       } catch (err) {
         console.error(err)
-
         throw new Error(`Failed to RSVP`)
       }
     },

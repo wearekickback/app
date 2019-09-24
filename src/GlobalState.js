@@ -9,6 +9,11 @@ import { getAccount } from './api/web3'
 import { SIGN_IN } from './modals'
 import { LOGIN_USER_NO_AUTH } from './graphql/mutations'
 import { buildAuthHeaders } from './utils/requests'
+import {
+  isUsingUniversalLogin,
+  getApplicationWallet,
+  useUniversalLogin
+} from './universal-login'
 
 const GlobalContext = createContext({})
 
@@ -37,7 +42,8 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    networkState: {}
+    networkState: {},
+    applicationWallet: {}
   }
 
   authToken() {
@@ -165,6 +171,11 @@ class Provider extends Component {
   }
 
   async componentDidMount() {
+    const applicationWallet = await getApplicationWallet()
+    if (applicationWallet) {
+      useUniversalLogin()
+      this.setState({ applicationWallet })
+    }
     await this.reloadUserAddress()
 
     // try and sign in!
@@ -178,7 +189,14 @@ class Provider extends Component {
   }
 
   reloadUserAddress = async () => {
-    const address = await getAccount()
+    let address
+    if (isUsingUniversalLogin()) {
+      const applicationWallet = await getApplicationWallet()
+      address = applicationWallet.contractAddress
+      this.setState({ applicationWallet })
+    } else {
+      address = await getAccount()
+    }
 
     if (address) {
       await new Promise(resolve => {
@@ -202,6 +220,7 @@ class Provider extends Component {
       <GlobalContext.Provider
         value={{
           apolloClient: this.apolloClient(),
+          applicationWallet: this.state.applicationWallet,
           currentModal: this.state.currentModal,
           userAddress: this.state.auth.address,
           reloadUserAddress: this.reloadUserAddress,
