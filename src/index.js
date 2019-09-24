@@ -11,6 +11,9 @@ import { clientInstance } from './graphql'
 import setupWeb3 from './api/web3'
 import { GlobalProvider } from './GlobalState'
 import './globalStyles'
+import { universalLoginSdk } from './universal-login'
+
+universalLoginSdk.start()
 
 window.addEventListener('load', async () => {
   setupRollbar()

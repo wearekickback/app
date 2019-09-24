@@ -26,3 +26,21 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.universal-login-default div.modal-wrapper {
+  background: radial-gradient(720.65px at 50% 0%, #0C0E57 0%, #14052C 100%)
+}
+
+.universal-login-topup .universal-login-default div.top-up {
+  background: none;
+}
+
+.udashboard-blockies {
+  position: absolute;
+  left: 35.5%;
+  border-radius: 6px;
+  top: 10.5%;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+}
