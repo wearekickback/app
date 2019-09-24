@@ -168,7 +168,7 @@ class EventCTA extends Component {
   }
 
   _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed, refetch }) {
-    const isToken = !isEmptyAddress(tokenAddress)
+    const isToken = !isEmptyAddress(tokenAddress) || tokenAddress !== null
     return (
       <>
         {isToken ? (
