@@ -293,29 +293,29 @@ export class ChainMutationButton extends Component {
     this.setState({ notReadyError: null }, async () => {
       const address = await reloadUserAddress()
 
-      let assist = await Assist({
-        expectedNetworkId: networkState.expectedNetworkId,
-        action
-      })
-      if (assist.fallback) {
-        if (!address) {
-          return this.setState({
-            notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
-          })
-        }
-
-        if (!networkState.allGood) {
-          return this.setState({
-            notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
-          })
-        }
-        // Do not check assist.error as blocknative may incorrectly detect as error
-        postMutation()
-      } else {
-        if (!assist.error) {
-          postMutation()
-        }
-      }
+      // // let assist = await Assist({
+      // //   expectedNetworkId: networkState.expectedNetworkId,
+      // //   action
+      // // })
+      // if (assist.fallback) {
+      //   if (!address) {
+      //     return this.setState({
+      //       notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
+      //     })
+      //   }
+      //
+      //   if (!networkState.allGood) {
+      //     return this.setState({
+      //       notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
+      //     })
+      //   }
+      //   // Do not check assist.error as blocknative may incorrectly detect as error
+      //   postMutation()
+      // } else {
+      //   if (!assist.error) {
+      postMutation()
+      //   }
+      // }
     })
   }
 }

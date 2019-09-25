@@ -65,9 +65,10 @@ const resolvers = {
       const unlocked = isLocalEndpoint()
       console.log(`Ask user ${address} to sign: ${challengeString}`)
 
-      return !unlocked
-        ? web3.eth.personal.sign(challengeString, address, '')
-        : web3.eth.sign(challengeString, address)
+      return web3.eth.sign(challengeString, address)
+      // return !unlocked
+      //   ? web3.eth.personal.sign(challengeString, address, '')
+      //   : web3.eth.sign(challengeString, address)
     }
   }
 }

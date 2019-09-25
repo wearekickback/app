@@ -8,6 +8,7 @@ import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import Assist from './Assist'
+import getWeb3, { getUniversalLogin } from '../../api/web3'
 
 const Account = styled(Link)`
   display: flex;
@@ -25,6 +26,10 @@ const Username = styled('div')`
   text-overflow: ellipsis;
 `
 
+const UniversalLogin = styled('div')`
+  margin-left: 15px;
+`
+
 function SignInButton() {
   const _signIn = ({
     showTooltip,
@@ -33,19 +38,37 @@ function SignInButton() {
     networkState,
     reloadUserAddress
   }) => async () => {
-    hideTooltip()
-    let assist = await Assist({
-      action: 'Sign in',
-      expectedNetworkId: networkState.expectedNetworkId
+    const universalLogin = await getUniversalLogin()
+    const web3 = await getWeb3()
+    universalLogin.create()
+
+    // FIXME: Add a callback to universalLogin.create instead
+    await new Promise(resolve => {
+      const interval = setInterval(async () => {
+        const accounts = await web3.eth.getAccounts()
+        if (accounts.length > 0) {
+          clearInterval(interval)
+          resolve()
+        }
+      }, 1000)
     })
+
+    console.log('Login completed')
+
+    hideTooltip()
+    // let assist = await Assist({
+    //   action: 'Sign in',
+    //   expectedNetworkId: networkState.expectedNetworkId
+    // }
     const address = await reloadUserAddress()
-    if (!networkState.allGood || !address) {
-      if (assist.fallback) {
-        return showTooltip()
-      }
-    } else {
-      signIn()
-    }
+    // if (!networkState.allGood || !address) {
+    //   // if (assist.fallback) {
+    //   //   return showTooltip()
+    //   // }
+    // } else {
+
+    signIn()
+    // }
   }
 
   return (

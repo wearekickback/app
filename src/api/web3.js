@@ -1,6 +1,7 @@
 import { Deployer } from '@wearekickback/contracts'
 import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
+import { ULWeb3Provider } from '@universal-login/web3'
 
 import { DEPLOYER_CONTRACT_ADDRESS, DAI_CONTRACT_ADDRESS } from '../config'
 import { getProvider } from '../GlobalState'
@@ -8,7 +9,6 @@ import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
 import { NETWORK_ID_QUERY } from '../graphql/queries'
 
-let web3
 let networkState = {}
 let localEndpoint = false
 
@@ -41,13 +41,45 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/`
+      return `https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
     case '3':
-      return `https://ropsten.infura.io/`
+      return `https://ropsten.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
     case '4':
-      return `https://rinkeby.infura.io/`
+      return `https://rinkeby.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
     case '42':
-      return `https://kovan.infura.io/`
+      return `https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
+
+    default:
+      throw new Error(`Cannot connect to unsupported network: ${id}`)
+  }
+}
+
+const getNetworkRelayerUrl = id => {
+  switch (id) {
+    case '1':
+      return `https://relayer-mainnet.herokuapp.com`
+    case '3':
+      return `https://relyer-ropsten.herokuapp.com`
+    case '4':
+      return `https://relayer-rinkeby.herokuapp.com`
+    case '42':
+      return `https://relayer-kovan.herokuapp.com`
+
+    default:
+      throw new Error(`Cannot connect to unsupported network: ${id}`)
+  }
+}
+
+const getNetworkEnsDomains = id => {
+  switch (id) {
+    case '1':
+      return ['unitest.eth']
+    case '3':
+      return ['poppularapp.test']
+    case '4':
+      return ['poppularapp.test']
+    case '42':
+      return ['poppularapp.test']
 
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
@@ -65,87 +97,100 @@ const isLocalNetwork = id => {
   }
 }
 
-async function getWeb3() {
-  if (!web3) {
-    try {
-      networkState = { allGood: true }
-      const result = await clientInstance.query({
-        query: NETWORK_ID_QUERY
-      })
+const initWeb3 = lazyAsync(async () => {
+  try {
+    networkState = { allGood: true }
+    const result = await clientInstance.query({
+      query: NETWORK_ID_QUERY
+    })
 
-      if (result.error) {
-        throw new Error(result.error)
-      }
-      networkState.expectedNetworkId = result.data.networkId
-      networkState.expectedNetworkName = getNetworkName(
-        networkState.expectedNetworkId
-      )
-      if (window.ethereum) {
-        web3 = new Web3(window.ethereum)
-      } else if (window.web3 && window.web3.currentProvider) {
-        web3 = new Web3(window.web3.currentProvider)
-        networkState.readOnly = false
-      } else {
-        //local node
-        const url = 'http://localhost:8545'
-
-        try {
-          await fetch(url)
-          localEndpoint = true
-          web3 = new Web3(new Web3.providers.HttpProvider(url))
-        } catch (error) {
-          if (
-            error.readyState === 4 &&
-            (error.status === 400 || error.status === 200)
-          ) {
-            localEndpoint = true
-            web3 = new Web3(new Web3.providers.HttpProvider(url))
-          } else {
-            web3 = new Web3(
-              getNetworkProviderUrl(networkState.expectedNetworkId)
-            )
-            networkState.readOnly = true
-          }
-        } finally {
-          if (web3 && localEndpoint) {
-            console.log('Success: Local node active')
-          } else if (web3) {
-            console.log('Success: Cloud node active')
-          }
-        }
-      }
-      networkState.networkId = `${await web3.eth.net.getId()}`
-      networkState.networkName = getNetworkName(networkState.networkId)
-      networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
-      if (networkState.networkId !== networkState.expectedNetworkId) {
-        networkState.wrongNetwork = true
-        networkState.allGood = false
-      }
-      // if web3 not set then something failed
-      if (!web3) {
-        networkState.allGood = false
-        throw new Error('Error setting up web3')
-      }
-
-      // poll for blocks
-      setInterval(async () => {
-        try {
-          const block = await web3.eth.getBlock('latest')
-          events.emit(NEW_BLOCK, block)
-        } catch (__) {
-          /* nothing to do */
-        }
-      }, 10000)
-    } catch (err) {
-      console.warn(err)
-      web3 = null
-    } finally {
-      // update global state with current network state
-      updateGlobalState()
+    if (result.error) {
+      throw new Error(result.error)
     }
-  }
+    networkState.expectedNetworkId = result.data.networkId
+    networkState.expectedNetworkName = getNetworkName(
+      networkState.expectedNetworkId
+    )
+    // if (window.ethereum) {
+    //   web3 = new Web3(window.ethereum)
+    // } else if (window.web3 && window.web3.currentProvider) {
+    //   web3 = new Web3(window.web3.currentProvider)
+    //   networkState.readOnly = false
+    // } else {
+    //local node
+    // const url = 'http://localhost:8545'
+    //
+    // try {
+    //   await fetch(url)
+    //   localEndpoint = true
+    //   web3 = new Web3(new Web3.providers.HttpProvider(url))
+    // } catch (error) {
+    // if (
+    //   error.readyState === 4 &&
+    //   (error.status === 400 || error.status === 200)
+    // ) {
+    //   localEndpoint = true
+    //   web3 = new Web3(new Web3.providers.HttpProvider(url))
+    // } else {
 
+    const universalLogin = new ULWeb3Provider(
+      new Web3.providers.HttpProvider(
+        getNetworkProviderUrl(networkState.expectedNetworkId)
+      ),
+      getNetworkRelayerUrl(networkState.expectedNetworkId),
+      getNetworkEnsDomains(networkState.expectedNetworkId)
+    )
+    const web3 = new Web3(universalLogin)
+    // networkState.readOnly = true
+    // }
+    // } finally {
+    //   if (web3 && localEndpoint) {
+    //     console.log('Success: Local node active')
+    //   } else if (web3) {
+    //     console.log('Success: Cloud node active')
+    //   }
+    // }
+    // }
+    networkState.networkId = `${await web3.eth.net.getId()}`
+    networkState.networkName = getNetworkName(networkState.networkId)
+    networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
+    if (networkState.networkId !== networkState.expectedNetworkId) {
+      networkState.wrongNetwork = true
+      networkState.allGood = false
+    }
+    // if web3 not set then something failed
+    if (!web3) {
+      networkState.allGood = false
+      throw new Error('Error setting up web3')
+    }
+
+    // poll for blocks
+    setInterval(async () => {
+      try {
+        const block = await web3.eth.getBlock('latest')
+        events.emit(NEW_BLOCK, block)
+      } catch (__) {
+        /* nothing to do */
+      }
+    }, 10000)
+
+    return { web3, universalLogin }
+  } catch (err) {
+    console.warn(err)
+  } finally {
+    // update global state with current network state
+    updateGlobalState()
+  }
+})
+
+async function getWeb3() {
+  const { web3 } = await initWeb3()
   return web3
+}
+
+export async function getUniversalLogin() {
+  const { universalLogin } = await initWeb3()
+  return universalLogin
 }
 
 export async function getDeployerAddress() {
@@ -223,6 +268,22 @@ export async function getAccount() {
     }
   } catch (_) {
     return null
+  }
+}
+
+function lazyAsync(getter) {
+  let promise
+  let result
+
+  return async () => {
+    if (result) return result
+    if (!promise) {
+      promise = getter().then(res => {
+        result = res
+        return res
+      })
+    }
+    return promise
   }
 }
 
