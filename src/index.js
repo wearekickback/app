@@ -14,7 +14,12 @@ import './globalStyles'
 
 window.addEventListener('load', async () => {
   setupRollbar()
-  setupLogRocket()
+  // only setup logrocket on dev/prod
+  if (!window.location.href.includes('localhost')) {
+    setupLogRocket()
+  } else {
+    console.log(window.location.href.includes('localhost'))
+  }
   setupAnalytics()
 
   setupWeb3().catch(_ => {})
