@@ -57,6 +57,7 @@ export const PartyFields = gql`
     participantLimit
     ended
     cancelled
+    status
     roles {
       role
       user {

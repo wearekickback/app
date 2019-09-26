@@ -8,7 +8,7 @@ const DefaultTextArea = styled('textarea')`
   width: 100%;
   border-radius: 6px;
   border: 1px solid #edeef4;
-  padding-left: 20px;
+  padding-left: 15px;
   &:focus {
     outline: 0;
     border: 1px solid #6e76ff;
