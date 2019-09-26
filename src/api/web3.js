@@ -38,6 +38,22 @@ const getNetworkName = id => {
   }
 }
 
+const getNetworkProviderUrl = id => {
+  switch (id) {
+    case '1':
+      return `https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
+    case '3':
+      return `https://ropsten.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
+    case '4':
+      return `https://rinkeby.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
+    case '42':
+      return `https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
+
+    default:
+      throw new Error(`Cannot connect to unsupported network: ${id}`)
+  }
+}
+
 const isLocalNetwork = id => {
   switch (id) {
     case '1':
@@ -48,6 +64,8 @@ const isLocalNetwork = id => {
       return true
   }
 }
+
+const USING_UNIVERSAL_LOGIN = true
 
 const initWeb3 = lazyAsync(async () => {
   try {
@@ -63,42 +81,48 @@ const initWeb3 = lazyAsync(async () => {
     networkState.expectedNetworkName = getNetworkName(
       networkState.expectedNetworkId
     )
-    // if (window.ethereum) {
-    //   web3 = new Web3(window.ethereum)
-    // } else if (window.web3 && window.web3.currentProvider) {
-    //   web3 = new Web3(window.web3.currentProvider)
-    //   networkState.readOnly = false
-    // } else {
-    //local node
-    // const url = 'http://localhost:8545'
-    //
-    // try {
-    //   await fetch(url)
-    //   localEndpoint = true
-    //   web3 = new Web3(new Web3.providers.HttpProvider(url))
-    // } catch (error) {
-    // if (
-    //   error.readyState === 4 &&
-    //   (error.status === 400 || error.status === 200)
-    // ) {
-    //   localEndpoint = true
-    //   web3 = new Web3(new Web3.providers.HttpProvider(url))
-    // } else {
 
-    const universalLogin = ULWeb3Provider.getDefaultProvider(
-      networkState.expectedNetworkId
-    )
-    const web3 = new Web3(universalLogin)
-    // networkState.readOnly = true
-    // }
-    // } finally {
-    //   if (web3 && localEndpoint) {
-    //     console.log('Success: Local node active')
-    //   } else if (web3) {
-    //     console.log('Success: Cloud node active')
-    //   }
-    // }
-    // }
+    let web3
+    let universalLogin
+
+    if (USING_UNIVERSAL_LOGIN) {
+      universalLogin = ULWeb3Provider.getDefaultProvider(
+        networkState.expectedNetworkId
+      )
+      web3 = new Web3(universalLogin)
+    } else if (window.ethereum) {
+      web3 = new Web3(window.ethereum)
+    } else if (window.web3 && window.web3.currentProvider) {
+      web3 = new Web3(window.web3.currentProvider)
+      networkState.readOnly = false
+    } else {
+      //local node
+      const url = 'http://localhost:8545'
+
+      try {
+        await fetch(url)
+        localEndpoint = true
+        web3 = new Web3(new Web3.providers.HttpProvider(url))
+      } catch (error) {
+        if (
+          error.readyState === 4 &&
+          (error.status === 400 || error.status === 200)
+        ) {
+          localEndpoint = true
+          web3 = new Web3(new Web3.providers.HttpProvider(url))
+        } else {
+          web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
+
+          networkState.readOnly = true
+        }
+      } finally {
+        if (web3 && localEndpoint) {
+          console.log('Success: Local node active')
+        } else if (web3) {
+          console.log('Success: Cloud node active')
+        }
+      }
+    }
     networkState.networkId = `${await web3.eth.net.getId()}`
     networkState.networkName = getNetworkName(networkState.networkId)
     networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
