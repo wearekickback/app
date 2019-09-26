@@ -56,19 +56,18 @@ function SignInButton() {
     console.log('Login completed')
 
     hideTooltip()
-    // let assist = await Assist({
-    //   action: 'Sign in',
-    //   expectedNetworkId: networkState.expectedNetworkId
-    // }
+    let assist = await Assist({
+      action: 'Sign in',
+      expectedNetworkId: networkState.expectedNetworkId
+    })
     const address = await reloadUserAddress()
-    // if (!networkState.allGood || !address) {
-    //   // if (assist.fallback) {
-    //   //   return showTooltip()
-    //   // }
-    // } else {
-
-    signIn()
-    // }
+    if (!networkState.allGood || !address) {
+      if (assist.fallback) {
+        return showTooltip()
+      }
+    } else {
+      signIn()
+    }
   }
 
   return (
