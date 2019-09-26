@@ -11,7 +11,8 @@ import {
   universalLoginSdk,
   getDeposit,
   registerToEvent,
-  getApplicationWallet
+  getApplicationWallet,
+  getTokenAddress
 } from '../../universal-login'
 
 const deployerAbi = Deployer.abi
@@ -199,35 +200,31 @@ const resolvers = {
       }
     },
     async rsvp(_, { address }) {
-      let tokenAddress
-      const web3 = await getWeb3()
-      const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, address)
-      try {
-        tokenAddress = await contract.tokenAddress().call()
-      } catch (err) {
-        console.error(`Failed to get tokenAddress`, err)
-      }
-      let deposit
-      if (tokenAddress && tokenAddress !== EMPTY_ADDRESS) {
-        deposit = 0
-      } else {
-        deposit = await contract.deposit().call()
-      }
       try {
         if (isUsingUniversalLogin()) {
-          const deposit = await getDeposit(address, abi)
+          const deposit = await getDeposit(address, universalLoginSdk.provider)
           return await registerToEvent(
             await getApplicationWallet(),
             address,
-            abi,
-            deposit
+            deposit,
+            universalLoginSdk
           )
         } else {
+          let tokenAddress
           const web3 = await getWeb3()
           const account = await getAccount()
           const { methods: contract } = new web3.eth.Contract(abi, address)
-          const deposit = await contract.deposit().call()
+          try {
+            tokenAddress = await contract.tokenAddress().call()
+          } catch (err) {
+            console.error(`Failed to get tokenAddress`, err)
+          }
+          let deposit
+          if (tokenAddress && tokenAddress !== EMPTY_ADDRESS) {
+            deposit = 0
+          } else {
+            deposit = await contract.deposit().call()
+          }
           const tx = await txHelper(
             contract.register().send({
               from: account,

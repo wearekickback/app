@@ -5,8 +5,8 @@ import { utils, Wallet } from 'ethers'
 
 export const universalLoginSdk = new UniversalLoginSdk(
   // TODO: GET NETWORK FROM CONFIG
-  'https://relayer-rinkeby.herokuapp.com',
-  'https://rinkeby.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
+  'https://relayer-kovan.herokuapp.com',
+  'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
   {
     observedTokensAddresses: [
       ETHER_NATIVE_TOKEN.address,
@@ -46,4 +46,4 @@ export const signString = (stringToSign, privateKey) => {
   return utils.joinSignature(signature)
 }
 
-export { getDeposit, registerToEvent } from './rsvp'
+export { getDeposit, registerToEvent, approveToken } from './rsvp'
