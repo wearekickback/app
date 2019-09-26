@@ -159,6 +159,14 @@ const CommitmentInUsdContainer = styled('span')`
   padding-left: 1em;
 `
 
+const VisibilityDropdown = styled(Dropdown)`
+  .Dropdown-control {
+    border: solid 1px #edeef4;
+    border-radius: 5px;
+    padding-left: 15px;
+  }
+`
+
 const commitmentInUsd = ({ tokenAddress, price, deposit }) => {
   if (Web3.utils.isAddress(tokenAddress)) return 'DAI'
   if (!price) return 'ETH'
@@ -449,7 +457,7 @@ class PartyForm extends Component {
           </InputWrapper>
           <InputWrapper>
             <Label>Visibility</Label>
-            <Dropdown
+            <VisibilityDropdown
               options={visibilityOptions}
               onChange={option => {
                 this.setState({
