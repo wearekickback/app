@@ -10,6 +10,9 @@ import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
 import getEtherPrice from '../../../api/price'
 import { Link } from 'react-router-dom'
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
@@ -165,6 +168,17 @@ const commitmentInUsd = ({ tokenAddress, price, deposit }) => {
 
 const unit = 10 // $10 as a guide price
 
+const visibilityOptions = [
+  {
+    label: 'Public',
+    value: 'public'
+  },
+  {
+    label: 'Private',
+    value: 'private'
+  }
+]
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -180,7 +194,8 @@ class PartyForm extends Component {
       deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20,
-      tokenAddress = ''
+      tokenAddress = '',
+      status = 'public'
     } = props
 
     const [startDay, startTime] = getDayAndTimeFromDate(start)
@@ -206,7 +221,8 @@ class PartyForm extends Component {
       price: null,
       coolingPeriod,
       limitOfParticipants,
-      imageUploading: false
+      imageUploading: false,
+      status
     }
   }
 
@@ -252,7 +268,8 @@ class PartyForm extends Component {
       deposit,
       tokenAddress,
       limitOfParticipants,
-      coolingPeriod
+      coolingPeriod,
+      status
     } = this.state
 
     const {
@@ -276,7 +293,8 @@ class PartyForm extends Component {
         start,
         end,
         arriveBy,
-        headerImg
+        headerImg,
+        status
       },
       ...extraVariables
     }
@@ -428,6 +446,21 @@ class PartyForm extends Component {
                 )}
               </Mutation>
             </DropZoneWrapper>
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Visibility</Label>
+            <Dropdown
+              options={visibilityOptions}
+              onChange={option => {
+                this.setState({
+                  status: option.value
+                })
+              }}
+              value={visibilityOptions.find(
+                option => option.value === this.state.status
+              )}
+              placeholder="Select an option"
+            />
           </InputWrapper>
           {type === 'create' && (
             <>
