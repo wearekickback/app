@@ -38,54 +38,6 @@ const getNetworkName = id => {
   }
 }
 
-const getNetworkProviderUrl = id => {
-  switch (id) {
-    case '1':
-      return `https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
-    case '3':
-      return `https://ropsten.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
-    case '4':
-      return `https://rinkeby.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
-    case '42':
-      return `https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`
-
-    default:
-      throw new Error(`Cannot connect to unsupported network: ${id}`)
-  }
-}
-
-const getNetworkRelayerUrl = id => {
-  switch (id) {
-    case '1':
-      return `https://relayer-mainnet.herokuapp.com`
-    case '3':
-      return `https://relyer-ropsten.herokuapp.com`
-    case '4':
-      return `https://relayer-rinkeby.herokuapp.com`
-    case '42':
-      return `https://relayer-kovan.herokuapp.com`
-
-    default:
-      throw new Error(`Cannot connect to unsupported network: ${id}`)
-  }
-}
-
-const getNetworkEnsDomains = id => {
-  switch (id) {
-    case '1':
-      return ['unitest.eth']
-    case '3':
-      return ['poppularapp.test']
-    case '4':
-      return ['poppularapp.test']
-    case '42':
-      return ['poppularapp.test']
-
-    default:
-      throw new Error(`Cannot connect to unsupported network: ${id}`)
-  }
-}
-
 const isLocalNetwork = id => {
   switch (id) {
     case '1':
@@ -133,12 +85,8 @@ const initWeb3 = lazyAsync(async () => {
     //   web3 = new Web3(new Web3.providers.HttpProvider(url))
     // } else {
 
-    const universalLogin = new ULWeb3Provider(
-      new Web3.providers.HttpProvider(
-        getNetworkProviderUrl(networkState.expectedNetworkId)
-      ),
-      getNetworkRelayerUrl(networkState.expectedNetworkId),
-      getNetworkEnsDomains(networkState.expectedNetworkId)
+    const universalLogin = ULWeb3Provider.getDefaultProvider(
+      networkState.expectedNetworkId
     )
     const web3 = new Web3(universalLogin)
     // networkState.readOnly = true
