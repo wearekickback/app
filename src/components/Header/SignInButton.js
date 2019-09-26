@@ -40,20 +40,8 @@ function SignInButton() {
   }) => async () => {
     const universalLogin = await getUniversalLogin()
     const web3 = await getWeb3()
-    universalLogin.create()
 
-    // FIXME: Add a callback to universalLogin.create instead
-    await new Promise(resolve => {
-      const interval = setInterval(async () => {
-        const accounts = await web3.eth.getAccounts()
-        if (accounts.length > 0) {
-          clearInterval(interval)
-          resolve()
-        }
-      }, 1000)
-    })
-
-    console.log('Login completed')
+    await universalLogin.create()
 
     hideTooltip()
     let assist = await Assist({
