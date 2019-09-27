@@ -25,7 +25,7 @@ const StyledButton = styled(Button)`
 class LogoutButton extends Component {
   logOut = async (networkState, logOut) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
-    await injectWeb3(networkState.networkState.networkName.toLowerCase())
+    await injectWeb3(networkState.networkName.toLowerCase())
     window.ethereum.disable()
     await logOut()
   }

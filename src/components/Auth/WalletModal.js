@@ -93,7 +93,11 @@ export default class WalletModal extends Component {
 
   authereumInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
-    await injectWeb3(networkState.networkState.networkName.toLowerCase())
+    if (!networkState.networkName) {
+      console.error('Network not defined')
+      return
+    }
+    await injectWeb3(networkState.networkName.toLowerCase())
     window.ethereum.enable()
     window.ethereum.isMetaMask = false
 
@@ -150,24 +154,13 @@ export default class WalletModal extends Component {
                 <AuthereumLogo />
                 <LogoButton
                   onClick={() => {
-                    this.authereumInit({ networkState }, signIn)
+                    this.authereumInit(networkState, signIn)
                     closeModal({ name: WALLET_MODAL })
                   }}
                 >
                   Authereum
                 </LogoButton>
               </LogoContainer>
-              {/* <LogoContainer>
-                <ULLogo />
-                <LogoButton
-                  onClick={() => {
-                    this.authereumInit({ networkState })
-                    closeModal({ name: WALLET_MODAL })
-                  }}
-                >
-                  Universal Login
-                </LogoButton>
-              </LogoContainer> */}
             </WalletsContainer>
           </>
         )}

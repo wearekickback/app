@@ -65,7 +65,7 @@ function SignInButton() {
         return loggedIn && userProfile ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
-            <LogoutButton />
+            {/* <LogoutButton /> */}
             <Account to={`/user/${userProfile.username}`}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">

@@ -8,6 +8,7 @@ import GuideDropdown from '../components/Header/Guide'
 import SignInButton from '../components/Header/SignInButton'
 import Hamburger from '../components/Header/Hamburger'
 import HamburgerMenu from '../components/Header/HamburgerMenu'
+import LogoutButton from '../components/Header/LogoutButton'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -72,6 +73,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/pricing">Pricing</NavLink>
             <GuideDropdown />
+            <LogoutButton />
             <SignInButton />
           </RightBar>
         )}
