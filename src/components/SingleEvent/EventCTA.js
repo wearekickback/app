@@ -178,7 +178,7 @@ class EventCTA extends Component {
     refetch,
     userAddress
   }) {
-    const isToken = !isEmptyAddress(tokenAddress)
+    const isToken = !isEmptyAddress(tokenAddress) || tokenAddress !== null
     return (
       <>
         {isToken ? (
@@ -204,7 +204,9 @@ class EventCTA extends Component {
               Everyone commits a small amount of ETH/Token when they RSVP.
             </li>
             <li>
-              Any no-shows lose their commitment, which will be
+              Any no-shows or late shows who did not turn up by the{' '}
+              <strong>arrive by cut off time</strong> will lose their commitment
+              and will be
               <strong> split amongst the attendees</strong>.
             </li>
             <li>After the event you can withdraw your post-event payout.</li>

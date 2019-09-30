@@ -56,6 +56,7 @@ function AddAdmin({ address }) {
               <AddAdminInputContainer key={index}>
                 <AddAdminInput
                   onChangeText={value => setAddress(index, value)}
+                  placeholder="0x123456..."
                 />
                 {index > 0 && (
                   <Button onClick={() => removeAddress(index)}>x</Button>
