@@ -42,6 +42,7 @@ const LogoText = styled('div')`
   font-size: 10px;
   margin-bottom: 10px;
   height: 25px;
+  text-align: center;
   @media (max-width: 576px) {
     margin-bottom: 15px;
     width: 100px;
