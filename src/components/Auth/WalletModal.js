@@ -105,7 +105,7 @@ export default class WalletModal extends Component {
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed
-      await this.sleep(2500)
+      await this.sleep(4000)
       didCloseModal = await signIn()
     }
   }
