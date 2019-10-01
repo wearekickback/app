@@ -9,7 +9,7 @@ import Avatar from '../User/Avatar'
 import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import AuthereumButton from './AuthereumButton'
-import LogoutButton from './LogoutButton'
+import LoadingDots from '../Utils/LoadingDots'
 
 const Account = styled(Link)`
   display: flex;
@@ -27,7 +27,14 @@ const Username = styled('div')`
   text-overflow: ellipsis;
 `
 
+const SigninLoading = styled('div')`
+  display: flex;
+  flex-direction: row;
+`
+
 function SignInButton() {
+  let isSigningIn = false
+
   const _signIn = ({
     showTooltip,
     hideTooltip,
@@ -36,6 +43,7 @@ function SignInButton() {
     reloadUserAddress,
     showModal
   }) => async () => {
+    isSigningIn = true
     await reloadUserAddress()
     const walletSelection = window.sessionStorage.getItem('walletSelection')
     if (!walletSelection) {
@@ -96,7 +104,14 @@ function SignInButton() {
                 analyticsId="Sign In"
               >
                 {tooltipElement}
-                Sign in
+                {!isSigningIn ? (
+                  <div>Sign in</div>
+                ) : (
+                  <SigninLoading>
+                    Loading
+                    <LoadingDots />
+                  </SigninLoading>
+                )}
               </Button>
             )}
           </Tooltip>
