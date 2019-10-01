@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import { injectWeb3 } from 'authereum'
+import { Authereum } from 'authereum'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import getWeb3 from '../../api/web3'
@@ -25,7 +25,9 @@ const StyledButton = styled(Button)`
 class LogoutButton extends Component {
   logOut = async (networkState, logOut) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
-    await injectWeb3(networkState.networkName.toLowerCase())
+    const authereum = new Authereum(networkState.networkName.toLowerCase())
+    const provider = authereum.getProvider()
+    window.ethereum = provider
     window.ethereum.disable()
     await logOut()
   }
