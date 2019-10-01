@@ -7,6 +7,7 @@ import LogoutButton from './LogoutButton'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
+  z-index: 1;
   background: #6e76ff;
   flex-direction: column;
   position: relative;
