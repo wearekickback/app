@@ -1,6 +1,7 @@
 import styled from 'react-emotion'
 import React, { Component } from 'react'
-import { injectWeb3 } from 'authereum'
+import { Authereum } from 'authereum'
+import Web3 from 'web3'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
@@ -98,14 +99,18 @@ export default class WalletModal extends Component {
       console.error('Network not defined')
       return
     }
-    await injectWeb3(networkState.networkName.toLowerCase())
+    const authereum = new Authereum(networkState.networkName.toLowerCase())
+    const provider = authereum.getProvider()
+    window.ethereum = provider
+    window.web3 = new Web3(provider)
+
     window.ethereum.enable()
     window.ethereum.isMetaMask = false
 
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed
-      await this.sleep(4000)
+      await this.sleep(3000)
       didCloseModal = await signIn()
     }
   }
