@@ -34,7 +34,6 @@ const SigninLoading = styled('div')`
 
 function SignInButton() {
   let isSigningIn = false
-
   const _signIn = ({
     showTooltip,
     hideTooltip,
@@ -54,6 +53,7 @@ function SignInButton() {
         showModal({ name: WALLET_MODAL })
       }
     }
+    isSigningIn = false
   }
 
   return (
@@ -108,7 +108,7 @@ function SignInButton() {
                   <div>Sign in</div>
                 ) : (
                   <SigninLoading>
-                    Loading
+                    Sign in
                     <LoadingDots />
                   </SigninLoading>
                 )}
