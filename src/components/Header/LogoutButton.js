@@ -24,12 +24,13 @@ const StyledButton = styled(Button)`
 
 class LogoutButton extends Component {
   logOut = async (networkState, logOut) => {
-    window.sessionStorage.setItem('walletSelection', 'authereum')
+    window.sessionStorage.clear()
+    window.localStorage.clear()
     const authereum = new Authereum(networkState.networkName.toLowerCase())
     const provider = authereum.getProvider()
-    window.ethereum = provider
-    window.ethereum.disable()
+    provider.disable()
     await logOut()
+    window.location.reload()
   }
   render() {
     return (

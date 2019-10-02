@@ -125,7 +125,7 @@ export default class WalletModal extends Component {
   }
 
   isWeb3 = () => {
-    if (window.ethereum && !window.ethereum.authereum) {
+    if (window.ethereum) {
       return true
     }
     return false
