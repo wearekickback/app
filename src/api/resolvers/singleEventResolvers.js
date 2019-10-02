@@ -9,6 +9,7 @@ import { toEthVal } from '../../utils/units'
 
 const deployerAbi = Deployer.abi
 const abi = Conference.abi
+const contractBasedAccountGas = 250000
 
 export const defaults = {
   markedAttendedList: []
@@ -185,7 +186,8 @@ const resolvers = {
           contract
             .grant(userAddresses)
             .send({
-              from: account
+              from: account,
+              gas: contractBasedAccountGas
             })
             .on('error', error => {
               console.log('error = ', error)
@@ -221,7 +223,8 @@ const resolvers = {
             .register()
             .send({
               from: account,
-              value: deposit
+              value: deposit,
+              gas: contractBasedAccountGas
             })
             .on('error', error => {
               console.log('error = ', error)
@@ -243,7 +246,8 @@ const resolvers = {
           contract
             .finalize(maps.map(m => toBN(m).toString(10)))
             .send({
-              from: account
+              from: account,
+              gas: contractBasedAccountGas
             })
             .on('error', error => {
               console.log('error = ', error)
@@ -266,7 +270,8 @@ const resolvers = {
           contract
             .withdraw()
             .send({
-              from: account
+              from: account,
+              gas: contractBasedAccountGas
             })
             .on('error', error => {
               console.log('error = ', error)
@@ -289,7 +294,8 @@ const resolvers = {
           contract
             .setLimitOfParticipants(limit)
             .send({
-              from: account
+              from: account,
+              gas: contractBasedAccountGas
             })
             .on('error', error => {
               console.log('error = ', error)
@@ -311,7 +317,9 @@ const resolvers = {
         .toString(16)
       try {
         const tx = await txHelper(
-          contract.changeDeposit(depositInWei).send({ from: account })
+          contract
+            .changeDeposit(depositInWei)
+            .send({ from: account, gas: contractBasedAccountGas })
         )
 
         return tx
@@ -329,7 +337,8 @@ const resolvers = {
           contract
             .clear()
             .send({
-              from: account
+              from: account,
+              gas: contractBasedAccountGas
             })
             .on('error', error => {
               console.log('error = ', error)
