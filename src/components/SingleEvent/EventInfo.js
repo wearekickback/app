@@ -190,7 +190,6 @@ class EventInfo extends Component {
     const { party, address, className } = this.props
 
     const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
-
     return (
       <EventInfoContainer className={className}>
         <EventDate event={party} />
@@ -223,7 +222,7 @@ class EventInfo extends Component {
               <TotalPot>
                 <strong>Pot: </strong>
                 <span>
-                  {depositValue(party.deposit)}{' '}
+                  {depositValue(party.deposit * party.participants.length)}{' '}
                   <Currency tokenAddress={party.tokenAddress} />
                 </span>
               </TotalPot>
