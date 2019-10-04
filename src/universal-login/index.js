@@ -5,12 +5,12 @@ import { utils, Wallet } from 'ethers'
 
 export const universalLoginSdk = new UniversalLoginSdk(
   // TODO: GET NETWORK FROM CONFIG
-  'https://relayer-kovan.herokuapp.com',
-  'https://kovan.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
+  'https://relayer-mainnet.herokuapp.com',
+  'https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
   {
     observedTokensAddresses: [
       ETHER_NATIVE_TOKEN.address,
-      '0x5f81e2afde8297f90b3f9179f8f3ea172f3155a8'
+      '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
     ]
   }
 )
