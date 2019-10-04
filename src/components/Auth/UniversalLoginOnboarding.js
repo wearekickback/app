@@ -28,7 +28,7 @@ const UniversalLoginOnboarding = () => {
             onCreate={wallet =>
               onCreate(wallet, showModal, closeModal, reloadUserAddress)
             }
-            domains={['poppularapp.test']}
+            domains={['unitest.eth']}
           />
         </div>
       )}
