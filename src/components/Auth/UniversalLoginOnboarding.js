@@ -1,10 +1,15 @@
 import React from 'react'
 import { Onboarding } from '@universal-login/react'
-import { universalLoginSdk, saveApplicationWallet } from '../../universal-login'
+import {
+  universalLoginSdk,
+  saveApplicationWallet,
+  ensDomains
+} from '../../universal-login'
 import { GlobalConsumer } from '../../GlobalState'
 import { UNIVERSAL_LOGIN, SIGN_IN } from '../../modals'
 
 const UniversalLoginOnboarding = () => {
+  console.log(ensDomains)
   const onCreate = async (wallet, showModal, closeModal, reloadUserAddress) => {
     saveApplicationWallet(wallet)
     await reloadUserAddress(wallet.contractAddress)
@@ -28,7 +33,7 @@ const UniversalLoginOnboarding = () => {
             onCreate={wallet =>
               onCreate(wallet, showModal, closeModal, reloadUserAddress)
             }
-            domains={['unitest.eth']}
+            domains={ensDomains}
           />
         </div>
       )}

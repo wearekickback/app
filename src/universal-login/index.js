@@ -2,18 +2,20 @@ import { ETHER_NATIVE_TOKEN } from '@universal-login/commons'
 import UniversalLoginSdk from '@universal-login/sdk'
 import * as LocalStorage from '../api/localStorage'
 import { utils, Wallet } from 'ethers'
+import { ENV } from '../config'
+
+const network = ENV === 'live' ? 'mainnet' : ENV
 
 export const universalLoginSdk = new UniversalLoginSdk(
-  // TODO: GET NETWORK FROM CONFIG
-  'https://relayer-mainnet.herokuapp.com',
-  'https://mainnet.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d',
+  `https://relayer-${network}.universallogin.io`,
+  `https://${network}.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`,
   {
-    observedTokensAddresses: [
-      ETHER_NATIVE_TOKEN.address,
-      '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-    ]
+    observedTokensAddresses: [ETHER_NATIVE_TOKEN.address]
   }
 )
+
+export const ensDomains =
+  network === 'mainnet' ? ['unitest.eth'] : ['poppularapp.test']
 
 const STORAGE_KEY = 'universalLoginWallet'
 
