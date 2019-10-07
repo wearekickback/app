@@ -233,7 +233,7 @@ class EventInfo extends Component {
               <TotalPot>
                 <strong>Pot: </strong>
                 <span>
-                  {depositValue(party.deposit)}{' '}
+                  {depositValue(party.deposit * party.participants.length)}{' '}
                   <Currency tokenAddress={party.tokenAddress} />
                 </span>
               </TotalPot>
