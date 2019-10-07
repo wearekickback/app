@@ -6,11 +6,20 @@ import { ENV } from '../config'
 
 const network = ENV === 'live' ? 'mainnet' : ENV
 
+const applicationInfo = {
+  applicationName: 'Kickback',
+  logo: 'none',
+  type: 'laptop'
+}
+
 export const universalLoginSdk = new UniversalLoginSdk(
   `https://relayer-${network}.universallogin.io`,
   `https://${network}.infura.io/v3/b3026fc5137a4bd18e5d5906ed49f77d`,
   {
     observedTokensAddresses: [ETHER_NATIVE_TOKEN.address]
+  },
+  {
+    applicationInfo
   }
 )
 
