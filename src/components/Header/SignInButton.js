@@ -8,6 +8,7 @@ import Avatar from '../User/Avatar'
 import { EDIT_PROFILE, UNIVERSAL_LOGIN } from '../../modals'
 import { LogoButton } from '@universal-login/react'
 import { universalLoginSdk, useUniversalLogin } from '../../universal-login'
+import { DeployedWallet } from '@universal-login/sdk'
 
 const Account = styled(Link)`
   display: flex;
@@ -58,10 +59,14 @@ function SignInButton() {
             </div>
             <UniversalLogin>
               <LogoButton
-                deployedWallet={{
-                  ...applicationWallet,
-                  sdk: universalLoginSdk
-                }}
+                deployedWallet={
+                  new DeployedWallet(
+                    applicationWallet.contractAddress,
+                    applicationWallet.name,
+                    applicationWallet.privateKey,
+                    universalLoginSdk
+                  )
+                }
               />
             </UniversalLogin>
           </>
