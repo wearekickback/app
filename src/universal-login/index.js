@@ -14,6 +14,10 @@ export const universalLoginSdk = new UniversalLoginSdk(
   }
 )
 
+const startUniversalLoginSDK = () => universalLoginSdk.start()
+
+startUniversalLoginSDK()
+
 export const ensDomains =
   network === 'mainnet' ? ['unitest.eth'] : ['poppularapp.test']
 

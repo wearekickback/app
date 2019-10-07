@@ -58,8 +58,10 @@ function SignInButton() {
             </div>
             <UniversalLogin>
               <LogoButton
-                applicationWallet={applicationWallet}
-                sdk={universalLoginSdk}
+                deployedWallet={{
+                  ...applicationWallet,
+                  sdk: universalLoginSdk
+                }}
               />
             </UniversalLogin>
           </>
