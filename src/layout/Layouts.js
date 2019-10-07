@@ -44,7 +44,7 @@ const DefaultLayout = ({ children }) => {
           let content
 
           if (wrongNetwork) {
-            content = `You are viewing events on ${expectedNetworkName} but your browser is connected to ${networkName}. Please switch to the correct network.`
+            // content = `You are viewing events on ${expectedNetworkName} but your browser is connected to ${networkName}. Please switch to the correct network.`
           } else {
             if (readOnly || !networkId) {
               content = `Your browser is not connected to the Ethereum network, so you will not be able to sign in or interact with events.`
