@@ -89,6 +89,7 @@ async function getWeb3() {
       )
       if (walletSelection === 'torus') {
         const torus = new Torus()
+        window.torus = torus
         await torus.init({
           network: {
             host: networkState.expectedNetworkName.toLowerCase()

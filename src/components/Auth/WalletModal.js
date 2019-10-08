@@ -100,16 +100,20 @@ export default class WalletModal extends Component {
       return
     }
     const torus = await new Torus()
+    window.torus = torus
     await torus.init({
       network: {
         host: networkState.networkName.toLowerCase()
       },
       showTorusButton: false
     })
-    const provider = torus.ethereum
-    provider.enable()
-    provider.isMetaMask = false
-
+    await torus
+      .login()
+      .then(function() {
+        window.sessionStorage.setItem('torusLoggedIn', true)
+        return Promise.resolve()
+      })
+      .catch(console.error)
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed

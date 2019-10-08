@@ -50,7 +50,7 @@ class TorusButton extends Component {
       web3 &&
       web3.currentProvider &&
       web3.currentProvider.isTorus &&
-      (await web3.currentProvider.isTorus.isLoggedIn())
+      window.sessionStorage.getItem('torusIsLoggedIn') === true
     ) {
       this.setState({
         isTorusUser: true

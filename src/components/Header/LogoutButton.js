@@ -26,9 +26,6 @@ class LogoutButton extends Component {
   logOut = async (networkState, logOut) => {
     window.sessionStorage.clear()
     window.localStorage.clear()
-    if (window.torus) {
-      await window.torus.logout()
-    }
     window.location.reload()
   }
   render() {
