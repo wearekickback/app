@@ -47,6 +47,7 @@
     "react-timezone": "^2.3.0",
     "react-tooltip": "^3.9.0",
     "styled-components": "^4.4.0",
+    "@toruslabs/torus-embed": "0.2.2",
     "truffle": "^5.0.0-beta.0",
     "uuid": "^3.3.2",
     "web3": "1.0.0-beta.36",

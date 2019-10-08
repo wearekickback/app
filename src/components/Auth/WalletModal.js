@@ -1,14 +1,14 @@
 import styled from 'react-emotion'
 import React, { Component } from 'react'
-import { Authereum } from 'authereum'
-import Web3 from 'web3'
+import Torus from '@toruslabs/torus-embed'
+// import Web3 from 'web3'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
 
-import { ReactComponent as AuthereumImage } from '../svg/authereum.svg'
-import { ReactComponent as ULImage } from '../svg/ul.svg'
-import { ReactComponent as MetaMaskImage } from '../svg/metamask.svg'
+import { ReactComponent as TorusImage } from '../svg/torus-blue.svg'
+// import { ReactComponent as ULImage } from '../svg/ul.svg'
+// import { ReactComponent as MetaMaskImage } from '../svg/metamask.svg'
 import WebThreeImage from '../svg/web3.png'
 
 const WalletsContainer = styled('div')`
@@ -49,24 +49,24 @@ const LogoText = styled('div')`
     width: 100px;
   }
 `
-const AuthereumLogo = styled(AuthereumImage)`
+const TorusLogo = styled(TorusImage)`
   max-height: 75px;
   max-width: 75px;
   height: 100px;
   margin-bottom: 5px;
 `
-const ULLogo = styled(ULImage)`
-  max-height: 75px;
-  max-width: 75px;
-  height: 100px;
-  margin-bottom: 5px;
-`
-const MetaMaskLogo = styled(MetaMaskImage)`
-  max-height: 75px;
-  max-width: 75px;
-  height: 100px;
-  margin-bottom: 5px;
-`
+// const ULLogo = styled(ULImage)`
+//   max-height: 75px;
+//   max-width: 75px;
+//   height: 100px;
+//   margin-bottom: 5px;
+// `
+// const MetaMaskLogo = styled(MetaMaskImage)`
+//   max-height: 75px;
+//   max-width: 75px;
+//   height: 100px;
+//   margin-bottom: 5px;
+// `
 const WebThreeLogo = styled('img')`
   max-height: 60px;
   max-width: 60px;
@@ -93,14 +93,20 @@ export default class WalletModal extends Component {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
-  authereumInit = async (networkState, signIn) => {
-    window.sessionStorage.setItem('walletSelection', 'authereum')
+  torusInit = async (networkState, signIn) => {
+    window.sessionStorage.setItem('walletSelection', 'torus')
     if (!networkState.networkName) {
       console.error('Network not defined')
       return
     }
-    const authereum = new Authereum(networkState.networkName.toLowerCase())
-    const provider = authereum.getProvider()
+    const torus = await new Torus()
+    await torus.init({
+      network: {
+        host: networkState.networkName.toLowerCase()
+      },
+      showTorusButton: false
+    })
+    const provider = torus.ethereum
     provider.enable()
     provider.isMetaMask = false
 
@@ -154,14 +160,14 @@ export default class WalletModal extends Component {
               )}
               <LogoContainer>
                 <LogoText>I am not connected to an Ethereum wallet</LogoText>
-                <AuthereumLogo />
+                <TorusLogo />
                 <LogoButton
                   onClick={() => {
-                    this.authereumInit(networkState, signIn)
+                    this.torusInit(networkState, signIn)
                     closeModal({ name: WALLET_MODAL })
                   }}
                 >
-                  Authereum
+                  Torus
                 </LogoButton>
               </LogoContainer>
             </WalletsContainer>

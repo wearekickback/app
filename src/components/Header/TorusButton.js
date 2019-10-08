@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import getWeb3 from '../../api/web3'
-import AuthereumLogo from '../../assets/authereum_shield.svg'
+import TorusLogo from '../../assets/torus-logo.svg'
 import { GlobalConsumer } from '../../GlobalState'
 
-const Authereum = styled('div')`
+const Torus = styled('div')`
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -21,48 +21,47 @@ const Authereum = styled('div')`
   }
 `
 
-class AuthereumButton extends Component {
+class TorusButton extends Component {
   constructor() {
     super()
 
     this.state = {
-      isAuthereumUser: false,
+      isTorusUser: false,
       accountLink: null
     }
   }
 
   componentDidMount() {
-    this.checkForAuthereumUser()
+    this.checkForTorusUser()
   }
 
-  async checkForAuthereumUser() {
+  async checkForTorusUser() {
     let web3
     try {
       web3 = await getWeb3()
       this.setState({ web3 })
     } catch (e) {
       console.log('failed to get web3')
-      this.setState({ isAuthereumUser: false })
+      this.setState({ isTorusUser: false })
       return
     }
 
     if (
       web3 &&
       web3.currentProvider &&
-      web3.currentProvider.isAuthereum &&
-      (await web3.currentProvider.authereum.isAuthenticated())
+      web3.currentProvider.isTorus &&
+      (await web3.currentProvider.isTorus.isLoggedIn())
     ) {
       this.setState({
-        isAuthereumUser: true,
-        accountLink: `${web3.currentProvider.authereum.webUri}/account`
+        isTorusUser: true
       })
     } else {
-      this.setState({ isAuthereumUser: false })
+      this.setState({ isTorusUser: false })
     }
   }
 
   render() {
-    if (!this.state.isAuthereumUser) {
+    if (!this.state.isTorusUser) {
       return null
     }
 
@@ -70,14 +69,14 @@ class AuthereumButton extends Component {
       <GlobalConsumer>
         {({ loggedIn }) => {
           console.log('loggedIn: ', loggedIn)
-          return this.state.isAuthereumUser && loggedIn ? (
-            <Authereum
+          return this.state.isTorusUser && loggedIn ? (
+            <Torus
               onClick={() => {
-                window.open(this.state.accountLink)
+                window.ethereum.enable()
               }}
             >
-              <img src={AuthereumLogo} alt="Authereum" />
-            </Authereum>
+              <img src={TorusLogo} alt="Torus" />
+            </Torus>
           ) : null
         }}
       </GlobalConsumer>
@@ -85,4 +84,4 @@ class AuthereumButton extends Component {
   }
 }
 
-export default AuthereumButton
+export default TorusButton

@@ -257,7 +257,7 @@ export class ChainMutationButton extends Component {
 
     let tip
     getWeb3().then(web3 => {
-      if (web3._provider && web3._provider.authereum) {
+      if (web3.currentProvider && web3.currentProvider.isTorus) {
         tip = null
       } else {
         tip =
@@ -303,8 +303,8 @@ export class ChainMutationButton extends Component {
     this.setState({ notReadyError: null }, async () => {
       let web3 = await getWeb3()
 
-      // Do not show blocknative popup if Authereum is the provider
-      if (web3._provider && web3._provider.authereum) {
+      // Do not show blocknative popup if Torus is the provider
+      if (web3.currentProvider && web3.currentProvider.isTorus) {
         postMutation()
       } else {
         const address = await reloadUserAddress()
