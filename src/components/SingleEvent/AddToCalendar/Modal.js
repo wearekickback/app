@@ -31,29 +31,29 @@ const Cancel = styled(CrossIcon)`
   top: 5px;
 `
 
-const handleCalendarButtonClick = e => {
-  e.preventDefault()
-  const url = e.currentTarget.getAttribute('href')
-
-  if (url.startsWith('BEGIN')) {
-    const blob = new Blob([url], { type: 'text/calendar;charset=utf-8' })
-
-    if (isInternetExplorer()) {
-      window.navigator.msSaveOrOpenBlob(blob, `download.ics`)
-    } else {
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.setAttribute('download', `download.ics`)
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    }
-  } else {
-    window.open(url, '_blank')
-  }
-}
-
 function Modal({ event, closeModal }) {
+  const handleCalendarButtonClick = e => {
+    e.preventDefault()
+    const url = e.currentTarget.getAttribute('href')
+
+    if (url.startsWith('BEGIN')) {
+      const blob = new Blob([url], { type: 'text/calendar;charset=utf-8' })
+
+      if (isInternetExplorer()) {
+        window.navigator.msSaveOrOpenBlob(blob, `${event.title}.ics`)
+      } else {
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.setAttribute('download', `${event.title}.ics`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+    } else {
+      window.open(url, '_blank')
+    }
+  }
+
   return (
     <ModalContainer>
       <Calendars>
