@@ -55,6 +55,7 @@ const GetParty = `
 //     cat tmp/notwithdrawn.csv >> tmp/refund.csv
 //     sleep 1
 // done
+// Then use https://bulksender.app for bulk transfer
 program
   .usage('[options]')
   .option('-p, --partyid <id>', 'Party ETH address')
