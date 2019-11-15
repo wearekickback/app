@@ -3,22 +3,23 @@ import styled from 'react-emotion'
 import getWeb3 from '../../api/web3'
 import AuthereumLogo from '../../assets/authereum_shield.svg'
 import { GlobalConsumer } from '../../GlobalState'
+import mq from '../../mediaQuery'
 
 const Authereum = styled('div')`
   border-radius: 50%;
   width: 30px;
   height: 30px;
   overflow: hidden;
-  margin-left: -18.5px;
-  margin-bottom: -42.5px;
+  margin-left: -18px;
+  margin-bottom: -42px;
   cursor: pointer;
   padding: 5px;
   background-color: white;
-  @media (max-width: 576px) {
+  ${mq.small`
     margin-left: -15px;
     margin-bottom: 0px;
-    margin-top: 17.5px;
-  }
+    margin-top: 17px;
+  `}
 `
 
 class AuthereumButton extends Component {

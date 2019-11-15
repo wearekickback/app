@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { GlobalConsumer } from '../../GlobalState'
+import mq from '../../mediaQuery'
 
 class Modal extends Component {
   render() {
@@ -66,9 +67,9 @@ const ModalContent = styled('div')`
   border-radius: 6px;
   height: auto;
   width: auto;
-  @media (max-width: 576px) {
+  ${mq.small`
     width: 75%;
-  }
+  `}
 `
 
 export default Modal

@@ -5,6 +5,7 @@ import Web3 from 'web3'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
+import mq from '../../mediaQuery'
 
 import { ReactComponent as AuthereumImage } from '../svg/authereum.svg'
 import { ReactComponent as ULImage } from '../svg/ul.svg'
@@ -15,10 +16,10 @@ const WalletsContainer = styled('div')`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  @media (max-width: 576px) {
+  ${mq.medium`
     flex-direction: column;
     align-items: center;
-  }
+  `}
 `
 const TitleContainer = styled('h3')`
   text-align: center;
@@ -31,23 +32,23 @@ const LogoContainer = styled('div')`
   height: 140px;
   margin-right: 10px;
   margin-left: 10px;
-  @media (max-width: 576px) {
+  ${mq.small`
     width: 85px;
     height: 175px;
     margin-bottom: 25px;
     margin-right: 0px;
     margin-left: 0px;
-  }
+  `}
 `
 const LogoText = styled('div')`
   font-size: 10px;
   margin-bottom: 10px;
   height: 25px;
   text-align: center;
-  @media (max-width: 576px) {
+  ${mq.small`
     margin-bottom: 15px;
     width: 100px;
-  }
+  `}
 `
 const AuthereumLogo = styled(AuthereumImage)`
   max-height: 75px;
@@ -72,10 +73,10 @@ const WebThreeLogo = styled('img')`
   max-width: 60px;
   height: 100px;
   margin-bottom: 5px;
-  @media (max-width: 576px) {
+  ${mq.small`
     margin-top: 10px;
     margin-bottom: 10px;
-  }
+  `}
 `
 const LogoButton = styled(Button)`
   width: 150px;

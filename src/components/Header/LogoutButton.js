@@ -4,6 +4,7 @@ import { Authereum } from 'authereum'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import getWeb3 from '../../api/web3'
+import mq from '../../mediaQuery'
 
 const StyledButton = styled(Button)`
   background: none;
@@ -13,13 +14,13 @@ const StyledButton = styled(Button)`
     background: none;
     border: none;
   }
-  @media (max-width: 576px) {
+  ${mq.small`
     padding: 0px;
     text-align: left;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-right: 10px;
-  }
+  `}
 `
 
 class LogoutButton extends Component {
