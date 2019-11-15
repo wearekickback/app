@@ -19,7 +19,9 @@ import WarningBox from '../../components/WarningBox'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
-import { getHours } from '../../utils/dates'
+import { getHours, getUtcDateFromTimezone } from '../../utils/dates'
+
+import AddToCalendar from './AddToCalendar'
 
 const EventDate = styled(DefaultEventDate)``
 
@@ -190,6 +192,15 @@ class EventInfo extends Component {
     const { party, address, className } = this.props
 
     const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
+
+    const calendarEvent = {
+      title: party.name,
+      description: party.description,
+      location: party.location,
+      startTime: getUtcDateFromTimezone(party.start, party.timezone),
+      endTime: getUtcDateFromTimezone(party.end, party.timezone)
+    }
+
     return (
       <EventInfoContainer className={className}>
         <EventDate event={party} />
@@ -259,6 +270,7 @@ class EventInfo extends Component {
             <InfoGridItem>
               <TimeLabel>Start:</TimeLabel>
               <Time>{getHours(party.start)}</Time>
+              <AddToCalendar event={calendarEvent} />
             </InfoGridItem>
             {party.arriveBy && (
               <InfoGridItem>
