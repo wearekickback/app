@@ -35,6 +35,7 @@
     "react-blockies": "^1.4.1",
     "react-day-picker": "^7.3.0",
     "react-dom": "^16.8.1",
+    "react-dropdown": "^1.6.4",
     "react-dropzone": "^7.0.1",
     "react-emotion": "^9.2.6",
     "react-router": "^4.3.1",
