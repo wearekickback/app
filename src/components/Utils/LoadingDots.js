@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from 'react-emotion'
 
-const Dots = styled.div`
+const Dots = styled('div')`
   padding-right: 1em;
 
   &::after {
