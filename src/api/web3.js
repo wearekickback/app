@@ -156,17 +156,40 @@ export async function getDeployerAddress() {
 }
 
 export async function getTokenBySymbol(symbol) {
-  switch (networkState.expectedNetworkId) {
-    case '1':
-      return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-    case '3':
-      return '' // TODO
-    case '4':
-      return '' // TODO
-    case '42':
-      return '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
-    default:
-      return DAI_CONTRACT_ADDRESS
+  if (symbol === 'DAI') {
+    switch (networkState.expectedNetworkId) {
+      case '1':
+        return '0x6b175474e89094c44da98b954eedeac495271d0f'
+      // These are all fake DAI which anyone can mint
+      // https://twitter.com/PaulRBerg/status/1198276650884124674
+      // Ropsten
+      // https://twitter.com/PaulRBerg/status/1198276655816548354
+      case '3':
+        return '0x2d69ad895797c880abce92437788047ba0eb7ff6'
+      // Rinkeby
+      // https://twitter.com/PaulRBerg/status/1198276654566723584
+      case '4':
+        return '0xc3dbf84abb494ce5199d5d4d815b10ec29529ff8'
+      // Kovan
+      // https://twitter.com/PaulRBerg/status/1198276653312548865
+      case '42':
+        return '0x7d669a64deb8a4a51eea755bb0e19fd39ce25ae9'
+      default:
+        return DAI_CONTRACT_ADDRESS
+    }
+  } else if ('SAI') {
+    switch (networkState.expectedNetworkId) {
+      case '1':
+        return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
+      case '3':
+        return '' // TODO
+      case '4':
+        return '' // TODO
+      case '42':
+        return '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
+      default:
+        return DAI_CONTRACT_ADDRESS
+    }
   }
 }
 
