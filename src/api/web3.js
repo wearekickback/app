@@ -160,12 +160,20 @@ export async function getTokenBySymbol(symbol) {
     switch (networkState.expectedNetworkId) {
       case '1':
         return '0x6b175474e89094c44da98b954eedeac495271d0f'
+      // These are all fake DAI which anyone can mint
+      // https://twitter.com/PaulRBerg/status/1198276650884124674
+      // Ropsten
+      // https://twitter.com/PaulRBerg/status/1198276655816548354
       case '3':
-        return '0xdb67275d12909bc7038a6c6343dd581f7cdbb391'
+        return '0x2d69ad895797c880abce92437788047ba0eb7ff6'
+      // Rinkeby
+      // https://twitter.com/PaulRBerg/status/1198276654566723584
       case '4':
-        return '0xb307901ac0a807402a99879a491836697fec5e62' // TODO
+        return '0xc3dbf84abb494ce5199d5d4d815b10ec29529ff8'
+      // Kovan
+      // https://twitter.com/PaulRBerg/status/1198276653312548865
       case '42':
-        return '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa'
+        return '0x7d669a64deb8a4a51eea755bb0e19fd39ce25ae9'
       default:
         return DAI_CONTRACT_ADDRESS
     }
