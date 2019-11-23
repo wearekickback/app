@@ -156,17 +156,32 @@ export async function getDeployerAddress() {
 }
 
 export async function getTokenBySymbol(symbol) {
-  switch (networkState.expectedNetworkId) {
-    case '1':
-      return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-    case '3':
-      return '' // TODO
-    case '4':
-      return '' // TODO
-    case '42':
-      return '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
-    default:
-      return DAI_CONTRACT_ADDRESS
+  if (symbol === 'DAI') {
+    switch (networkState.expectedNetworkId) {
+      case '1':
+        return '0x6b175474e89094c44da98b954eedeac495271d0f'
+      case '3':
+        return '0xdb67275d12909bc7038a6c6343dd581f7cdbb391'
+      case '4':
+        return '0xb307901ac0a807402a99879a491836697fec5e62' // TODO
+      case '42':
+        return '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa'
+      default:
+        return DAI_CONTRACT_ADDRESS
+    }
+  } else if ('SAI') {
+    switch (networkState.expectedNetworkId) {
+      case '1':
+        return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
+      case '3':
+        return '' // TODO
+      case '4':
+        return '' // TODO
+      case '42':
+        return '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
+      default:
+        return DAI_CONTRACT_ADDRESS
+    }
   }
 }
 
