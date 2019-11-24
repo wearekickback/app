@@ -13,7 +13,14 @@ const RSVPText = styled(`span`)`
   margin-right: 0.5em;
 `
 
-const RSVP = ({ address, tokenAddress, className, deposit, isAllowed }) => {
+const RSVP = ({
+  address,
+  tokenAddress,
+  className,
+  deposit,
+  isAllowed,
+  hasBalance
+}) => {
   const ButtonText = () => {
     return (
       <>
@@ -23,13 +30,15 @@ const RSVP = ({ address, tokenAddress, className, deposit, isAllowed }) => {
     )
   }
 
-  if (!isAllowed) {
+  const NotReadyButton = () => {
     return (
       <Button disabled={true}>
         <ButtonText />
       </Button>
     )
-  } else {
+  }
+
+  const ReadyButton = () => {
     return (
       <ChainMutation
         mutation={RSVP_TO_EVENT}
@@ -49,6 +58,12 @@ const RSVP = ({ address, tokenAddress, className, deposit, isAllowed }) => {
         )}
       </ChainMutation>
     )
+  }
+
+  if (tokenAddress) {
+    return isAllowed && hasBalance ? <ReadyButton /> : <NotReadyButton />
+  } else {
+    return isAllowed ? <ReadyButton /> : <NotReadyButton />
   }
 }
 
