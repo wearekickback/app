@@ -7,22 +7,28 @@ import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
 import EthVal from 'ethval'
+import { EMPTY_ADDRESS } from '../../api/utils'
 
 const Approve = ({
   tokenAddress,
   address,
   className,
   deposit,
-  decodedDeposit,
-  balance,
+  decodedDeposit = 0,
+  balance = 0,
   isAllowed,
   hasBalance,
   refetch
 }) => {
-  const denominatedBalance = new EthVal(balance).toEth().toString()
-  const denominatedDeposit = new EthVal(decodedDeposit).toEth().toString()
-
-  if (isAllowed && hasBalance) {
+  let canRSVP, denominatedBalance, denominatedDeposit
+  if (tokenAddress !== EMPTY_ADDRESS) {
+    denominatedBalance = new EthVal(balance).toEth().toString()
+    denominatedDeposit = new EthVal(decodedDeposit).toEth().toString()
+    canRSVP = isAllowed && hasBalance
+  } else {
+    canRSVP = true
+  }
+  if (canRSVP) {
     return <Going>You can now RSVP</Going>
   } else if (!hasBalance) {
     return (

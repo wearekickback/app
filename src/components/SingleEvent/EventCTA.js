@@ -196,7 +196,6 @@ class EventCTA extends Component {
             balance={balance}
             isAllowed={isAllowed}
             hasBalance={hasBalance}
-            balance={balance}
             refetch={refetch}
           />
         ) : null}
