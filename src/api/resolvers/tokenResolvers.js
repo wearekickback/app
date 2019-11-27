@@ -150,7 +150,8 @@ const resolvers = {
       try {
         const account = await getAccount()
         const allowance = await contract.allowance(account, partyAddress).call()
-        return { allowance }
+        const balance = await contract.balanceOf(account).call()
+        return { allowance, balance }
       } catch (err) {
         console.log('Failed to fetch tokenAllowance', err)
         return { allowance: null }

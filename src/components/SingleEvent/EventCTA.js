@@ -8,6 +8,7 @@ import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
 import SafeQuery from '../SafeQuery'
+import { toBN } from 'web3-utils'
 
 import {
   calculateWinningShare,
@@ -133,20 +134,26 @@ class EventCTA extends Component {
           >
             {({
               data: {
-                tokenAllowance: { allowance }
+                tokenAllowance: { allowance, balance }
               },
               loading,
               refetch
             }) => {
-              const isAllowed = parseInt(allowance) > 0
+              console.log({ allowance, balance })
+              const decodedDeposit = parseInt(toBN(deposit).toString())
+              const isAllowed = parseInt(allowance) >= decodedDeposit
+              const hasBalance = parseInt(balance) >= decodedDeposit
               return this._renderActiveRsvp({
                 myParticipantEntry,
                 tokenAddress,
                 address,
                 deposit,
+                decodedDeposit,
                 participants,
                 participantLimit,
+                balance,
                 isAllowed,
+                hasBalance,
                 refetch
               })
             }}
@@ -167,7 +174,16 @@ class EventCTA extends Component {
     }
   }
 
-  _renderActiveRsvp({ tokenAddress, address, deposit, isAllowed, refetch }) {
+  _renderActiveRsvp({
+    tokenAddress,
+    address,
+    deposit,
+    decodedDeposit,
+    isAllowed,
+    hasBalance,
+    balance,
+    refetch
+  }) {
     const isToken = !isEmptyAddress(tokenAddress) || tokenAddress !== null
     return (
       <>
@@ -176,7 +192,10 @@ class EventCTA extends Component {
             tokenAddress={tokenAddress}
             address={address}
             deposit={deposit}
+            decodedDeposit={decodedDeposit}
+            balance={balance}
             isAllowed={isAllowed}
+            hasBalance={hasBalance}
             refetch={refetch}
           />
         ) : null}
@@ -185,6 +204,7 @@ class EventCTA extends Component {
           address={address}
           deposit={deposit}
           isAllowed={isAllowed}
+          hasBalance={hasBalance}
         />
         <CTAInfo>
           <strong>Kickback rules:</strong>
