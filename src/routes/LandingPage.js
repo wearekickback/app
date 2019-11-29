@@ -251,22 +251,19 @@ class Home extends Component {
         </Section>
         <CTA>
           <CTAInner>
-            <h2>Hosting events during Devcon5?</h2>
+            <h2>Interested in hosting events on Kickback?</h2>
             <p>
-              We partnered with local co-working spaces to help you find the
-              right place and promote your events on our social event calendar.
-              We also open up limited spots for Kickback so that you can use it
-              to prevent no shows. For more info, please read our{' '}
-              <a href="https://medium.com/wearekickback/introducing-osaka-blockchain-week-605524be0f0f">
-                medium post
-              </a>
+              Once KickBack is ready, we would like to open up the platform to
+              the limited number of free event organisers.
             </p>
-            <ButtonLink analyticsId="OBW" href="http://osaka.kickback.events">
-              Go to Osaka Blockchain Week calendar
+            <ButtonLink
+              analyticsId="Request Early Access"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+            >
+              Request early access
             </ButtonLink>
             <p>
-              Or want to organise events in your local meetups and conferences?
-              Email us at{' '}
+              Or just curious? Email us at{' '}
               <a href="mailto:hello@kickback.events">hello@kickback.events</a>
             </p>
           </CTAInner>

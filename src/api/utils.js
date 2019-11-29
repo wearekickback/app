@@ -27,3 +27,19 @@ export const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const isEmptyAddress = address => {
   return !address || address === EMPTY_ADDRESS
 }
+
+export function lazyAsync(getter) {
+  let promise
+  let result
+
+  return async () => {
+    if (result) return result
+    if (!promise) {
+      promise = getter().then(res => {
+        result = res
+        return res
+      })
+    }
+    return promise
+  }
+}
