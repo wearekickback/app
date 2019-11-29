@@ -11,6 +11,8 @@ import { Authereum } from 'authereum'
 
 let web3
 let web3WalletSelection
+import { lazyAsync } from './utils'
+
 let networkState = {}
 let localEndpoint = false
 
@@ -67,7 +69,7 @@ const isLocalNetwork = id => {
   }
 }
 
-async function getWeb3() {
+const getWeb3 = lazyAsync(async () => {
   const walletSelection = window.sessionStorage.getItem('walletSelection')
 
   // If cached web3 doesn't exist or wallet sellection has changed, get web3
@@ -107,25 +109,9 @@ async function getWeb3() {
           await fetch(url)
           localEndpoint = true
           web3 = new Web3(new Web3.providers.HttpProvider(url))
-        } catch (error) {
-          if (
-            error.readyState === 4 &&
-            (error.status === 400 || error.status === 200)
-          ) {
-            localEndpoint = true
-            web3 = new Web3(new Web3.providers.HttpProvider(url))
-          } else {
-            web3 = new Web3(
-              getNetworkProviderUrl(networkState.expectedNetworkId)
-            )
-            networkState.readOnly = true
-          }
-        } finally {
-          if (web3 && localEndpoint) {
-            console.log('Success: Local node active')
-          } else if (web3) {
-            console.log('Success: Cloud node active')
-          }
+        } else {
+          web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
+          networkState.readOnly = true
         }
       }
       networkState.networkId = `${await web3.eth.net.getId()}`
@@ -154,18 +140,40 @@ async function getWeb3() {
         } catch (__) {
           /* nothing to do */
         }
-      }, 10000)
-    } catch (err) {
-      console.warn(err)
-      web3 = null
-    } finally {
-      // update global state with current network state
-      updateGlobalState()
+      }
     }
+    networkState.networkId = `${await web3.eth.net.getId()}`
+    networkState.networkName = getNetworkName(networkState.networkId)
+    networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
+    if (networkState.networkId !== networkState.expectedNetworkId) {
+      networkState.wrongNetwork = true
+      networkState.allGood = false
+    }
+    // if web3 not set then something failed
+    if (!web3) {
+      networkState.allGood = false
+      throw new Error('Error setting up web3')
+    }
+
+    // poll for blocks
+    setInterval(async () => {
+      try {
+        const block = await web3.eth.getBlock('latest')
+        events.emit(NEW_BLOCK, block)
+      } catch (__) {
+        /* nothing to do */
+      }
+    }, 10000)
+  } catch (err) {
+    console.warn(err)
+    web3 = null
+  } finally {
+    // update global state with current network state
+    updateGlobalState()
   }
 
   return web3
-}
+})
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
@@ -176,17 +184,40 @@ export async function getDeployerAddress() {
 }
 
 export async function getTokenBySymbol(symbol) {
-  switch (networkState.expectedNetworkId) {
-    case '1':
-      return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-    case '3':
-      return '' // TODO
-    case '4':
-      return '' // TODO
-    case '42':
-      return '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
-    default:
-      return DAI_CONTRACT_ADDRESS
+  if (symbol === 'DAI') {
+    switch (networkState.expectedNetworkId) {
+      case '1':
+        return '0x6b175474e89094c44da98b954eedeac495271d0f'
+      // These are all fake DAI which anyone can mint
+      // https://twitter.com/PaulRBerg/status/1198276650884124674
+      // Ropsten
+      // https://twitter.com/PaulRBerg/status/1198276655816548354
+      case '3':
+        return '0x2d69ad895797c880abce92437788047ba0eb7ff6'
+      // Rinkeby
+      // https://twitter.com/PaulRBerg/status/1198276654566723584
+      case '4':
+        return '0xc3dbf84abb494ce5199d5d4d815b10ec29529ff8'
+      // Kovan
+      // https://twitter.com/PaulRBerg/status/1198276653312548865
+      case '42':
+        return '0x7d669a64deb8a4a51eea755bb0e19fd39ce25ae9'
+      default:
+        return DAI_CONTRACT_ADDRESS
+    }
+  } else if ('SAI') {
+    switch (networkState.expectedNetworkId) {
+      case '1':
+        return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
+      case '3':
+        return '' // TODO
+      case '4':
+        return '' // TODO
+      case '42':
+        return '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
+      default:
+        return DAI_CONTRACT_ADDRESS
+    }
   }
 }
 

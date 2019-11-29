@@ -8,6 +8,7 @@ import { Going } from './Status'
 import Button from '../Forms/Button'
 import Currency from './Currency'
 import styled from 'react-emotion'
+import { EMPTY_ADDRESS } from '../../api/utils'
 
 const RSVPText = styled(`span`)`
   margin-right: 0.5em;
@@ -19,7 +20,8 @@ const RSVP = ({
   className,
   deposit,
   isAllowed,
-  userAddress
+  userAddress,
+  hasBalance
 }) => {
   const ButtonText = () => {
     return (
@@ -30,13 +32,15 @@ const RSVP = ({
     )
   }
 
-  if (!isAllowed) {
+  const NotReadyButton = () => {
     return (
       <Button disabled={true}>
         <ButtonText />
       </Button>
     )
-  } else {
+  }
+
+  const ReadyButton = () => {
     return (
       <ChainMutation
         mutation={RSVP_TO_EVENT}
@@ -57,6 +61,11 @@ const RSVP = ({
         )}
       </ChainMutation>
     )
+  }
+  if (tokenAddress !== EMPTY_ADDRESS) {
+    return isAllowed && hasBalance ? <ReadyButton /> : <NotReadyButton />
+  } else {
+    return isAllowed ? <ReadyButton /> : <NotReadyButton />
   }
 }
 

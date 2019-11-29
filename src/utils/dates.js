@@ -35,3 +35,12 @@ export function getLocalTimezoneOffset() {
 export function getHours(utcString) {
   return moment.utc(utcString).format('H:mm a')
 }
+
+export const getUtcDateFromTimezone = (dateString, timezone = '') => {
+  const timezoneDateString =
+    dateString.replace('.000Z', '') +
+    moment()
+      .tz(timezone)
+      .format('Z')
+  return moment.utc(timezoneDateString).format('YYYYMMDDTHHmmssZ')
+}

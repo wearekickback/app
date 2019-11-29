@@ -22,6 +22,9 @@ yarn-error.log*
 tmp/*
 
 
-#code
-
+# code
 *.code-workspace
+
+# IDE
+.idea
+.vscode
