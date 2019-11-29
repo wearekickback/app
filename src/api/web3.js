@@ -9,9 +9,10 @@ import { clientInstance } from '../graphql'
 import { NETWORK_ID_QUERY } from '../graphql/queries'
 import { Authereum } from 'authereum'
 
+import { lazyAsync } from './utils'
+
 let web3
 let web3WalletSelection
-import { lazyAsync } from './utils'
 
 let networkState = {}
 let localEndpoint = false
@@ -109,7 +110,7 @@ const getWeb3 = lazyAsync(async () => {
           await fetch(url)
           localEndpoint = true
           web3 = new Web3(new Web3.providers.HttpProvider(url))
-        } else {
+        } catch (err) {
           web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
           networkState.readOnly = true
         }
@@ -140,39 +141,38 @@ const getWeb3 = lazyAsync(async () => {
         } catch (__) {
           /* nothing to do */
         }
+      }, 1000)
+      networkState.networkId = `${await web3.eth.net.getId()}`
+      networkState.networkName = getNetworkName(networkState.networkId)
+      networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
+      if (networkState.networkId !== networkState.expectedNetworkId) {
+        networkState.wrongNetwork = true
+        networkState.allGood = false
       }
-    }
-    networkState.networkId = `${await web3.eth.net.getId()}`
-    networkState.networkName = getNetworkName(networkState.networkId)
-    networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
-    if (networkState.networkId !== networkState.expectedNetworkId) {
-      networkState.wrongNetwork = true
-      networkState.allGood = false
-    }
-    // if web3 not set then something failed
-    if (!web3) {
-      networkState.allGood = false
-      throw new Error('Error setting up web3')
-    }
+      // if web3 not set then something failed
+      if (!web3) {
+        networkState.allGood = false
+        throw new Error('Error setting up web3')
+      }
 
-    // poll for blocks
-    setInterval(async () => {
-      try {
-        const block = await web3.eth.getBlock('latest')
-        events.emit(NEW_BLOCK, block)
-      } catch (__) {
-        /* nothing to do */
-      }
-    }, 10000)
-  } catch (err) {
-    console.warn(err)
-    web3 = null
-  } finally {
-    // update global state with current network state
-    updateGlobalState()
+      // poll for blocks
+      setInterval(async () => {
+        try {
+          const block = await web3.eth.getBlock('latest')
+          events.emit(NEW_BLOCK, block)
+        } catch (__) {
+          /* nothing to do */
+        }
+      }, 10000)
+    } catch (err) {
+      console.warn(err)
+      web3 = null
+    } finally {
+      // update global state with current network state
+      updateGlobalState()
+    }
+    return web3
   }
-
-  return web3
 })
 
 export async function getDeployerAddress() {

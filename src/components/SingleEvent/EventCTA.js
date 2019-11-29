@@ -154,7 +154,7 @@ class EventCTA extends Component {
                 participants,
                 participantLimit,
                 isAllowed: isAllowed,
-                userAddress: userAddress
+                userAddress: userAddress,
                 balance,
                 isAllowed,
                 hasBalance,
@@ -184,9 +184,8 @@ class EventCTA extends Component {
     deposit,
     isAllowed,
     refetch,
-    userAddress
+    userAddress,
     decodedDeposit,
-    isAllowed,
     hasBalance,
     balance
   }) {
