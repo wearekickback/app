@@ -14,11 +14,11 @@ import WebThreeImage from '../svg/web3.png'
 
 const WalletsContainer = styled('div')`
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   ${mq.medium`
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
   `}
 `
 const TitleContainer = styled('h3')`
@@ -27,27 +27,27 @@ const TitleContainer = styled('h3')`
 const LogoContainer = styled('div')`
   display: flex;
   flex-direction: column;
+  width: 85px;
+  height: 175px;
+  margin-bottom: 25px;
+  margin-right: 0px;
+  margin-left: 0px;
   align-items: center;
-  width: 140px;
-  height: 140px;
-  margin-right: 10px;
-  margin-left: 10px;
   ${mq.small`
-    width: 85px;
-    height: 175px;
-    margin-bottom: 25px;
-    margin-right: 0px;
-    margin-left: 0px;
+    width: 140px;
+    height: 140px;
+    margin-right: 10px;
+    margin-left: 10px;
   `}
 `
 const LogoText = styled('div')`
   font-size: 10px;
-  margin-bottom: 10px;
   height: 25px;
   text-align: center;
+  margin-bottom: 15px;
+  width: 100px;
   ${mq.small`
-    margin-bottom: 15px;
-    width: 100px;
+    margin-bottom: 10px;
   `}
 `
 const AuthereumLogo = styled(AuthereumImage)`
@@ -71,11 +71,12 @@ const MetaMaskLogo = styled(MetaMaskImage)`
 const WebThreeLogo = styled('img')`
   max-height: 60px;
   max-width: 60px;
-  height: 100px;
-  margin-bottom: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   ${mq.small`
-    margin-top: 10px;
-    margin-bottom: 10px;
+    max-height: 50px;
+    margin-bottom: 5px;
+    height: 100px;
   `}
 `
 const LogoButton = styled(Button)`

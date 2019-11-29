@@ -10,15 +10,15 @@ const Authereum = styled('div')`
   width: 30px;
   height: 30px;
   overflow: hidden;
-  margin-left: -18px;
-  margin-bottom: -42px;
   cursor: pointer;
   padding: 5px;
   background-color: white;
+  margin-left: -15px;
+  margin-bottom: 0px;
+  margin-top: 17px;
   ${mq.small`
-    margin-left: -15px;
-    margin-bottom: 0px;
-    margin-top: 17px;
+    margin-left: -18px;
+    margin-bottom: -42px;
   `}
 `
 

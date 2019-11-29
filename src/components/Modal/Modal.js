@@ -66,9 +66,9 @@ const ModalContent = styled('div')`
   max-height: 100%;
   border-radius: 6px;
   height: auto;
-  width: auto;
-  ${mq.small`
-    width: 75%;
+  width: 75%;
+  ${mq.medium`
+    width: auto;
   `}
 `
 
