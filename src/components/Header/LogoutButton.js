@@ -10,6 +10,11 @@ const StyledButton = styled(Button)`
   background: none;
   border: none;
   font-size: 16px;
+  padding: 0px;
+  text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
   &:hover {
     background: none;
     border: none;
@@ -17,9 +22,9 @@ const StyledButton = styled(Button)`
   ${mq.small`
     padding: 0px;
     text-align: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
   `}
 `
 
