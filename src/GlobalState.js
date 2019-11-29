@@ -54,13 +54,13 @@ class Provider extends Component {
 
   signIn = async ({ dontForceSignIn } = {}) => {
     if (this.state.loggedIn) {
-      return
+      return false
     }
 
     // let's request user's account address
     const address = await this.reloadUserAddress()
     if (!address) {
-      return
+      return false
     }
 
     console.debug(`Checking if user ${address} is logged in ...`)
@@ -106,6 +106,14 @@ class Provider extends Component {
         return signInPromise
       }
     }
+  }
+
+  logOut = () => {
+    this.setState({
+      auth: {
+        loggedIn: false
+      }
+    })
   }
 
   setUserProfile = profile => {
@@ -209,6 +217,7 @@ class Provider extends Component {
           networkState: this.state.networkState,
           loggedIn: this.isLoggedIn(),
           signIn: this.signIn,
+          logOut: this.logOut,
           signInError: this.state.signInError,
           showModal: this.showModal,
           closeModal: this.closeModal,

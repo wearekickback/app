@@ -9,6 +9,7 @@ import {
 } from '../utils/errors'
 import Assist from './Header/Assist'
 import { events, getTransactionReceipt } from '../api/web3'
+import getWeb3 from '../api/web3'
 import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from './SafeQuery'
 import Tooltip from './Tooltip'
@@ -254,10 +255,17 @@ export class ChainMutationButton extends Component {
       content = preContent
     }
 
-    const tip =
-      notReadyError ||
-      tooltip ||
-      'Please sign the created transaction using your wallet or Dapp browser'
+    let tip
+    getWeb3().then(web3 => {
+      if (web3._provider && web3._provider.authereum) {
+        tip = null
+      } else {
+        tip =
+          notReadyError ||
+          tooltip ||
+          'Please sign the created transaction using your wallet or Dapp browser'
+      }
+    })
 
     return (
       <GlobalConsumer>
@@ -275,7 +283,9 @@ export class ChainMutationButton extends Component {
                       action: props.analyticsId
                     })
                   }
-                  disabled={!!(loading || progress)}
+                  disabled={
+                    !!(loading || progress) || props.userAddress === undefined
+                  }
                 >
                   {content}
                   {tooltipElement}
@@ -291,29 +301,36 @@ export class ChainMutationButton extends Component {
 
   _onClick = ({ networkState, reloadUserAddress, postMutation, action }) => {
     this.setState({ notReadyError: null }, async () => {
-      const address = await reloadUserAddress()
+      let web3 = await getWeb3()
 
-      let assist = await Assist({
-        expectedNetworkId: networkState.expectedNetworkId,
-        action
-      })
-      if (assist.fallback) {
-        if (!address) {
-          return this.setState({
-            notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
-          })
-        }
-
-        if (!networkState.allGood) {
-          return this.setState({
-            notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
-          })
-        }
-        // Do not check assist.error as blocknative may incorrectly detect as error
+      // Do not show blocknative popup if Authereum is the provider
+      if (web3._provider && web3._provider.authereum) {
         postMutation()
       } else {
-        if (!assist.error) {
+        const address = await reloadUserAddress()
+
+        let assist = await Assist({
+          expectedNetworkId: networkState.expectedNetworkId,
+          action
+        })
+        if (assist.fallback) {
+          if (!address) {
+            return this.setState({
+              notReadyError: CANNOT_RESOLVE_ACCOUNT_ADDRESS
+            })
+          }
+
+          if (!networkState.allGood) {
+            return this.setState({
+              notReadyError: CANNOT_RESOLVE_CORRECT_NETWORK
+            })
+          }
+          // Do not check assist.error as blocknative may incorrectly detect as error
           postMutation()
+        } else {
+          if (!assist.error) {
+            postMutation()
+          }
         }
       }
     })

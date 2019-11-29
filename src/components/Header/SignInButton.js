@@ -6,8 +6,10 @@ import { GlobalConsumer } from '../../GlobalState'
 import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
+import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
-import Assist from './Assist'
+import AuthereumButton from './AuthereumButton'
+import LoadingDots from '../Utils/LoadingDots'
 
 const Account = styled(Link)`
   display: flex;
@@ -25,27 +27,33 @@ const Username = styled('div')`
   text-overflow: ellipsis;
 `
 
+const SigninLoading = styled('div')`
+  display: flex;
+  flex-direction: row;
+`
+
 function SignInButton() {
+  let isSigningIn = false
   const _signIn = ({
     showTooltip,
     hideTooltip,
     signIn,
     networkState,
-    reloadUserAddress
+    reloadUserAddress,
+    showModal
   }) => async () => {
-    hideTooltip()
-    let assist = await Assist({
-      action: 'Sign in',
-      expectedNetworkId: networkState.expectedNetworkId
-    })
-    const address = await reloadUserAddress()
-    if (!networkState.allGood || !address) {
-      if (assist.fallback) {
-        return showTooltip()
-      }
+    isSigningIn = true
+    await reloadUserAddress()
+    const walletSelection = window.sessionStorage.getItem('walletSelection')
+    if (!walletSelection) {
+      showModal({ name: WALLET_MODAL })
     } else {
-      signIn()
+      let isSignedIn = await signIn()
+      if (isSignedIn === false) {
+        showModal({ name: WALLET_MODAL })
+      }
     }
+    isSigningIn = false
   }
 
   return (
@@ -65,6 +73,7 @@ function SignInButton() {
         return loggedIn && userProfile ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
+            {/* <LogoutButton /> */}
             <Account to={`/user/${userProfile.username}`}>
               {userProfile ? (
                 <Username data-testid="userprofile-name">
@@ -77,6 +86,7 @@ function SignInButton() {
                 }/medium`}
               />
             </Account>
+            <AuthereumButton />
           </>
         ) : (
           <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
@@ -88,12 +98,20 @@ function SignInButton() {
                   hideTooltip,
                   signIn,
                   reloadUserAddress,
-                  networkState
+                  networkState,
+                  showModal
                 })}
                 analyticsId="Sign In"
               >
                 {tooltipElement}
-                Sign in
+                {!isSigningIn ? (
+                  <div>Sign in</div>
+                ) : (
+                  <SigninLoading>
+                    Sign in
+                    <LoadingDots />
+                  </SigninLoading>
+                )}
               </Button>
             )}
           </Tooltip>

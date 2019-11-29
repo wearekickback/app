@@ -188,11 +188,19 @@ const resolvers = {
       const web3 = await getWeb3()
       const account = await getAccount()
       const contract = getTokenContract(web3, tokenAddress)
+      const contractBasedAccountGas = 125000
+
       try {
         const tx = await txHelper(
-          contract.approve(address, deposit).send({
-            from: account
-          })
+          contract
+            .approve(address, deposit)
+            .send({
+              from: account,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx

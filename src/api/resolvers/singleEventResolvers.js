@@ -9,6 +9,7 @@ import { toEthVal } from '../../utils/units'
 
 const deployerAbi = Deployer.abi
 const abi = Conference.abi
+const contractBasedAccountGas = 250000
 
 export const defaults = {
   markedAttendedList: []
@@ -160,6 +161,9 @@ const resolvers = {
             .on('transactionHash', hash => {
               resolve(hash)
             })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         console.log('tx', tx)
@@ -179,9 +183,15 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.grant(userAddresses).send({
-            from: account
-          })
+          contract
+            .grant(userAddresses)
+            .send({
+              from: account,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -209,10 +219,16 @@ const resolvers = {
       }
       try {
         const tx = await txHelper(
-          contract.register().send({
-            from: account,
-            value: deposit
-          })
+          contract
+            .register()
+            .send({
+              from: account,
+              value: deposit,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
         return tx
       } catch (err) {
@@ -227,9 +243,15 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.finalize(maps.map(m => toBN(m).toString(10))).send({
-            from: account
-          })
+          contract
+            .finalize(maps.map(m => toBN(m).toString(10)))
+            .send({
+              from: account,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -245,9 +267,15 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.withdraw().send({
-            from: account
-          })
+          contract
+            .withdraw()
+            .send({
+              from: account,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -263,7 +291,15 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.setLimitOfParticipants(limit).send({ from: account })
+          contract
+            .setLimitOfParticipants(limit)
+            .send({
+              from: account,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
         )
 
         return tx
@@ -281,7 +317,9 @@ const resolvers = {
         .toString(16)
       try {
         const tx = await txHelper(
-          contract.changeDeposit(depositInWei).send({ from: account })
+          contract
+            .changeDeposit(depositInWei)
+            .send({ from: account, gas: contractBasedAccountGas })
         )
 
         return tx
@@ -295,7 +333,17 @@ const resolvers = {
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(contract.clear().send({ from: account }))
+        const tx = await txHelper(
+          contract
+            .clear()
+            .send({
+              from: account,
+              gas: contractBasedAccountGas
+            })
+            .on('error', error => {
+              console.log('error = ', error)
+            })
+        )
 
         return tx
       } catch (e) {

@@ -17,6 +17,7 @@ const WithdrawPayoutButton = ({ address, amount, className }) => (
         analyticsId="Withdraw Payout"
         onClick={withdrawPayout}
         result={result}
+        userAddress={true}
         className={className}
         preContent={`Withdraw payout`}
         // preContent={`Withdraw payout - ${amount} ETH`}

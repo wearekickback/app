@@ -20,6 +20,7 @@ const RSVP = ({
   className,
   deposit,
   isAllowed,
+  userAddress,
   hasBalance
 }) => {
   const ButtonText = () => {
@@ -52,6 +53,7 @@ const RSVP = ({
             analyticsId="RSVP"
             onClick={rsvp}
             result={result}
+            userAddress={userAddress}
             className={className}
             preContent={<ButtonText />}
             postContent={<Going>You are going!</Going>}

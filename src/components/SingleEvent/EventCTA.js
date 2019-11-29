@@ -112,7 +112,8 @@ class EventCTA extends Component {
   _renderActiveRsvpWrapper() {
     const {
       myParticipantEntry,
-      party: { tokenAddress, address, deposit, participants, participantLimit }
+      party: { tokenAddress, address, deposit, participants, participantLimit },
+      userAddress
     } = this.props
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
@@ -124,7 +125,8 @@ class EventCTA extends Component {
             deposit,
             participants,
             participantLimit,
-            isAllowed: true
+            isAllowed: true,
+            userAddress: userAddress
           })
         }
         return (
@@ -151,6 +153,8 @@ class EventCTA extends Component {
                 decodedDeposit,
                 participants,
                 participantLimit,
+                isAllowed: isAllowed,
+                userAddress: userAddress
                 balance,
                 isAllowed,
                 hasBalance,
@@ -178,11 +182,13 @@ class EventCTA extends Component {
     tokenAddress,
     address,
     deposit,
+    isAllowed,
+    refetch,
+    userAddress
     decodedDeposit,
     isAllowed,
     hasBalance,
-    balance,
-    refetch
+    balance
   }) {
     const isToken = !isEmptyAddress(tokenAddress) || tokenAddress !== null
     return (
@@ -203,6 +209,7 @@ class EventCTA extends Component {
           tokenAddress={tokenAddress}
           address={address}
           deposit={deposit}
+          userAddress={userAddress}
           isAllowed={isAllowed}
           hasBalance={hasBalance}
         />

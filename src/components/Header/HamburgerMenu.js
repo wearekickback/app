@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
 import SignInButton from './SignInButton'
+import LogoutButton from './LogoutButton'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
+  z-index: 1;
   background: #6e76ff;
   flex-direction: column;
   position: relative;
@@ -18,6 +20,10 @@ const HamburgerMenuContainer = styled('div')`
     padding: 10px 0;
   }
 `
+const LogoProviderContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+`
 
 function isExternal(url) {
   return /^https/.test(url)
@@ -26,7 +32,9 @@ function isExternal(url) {
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
-      <SignInButton />
+      <LogoProviderContainer>
+        <SignInButton />
+      </LogoProviderContainer>
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
       {links.map(l =>
@@ -36,6 +44,7 @@ function HamburgerMenu({ isMenuOpen }) {
           <a href={l.href}>{l.label}</a>
         )
       )}
+      <LogoutButton />
     </HamburgerMenuContainer>
   )
 }

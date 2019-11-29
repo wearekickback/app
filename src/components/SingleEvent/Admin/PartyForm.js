@@ -551,6 +551,7 @@ class PartyForm extends Component {
                           analyticsId="Deploy Event Contract"
                           result={result}
                           type={address ? 'disabled' : ''}
+                          userAddress={true}
                           onClick={() => {
                             mutate().then(({ data: { id } }) => {
                               createParty({

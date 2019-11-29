@@ -69,6 +69,7 @@ function AddAdmin({ address }) {
             analyticsId="AddAdmins"
             onClick={mutate}
             result={result}
+            userAddress={true}
             preContent="Confirm admins"
           />
         </AddPartyAdminsContainer>

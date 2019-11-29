@@ -25,11 +25,13 @@ import UserProfile from './routes/UserProfile'
 import ScrollToTop from './components/ScrollToTop'
 import Modal from './components/Modal/Modal'
 import SignIn from './components/Auth/SignIn'
+import WalletModal from './components/Auth/WalletModal'
 import EditProfile from './components/Profile/EditProfile'
 import {
   SIGN_IN,
   EDIT_PROFILE,
   CONFIRM_TRANSACTION,
+  WALLET_MODAL,
   ADD_TO_CALENDAR
 } from './modals'
 
@@ -85,6 +87,7 @@ class App extends Component {
             <Modal name={SIGN_IN} component={SignIn} />
             <Modal name={EDIT_PROFILE} component={EditProfile} />
             <Modal small name={CONFIRM_TRANSACTION} />
+            <Modal name={WALLET_MODAL} component={WalletModal} />
             <Modal small name={ADD_TO_CALENDAR} />
           </ScrollToTop>
         </Router>
