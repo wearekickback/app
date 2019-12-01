@@ -31,7 +31,7 @@ Add `src/config/env.json` with the following information
 ```
 
 ```
-yarm start
+yarn start
 ```
 
 **Test creating a event locally**
