@@ -7,9 +7,10 @@ import { TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
+import TipOrganiser from './TipOrganiser'
 import SafeQuery from '../SafeQuery'
 import { toBN } from 'web3-utils'
-
+import { toEthVal } from '../../utils/units'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
@@ -76,7 +77,27 @@ const Approve = styled(DefaultApprove)`
 
 const MarkAttended = styled('div')``
 
+const donate = 'donate'
+const take_all = 'take_all'
+
 class EventCTA extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { mode: 'initial', tip: 0 }
+  }
+
+  changeMode = mode => {
+    this.setState({
+      mode: mode
+    })
+  }
+
+  changeTipAmount = event => {
+    this.setState({
+      tip: event.target.value
+    })
+  }
+
   _renderCleared() {
     return (
       <Status>This event is over and all the funds have been cleared</Status>
@@ -97,11 +118,43 @@ class EventCTA extends Component {
 
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
 
+    if (this.state.mode === take_all) {
+      return <WithdrawPayout address={address} amount={myShare} />
+    }
+    if (this.state.mode === donate) {
+      var all = myShare
+      var extra =
+        myShare -
+        toEthVal(deposit)
+          .toEth()
+          .toFixed(3)
+      var coffee = 0.01
+
+      return (
+        <TipOrganiser
+          all={all}
+          extra={extra}
+          coffee={coffee}
+          tip={this.state.tip}
+          withdraw={all - this.state.tip}
+          Button={Button}
+          changeMode={this.changeMode}
+          changeTipAmount={this.changeTipAmount}
+        />
+      )
+    }
+
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Status>You didn't show up :/</Status>
       case PARTICIPANT_STATUS.SHOWED_UP:
-        return <WithdrawPayout address={address} amount={myShare} />
+        return [
+          <p>You're owed {myShare} ETH</p>,
+          <Button onClick={() => this.changeMode(donate)}>
+            Tip Organiser
+          </Button>,
+          <a onClick={() => this.changeMode(take_all)}> Or Withdraw All</a>
+        ]
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
         return <Status>You have withdrawn your payout!</Status>
       default:
