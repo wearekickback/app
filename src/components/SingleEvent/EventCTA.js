@@ -11,6 +11,7 @@ import TipOrganiser from './TipOrganiser'
 import SafeQuery from '../SafeQuery'
 import { toBN } from 'web3-utils'
 import { toEthVal } from '../../utils/units'
+import getEtherPrice from '../../api/price'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
@@ -98,6 +99,18 @@ class EventCTA extends Component {
     })
   }
 
+  // this method returns value of 3 USD in ETH
+  // why doesn't getEtherPrice work?
+  getCoffeePrice() {
+    var price = 0
+    getEtherPrice().then(r => {
+      if (r && r.result && r.result.ethusd) {
+        price = parseFloat(r.result.ethusd)
+      }
+    })
+    return price === 0 ? 0 : 3 / price
+  }
+
   _renderCleared() {
     return (
       <Status>This event is over and all the funds have been cleared</Status>
@@ -118,28 +131,33 @@ class EventCTA extends Component {
 
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
 
+    const currencySymbol =
+      this.props.party.tokenAddress ===
+      '0x0000000000000000000000000000000000000000'
+        ? 'ETH'
+        : 'DAI'
+
     if (this.state.mode === take_all) {
       return <WithdrawPayout address={address} amount={myShare} />
     }
     if (this.state.mode === donate) {
-      var all = myShare
-      var extra =
+      const extra =
         myShare -
         toEthVal(deposit)
           .toEth()
           .toFixed(3)
-      var coffee = 0.01
-
+      var coffee = currencySymbol === 'DAI' ? 3 : this.getCoffeePrice()
       return (
         <TipOrganiser
-          all={all}
+          all={myShare}
           extra={extra}
           coffee={coffee}
           tip={this.state.tip}
-          withdraw={all - this.state.tip}
+          withdraw={myShare - this.state.tip}
           Button={Button}
           changeMode={this.changeMode}
           changeTipAmount={this.changeTipAmount}
+          currencySymbol={currencySymbol}
         />
       )
     }
@@ -149,7 +167,9 @@ class EventCTA extends Component {
         return <Status>You didn't show up :/</Status>
       case PARTICIPANT_STATUS.SHOWED_UP:
         return [
-          <p>You're owed {myShare} ETH</p>,
+          <p>
+            You're owed {myShare} {currencySymbol}
+          </p>,
           <Button onClick={() => this.changeMode(donate)}>
             Tip Organiser
           </Button>,

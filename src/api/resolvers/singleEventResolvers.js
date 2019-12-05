@@ -257,6 +257,24 @@ const resolvers = {
         throw new Error(`Failed to withdraw`)
       }
     },
+    async sendAndWithdrawPayout(_, { addresses, values }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, addresses)
+      try {
+        const tx = await txHelper(
+          contract.withdraw().send({
+            from: account
+          })
+        )
+
+        return tx
+      } catch (err) {
+        console.error(err)
+
+        throw new Error(`Failed to withdraw`)
+      }
+    },
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
       const account = await getAccount()
