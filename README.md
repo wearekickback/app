@@ -29,7 +29,7 @@ Styles can be kept in the same file as the component you're adding them into unl
 
 ### Components
 
-Components need to be inside the components folder. We are currently migrating to functional components and hooks, so all new components must be functional components and use hooks if they need state or access to external APIs. 
+Components need to be inside the components folder. We are currently migrating to functional components and hooks, so all new components must be functional components and use hooks if they need state or access to external APIs. Do not use arrays to group sibling JSX, instead use the short fragment syntax `<></>`
 
 ```js
 
