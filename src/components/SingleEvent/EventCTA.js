@@ -78,8 +78,8 @@ const Approve = styled(DefaultApprove)`
 
 const MarkAttended = styled('div')``
 
-const donate = 'donate'
-const take_all = 'take_all'
+const Donate = 'donate'
+const WithdrawAll = 'withdraw_all'
 
 class EventCTA extends Component {
   constructor(props) {
@@ -137,20 +137,23 @@ class EventCTA extends Component {
         ? 'ETH'
         : 'DAI'
 
-    if (this.state.mode === take_all) {
+    if (this.state.mode === WithdrawAll) {
       return <WithdrawPayout address={address} amount={myShare} />
     }
-    if (this.state.mode === donate) {
-      const extra =
+    if (this.state.mode === Donate) {
+      const Extra =
         myShare -
         toEthVal(deposit)
           .toEth()
           .toFixed(3)
       var coffee = currencySymbol === 'DAI' ? 3 : this.getCoffeePrice()
+      //TODO: add in address
+      var addresses = [{ address }, 'another_address']
       return (
         <TipOrganiser
+          addresses={addresses}
           all={myShare}
-          extra={extra}
+          extra={Extra}
           coffee={coffee}
           tip={this.state.tip}
           withdraw={myShare - this.state.tip}
@@ -170,10 +173,10 @@ class EventCTA extends Component {
           <p>
             You're owed {myShare} {currencySymbol}
           </p>,
-          <Button onClick={() => this.changeMode(donate)}>
+          <Button onClick={() => this.changeMode(Donate)}>
             Tip Organiser
           </Button>,
-          <a onClick={() => this.changeMode(take_all)}> Or Withdraw All</a>
+          <a onClick={() => this.changeMode(WithdrawAll)}> Or Withdraw All</a>
         ]
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
         return <Status>You have withdrawn your payout!</Status>
