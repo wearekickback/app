@@ -103,6 +103,10 @@ function SideBar(){
 * All Javascript files that aren't components are camel cased
 * Anything that isn't a component are also camel cased
 
+### Connecting to external data sources (blockchain and backend)
+
+Currently Kickback injects data into it's React front-end using the Apollo GraphQL library. To connect to the blockchain, we use a client-side resolver that connects to web3. This way our app does not need to know how it is connecting to the blockchain, that is all handled by our data library Apollo. In the same way, we also connect to our back-end via Apollo, which does not require anything apart from the graphql queries and mutations.
+
 ## Setup
 
 Clone the repo
