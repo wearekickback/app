@@ -55,6 +55,12 @@ If your wallet does not have basic wallet capability, it needs to be built.
 
 By clicking `Logout` it must show the Login button.
 
+### User guide.
+
+We have [a simple user guide page](https://kickback.events/gettingstarted).
+If your wallet have any specific instruction users must follow, please add it here.
+We also welcome any video guide which helps noob users to create your wallet account, top up crypto, sign in to our platfrom, then RSVP to an event.
+
 ## Coding conventions.
 
 Please follow our contribution guide on our test page.
@@ -67,6 +73,7 @@ Please follow our contribution guide on our test page.
 - [ ] User can login/logout
 - [ ] User can create an event (kovan.kickback.events/create)
 - [ ] User can RSVP, finalize, and withdraw
+- [ ] There is a on boarding guide which users can refer to
 
 ### Supported browser and wallets.
 
