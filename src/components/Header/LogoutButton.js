@@ -15,6 +15,7 @@ const StyledButton = styled(Button)`
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
+  margin-right: 2em;
   &:hover {
     background: none;
     border: none;
