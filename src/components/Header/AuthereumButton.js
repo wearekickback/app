@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 import styled from 'react-emotion'
 import getWeb3 from '../../api/web3'
 import AuthereumLogo from '../../assets/authereum_shield.svg'
@@ -22,28 +22,21 @@ const Authereum = styled('div')`
   `}
 `
 
-class AuthereumButton extends Component {
-  constructor() {
-    super()
+function AuthereumButton() {
+  useEffect(() => {
+    checkForAuthereumUser()
+  })
 
-    this.state = {
-      isAuthereumUser: false,
-      accountLink: null
-    }
-  }
+  const [isAuthereumUser, setAuthereumUser] = useState(false)
+  const [accountUrl, setAccountUrl] = useState('')
 
-  componentDidMount() {
-    this.checkForAuthereumUser()
-  }
-
-  async checkForAuthereumUser() {
+  const checkForAuthereumUser = async () => {
     let web3
     try {
       web3 = await getWeb3()
-      this.setState({ web3 })
     } catch (e) {
       console.log('failed to get web3')
-      this.setState({ isAuthereumUser: false })
+      setAuthereumUser(false)
       return
     }
 
@@ -53,37 +46,33 @@ class AuthereumButton extends Component {
       web3.currentProvider.isAuthereum &&
       (await web3.currentProvider.authereum.isAuthenticated())
     ) {
-      this.setState({
-        isAuthereumUser: true,
-        accountLink: `${web3.currentProvider.authereum.webUri}/account`
-      })
+      setAuthereumUser(true)
+      setAccountUrl(`${web3.currentProvider.authereum.webUri}/account`)
     } else {
-      this.setState({ isAuthereumUser: false })
+      setAuthereumUser(false)
     }
   }
 
-  render() {
-    if (!this.state.isAuthereumUser) {
-      return null
-    }
-
-    return (
-      <GlobalConsumer>
-        {({ loggedIn }) => {
-          console.log('loggedIn: ', loggedIn)
-          return this.state.isAuthereumUser && loggedIn ? (
-            <Authereum
-              onClick={() => {
-                window.open(this.state.accountLink)
-              }}
-            >
-              <img src={AuthereumLogo} alt="Authereum" />
-            </Authereum>
-          ) : null
-        }}
-      </GlobalConsumer>
-    )
+  if (!isAuthereumUser) {
+    return null
   }
+
+  return (
+    <GlobalConsumer>
+      {({ loggedIn }) => {
+        console.log('loggedIn: ', loggedIn)
+        return isAuthereumUser && loggedIn ? (
+          <Authereum
+            onClick={() => {
+              window.open(accountUrl)
+            }}
+          >
+            <img src={AuthereumLogo} alt="Authereum" />
+          </Authereum>
+        ) : null
+      }}
+    </GlobalConsumer>
+  )
 }
 
 export default AuthereumButton
