@@ -46,7 +46,7 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/`
+      return `https://mainnet.rpc.authereum.org/`
     case '3':
       return `https://ropsten.infura.io/`
     case '4':
