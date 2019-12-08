@@ -97,11 +97,10 @@ export default class WalletModal extends Component {
 
   authereumInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
-    if (!networkState.networkName) {
-      console.error('Network not defined')
-      return
-    }
-    const authereum = new Authereum(networkState.networkName.toLowerCase())
+
+    const networkName = 'mainnet'
+    const authereum = new Authereum(networkName)
+    // const authereum = new Authereum(networkState.networkName.toLowerCase())
     const provider = authereum.getProvider()
     provider.enable()
     provider.isMetaMask = false
@@ -113,6 +112,7 @@ export default class WalletModal extends Component {
       didCloseModal = await signIn()
     }
   }
+
   ulInit = async () => {
     window.sessionStorage.setItem('walletSelection', 'universalLogin')
     console.log('TODO')
