@@ -9,8 +9,6 @@ import { clientInstance } from '../graphql'
 import { NETWORK_ID_QUERY } from '../graphql/queries'
 import { Authereum } from 'authereum'
 
-import { lazyAsync } from './utils'
-
 let web3
 let web3WalletSelection
 
@@ -70,11 +68,11 @@ const isLocalNetwork = id => {
   }
 }
 
-const getWeb3 = lazyAsync(async () => {
+const getWeb3 = async () => {
   const walletSelection = window.sessionStorage.getItem('walletSelection')
 
   // If cached web3 doesn't exist or wallet sellection has changed, get web3
-  if (!web3 || web3WalletSelection !== walletSelection) {
+  if (web3WalletSelection !== walletSelection) {
     web3WalletSelection = walletSelection
 
     try {
@@ -171,9 +169,9 @@ const getWeb3 = lazyAsync(async () => {
       // update global state with current network state
       updateGlobalState()
     }
-    return web3
   }
-})
+  return web3
+}
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net

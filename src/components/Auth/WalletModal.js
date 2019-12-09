@@ -98,9 +98,7 @@ export default class WalletModal extends Component {
   authereumInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
 
-    const networkName = 'mainnet'
-    const authereum = new Authereum(networkName)
-    // const authereum = new Authereum(networkState.networkName.toLowerCase())
+    const authereum = new Authereum(networkState.networkName.toLowerCase())
     const provider = authereum.getProvider()
     window.ethereum = provider
     window.web3 = new Web3(provider)
