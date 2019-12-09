@@ -100,8 +100,18 @@ export default class WalletModal extends Component {
 
     const authereum = new Authereum(networkState.networkName.toLowerCase())
     const provider = authereum.getProvider()
-    window.ethereum = provider
-    window.web3 = new Web3(provider)
+
+    // Check if user is using Safari
+    let sBrowser,
+      sUsrAg = navigator.userAgent
+    if (sUsrAg.indexOf('Opera') > -1 || sUsrAg.indexOf('OPR') > -1) {
+      sBrowser = 'Opera'
+    }
+
+    if (sBrowser !== 'Opera') {
+      window.ethereum = provider
+      window.web3 = new Web3(provider)
+    }
 
     await provider.enable()
     provider.isMetaMask = false
