@@ -257,8 +257,7 @@ export async function getAccount() {
     }
   }
   try {
-    const web3 = await getWeb3()
-    const accounts = await web3.eth.getAccounts()
+    const accounts = await window.ethereum.getAccounts()
 
     if (accounts.length > 0) {
       return accounts[accountIndex]

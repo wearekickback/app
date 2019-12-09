@@ -102,7 +102,10 @@ export default class WalletModal extends Component {
     const authereum = new Authereum(networkName)
     // const authereum = new Authereum(networkState.networkName.toLowerCase())
     const provider = authereum.getProvider()
-    provider.enable()
+    window.ethereum = provider
+    window.web3 = new Web3(provider)
+
+    await provider.enable()
     provider.isMetaMask = false
 
     let didCloseModal = false
