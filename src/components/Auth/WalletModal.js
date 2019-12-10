@@ -1,5 +1,5 @@
 import styled from 'react-emotion'
-import React, { Component } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 import { Authereum } from 'authereum'
 import Web3 from 'web3'
 import Button from '../Forms/Button'
@@ -83,19 +83,18 @@ const LogoButton = styled(Button)`
   width: 150px;
 `
 
-export default class WalletModal extends Component {
-  constructor() {
-    super()
-    this.state = {
-      isWeb3Injected: this.isWeb3()
-    }
-  }
+function WalletModal() {
+  const [isWeb3Injected, setWeb3Injected] = useState(false)
 
-  sleep(ms) {
+  useEffect(() => {
+    setWeb3Injected(isWeb3())
+  })
+
+  const sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
-  authereumInit = async (networkState, signIn) => {
+  const authereumInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
 
     // Safari does not correctly define the network, so this line must exist
@@ -121,68 +120,65 @@ export default class WalletModal extends Component {
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed
-      await this.sleep(3000)
+      await sleep(3000)
       didCloseModal = await signIn()
     }
   }
 
-  ulInit = async () => {
-    window.sessionStorage.setItem('walletSelection', 'universalLogin')
-    console.log('TODO')
-  }
-  web3Init = async signIn => {
+  const web3Init = async signIn => {
     window.sessionStorage.setItem('walletSelection', 'metaMask')
     await window.ethereum.enable()
     await signIn()
   }
 
-  isWeb3 = () => {
+  const isWeb3 = () => {
     if (window.ethereum) {
       return true
     }
     return false
   }
-  render() {
-    return (
-      <GlobalConsumer>
-        {({ signIn, closeModal, networkState }) => (
-          <>
-            <TitleContainer>Choose your wallet</TitleContainer>
-            <WalletsContainer>
-              {this.state.isWeb3Injected && (
-                <>
-                  <LogoContainer>
-                    <LogoText>
-                      I am connected to Metamask, Status.im, etc.
-                    </LogoText>
-                    <WebThreeLogo src={WebThreeImage} />
-                    <LogoButton
-                      onClick={async () => {
-                        await this.web3Init(signIn)
-                        closeModal({ name: WALLET_MODAL })
-                      }}
-                    >
-                      Web3
-                    </LogoButton>
-                  </LogoContainer>
-                </>
-              )}
-              <LogoContainer>
-                <LogoText>I am not connected to an Ethereum wallet</LogoText>
-                <AuthereumLogo />
-                <LogoButton
-                  onClick={() => {
-                    this.authereumInit(networkState, signIn)
-                    closeModal({ name: WALLET_MODAL })
-                  }}
-                >
-                  Authereum
-                </LogoButton>
-              </LogoContainer>
-            </WalletsContainer>
-          </>
-        )}
-      </GlobalConsumer>
-    )
-  }
+
+  return (
+    <GlobalConsumer>
+      {({ signIn, closeModal, networkState }) => (
+        <>
+          <TitleContainer>Choose your wallet</TitleContainer>
+          <WalletsContainer>
+            {isWeb3Injected && (
+              <>
+                <LogoContainer>
+                  <LogoText>
+                    I am connected to Metamask, Status.im, etc.
+                  </LogoText>
+                  <WebThreeLogo src={WebThreeImage} />
+                  <LogoButton
+                    onClick={async () => {
+                      await web3Init(signIn)
+                      closeModal({ name: WALLET_MODAL })
+                    }}
+                  >
+                    Web3
+                  </LogoButton>
+                </LogoContainer>
+              </>
+            )}
+            <LogoContainer>
+              <LogoText>I am not connected to an Ethereum wallet</LogoText>
+              <AuthereumLogo />
+              <LogoButton
+                onClick={() => {
+                  authereumInit(networkState, signIn)
+                  closeModal({ name: WALLET_MODAL })
+                }}
+              >
+                Authereum
+              </LogoButton>
+            </LogoContainer>
+          </WalletsContainer>
+        </>
+      )}
+    </GlobalConsumer>
+  )
 }
+
+export default WalletModal
