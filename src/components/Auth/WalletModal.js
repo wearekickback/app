@@ -98,6 +98,8 @@ export default class WalletModal extends Component {
   authereumInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'authereum')
 
+    // Safari does not correctly define the network, so this line must exist
+    networkState.networkName = networkState.networkName || 'mainnet'
     const authereum = new Authereum(networkState.networkName.toLowerCase())
     const provider = authereum.getProvider()
 
