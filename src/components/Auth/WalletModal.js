@@ -120,7 +120,7 @@ function WalletModal() {
     let didCloseModal = false
     while (didCloseModal === false) {
       // Wait a reasonable amount of time to see if the popup has closed
-      await sleep(3000)
+      await sleep(2000)
       didCloseModal = await signIn()
     }
   }
