@@ -34,6 +34,43 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>Kickback</title>
+
+  <!-- 
+    Unlock snippet scripts modified from 
+    https://github.com/unlock-protocol/react-example/blob/master/public/index.html
+  -->
+  <script> (function (d, s) {
+    let js = d.createElement(s);
+    let sc = d.getElementsByTagName(s)[0];
+      js.src = "https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+      sc.parentNode.insertBefore(js, sc);
+    }(document, "script"));
+  </script>
+
+  <script>
+    let network = 42;
+    const lockSelection = {
+      1: {},
+      42: {
+        '0xe61607898287220586abE01b536714d8429f675C': {
+          name: 'Kickback Bronze Supporter',
+        },
+        '0x2eD8aD6AA973BEA5D60FA70Eead10F113fb4Dc99': {
+          name: 'Kickback Gold Supporter',
+        }
+      }
+    }
+
+    // unlock config must use var
+    var unlockProtocolConfig = {
+      locks: lockSelection[network],
+      icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
+      callToAction: {
+        default:
+          'Select a membership to access page',
+      },
+    }
+  </script>
 </head>
 
 <body>
