@@ -255,7 +255,14 @@ export async function getAccount() {
     }
   }
   try {
-    const accounts = await web3.eth.getAccounts()
+    // Use web3 or window based on browser type
+    let accounts
+    let sUsrAg = navigator.userAgent
+    if (sUsrAg.indexOf('Opera') > -1 || sUsrAg.indexOf('OPR') > -1) {
+      accounts = await web3.eth.getAccounts()
+    } else {
+      accounts = await window.ethereum.getAccounts()
+    }
 
     if (accounts.length > 0) {
       return accounts[accountIndex]
