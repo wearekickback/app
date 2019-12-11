@@ -24,12 +24,12 @@ const TextInput = styled(DefaultTextInput)`
 `
 
 const Button = styled(DefaultButton)`
-  width: 300px;
-  margin: 60px auto 0px auto;
+  width: 360px;
+  margin: 50px auto 0px auto;
 `
 
 const UnlockCredit = styled('div')`
-  margin: 30px auto 80px auto;
+  margin: 30px auto 150px auto;
 `
 
 const UnlockedLogo = styled('a')`
@@ -61,7 +61,7 @@ function Create() {
   }
 
   const checkout = () => {
-    console.log(window.unlockProtocol)
+    window.ethereum.enable()
     window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
   }
 

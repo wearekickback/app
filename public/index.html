@@ -39,24 +39,32 @@
     Unlock snippet scripts modified from 
     https://github.com/unlock-protocol/react-example/blob/master/public/index.html
   -->
-  <script> (function (d, s) {
+  <script> (async function (d, s) {
+    let network = 4;
+    let testnetUrl = network === 4 ? 'staging-' : '';
     let js = d.createElement(s);
     let sc = d.getElementsByTagName(s)[0];
-      js.src = "https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+      js.src = `https://${testnetUrl}paywall.unlock-protocol.com/static/unlock.1.0.min.js`;
       sc.parentNode.insertBefore(js, sc);
     }(document, "script"));
-  </script>
 
-  <script>
-    let network = 42;
+    // Kovan is included, but currently unsupported with paywall
     const lockSelection = {
       1: {},
-      42: {
-        '0xe61607898287220586abE01b536714d8429f675C': {
-          name: 'Kickback Bronze Supporter',
+      4: {
+        "0xb452A1BfE64036718aCeFC8B5F718E0c9d233cB8": {
+          name: "Kickback Gold Supporter"
         },
-        '0x2eD8aD6AA973BEA5D60FA70Eead10F113fb4Dc99': {
-          name: 'Kickback Gold Supporter',
+        "0x70456ebD53E19eaE05932C482FeF1b24251ABb18": {
+          name: "Kickback Bronze Supporter"
+        }
+      },
+      42: {
+        "0xe61607898287220586abE01b536714d8429f675C": {
+          name: "Kickback Bronze Supporter"
+        },
+        "0x2eD8aD6AA973BEA5D60FA70Eead10F113fb4Dc99": {
+          name: "Kickback Gold Supporter"
         }
       }
     }
