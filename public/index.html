@@ -39,18 +39,37 @@
     Unlock snippet scripts modified from 
     https://github.com/unlock-protocol/react-example/blob/master/public/index.html
   -->
-  <script> (async function (d, s) {
-    let network = 4;
-    let testnetUrl = network === 4 ? 'staging-' : '';
+  <script> (function (d, s) {
+    // if production, set network to Mainnet, else set to Rinkeby for paywall
+    const environment = "%NODE_ENV%";
+    const networkId = environment === "production" ? 1  : 4;
+
+    // if Rinkeby set, use Rinkeby paywall, else use Mainnet
+    let testnetUrl = networkId === 4 ? 'staging-' : '';
     let js = d.createElement(s);
     let sc = d.getElementsByTagName(s)[0];
       js.src = `https://${testnetUrl}paywall.unlock-protocol.com/static/unlock.1.0.min.js`;
       sc.parentNode.insertBefore(js, sc);
     }(document, "script"));
+  </script>
 
-    // Kovan is included, but currently unsupported with paywall
-    const lockSelection = {
-      1: {},
+  <script>
+    // if production, set network to Mainnet, else set to Rinkeby for paywall
+    const environment = "%NODE_ENV%";
+    const networkId = environment === "production" ? 1  : 4;
+
+    // Kovan is included, but currently only Rinkeby and Mainnet is unsupported with paywall
+    // tokens entered first to last are displayed right to left in paywall modal
+    // NOTE: Replace Mainnet keys with keys Kickback owns
+    const locks = {
+      1: {
+        "enter-key-address-here": {
+          name: "Kickback Gold Supporter"
+        },
+        "enter-key-address-here": {
+          name: "Kickback Bronze Supporter"
+        }
+      },
       4: {
         "0xb452A1BfE64036718aCeFC8B5F718E0c9d233cB8": {
           name: "Kickback Gold Supporter"
@@ -60,18 +79,18 @@
         }
       },
       42: {
-        "0xe61607898287220586abE01b536714d8429f675C": {
-          name: "Kickback Bronze Supporter"
-        },
         "0x2eD8aD6AA973BEA5D60FA70Eead10F113fb4Dc99": {
           name: "Kickback Gold Supporter"
+        },
+        "0xe61607898287220586abE01b536714d8429f675C": {
+          name: "Kickback Bronze Supporter"
         }
       }
-    }
+    }[networkId]
 
     // unlock config must use var
     var unlockProtocolConfig = {
-      locks: lockSelection[network],
+      locks,
       icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
       callToAction: {
         default:

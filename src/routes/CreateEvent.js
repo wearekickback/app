@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import DefaultTextInput from '../components/Forms/TextInput'
 import Label from '../components/Forms/Label'
 import DefaultButton from '../components/Forms/Button'
+import Loader from '../components/Loader'
 
 import PartyForm from '../components/SingleEvent/Admin/PartyForm'
 import { CREATE_PENDING_PARTY } from '../graphql/mutations'
@@ -24,17 +25,17 @@ const TextInput = styled(DefaultTextInput)`
 `
 
 const Button = styled(DefaultButton)`
-  width: 360px;
-  margin: 50px auto 0px auto;
+  margin: 60px auto 0px auto;
 `
 
 const UnlockCredit = styled('div')`
-  margin: 30px auto 150px auto;
+  margin: 40px auto 140px auto;
+  font-size: 14px;
 `
 
 const UnlockedLogo = styled('a')`
   color: #ff6771;
-  font-weight: 700;
+  font-weight: 800;
 `
 
 function Create() {
@@ -50,7 +51,6 @@ function Create() {
 
   const unlockHandler = e => {
     setLocked(e.detail)
-    console.log(e.detail)
     /*
       Status can either be 'unlocked' or 'locked'...
       If state is 'unlocked': implement code here which will be triggered when 
@@ -96,7 +96,7 @@ function Create() {
           ),
           locked: (
             <LockedContainer>
-              <h2>Deploy your Kickback contract with us</h2>
+              <h1>Deploy your Kickback contract with us</h1>
               <p>
                 Kickback offers paid benefits for event organizers publishing
                 their own kickback contract. Membership comes in two tiers.
@@ -116,7 +116,11 @@ function Create() {
               </UnlockCredit>
             </LockedContainer>
           ),
-          pending: <div>Loading Unlock</div>,
+          pending: (
+            <div>
+              <Loader />
+            </div>
+          ),
           default: <div>Please enable Javascript</div>
         }[locked || locked['default']]
       }
