@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@wearekickback/contracts-integration": "^1.3.0",
+    "@wearekickback/contracts": "npm:@wearekickback/contracts-integration@1.3.0",
     "@wearekickback/shared": "^1.13.0",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",
