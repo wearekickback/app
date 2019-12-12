@@ -3,6 +3,7 @@ import styled from 'react-emotion'
 
 import Label from '../../Forms/Label'
 import Clear from './Clear'
+import SendBack from './SendBack'
 import Finalize from './Finalize'
 import SetLimit from './SetLimit'
 import ChangeDeposit from './ChangeDeposit'
@@ -41,10 +42,19 @@ export default function AdminPanel({ party }) {
         )}
       </Section>
       <Section>
+        <Label>Send back</Label>
+        <p>
+          Send back will return all remaining pot to the attendees after taking
+          5% clear fee per each attendee. Participants will no longer be able to
+          withdraw.
+        </p>
+        <SendBack address={party.address} />
+      </Section>
+      <Section>
         <Label>Clear</Label>
         <p>
-          Clear will return all remaining funds to the host. Participants will
-          no longer be able to withdraw.
+          Clear will return all undividable remaining pots to the host. Can be
+          called after everybody get their portion back.
         </p>
         <Clear address={party.address} />
       </Section>

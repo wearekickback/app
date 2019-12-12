@@ -129,7 +129,7 @@ const resolvers = {
 
       const { id, deposit, limitOfParticipants, coolingPeriod } = args
       let tokenAddress = args.tokenAddress
-
+      let clearFee = 50 // 5% clear fee
       const web3 = await getWeb3()
       const account = await getAccount()
 
@@ -140,7 +140,6 @@ const resolvers = {
       const deployerAddress = await getDeployerAddress()
 
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
-
       try {
         const tx = await new Promise((resolve, reject) =>
           contract.methods
@@ -151,7 +150,8 @@ const resolvers = {
                 .toString(16),
               toEthVal(limitOfParticipants).toString(16),
               toEthVal(coolingPeriod).toString(16),
-              tokenAddress
+              tokenAddress,
+              clearFee
             )
             .send({
               gas: 3000000,
@@ -296,6 +296,22 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(contract.clear().send({ from: account }))
+
+        return tx
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
+    async clearAndSend(_, { address }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      try {
+        console.log({ contract })
+        const tx = await txHelper(
+          contract.clearAndSend().send({ from: account })
+        )
 
         return tx
       } catch (e) {

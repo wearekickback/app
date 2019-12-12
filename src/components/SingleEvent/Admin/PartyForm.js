@@ -200,7 +200,8 @@ class PartyForm extends Component {
       timezone = getLocalTimezoneOffset(),
       headerImg = '',
       deposit = null,
-      coolingPeriod = `${60 * 60 * 24 * 7}`,
+      // coolingPeriod = `${60 * 60 * 24 * 14}`, 1 week
+      coolingPeriod = `${60}`, // 1 min
       limitOfParticipants = 20,
       tokenAddress = '',
       status = 'public'
