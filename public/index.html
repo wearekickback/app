@@ -64,9 +64,15 @@
     https://github.com/unlock-protocol/react-example/blob/master/public/index.html
   -->
   <script> (function (d, s) {
-    // if production, set network to Mainnet, else set to Rinkeby for paywall
-    const environment = "%NODE_ENV%";
-    const networkId = environment === "production" ? 1  : 4;
+    // set network based on start scripts environment variables
+    const nodeEnv = "%NODE_ENV%";
+    const ethEnv = "%REACT_APP_ENV%";
+    const networkId = (ethEnv.includes("REACT_APP_ENV") && nodeEnv === "production") ? 1 
+    : (ethEnv.includes("REACT_APP_ENV") && nodeEnv !== "production") ? 4  
+    : ethEnv === "rinkeby" ? 4 
+    // : ethEnv === "kovan" ? 42 // include kovan when supported by unlock paywall
+    : ethEnv === "live" ? 1
+    : 4;
 
     // if Rinkeby set, use Rinkeby paywall, else use Mainnet
     let testnetUrl = networkId === 4 ? 'staging-' : '';
@@ -78,13 +84,20 @@
   </script>
 
   <script>
-    // if production, set network to Mainnet, else set to Rinkeby for paywall
-    const environment = "%NODE_ENV%";
-    const networkId = environment === "production" ? 1  : 4;
+    // set network based on start scripts environment variables
+    const nodeEnv = "%NODE_ENV%";
+    const ethEnv = "%REACT_APP_ENV%";
+    const networkId = (ethEnv.includes("REACT_APP_ENV") && nodeEnv === "production") ? 1 
+    : (ethEnv.includes("REACT_APP_ENV") && nodeEnv !== "production") ? 4  
+    : ethEnv === "rinkeby" ? 4 
+    // : ethEnv === "kovan" ? 42  // include kovan when supported by unlock paywall
+    : ethEnv === "live" ? 1
+    : 4;
 
     /* 
       Kovan is included, but currently only Rinkeby and Mainnet is supported with paywall
       tokens entered first to last are displayed right to left in paywall modal
+      Kovan lock is included for when kovan is supported by Unlock paywall
       NOTE: Replace Mainnet keys with keys Kickback owns
     */
     const locks = {

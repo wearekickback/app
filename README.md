@@ -135,7 +135,18 @@ yarn start
 
 **Test creating a event locally**
 
+Event creation is has a paywall by Unlock. Unlock currently only supports Rinkeby and Mainnet. Using Kovan with your wallet will cause an error. 
+
+Rinkeby or Mainnet for Unlock is chosen with `package.json` scripts. Using `yarn build:release:` will select either Rinkeby or Mainnet depending on the script you use. These scripts are found in `package.json`. 
+
+Using `yarn build` will select Mainnet for Unlock. Using `yarn start` will select Rinkeby for unlock. These can be overwritten by entering a network with your start script. `REACT_APP_ENV=live yarn start` will have Unlock use Mainnet, and `REACT_APP_ENV=rinkeby yarn build` will have Unlock use Rinkeby.
+
+If `env.json` sets `ENV` to `local`, no paywall will be shown.
+
+After the app starts with an envirnoment chosen for unlock:
+
 - Go to http://localhost:3000/create
+- Display form by paying for a membership tier (must be Rinkeby or Mainnet)
 - Fill in event detail (leave password as blank)
 - Fill in event detail and press "Submit"
 

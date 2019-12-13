@@ -66,7 +66,6 @@ export default function Create() {
   }
 
   useEffect(() => {
-    console.log(ENV)
     if (ENV !== 'local') {
       window.addEventListener('unlockProtocol', unlockHandler)
     } else {
