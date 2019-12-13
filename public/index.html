@@ -34,8 +34,6 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>Kickback</title>
-
-  
 </head>
 
 <body>
@@ -84,9 +82,11 @@
     const environment = "%NODE_ENV%";
     const networkId = environment === "production" ? 1  : 4;
 
-    // Kovan is included, but currently only Rinkeby and Mainnet is unsupported with paywall
-    // tokens entered first to last are displayed right to left in paywall modal
-    // NOTE: Replace Mainnet keys with keys Kickback owns
+    /* 
+      Kovan is included, but currently only Rinkeby and Mainnet is supported with paywall
+      tokens entered first to last are displayed right to left in paywall modal
+      NOTE: Replace Mainnet keys with keys Kickback owns
+    */
     const locks = {
       1: {
         "enter-key-address-here": {
@@ -120,7 +120,7 @@
       icon: "https://kickback.events/card.png",
       callToAction: {
         default:
-          'Select a membership to access page',
+          'Select a membership to access page.',
       },
     }
   </script>

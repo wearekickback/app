@@ -5,7 +5,7 @@ import DefaultTextInput from '../components/Forms/TextInput'
 import Label from '../components/Forms/Label'
 import DefaultButton from '../components/Forms/Button'
 import Loader from '../components/Loader'
-
+import { ENV } from '../config'
 import PartyForm from '../components/SingleEvent/Admin/PartyForm'
 import { CREATE_PENDING_PARTY } from '../graphql/mutations'
 
@@ -38,7 +38,7 @@ const UnlockedLogo = styled('a')`
   font-weight: 800;
 `
 
-function Create() {
+export default function Create() {
   const [password, setPassword] = useState('')
   const [locked, setLocked] = useState('pending')
   let history = useHistory()
@@ -66,12 +66,18 @@ function Create() {
   }
 
   useEffect(() => {
-    window.addEventListener('unlockProtocol', unlockHandler)
+    console.log(ENV)
+    if (ENV !== 'local') {
+      window.addEventListener('unlockProtocol', unlockHandler)
+    } else {
+      setLocked('unlocked')
+    }
   }, [])
 
   useEffect(() => {
     return () => {
-      window.removeEventListener('unlockProtocol', unlockHandler)
+      if (ENV !== 'local')
+        window.removeEventListener('unlockProtocol', unlockHandler)
     }
   }, [])
 
@@ -116,16 +122,10 @@ function Create() {
               </UnlockCredit>
             </LockedContainer>
           ),
-          pending: (
-            <div>
-              <Loader />
-            </div>
-          ),
+          pending: <Loader />,
           default: <div>Please enable Javascript</div>
         }[locked || locked['default']]
       }
     </CreateContainer>
   )
 }
-
-export default Create

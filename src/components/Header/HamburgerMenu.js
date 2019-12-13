@@ -31,9 +31,13 @@ function HamburgerMenu({ isMenuOpen }) {
       <Link to="/pricing">Pricing</Link>
       {links.map(l =>
         isExternal(l.url) ? (
-          <Link to={l.href}>{l.label}</Link>
+          <Link to={l.href} key={l.href}>
+            {l.label}
+          </Link>
         ) : (
-          <a href={l.href}>{l.label}</a>
+          <a href={l.href} key={l.href}>
+            {l.label}
+          </a>
         )
       )}
     </HamburgerMenuContainer>
