@@ -17,6 +17,6 @@ DEPLOY_DOMAIN=https://${DEPLOY_SUBDOMAIN}-${REPO_NAME}-${REPO_OWNER}.surge.sh
 echo $DEPLOY_DOMAIN
 echo $SURGE_LOGIN
 cp ${DEPLOY_PATH}/index.html ${DEPLOY_PATH}/200.html
-SURGE_LOGIN=$SURGE_LOGIN SURGE_TOKEN=$SURGE_TOKEN surge -p ${DEPLOY_PATH} -d $DEPLOY_DOMAIN
+surge -p ${DEPLOY_PATH} -d $DEPLOY_DOMAIN --token $SURGE_TOKEN
 GITHUB_PR_COMMENTS=https://api.github.com/repos/${TRAVIS_REPO_SLUG}/issues/${TRAVIS_PULL_REQUEST}/comments
 curl -u "noblocknoparty-devs:${GITHUB_API_TOKEN}" --request POST ${GITHUB_PR_COMMENTS} --data '{"body":"PR deployed at: '${DEPLOY_DOMAIN}'"}'
