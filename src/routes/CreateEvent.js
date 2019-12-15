@@ -95,9 +95,10 @@ export default function Create() {
 
     // run this loop only if unlocked
     if (e.detail === 'unlocked') {
-      // blockchainData() will load empty first, check if loaded before updating state every, checks every 100 ms
+      // blockchainData() will load empty first, check if loaded before updating state, checks every 100 ms
       let checkExist = setInterval(function() {
         if (window.unlockProtocol.blockchainData()) {
+          // once loaded, update hooks with lock info, and exit timer loop
           updateUnlockUser()
           clearInterval(checkExist)
         }
@@ -111,6 +112,7 @@ export default function Create() {
   }
 
   useEffect(() => {
+    // don't load paywall if testing with ganache
     if (ENV !== 'local') {
       window.addEventListener('unlockProtocol', unlockHandler)
     } else {
@@ -119,6 +121,7 @@ export default function Create() {
   }, [])
 
   useEffect(() => {
+    // remove unlock in component unmount1
     return () => {
       ENV !== 'local' &&
         window.removeEventListener('unlockProtocol', unlockHandler)
