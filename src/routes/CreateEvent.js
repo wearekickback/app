@@ -42,7 +42,7 @@ const AddrDisplay = styled('span')`
   background-color: #6e76ff;
   color: #fff;
   border-radius: 2px;
-  padding: 4px;
+  padding: 5px;
   font-size: 10px;
   margin-right: 10px;
 `
