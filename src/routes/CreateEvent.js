@@ -38,9 +38,27 @@ const UnlockedLogo = styled('a')`
   font-weight: 800;
 `
 
+const AddrDisplay = styled('span')`
+  background-color: #6e76ff;
+  color: #fff;
+  border-radius: 2px;
+  padding: 4px;
+  font-size: 10px;
+  margin-right: 10px;
+`
+
+const UnlockUserDetails = styled('div')`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
+  transition: transform 300ms ease-in-out;
+`
+
 export default function Create() {
   const [password, setPassword] = useState('')
   const [locked, setLocked] = useState('pending')
+  const [membership, setMembership] = useState('')
+  const [membershipAddr, setMembershipAddr] = useState('')
   let history = useHistory()
 
   const _onCreated = ({ id }, deposit, limitOfParticipants, coolingPeriod) => {
@@ -49,8 +67,22 @@ export default function Create() {
     )
   }
 
-  const unlockHandler = e => {
-    setLocked(e.detail)
+  const updateUnlockUser = () => {
+    // sets membership lock and lock name to state
+    let unlock = window.unlockProtocol.blockchainData()
+    let locks = Object.keys(unlock.locks).map(i => unlock.locks[i])
+    let bronze = locks.find(o => o.name.includes('Kickback Bronze'))
+    let gold = locks.find(o => o.name.includes('Kickback Gold'))
+    if (gold) {
+      setMembership(gold.name)
+      setMembershipAddr(gold.address)
+    } else {
+      setMembership(bronze.name)
+      setMembershipAddr(bronze.address)
+    }
+  }
+
+  const unlockHandler = async e => {
     /*
       Status can either be 'unlocked' or 'locked'...
       If state is 'unlocked': implement code here which will be triggered when 
@@ -58,6 +90,19 @@ export default function Create() {
       If state is 'locked': implement code here which will be
       triggered when the current visitor does not have a valid lock key
     */
+
+    setLocked(e.detail)
+
+    // run this loop only if unlocked
+    if (e.detail === 'unlocked') {
+      // blockchainData() will load empty first, check if loaded before updating state every, checks every 100 ms
+      let checkExist = setInterval(function() {
+        if (window.unlockProtocol.blockchainData()) {
+          updateUnlockUser()
+          clearInterval(checkExist)
+        }
+      }, 100)
+    }
   }
 
   const checkout = () => {
@@ -75,7 +120,7 @@ export default function Create() {
 
   useEffect(() => {
     return () => {
-      if (ENV !== 'local')
+      ENV !== 'local' &&
         window.removeEventListener('unlockProtocol', unlockHandler)
     }
   }, [])
@@ -85,19 +130,27 @@ export default function Create() {
       {
         {
           unlocked: (
-            <PartyForm
-              onCompleted={_onCreated}
-              mutation={CREATE_PENDING_PARTY}
-              variables={{ password }}
-              type="create"
-            >
-              <Label>SECRET PASSWORD:</Label>
-              <TextInput
-                value={password}
-                onChangeText={val => setPassword(val)}
-                type="password"
-              />
-            </PartyForm>
+            <div>
+              {membershipAddr !== '' && (
+                <UnlockUserDetails>
+                  <AddrDisplay>{membership}</AddrDisplay>
+                  <AddrDisplay>{membershipAddr}</AddrDisplay>
+                </UnlockUserDetails>
+              )}
+              <PartyForm
+                onCompleted={_onCreated}
+                mutation={CREATE_PENDING_PARTY}
+                variables={{ password }}
+                type="create"
+              >
+                <Label>SECRET PASSWORD:</Label>
+                <TextInput
+                  value={password}
+                  onChangeText={val => setPassword(val)}
+                  type="password"
+                />
+              </PartyForm>
+            </div>
           ),
           locked: (
             <LockedContainer>
