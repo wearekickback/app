@@ -3,6 +3,8 @@
 - Dev version: https://kovan.kickback.events
 - Live version: https://kickback.events
 
+README test
+
 ## Dev guide
 
 Currently only frontend is open sourced.
