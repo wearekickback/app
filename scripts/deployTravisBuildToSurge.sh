@@ -18,8 +18,8 @@ echo "DOMAIN: ${DEPLOY_DOMAIN}"
 echo "LOGIN: ${SURGE_LOGIN}"
 cp ${DEPLOY_PATH}/index.html ${DEPLOY_PATH}/200.html
 echo "surge -p ${DEPLOY_PATH} -d $DEPLOY_DOMAIN --token ***"
-surge -p ${DEPLOY_PATH} -d $DEPLOY_DOMAIN --token $SURGE_TOKEN
+yarn surge -p ${DEPLOY_PATH} -d $DEPLOY_DOMAIN --token $SURGE_TOKEN
 echo "Deployed at $DEPLOY_DOMAIN"
 GITHUB_PR_COMMENTS=https://api.github.com/repos/${TRAVIS_REPO_SLUG}/issues/${TRAVIS_PULL_REQUEST}/comments
 echo "Going to comment on Github with ${DEPLOY_DOMAIN}"
-# curl -u "noblocknoparty-devs:${GITHUB_API_TOKEN}" --request POST ${GITHUB_PR_COMMENTS} --data '{"body":"PR deployed at: '${DEPLOY_DOMAIN}'"}'
+curl -u "noblocknoparty-devs:${GITHUB_API_TOKEN}" --request POST ${GITHUB_PR_COMMENTS} --data '{"body":"PR deployed at: '${DEPLOY_DOMAIN}'"}'
