@@ -13,11 +13,10 @@ import { GlobalProvider } from './GlobalState'
 import './globalStyles'
 import { ENV, LOCKS } from './config'
 
+// assumes mainnet or rinkeby Unlock for now
 const networkId = ENV === 'live' ? 1 : 4
-
 const locks = LOCKS[networkId]
 
-// unlock config must use var
 window.unlockProtocolConfig = {
   locks,
   icon: 'https://kickback.events/card.png',
