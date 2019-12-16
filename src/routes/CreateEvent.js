@@ -118,9 +118,7 @@ export default function Create() {
     } else {
       setLocked('unlocked')
     }
-  }, [])
 
-  useEffect(() => {
     // remove unlock in component unmount1
     return () => {
       ENV !== 'local' &&
