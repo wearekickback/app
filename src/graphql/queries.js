@@ -115,12 +115,9 @@ export const TOKEN_SYMBOL_QUERY = gql`
   }
 `
 
-// FIXME TODO: get this on the backend - want it to enable the ability to mutate checkin (boolian?) 
+// FIXME TODO: get this on the backend - want it to enable the ability to mutate checkin (boolian?)
 export const EVENT_TOTP_QUERY = gql`
   query checkEventTOTP($partyAddress: String!, $totp: String!) {
-    topt: checkTOTP(
-      partyAddress: $partyAddress
-      totp: $totp
-    )
+    topt: checkTOTP(partyAddress: $partyAddress, totp: $totp)
   }
 `
