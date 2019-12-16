@@ -42,6 +42,15 @@ export const CREATE_LOGIN_CHALLENGE = gql`
   }
 `
 
+// FIXME TODO: get this on the backend - want it to gen a TOTP and timestamp for user to sign
+export const CREATE_CHECKIN_CHALLENGE = gql`
+  mutation createCheckInChallenge($address: String!) {
+    challenge: createCheckInChallenge(address: $address) {
+      str
+    }
+  }
+`
+
 export const SIGN_CHALLENGE_STRING = gql`
   mutation signChallengeString($challengeString: String!) {
     signature: signChallengeString(challengeString: $challengeString) @client
