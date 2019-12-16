@@ -119,7 +119,7 @@ export default function Create() {
       setLocked('unlocked')
     }
 
-    // remove unlock in component unmount1
+    // remove unlock in component unmount
     return () => {
       ENV !== 'local' &&
         window.removeEventListener('unlockProtocol', unlockHandler)
