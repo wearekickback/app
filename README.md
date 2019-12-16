@@ -127,12 +127,12 @@ Add `src/config/env.json` with the following information
   "ENV": "kovan",
   "DAI_CONTRACT_ADDRESS": "0x7d669a64deb8a4a51eea755bb0e19fd39ce25ae9",
   "LOCKS": {
-    1: {
+    "1": {
       "0xa5bA2f45aFc9864bFA97CBb7D92BF8390744d529": {
         "name": "Kickback Bronze Supporter"
       }
     },
-    4: {
+    "4": {
       "0xb452A1BfE64036718aCeFC8B5F718E0c9d233cB8": {
         "name": "Kickback Gold Supporter"
       },
