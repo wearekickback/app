@@ -44,6 +44,16 @@ if (argv.ropsten) {
   appConfig.ROLLBAR_TOKEN = 'e676d64e462b48d098a12db8a173598a'
   appConfig.BLOCKNATIVE_DAPPID = '27b3eac2-e46c-428a-9a0c-56cce2725d42'
   appConfig.MIXPANEL_ID = '28243587317e7b2d8a669dcce23302cb'
+  appConfig.LOCKS = {
+    4: {
+      '0xb452A1BfE64036718aCeFC8B5F718E0c9d233cB8': {
+        name: 'Kickback Gold Supporter'
+      },
+      '0x70456ebD53E19eaE05932C482FeF1b24251ABb18': {
+        name: 'Kickback Bronze Supporter'
+      }
+    }
+  }
 } else if (argv.kovan) {
   appConfig.ENV = 'kovan'
   appConfig.API_URL = 'https://kovan.api.kickback.events'
