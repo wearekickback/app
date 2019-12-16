@@ -144,6 +144,21 @@ Add `src/config/env.json` with the following information
 }
 ```
 
+The format for "LOCKS" is the following:
+
+```
+"LOCKS": {
+  "<network id>": {
+    "<lock address>": {
+      "name": "<membership label>"
+    }
+  }
+}
+```
+
+Run the app.
+
+
 ```
 yarn start
 ```
