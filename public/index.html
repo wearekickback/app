@@ -64,18 +64,17 @@
     Unlock snippet scripts modified from 
     https://github.com/unlock-protocol/react-example/blob/master/public/index.html
   -->
-  <script>
-    // set network based on start scripts environment variables
-    const nodeEnv = "%NODE_ENV%";
-    const ethEnv = "%REACT_APP_ENV%";
-    const networkId = (ethEnv.includes("REACT_APP_ENV") && nodeEnv === "production") ? 1 
-    : (ethEnv.includes("REACT_APP_ENV") && nodeEnv !== "production") ? 4  
-    : ethEnv === "rinkeby" ? 4 
-    // : ethEnv === "kovan" ? 42 // include kovan when supported by unlock paywall
-    : ethEnv === "live" ? 1
-    : 4;
-
+  <script> 
     (function (d, s) {
+      // set network based on start scripts environment variables
+      const nodeEnv = "%NODE_ENV%";
+      const ethEnv = "%REACT_APP_ENV%";
+      const networkId = (ethEnv.includes("REACT_APP_ENV") && nodeEnv === "production") ? 1 
+      : (ethEnv.includes("REACT_APP_ENV") && nodeEnv !== "production") ? 4  
+      : ethEnv === "rinkeby" ? 4 
+      // : ethEnv === "kovan" ? 42 // include kovan when supported by unlock paywall
+      : ethEnv === "live" ? 1
+      : 4;
       // if Rinkeby set, use Rinkeby paywall, else use Mainnet
       let testnetUrl = networkId === 4 ? 'staging-' : '';
       let js = d.createElement(s);
@@ -83,49 +82,6 @@
         js.src = `https://${testnetUrl}paywall.unlock-protocol.com/static/unlock.1.0.min.js`;
         sc.parentNode.insertBefore(js, sc);
     }(document, "script"));
-
-    /* 
-      Kovan is included, but currently only Rinkeby and Mainnet is supported with paywall
-      tokens entered first to last are displayed right to left in paywall modal
-      Kovan lock is included for when kovan is supported by Unlock paywall
-      NOTE: Replace Mainnet keys with keys Kickback owns
-    */
-    const locks = {
-      1: {
-        "0xa5bA2f45aFc9864bFA97CBb7D92BF8390744d529": {
-          name: "Kickback Gold Supporter"
-        },
-        "0xa5bA2f45aFc9864bFA97CBb7D92BF8390744d529": {
-          name: "Kickback Bronze Supporter"
-        }
-      },
-      4: {
-        "0xb452A1BfE64036718aCeFC8B5F718E0c9d233cB8": {
-          name: "Kickback Gold Supporter"
-        },
-        "0x70456ebD53E19eaE05932C482FeF1b24251ABb18": {
-          name: "Kickback Bronze Supporter"
-        }
-      },
-      42: {
-        "0x2eD8aD6AA973BEA5D60FA70Eead10F113fb4Dc99": {
-          name: "Kickback Gold Supporter"
-        },
-        "0xe61607898287220586abE01b536714d8429f675C": {
-          name: "Kickback Bronze Supporter"
-        }
-      }
-    }[networkId]
-
-    // unlock config must use var
-    var unlockProtocolConfig = {
-      locks,
-      icon: "https://kickback.events/card.png",
-      callToAction: {
-        default:
-          'Select a membership to access page.',
-      },
-    }
   </script>
 </body>
 
