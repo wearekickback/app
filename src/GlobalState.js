@@ -53,8 +53,7 @@ class Provider extends Component {
   }
 
   signIn = async function({ dontForceSignIn } = {}) {
-    console.log('hits here')
-    if (this.state.loggedIn) {
+    if (this.isLoggedIn()) {
       return false
     }
 
