@@ -60,7 +60,7 @@ export default class CheckIn extends Component {
         }
 
         if (data.qrCode) {
-          this.props.handleTOPT(data.qrCode)
+          this.props.toptCode = data.qrCode
         }
       } catch (scanError) {
         this.setState({ scanError })
@@ -69,7 +69,7 @@ export default class CheckIn extends Component {
   }
 
   _onTOPT = val => {
-    this.props.handleTOPT(val)
+    this.props.toptCode = val
   }
 
   render() {
@@ -103,7 +103,7 @@ export default class CheckIn extends Component {
                     if (hasProfile) {
                       return this.renderCheckIn(partyAddress, userAddress, closeModal)
                     } else {
-                      return //TODO: render Signin.js here to create or login to account
+                      return //FIXME TODO: render / switch to Signin.js modal here to create or login to account
                     }
                   }}
                   </SafeQuery>
@@ -122,68 +122,58 @@ export default class CheckIn extends Component {
           <Pin />
           Check In for the Event
         </H2>
-        {enableQrCodeScanner ? (
-          <SafeQuery query={QR_SUPPORTED_QUERY}>
-            {({ data = {} }) => {
-              return data.supported ? (
-                <ApolloConsumer>
-                  {client => (
-                    <QRCodeContainer>
-                      <Button onClick={this._scan(client)}>Scan QRCode</Button>
-                      {scanError ? (
-                        <WarningBox>{`${scanError}`}</WarningBox>
-                      ) : null}
-                    </QRCodeContainer>
-                  )}
-                </ApolloConsumer>
-              ) : null
-            }}
-          </SafeQuery>
-        ) : <TOPTInput
-              type="text"
-              Icon={PinIcon}
-              // onChangeText={this._onTOPT}
-              value={toptCode}
-              placeholder="Enter the Event Check-in Code"
-              wide
-            />}
+        <P>Account detected: {userAddress}</P>
 
-            <SafeQuery query={EVENT_TOTP_QUERY}>
-              {(result) => {
-                return result ? (
-                      <SafeMutation
-                        mutation={MARK_USER_ATTENDED}
-                        variables={{
-                          address: partyAddress,
-                          participant: {
-                            address: userAddress,
-                            status: PARTICIPANT_STATUS.SHOWED_UP
-                          }
-                        }}> //TODO: MARK_USER_ATTENDED mutation needed w/ the user sig and TOPT verified
-                        {checkInUser => (
-                          <CheckInDiv>
-                            {isValid ? (
-                              <CheckInButton
-                                onClick={this.runCheckIn({
-                                  prepareValuesFn,
-                                  sendDataToServer: checkInUser,
-                                  closeModal
-                                })}
-                                title="Check In"
-                              />
-                            ) : (
-                              <Button type="disabled">Check In</Button>
-                            )}
-                          </CheckInDiv>
-                        )}
-                      </SafeMutation>
-                ) : <H2> Not Signed in... ERROR </H2> //FIXME handle this better?
+        {enableQrCodeScanner ? (
+            <SafeQuery query={QR_SUPPORTED_QUERY}>
+              {({ data = {} }) => {
+                return data.supported ? (
+                  <ApolloConsumer>
+                    {client => (
+                      <QRCodeContainer>
+                        <Button onClick={this._scan(client)}>Scan QRCode</Button>
+                        {scanError ? (
+                          <WarningBox>{`${scanError}`}</WarningBox>
+                        ) : null}
+                      </QRCodeContainer>
+                    )}
+                  </ApolloConsumer>
+                ) : null
               }}
+            </SafeQuery>
+          ) : <TOPTInput
+                type="text"
+                Icon={PinIcon}
+                // onChangeText={this._onTOPT} //Should be triggered by CheckInButton below
+                value={toptCode}
+                placeholder="Enter the Event Check-in Code"
+                wide
+              />
+        }
+
+            <SafeQuery
+              query={EVENT_TOTP_QUERY} // FIXME TODO : CHECK THE TOTP and return ability to checkin
+              variables={{ $partyAddress: partyAddress, totp: toptCode}} //send address and totp, return pass/fail
+            >
+              { totpPass ? (
+                <CheckInButton
+                  onClick={this.runCheckIn({
+                    prepareValuesFn,
+                    sendDataToServer: ,
+                    closeModal
+                  })}
+                  title="Check In"
+                />
+              ) : (
+                <H2> Check-in Veficication Failed... Try to enter/scan the Check-in code again </H2>
+                <Button type="disabled">Check In</Button>
+              )} //FIXME TODO: handle failed totp better? Possibly alert instead?
           </SafeQuery>
       </>
     )
   }
 
+  //TODO FIXME : this is a guess at fuctionallity - EVENT_TOTP_QUERY has run, so should be safe to gen  a challenge to sign to then finally get checkin logged in database
   runCheckIn = ({
     prepareValuesFn,
     sendDataToServer,

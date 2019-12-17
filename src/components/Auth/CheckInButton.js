@@ -30,7 +30,7 @@ export default class RefreshAuthTokenButton extends Component {
         throw new Error('Unable to obtain user ethereum address')
       }
 
-      const result1 = await createCheckInChallenge({
+      const result1 = await createCheckInChallenge({ //TODO FIXME: party address needed only Challenge should include party *name/title*, address, and timestamp  
         variables: { address }
       })
 
@@ -83,7 +83,7 @@ export default class RefreshAuthTokenButton extends Component {
     return (
       <GlobalConsumer>
         {({ reloadUserAddress, setAuthTokenFromSignature, setUserProfile }) => (
-          <SafeMutation mutation={CREATE_LOGIN_CHALLENGE}>
+          <SafeMutation mutation={CREATE_CHECKIN_CHALLENGE}> //TODO FIXME need this in backend
             {createCheckInChallenge => (
               <SafeMutation mutation={SIGN_CHALLENGE_STRING}>
                 {signChallengeString => (
@@ -91,7 +91,7 @@ export default class RefreshAuthTokenButton extends Component {
                     <Tooltip text="Please sign the login message using your wallet or Dapp browser">
                       {({ showTooltip, hideTooltip, tooltipElement }) => (
                         <Button
-                          data-testid="sign-in-button"
+                          data-testid="check-in-button"
                           analyticsId="Sign Message"
                           onClick={() =>
                             onClick(
