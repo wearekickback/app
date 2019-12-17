@@ -8,6 +8,7 @@ import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
 import { EDIT_PROFILE, WALLET_MODAL } from '../../modals'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
+import TorusButton from './TorusButton'
 import AuthereumButton from './AuthereumButton'
 import LoadingDots from '../Utils/LoadingDots'
 
@@ -85,6 +86,7 @@ function SignInButton() {
               />
             </Account>
             <AuthereumButton />
+            <TorusButton />
           </>
         ) : (
           <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">

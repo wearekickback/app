@@ -1,12 +1,14 @@
 import styled from 'react-emotion'
 import React, { useState, useEffect, Component } from 'react'
 import { Authereum } from 'authereum'
+import Torus from '@toruslabs/torus-embed'
 import Web3 from 'web3'
 import Button from '../Forms/Button'
 import { GlobalConsumer } from '../../GlobalState'
 import { WALLET_MODAL } from '../../modals'
 import mq from '../../mediaQuery'
 
+import { ReactComponent as TorusImage } from '../svg/torus-blue.svg'
 import { ReactComponent as AuthereumImage } from '../svg/authereum.svg'
 import { ReactComponent as ULImage } from '../svg/ul.svg'
 import { ReactComponent as MetaMaskImage } from '../svg/metamask.svg'
@@ -56,6 +58,12 @@ const AuthereumLogo = styled(AuthereumImage)`
   height: 100px;
   margin-bottom: 5px;
 `
+const TorusLogo = styled(TorusImage)`
+  max-height: 75px;
+  max-width: 75px;
+  height: 100px;
+  margin-bottom: 5px;
+`
 const ULLogo = styled(ULImage)`
   max-height: 75px;
   max-width: 75px;
@@ -92,6 +100,32 @@ function WalletModal() {
 
   const sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  const torusInit = async (networkState, signIn) => {
+    window.sessionStorage.setItem('walletSelection', 'torus')
+    if (!networkState.networkName) {
+      console.error('Network not defined')
+      return
+    }
+    const torus = await new Torus()
+    window.torus = torus
+    await torus.init({
+      enableLogging: true, // default: false
+      network: {
+        host: networkState.networkName.toLowerCase()
+      },
+      showTorusButton: false
+    })
+    await torus.login()
+    window.sessionStorage.setItem('torusLoggedIn', true)
+    let didCloseModal = false
+    while (didCloseModal === false) {
+      // Wait a reasonable amount of time to see if the popup has closed
+      console.log('this is running')
+      await sleep(2000)
+      didCloseModal = await signIn()
+    }
   }
 
   const authereumInit = async (networkState, signIn) => {
@@ -172,6 +206,18 @@ function WalletModal() {
                 }}
               >
                 Authereum
+              </LogoButton>
+            </LogoContainer>
+            <LogoContainer>
+              <LogoText>I am not connected to an Ethereum wallet</LogoText>
+              <TorusLogo />
+              <LogoButton
+                onClick={() => {
+                  torusInit(networkState, signIn)
+                  closeModal({ name: WALLET_MODAL })
+                }}
+              >
+                Torus
               </LogoButton>
             </LogoContainer>
           </WalletsContainer>

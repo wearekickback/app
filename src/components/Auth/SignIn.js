@@ -49,7 +49,6 @@ export default class SignIn extends Component {
             >
               {result => {
                 const hasProfile = !!_.get(result, 'data.profile.username')
-
                 if (hasProfile) {
                   return this.renderSignIn(userAddress, closeModal)
                 } else {

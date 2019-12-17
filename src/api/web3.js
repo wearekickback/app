@@ -8,6 +8,7 @@ import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
 import { NETWORK_ID_QUERY } from '../graphql/queries'
 import { Authereum } from 'authereum'
+import Torus from '@toruslabs/torus-embed'
 
 let web3
 let web3WalletSelection
@@ -95,6 +96,17 @@ const getWeb3 = async () => {
         )
         const authereumProvider = authereum.getProvider()
         web3 = new Web3(authereumProvider)
+      } else if (walletSelection === 'torus') {
+        const torus = new Torus()
+        window.torus = torus
+        await torus.init({
+          network: {
+            host: networkState.expectedNetworkName.toLowerCase()
+          },
+          showTorusButton: false
+        })
+        const torusProvider = torus.ethereum
+        web3 = new Web3(torusProvider)
       } else if (window.ethereum) {
         web3 = new Web3(window.ethereum)
       } else if (window.web3 && window.web3.currentProvider) {

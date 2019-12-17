@@ -52,7 +52,8 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  signIn = async ({ dontForceSignIn } = {}) => {
+  signIn = async function({ dontForceSignIn } = {}) {
+    console.log('hits here')
     if (this.state.loggedIn) {
       return false
     }
@@ -106,7 +107,7 @@ class Provider extends Component {
         return signInPromise
       }
     }
-  }
+  }.bind(this)
 
   logOut = () => {
     this.setState({
