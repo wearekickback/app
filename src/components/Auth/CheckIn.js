@@ -78,7 +78,7 @@ export default class CheckIn extends Component {
       enableQrCodeScanner
     } = this.props
 
-    // const { partyAddress } = this.props.match.params //FIXME need way to get partyAddress, no in globals?
+    // const { partyAddress } = this.props.match.params //FIXME need way to get partyAddress, not in globals?
 
     const { scanError } = this.state
 
@@ -92,7 +92,6 @@ export default class CheckIn extends Component {
               // fetchPolicy="cache-and-network"
             >
               {({ data: { partyAddress } }) => {
-                return(
                 <SafeQuery
                   query={USER_PROFILE_QUERY}
                   variables={{ address: userAddress }}
@@ -103,14 +102,13 @@ export default class CheckIn extends Component {
                     if (hasProfile) {
                       return this.renderCheckIn(partyAddress, userAddress, closeModal)
                     } else {
-                      return //FIXME TODO: render / switch to Signin.js modal here to create or login to account
+                      return null //FIXME TODO: render / switch to Signin.js modal here to create or login to account
                     }
                   }}
                   </SafeQuery>
-                )
               }}
             </SafeQuery>
-          }
+          )}
         </GlobalConsumer>
       </CheckInContainer>
     )
@@ -159,7 +157,7 @@ export default class CheckIn extends Component {
                 <CheckInButton
                   onClick={this.runCheckIn({
                     prepareValuesFn,
-                    sendDataToServer: ,
+                    sendDataToServer: {{ $partyAddress: partyAddress, totp: toptCode}}, //FIXME TODO: blind guess... 
                     closeModal
                   })}
                   title="Check In"
