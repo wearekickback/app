@@ -104,12 +104,15 @@ function WalletModal() {
 
   const torusInit = async (networkState, signIn) => {
     window.sessionStorage.setItem('walletSelection', 'torus')
-    if (!networkState.networkName) {
-      console.error('Network not defined')
-      return
+    networkState.networkName = networkState.networkName || 'mainnet'
+    // Check if user is using Safari
+    let sBrowser,
+      sUsrAg = navigator.userAgent
+    if (sUsrAg.indexOf('Opera') > -1 || sUsrAg.indexOf('OPR') > -1) {
+      sBrowser = 'Opera'
     }
-    const torus = await new Torus()
-    window.torus = torus
+
+    const torus = new Torus()
     await torus.init({
       enableLogging: true, // default: false
       network: {
@@ -119,13 +122,10 @@ function WalletModal() {
     })
     await torus.login()
     window.sessionStorage.setItem('torusLoggedIn', true)
-    let didCloseModal = false
-    while (didCloseModal === false) {
-      // Wait a reasonable amount of time to see if the popup has closed
-      console.log('this is running')
-      await sleep(2000)
-      didCloseModal = await signIn()
+    if (sBrowser !== 'Opera') {
+      window.web3 = new Web3(torus.provider)
     }
+    await signIn()
   }
 
   const authereumInit = async (networkState, signIn) => {

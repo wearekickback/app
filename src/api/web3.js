@@ -98,15 +98,14 @@ const getWeb3 = async () => {
         web3 = new Web3(authereumProvider)
       } else if (walletSelection === 'torus') {
         const torus = new Torus()
-        window.torus = torus
         await torus.init({
           network: {
             host: networkState.expectedNetworkName.toLowerCase()
           },
           showTorusButton: false
         })
-        const torusProvider = torus.ethereum
-        web3 = new Web3(torusProvider)
+        await torus.login()
+        web3 = new Web3(torus.provider)
       } else if (window.ethereum) {
         web3 = new Web3(window.ethereum)
       } else if (window.web3 && window.web3.currentProvider) {
@@ -273,7 +272,7 @@ export async function getAccount() {
     if (sUsrAg.indexOf('Opera') > -1 || sUsrAg.indexOf('OPR') > -1) {
       accounts = await web3.eth.getAccounts()
     } else {
-      accounts = await window.ethereum.getAccounts()
+      accounts = await window.web3.eth.getAccounts()
     }
 
     if (accounts.length > 0) {
