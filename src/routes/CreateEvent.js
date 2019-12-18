@@ -71,7 +71,7 @@ export default function Create() {
     /*
       get available locks by tier
       get all purchases for user, select latest purchase, isolate key address
-      search for owned keys a pair matches highest lock tier, set label and address
+      search for owned keys, if a pair matches highest lock tier, set label and address
       if not search for next tier, set label and address
     */
 
