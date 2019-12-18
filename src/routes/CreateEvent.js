@@ -68,17 +68,37 @@ export default function Create() {
   }
 
   const updateUnlockUser = () => {
-    // sets membership lock and lock name to state
-    let unlock = window.unlockProtocol.blockchainData()
-    let locks = Object.keys(unlock.locks).map(i => unlock.locks[i])
-    let bronze = locks.find(o => o.name.includes('Kickback Bronze'))
-    let gold = locks.find(o => o.name.includes('Kickback Gold'))
-    if (gold) {
-      setMembership(gold.name)
-      setMembershipAddr(gold.address)
-    } else {
-      setMembership(bronze.name)
-      setMembershipAddr(bronze.address)
+    /*
+      get available locks by tier
+      get all purchases for user, select latest purchase, isolate key address
+      search for owned keys a pair matches highest lock tier, set label and address
+      if not search for next tier, set label and address
+    */
+
+    const data = window.unlockProtocol.blockchainData()
+    const locks = Object.keys(data.locks).map(i => data.locks[i])
+    const bronzeLock = locks.find(o => o.name.includes('Kickback Bronze'))
+    const goldLock = locks.find(o => o.name.includes('Kickback Gold'))
+    const purchases = Object.keys(data.transactions).map(
+      i => data.transactions[i]
+    )
+    const latestPurchaseBlock = Math.max.apply(
+      Math,
+      purchases.map(function(o) {
+        return o.blockNumber
+      })
+    )
+    const latestPurchase = purchases.find(
+      o => o.blockNumber === latestPurchaseBlock
+    )
+    const key = latestPurchase.lock
+
+    if (Object.values(goldLock).includes(key)) {
+      setMembership(goldLock.name)
+      setMembershipAddr(goldLock.address)
+    } else if (Object.values(bronzeLock).includes(key)) {
+      setMembership(bronzeLock.name)
+      setMembershipAddr(bronzeLock.address)
     }
   }
 
@@ -94,6 +114,7 @@ export default function Create() {
     setLocked(e.detail)
 
     // run this loop only if unlocked
+    // if keys previously purchased and expired, will be locked, updateUnlockUser() won't run
     if (e.detail === 'unlocked') {
       // blockchainData() will load empty first, check if loaded before updating state, checks every 100 ms
       let checkExist = setInterval(function() {
