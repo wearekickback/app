@@ -6,7 +6,7 @@ then
   then
     echo "Deploying PR branch to surge..."
   else
-    echo "No secure envs (probably PR from forks), skipping."
+    echo "No secure envs (probably PR from a fork), skipping."
     exit -1
   fi
 else
