@@ -1,8 +1,14 @@
 #!/bin/bash
 # From https://medium.com/onfido-tech/travis-surge-github-auto-deploy-every-pr-branch-and-tag-a6c8c790831f
-if [ "$TRAVIS_PULL_REQUEST" != "false" ]
+if [ "$TRAVIS_PULL_REQUEST" != "false"]
 then
-  echo "Deploying PR branch to surge..."
+  if [ "$TRAVIS_SECURE_ENV_VARS" != "true"]
+  then
+    echo "Deploying PR branch to surge..."
+  else
+    echo "No secure envs (probably PR from forks), skipping."
+    exit -1
+  fi
 else
   echo "Not running on PR, skipping."
   exit -1
