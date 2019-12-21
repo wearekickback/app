@@ -1,5 +1,6 @@
 #!/bin/bash
 # From https://medium.com/onfido-tech/travis-surge-github-auto-deploy-every-pr-branch-and-tag-a6c8c790831f
+echo "TRAVIS_SECURE_ENV_VARS: $TRAVIS_SECURE_ENV_VARS"
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]
 then
   if [ "$TRAVIS_SECURE_ENV_VARS" != "true" ]
