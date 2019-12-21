@@ -3,7 +3,7 @@
 echo "TRAVIS_SECURE_ENV_VARS: $TRAVIS_SECURE_ENV_VARS"
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]
 then
-  if [ "$TRAVIS_SECURE_ENV_VARS" != "true" ]
+  if [ "$TRAVIS_SECURE_ENV_VARS" == "true" ]
   then
     echo "Deploying PR branch to surge..."
   else
