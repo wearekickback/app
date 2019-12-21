@@ -18,7 +18,8 @@ echo "DOMAIN: ${DEPLOY_DOMAIN}"
 echo "LOGIN: ${SURGE_LOGIN}"
 cp ${DEPLOY_PATH}/index.html ${DEPLOY_PATH}/200.html
 echo "surge -p ${DEPLOY_PATH} -d $DEPLOY_DOMAIN --token ***"
-if [$SURGE_TOKEN == ""]
+echo "TRAVIS_SECURE_ENV_VARS ${TRAVIS_SECURE_ENV_VARS}"
+if [$TRAVIS_SECURE_ENV_VARS == "true"]
 then
   echo "This is PR from third party. Skip deploy"
 else
