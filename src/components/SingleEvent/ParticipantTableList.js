@@ -95,6 +95,26 @@ const cells = [
   { label: 'Twitter' }
 ]
 
+function getStatus(ended, attended, withdrawn) {
+  if (ended) {
+    if (attended) {
+      if (withdrawn) {
+        return 'Withdrawn'
+      } else {
+        return 'Won'
+      }
+    } else {
+      return 'Lost'
+    }
+  } else {
+    if (attended) {
+      return 'RSPVed'
+    } else {
+      return 'Attended'
+    }
+  }
+}
+
 function getEmail(email) {
   if (email === null) {
     return null
@@ -181,6 +201,8 @@ class SingleEventWrapper extends Component {
       for (var j = 0; j < cols.length; j++) {
         if (cols[j].dataset.csv !== 'no') {
           row.push(cols[j].innerText)
+        } else {
+          row.push('')
         }
       }
 
@@ -272,7 +294,8 @@ class SingleEventWrapper extends Component {
                         <Table>
                           <Tbody>
                             <TR>
-                              <TH data-csv="no">Status</TH>
+                              <TH>Action</TH>
+                              <TH>Status</TH>
                               {cells.map(
                                 cell =>
                                   !cell.hidden && (
@@ -318,7 +341,6 @@ class SingleEventWrapper extends Component {
                                       },
                                       loading
                                     }) => {
-                                      console.log({ symbol })
                                       return (
                                         <TR key={participant.user.id}>
                                           <TD data-csv="no">
@@ -375,6 +397,13 @@ class SingleEventWrapper extends Component {
                                                   }
                                                 </MarkedAttended>
                                               </>
+                                            )}
+                                          </TD>
+                                          <TD>
+                                            {getStatus(
+                                              ended,
+                                              attended,
+                                              withdrawn
                                             )}
                                           </TD>
                                           {cells.map((cell, i) =>
