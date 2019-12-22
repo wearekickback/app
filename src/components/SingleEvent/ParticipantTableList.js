@@ -329,83 +329,61 @@ class SingleEventWrapper extends Component {
                                   numShowedUp
                                 )
                                 return (
-                                  <SafeQuery
-                                    query={TOKEN_QUERY}
-                                    variables={{
-                                      tokenAddress: party.tokenAddress
-                                    }}
-                                  >
-                                    {({
-                                      data: {
-                                        token: { symbol }
-                                      },
-                                      loading
-                                    }) => {
-                                      return (
-                                        <TR key={participant.user.id}>
-                                          <TD data-csv="no">
-                                            {' '}
-                                            {ended ? (
-                                              ''
-                                            ) : (
-                                              <>
-                                                <MarkedAttended
-                                                  party={party}
-                                                  participant={participant}
-                                                  refetch={refetch}
-                                                >
-                                                  {({
-                                                    markAttended,
-                                                    unmarkAttended
-                                                  }) =>
-                                                    attended ? (
-                                                      <Button
-                                                        wide
-                                                        onClick={() =>
-                                                          unmarkAttended()
-                                                        }
-                                                        analyticsId="Unmark Attendee"
-                                                      >
-                                                        Unmark attended
-                                                      </Button>
-                                                    ) : (
-                                                      <Button
-                                                        wide
-                                                        type="hollow"
-                                                        onClick={() =>
-                                                          markAttended()
-                                                        }
-                                                        analyticsId="Mark Attendee"
-                                                      >
-                                                        Mark attended <Tick />
-                                                      </Button>
-                                                    )
+                                  <TR key={participant.user.id}>
+                                    <TD data-csv="no">
+                                      {' '}
+                                      {ended ? (
+                                        ''
+                                      ) : (
+                                        <>
+                                          <MarkedAttended
+                                            party={party}
+                                            participant={participant}
+                                            refetch={refetch}
+                                          >
+                                            {({
+                                              markAttended,
+                                              unmarkAttended
+                                            }) =>
+                                              attended ? (
+                                                <Button
+                                                  wide
+                                                  onClick={() =>
+                                                    unmarkAttended()
                                                   }
-                                                </MarkedAttended>
-                                              </>
-                                            )}
-                                          </TD>
-                                          <TD>
-                                            {getStatus(
-                                              ended,
-                                              attended,
-                                              withdrawn
-                                            )}
-                                          </TD>
-                                          {cells.map((cell, i) =>
-                                            getTableCell(cell, i, participant)
-                                          )}
-                                          <TD>
-                                            {participant.user.legal &&
-                                            participant.user.legal[2] &&
-                                            participant.user.legal[2].accepted
-                                              ? 'accepted'
-                                              : 'denied'}
-                                          </TD>
-                                        </TR>
-                                      )
-                                    }}
-                                  </SafeQuery>
+                                                  analyticsId="Unmark Attendee"
+                                                >
+                                                  Unmark attended
+                                                </Button>
+                                              ) : (
+                                                <Button
+                                                  wide
+                                                  type="hollow"
+                                                  onClick={() => markAttended()}
+                                                  analyticsId="Mark Attendee"
+                                                >
+                                                  Mark attended <Tick />
+                                                </Button>
+                                              )
+                                            }
+                                          </MarkedAttended>
+                                        </>
+                                      )}
+                                    </TD>
+                                    <TD>
+                                      {getStatus(ended, attended, withdrawn)}
+                                    </TD>
+                                    {cells.map((cell, i) =>
+                                      getTableCell(cell, i, participant)
+                                    )}
+                                    <TD>
+                                      {participant.user.legal &&
+                                      participant.user.legal[2] &&
+                                      participant.user.legal[2].accepted
+                                        ? 'accepted'
+                                        : 'denied'}
+                                    </TD>
+                                  </TR>
                                 )
                               })}
                           </Tbody>
