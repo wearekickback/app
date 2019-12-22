@@ -15,8 +15,7 @@ import {
   sortParticipants,
   filterParticipants
 } from '../../utils/parties'
-import { toEthVal } from '../../utils/units'
-import { PARTY_ADMIN_VIEW_QUERY, TOKEN_QUERY } from '../../graphql/queries'
+import { PARTY_ADMIN_VIEW_QUERY } from '../../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../Table'
 import DefaultButton from '../Forms/Button'
@@ -24,7 +23,6 @@ import WarningBox from '../WarningBox'
 import SafeQuery from '../SafeQuery'
 import EventFilters from './EventFilters'
 import { GlobalConsumer } from '../../GlobalState'
-import Status from './ParticipantStatus'
 import mq from '../../mediaQuery'
 import MarkedAttended from './MarkedAttendedRP'
 import tick from '../svg/tick.svg'
