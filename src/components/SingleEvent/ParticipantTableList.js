@@ -10,7 +10,6 @@ import {
 import {
   amAdmin,
   getMyParticipantEntry,
-  calculateWinningShare,
   getParticipantsMarkedAttended,
   sortParticipants,
   filterParticipants
@@ -244,7 +243,7 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-                const { participants, ended, deposit } = party
+                const { participants, ended } = party
 
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
@@ -316,16 +315,6 @@ class SingleEventWrapper extends Component {
                                   status === PARTICIPANT_STATUS.SHOWED_UP ||
                                   withdrawn
 
-                                const numRegistered = party.participants.length
-                                const numShowedUp = calculateNumAttended(
-                                  party.participants
-                                )
-
-                                const payout = calculateWinningShare(
-                                  deposit,
-                                  numRegistered,
-                                  numShowedUp
-                                )
                                 return (
                                   <TR key={participant.user.id}>
                                     <TD data-csv="no">
