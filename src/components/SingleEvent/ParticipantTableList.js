@@ -108,9 +108,9 @@ function getStatus(ended, attended, withdrawn) {
     }
   } else {
     if (attended) {
-      return 'RSPVed'
-    } else {
       return 'Attended'
+    } else {
+      return 'RSPV'
     }
   }
 }
@@ -346,21 +346,7 @@ class SingleEventWrapper extends Component {
                                           <TD data-csv="no">
                                             {' '}
                                             {ended ? (
-                                              attended ? (
-                                                <Status type="won">{`${
-                                                  withdrawn
-                                                    ? ' Withdrew'
-                                                    : 'Won'
-                                                } ${payout} ${symbol} `}</Status>
-                                              ) : (
-                                                <Status type="lost">
-                                                  Lost{' '}
-                                                  {toEthVal(deposit)
-                                                    .toEth()
-                                                    .toString()}{' '}
-                                                  {symbol}
-                                                </Status>
-                                              )
+                                              ''
                                             ) : (
                                               <>
                                                 <MarkedAttended
