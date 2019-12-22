@@ -1,21 +1,15 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
-import {
-  PARTICIPANT_STATUS,
-  calculateNumAttended,
-  getSocialId
-} from '@wearekickback/shared'
+import { PARTICIPANT_STATUS, getSocialId } from '@wearekickback/shared'
 
 import {
   amAdmin,
   getMyParticipantEntry,
-  calculateWinningShare,
   getParticipantsMarkedAttended,
   sortParticipants,
   filterParticipants
 } from '../../utils/parties'
-import { toEthVal } from '../../utils/units'
 import { PARTY_ADMIN_VIEW_QUERY } from '../../graphql/queries'
 
 import { Table, Tbody, TH, TR, TD } from '../Table'
@@ -24,7 +18,6 @@ import WarningBox from '../WarningBox'
 import SafeQuery from '../SafeQuery'
 import EventFilters from './EventFilters'
 import { GlobalConsumer } from '../../GlobalState'
-import Status from './ParticipantStatus'
 import mq from '../../mediaQuery'
 import MarkedAttended from './MarkedAttendedRP'
 import tick from '../svg/tick.svg'
@@ -94,6 +87,26 @@ const cells = [
   { label: 'Email' },
   { label: 'Twitter' }
 ]
+
+function getStatus(ended, attended, withdrawn) {
+  if (ended) {
+    if (attended) {
+      if (withdrawn) {
+        return 'Withdrawn'
+      } else {
+        return 'Won'
+      }
+    } else {
+      return 'Lost'
+    }
+  } else {
+    if (attended) {
+      return 'Attended'
+    } else {
+      return 'RSPV'
+    }
+  }
+}
 
 function getEmail(email) {
   if (email === null) {
@@ -181,6 +194,8 @@ class SingleEventWrapper extends Component {
       for (var j = 0; j < cols.length; j++) {
         if (cols[j].dataset.csv !== 'no') {
           row.push(cols[j].innerText)
+        } else {
+          row.push('')
         }
       }
 
@@ -224,7 +239,7 @@ class SingleEventWrapper extends Component {
                     )
                   }
                 }
-                const { participants, ended, deposit } = party
+                const { participants, ended } = party
 
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
@@ -272,7 +287,8 @@ class SingleEventWrapper extends Component {
                         <Table>
                           <Tbody>
                             <TR>
-                              <TH data-csv="no">Status</TH>
+                              <TH>Action</TH>
+                              <TH>Status</TH>
                               {cells.map(
                                 cell =>
                                   !cell.hidden && (
@@ -295,34 +311,12 @@ class SingleEventWrapper extends Component {
                                   status === PARTICIPANT_STATUS.SHOWED_UP ||
                                   withdrawn
 
-                                const numRegistered = party.participants.length
-                                const numShowedUp = calculateNumAttended(
-                                  party.participants
-                                )
-
-                                const payout = calculateWinningShare(
-                                  deposit,
-                                  numRegistered,
-                                  numShowedUp
-                                )
                                 return (
                                   <TR key={participant.user.id}>
                                     <TD data-csv="no">
                                       {' '}
                                       {ended ? (
-                                        attended ? (
-                                          <Status type="won">{`${
-                                            withdrawn ? ' Withdrew' : 'Won'
-                                          } ${payout} ETH `}</Status>
-                                        ) : (
-                                          <Status type="lost">
-                                            Lost{' '}
-                                            {toEthVal(deposit)
-                                              .toEth()
-                                              .toString()}{' '}
-                                            ETH
-                                          </Status>
-                                        )
+                                        ''
                                       ) : (
                                         <>
                                           <MarkedAttended
@@ -358,6 +352,9 @@ class SingleEventWrapper extends Component {
                                           </MarkedAttended>
                                         </>
                                       )}
+                                    </TD>
+                                    <TD>
+                                      {getStatus(ended, attended, withdrawn)}
                                     </TD>
                                     {cells.map((cell, i) =>
                                       getTableCell(cell, i, participant)
