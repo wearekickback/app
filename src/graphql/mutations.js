@@ -135,6 +135,20 @@ export const WITHDRAW_PAYOUT = gql`
   }
 `
 
+export const SEND_AND_WITHDRAW_PAYOUT = gql`
+  mutation sendAndWithdraw(
+    $address: String!
+    $destinationAddresses: String!
+    $destinationAmounts: String!
+  ) {
+    sendAndWithdraw(
+      address: $address
+      destinationAddresses: $destinationAddresses
+      destinationAmounts: $destinationAmounts
+    ) @client
+  }
+`
+
 export const SINGLE_UPLOAD = gql`
   mutation singleUpload($file: Upload!) {
     singleUpload(file: $file)

@@ -11,6 +11,7 @@ import TipOrganiser from './TipOrganiser'
 import SafeQuery from '../SafeQuery'
 import { toBN } from 'web3-utils'
 import { toEthVal } from '../../utils/units'
+import { A } from '../Typography/Basic'
 import getEtherPrice from '../../api/price'
 import {
   calculateWinningShare,
@@ -147,11 +148,12 @@ class EventCTA extends Component {
           .toEth()
           .toFixed(3)
       var coffee = currencySymbol === 'DAI' ? 3 : this.getCoffeePrice()
-      //TODO: add in address
-      var addresses = [{ address }, 'another_address']
+      //TODO: dummy address
+      var destinationAddresses = ['0x7200BBeAd24fB2F006fa8cAFDFE770907445F1a2']
       return (
         <TipOrganiser
-          addresses={addresses}
+          address={address}
+          destinationAddresses={destinationAddresses}
           all={myShare}
           extra={Extra}
           coffee={coffee}
@@ -176,7 +178,7 @@ class EventCTA extends Component {
           <Button onClick={() => this.changeMode(Donate)}>
             Tip Organiser
           </Button>,
-          <a onClick={() => this.changeMode(WithdrawAll)}> Or Withdraw All</a>
+          <A onClick={() => this.changeMode(WithdrawAll)}> Or Withdraw All</A>
         ]
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
         return <Status>You have withdrawn your payout!</Status>

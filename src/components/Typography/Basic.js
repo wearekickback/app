@@ -29,8 +29,8 @@ export const P = styled('p')`
 
 export const A = styled('a')`
   color: #6e76ff;
-
   &:hover {
+    cursor: pointer;
     color: #4c54d3;
   }
 `

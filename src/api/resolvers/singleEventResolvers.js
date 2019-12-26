@@ -258,15 +258,25 @@ const resolvers = {
         throw new Error(`Failed to withdraw`)
       }
     },
-    async sendAndWithdrawPayout(_, { addresses, values }) {
+    async sendAndWithdraw(
+      _,
+      { address, destinationAddresses, destinationAmounts }
+    ) {
+      const destinationAmountsInWai = destinationAmounts.map(amount => {
+        return toEthVal(amount, 'eth')
+          .toWei()
+          .toString(16)
+      })
       const web3 = await getWeb3()
       const account = await getAccount()
-      const { methods: contract } = new web3.eth.Contract(abi, addresses)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.withdraw().send({
-            from: account
-          })
+          contract
+            .sendAndWithdraw(destinationAddresses, destinationAmountsInWai)
+            .send({
+              from: account
+            })
         )
 
         return tx

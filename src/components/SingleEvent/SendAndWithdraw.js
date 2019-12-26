@@ -2,22 +2,32 @@ import React from 'react'
 
 import { PARTY_QUERY } from '../../graphql/queries'
 //TODO: update mutation
-import { WITHDRAW_PAYOUT } from '../../graphql/mutations'
+import { SEND_AND_WITHDRAW_PAYOUT } from '../../graphql/mutations'
 
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 
-const SendAndWithdrawButton = ({ addresses, amounts, className }) => (
+const canExectute = amounts => {
+  return amounts.map(a => parseFloat(a)).filter(a => a > 0).length > 0
+}
+
+const SendAndWithdrawButton = ({
+  address,
+  destinationAddresses,
+  destinationAmounts,
+  className
+}) => (
   <ChainMutation
-    mutation={WITHDRAW_PAYOUT}
-    resultKey="sendAndWithdrawPayout"
-    variables={{ addresses, amounts }}
-    refetchQueries={[{ query: PARTY_QUERY, variables: { addresses, amounts } }]}
+    mutation={SEND_AND_WITHDRAW_PAYOUT}
+    resultKey="sendAndWithdraw"
+    variables={{ address, destinationAddresses, destinationAmounts }}
+    refetchQueries={[{ query: PARTY_QUERY, variables: { address } }]}
   >
-    {(sendAndWithdrawPayout, result) => (
+    {(sendAndWithdraw, result) => (
       <ChainMutationButton
         analyticsId="Send and Withdraw Payout"
-        onClick={sendAndWithdrawPayout}
+        onClick={sendAndWithdraw}
         result={result}
+        type={!canExectute(destinationAmounts) ? 'disabled' : ''}
         className={className}
         preContent={`Tip and Withdraw`}
       />
