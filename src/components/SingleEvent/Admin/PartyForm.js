@@ -203,7 +203,8 @@ class PartyForm extends Component {
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20,
       tokenAddress = '',
-      status = 'public'
+      status = 'public',
+      clearFee = 50 // 5%
     } = props
 
     const [startDay, startTime] = getDayAndTimeFromDate(start)
@@ -230,6 +231,7 @@ class PartyForm extends Component {
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false,
+      clearFee,
       status
     }
   }
@@ -277,6 +279,7 @@ class PartyForm extends Component {
       tokenAddress,
       limitOfParticipants,
       coolingPeriod,
+      clearFee,
       status
     } = this.state
 
@@ -559,7 +562,8 @@ class PartyForm extends Component {
                                   deposit,
                                   limitOfParticipants,
                                   coolingPeriod,
-                                  tokenAddress
+                                  tokenAddress,
+                                  clearFee
                                 }
                               })
                             })

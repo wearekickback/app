@@ -125,9 +125,9 @@ const resolvers = {
 
   Mutation: {
     async createParty(_, args) {
+      const { id, deposit, limitOfParticipants, coolingPeriod, clearFee } = args
       console.log(`Deploying party`, args)
 
-      const { id, deposit, limitOfParticipants, coolingPeriod } = args
       let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
@@ -151,7 +151,8 @@ const resolvers = {
                 .toString(16),
               toEthVal(limitOfParticipants).toString(16),
               toEthVal(coolingPeriod).toString(16),
-              tokenAddress
+              tokenAddress,
+              toEthVal(clearFee).toString(16)
             )
             .send({
               gas: 3000000,

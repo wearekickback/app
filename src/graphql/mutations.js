@@ -9,6 +9,7 @@ export const CREATE_PARTY = gql`
     $limitOfParticipants: String
     $coolingPeriod: String
     $tokenAddress: String
+    $clearFee: String
   ) {
     create: createParty(
       id: $id
@@ -16,6 +17,7 @@ export const CREATE_PARTY = gql`
       limitOfParticipants: $limitOfParticipants
       coolingPeriod: $coolingPeriod
       tokenAddress: $tokenAddress
+      clearFee: $clearFee
     ) @client @requireAuth
   }
 `
