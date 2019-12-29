@@ -114,7 +114,7 @@ class EventCTA extends Component {
       return ''
     }
 
-    if (this.state.donation == null && donations) {
+    if (this.state.donation == null && donations.length > 0) {
       this.setState({
         donation: donations[0],
         mode: 'initial',
