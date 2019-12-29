@@ -35,10 +35,20 @@ export const ParticipantFields = gql`
   }
 `
 
+export const DonationFields = gql`
+  fragment DonationFields on Donation {
+    name
+    category
+    note
+    amount
+    beneficiaryAddress
+  }
+`
+
 export const PartyFields = gql`
   ${ProfileFields}
   ${ParticipantFields}
-
+  ${DonationFields}
   fragment PartyFields on Party {
     id
     address
@@ -66,6 +76,9 @@ export const PartyFields = gql`
     }
     participants {
       ...ParticipantFields
+    }
+    donations {
+      ...DonationFields
     }
   }
 `

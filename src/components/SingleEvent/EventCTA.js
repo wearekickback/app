@@ -12,7 +12,6 @@ import SafeQuery from '../SafeQuery'
 import { toBN } from 'web3-utils'
 import { toEthVal } from '../../utils/units'
 import { A } from '../Typography/Basic'
-import getEtherPrice from '../../api/price'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
@@ -85,7 +84,7 @@ const WithdrawAll = 'withdraw_all'
 class EventCTA extends Component {
   constructor(props) {
     super(props)
-    this.state = { mode: 'initial', tip: 0 }
+    this.state = { mode: WithdrawAll, tip: 0, donation: null }
   }
 
   changeMode = mode => {
@@ -96,20 +95,8 @@ class EventCTA extends Component {
 
   changeTipAmount = event => {
     this.setState({
-      tip: event.target.value
+      tip: parseFloat(event.target.value)
     })
-  }
-
-  // this method returns value of 3 USD in ETH
-  // why doesn't getEtherPrice work?
-  getCoffeePrice() {
-    var price = 0
-    getEtherPrice().then(r => {
-      if (r && r.result && r.result.ethusd) {
-        price = parseFloat(r.result.ethusd)
-      }
-    })
-    return price === 0 ? 0 : 3 / price
   }
 
   _renderCleared() {
@@ -120,11 +107,19 @@ class EventCTA extends Component {
   _renderEndedRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants }
+      party: { address, deposit, participants, donations }
     } = this.props
 
     if (!myParticipantEntry) {
       return ''
+    }
+
+    if (this.state.donation == null && donations) {
+      this.setState({
+        donation: donations[0],
+        mode: 'initial',
+        tip: parseFloat(donations[0].amount)
+      })
     }
 
     const totalReg = participants.length
@@ -142,21 +137,19 @@ class EventCTA extends Component {
       return <WithdrawPayout address={address} amount={myShare} />
     }
     if (this.state.mode === Donate) {
+      const donation = this.state.donation
       const Extra =
         myShare -
         toEthVal(deposit)
           .toEth()
           .toFixed(3)
-      var coffee = currencySymbol === 'DAI' ? 3 : this.getCoffeePrice()
-      //TODO: dummy address
-      var destinationAddresses = ['0x7200BBeAd24fB2F006fa8cAFDFE770907445F1a2']
       return (
         <TipOrganiser
           address={address}
-          destinationAddresses={destinationAddresses}
-          all={myShare}
-          extra={Extra}
-          coffee={coffee}
+          destinationAddresses={[donation.beneficiaryAddress]}
+          all={parseFloat(myShare)}
+          extra={parseFloat(Extra)}
+          custom={parseFloat(donation.amount)}
           tip={this.state.tip}
           withdraw={myShare - this.state.tip}
           Button={Button}

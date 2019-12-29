@@ -6,7 +6,7 @@ import { A } from '../Typography/Basic'
 const TipOrganiser = ({
   all,
   extra,
-  coffee,
+  custom,
   tip,
   withdraw,
   Button,
@@ -19,22 +19,27 @@ const TipOrganiser = ({
   <>
     <p>How much would you like to tip the organiser?</p>
     <div onChange={changeTipAmount.bind(this)}>
-      <input type="radio" value={all} name="tip" /> All ({all} {currencySymbol})
-      <input type="radio" value={extra} name="tip" /> Extra ({extra}{' '}
-      {currencySymbol})
-      {all > coffee ? (
-        <>
-          <input type="radio" value={coffee} name="tip" /> Coffee ({coffee}{' '}
-          {currencySymbol})
-        </>
-      ) : (
-        ''
-      )}
+      <input type="radio" value={all} name="tip" checked={tip === all} /> All (
+      {all.toFixed(3)} {currencySymbol})
+      <input
+        type="radio"
+        value={custom}
+        name="tip"
+        checked={tip === custom}
+      />{' '}
+      Preferred ({custom.toFixed(3)} {currencySymbol} )
+      <input
+        type="radio"
+        value={extra}
+        name="tip"
+        checked={tip === extra}
+      />{' '}
+      Extra ({extra.toFixed(3)} {currencySymbol})
     </div>
     <br />
     <p>
-      Total tip: {tip} {currencySymbol} (and withdraw {withdraw}{' '}
-      {currencySymbol})
+      Total tip: {parseFloat(tip).toFixed(3)} {currencySymbol} (and withdraw{' '}
+      {withdraw.toFixed(3)} {currencySymbol})
     </p>
     <SendAndWithdraw
       address={address}
