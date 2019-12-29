@@ -28,6 +28,11 @@ const Button = styled(DefaultButton)`
   }
 `
 
+const Note = styled('p')`
+  color: #5cca94;
+  background-color: #e7f7ef;
+`
+
 const CTA = styled('div')`
   font-family: Muli;
   font-weight: 500;
@@ -164,15 +169,18 @@ class EventCTA extends Component {
       case PARTICIPANT_STATUS.REGISTERED:
         return <Status>You didn't show up :/</Status>
       case PARTICIPANT_STATUS.SHOWED_UP:
-        return [
-          <p>
-            You're owed {myShare} {currencySymbol}
-          </p>,
-          <Button onClick={() => this.changeMode(Donate)}>
-            Tip Organiser
-          </Button>,
-          <A onClick={() => this.changeMode(WithdrawAll)}> Or Withdraw All</A>
-        ]
+        return (
+          <>
+            <p>
+              You're owed {myShare} {currencySymbol}
+            </p>
+            <Button onClick={() => this.changeMode(Donate)}>
+              Contribute to {this.state.donation.name}
+            </Button>
+            <Note>{this.state.donation.note}</Note>
+            <A onClick={() => this.changeMode(WithdrawAll)}> Or Withdraw All</A>
+          </>
+        )
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
         return <Status>You have withdrawn your payout!</Status>
       default:

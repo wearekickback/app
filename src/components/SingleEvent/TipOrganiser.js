@@ -17,7 +17,7 @@ const TipOrganiser = ({
   destinationAddresses
 }) => (
   <>
-    <p>How much would you like to tip the organiser?</p>
+    <p>How much would you like to contribute?</p>
     <div onChange={changeTipAmount.bind(this)}>
       <input type="radio" value={all} name="tip" checked={tip === all} /> All (
       {all.toFixed(3)} {currencySymbol})
@@ -38,8 +38,8 @@ const TipOrganiser = ({
     </div>
     <br />
     <p>
-      Total tip: {parseFloat(tip).toFixed(3)} {currencySymbol} (and withdraw{' '}
-      {withdraw.toFixed(3)} {currencySymbol})
+      Total contribution: {parseFloat(tip).toFixed(3)} {currencySymbol} (and
+      withdraw {withdraw.toFixed(3)} {currencySymbol})
     </p>
     <SendAndWithdraw
       address={address}

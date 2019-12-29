@@ -29,7 +29,7 @@ const SendAndWithdrawButton = ({
         result={result}
         type={!canExectute(destinationAmounts) ? 'disabled' : ''}
         className={className}
-        preContent={`Tip and Withdraw`}
+        preContent={`Contribute and Withdraw`}
       />
     )}
   </ChainMutation>
