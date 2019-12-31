@@ -12,6 +12,8 @@ import SafeQuery from '../SafeQuery'
 import { toBN } from 'web3-utils'
 import { toEthVal } from '../../utils/units'
 import { A } from '../Typography/Basic'
+import Currency from './Currency'
+import _ from 'lodash'
 import {
   calculateWinningShare,
   getParticipantsMarkedAttended
@@ -28,9 +30,14 @@ const Button = styled(DefaultButton)`
   }
 `
 
+const ContributionSummary = styled('p')`
+  color: #5cca94;
+`
+
 const Note = styled('p')`
   color: #5cca94;
   background-color: #e7f7ef;
+  padding: 1em;
 `
 
 const CTA = styled('div')`
@@ -89,7 +96,7 @@ const WithdrawAll = 'withdraw_all'
 class EventCTA extends Component {
   constructor(props) {
     super(props)
-    this.state = { mode: WithdrawAll, tip: 0, donation: null }
+    this.state = { mode: WithdrawAll, tip: 0, campaign: null }
   }
 
   changeMode = mode => {
@@ -112,18 +119,18 @@ class EventCTA extends Component {
   _renderEndedRsvp() {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants, donations }
+      party: { address, deposit, participants, campaigns }
     } = this.props
 
     if (!myParticipantEntry) {
       return ''
     }
 
-    if (this.state.donation == null && donations.length > 0) {
+    if (this.state.campaign == null && campaigns.length > 0) {
       this.setState({
-        donation: donations[0],
+        campaign: campaigns[0],
         mode: 'initial',
-        tip: parseFloat(donations[0].amount)
+        tip: parseFloat(campaigns[0].amount)
       })
     }
 
@@ -142,7 +149,7 @@ class EventCTA extends Component {
       return <WithdrawPayout address={address} amount={myShare} />
     }
     if (this.state.mode === Donate) {
-      const donation = this.state.donation
+      const campaign = this.state.campaign
       const Extra =
         myShare -
         toEthVal(deposit)
@@ -151,10 +158,10 @@ class EventCTA extends Component {
       return (
         <TipOrganiser
           address={address}
-          destinationAddresses={[donation.beneficiaryAddress]}
+          destinationAddresses={[campaign.beneficiaryAddress]}
           all={parseFloat(myShare)}
           extra={parseFloat(Extra)}
-          custom={parseFloat(donation.amount)}
+          custom={parseFloat(campaign.amount)}
           tip={this.state.tip}
           withdraw={myShare - this.state.tip}
           Button={Button}
@@ -175,7 +182,7 @@ class EventCTA extends Component {
               You're owed {myShare} {currencySymbol}
             </p>
             <Button onClick={() => this.changeMode(Donate)}>
-              Contribute to {this.state.donation.name}
+              Contribute to {this.state.campaign.name}
             </Button>
             <Note>{this.state.donation.note}</Note>
             <A onClick={() => this.changeMode(WithdrawAll)}> Or Withdraw All</A>
@@ -218,7 +225,6 @@ class EventCTA extends Component {
               loading,
               refetch
             }) => {
-              console.log({ allowance, balance })
               const decodedDeposit = parseInt(toBN(deposit).toString())
               const isAllowed = parseInt(allowance) >= decodedDeposit
               const hasBalance = parseInt(balance) >= decodedDeposit
@@ -369,7 +375,14 @@ class EventCTA extends Component {
   render() {
     let {
       // party: { ended, cancelled, participants, balance }
-      party: { ended, cancelled, participants }
+      party: {
+        ended,
+        cancelled,
+        participants,
+        contributions,
+        campaigns,
+        tokenAddress
+      }
     } = this.props
     // const cleared =
     //   balance &&
@@ -380,6 +393,8 @@ class EventCTA extends Component {
     // ERC20 has no balance hence always 0
     // TODO: Refactor balance function
     const cleared = false
+    const personOrPeople =
+      contributions && contributions.length == 1 ? 'person' : 'people'
     return (
       <EventCTAContainer>
         <RSVPContainer>
@@ -399,6 +414,22 @@ class EventCTA extends Component {
             participants.length
           } have been marked attended`}{' '}
         </MarkAttended>
+        {contributions.length > 0 ? (
+          <ContributionSummary>
+            ({contributions.length} {personOrPeople} donated to{' '}
+            {campaigns[0].name}&nbsp; in total of{' '}
+            {_.sumBy(contributions, c => {
+              return parseFloat(
+                toEthVal(c.amount)
+                  .toEth()
+                  .toFixed(3)
+              )
+            })}
+            <Currency tokenAddress={tokenAddress} />)
+          </ContributionSummary>
+        ) : (
+          ''
+        )}
       </EventCTAContainer>
     )
   }

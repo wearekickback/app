@@ -61,15 +61,22 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
 
 function Participant({ participant, party, amAdmin }) {
   const { user, status } = participant
-  const { deposit, ended } = party
-
+  const { deposit, ended, contributions } = party
   const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
   const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
-
   const numRegistered = party.participants.length
   const numShowedUp = calculateNumAttended(party.participants)
-
   const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
+  let contributionFormatted
+  let contribution = contributions.filter(
+    c => participant.user.address === c.contributorAddress
+  )[0]
+  let contributed = !!contribution
+  if (contributed) {
+    contributionFormatted = toEthVal(contribution.amount)
+      .toEth()
+      .toFixed(3)
+  }
 
   return (
     <GlobalConsumer>
@@ -81,10 +88,20 @@ function Participant({ participant, party, amAdmin }) {
           </ParticipantId>
           {ended ? (
             attended ? (
-              <Status type="won">
-                {`${withdrawn ? ' Withdrew' : 'Won'} ${payout}`}{' '}
-                <Currency tokenAddress={party.tokenAddress} />
-              </Status>
+              <>
+                <Status type="won">
+                  {`${withdrawn ? ' Withdrew' : 'Won'} ${payout}`}{' '}
+                  <Currency tokenAddress={party.tokenAddress} />
+                </Status>
+                {contributed ? (
+                  <Status type="won">
+                    {`(Donated ${contributionFormatted}`}{' '}
+                    <Currency tokenAddress={party.tokenAddress} />)
+                  </Status>
+                ) : (
+                  ''
+                )}
+              </>
             ) : (
               <Status type="lost">
                 Lost{' '}
