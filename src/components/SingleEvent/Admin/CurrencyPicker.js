@@ -12,7 +12,7 @@ const CurrencyPicker = ({ onChange, currencyType }) => {
 
   return (
     <>
-      <label class="container">
+      <label className="container">
         ETH
         <input
           type="radio"
@@ -22,7 +22,7 @@ const CurrencyPicker = ({ onChange, currencyType }) => {
           value="ETH"
         />
       </label>
-      <label class="container">
+      <label className="container">
         DAI
         <input
           type="radio"
@@ -32,8 +32,8 @@ const CurrencyPicker = ({ onChange, currencyType }) => {
           value="DAI"
         />
       </label>
-      <label class="container">
-        Token
+      Token
+      <label className="container">
         <input
           type="radio"
           onChange={onChangeHandler}
