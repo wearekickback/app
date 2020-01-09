@@ -55,7 +55,10 @@ class FAQ extends Component {
           invitation list.
         </p>
         <h3>Can I ask participants to commit DAI or other ERC20 tokens?</h3>
-        <p>Not yet but that's in our pipeline.</p>
+        <p>Yes! We support any ERC20 token which follows the {' '}
+          <a href="https://docs.openzeppelin.com/contracts/2.x/api/token/erc20#ERC20Detailed">
+            ERC20Detailed
+          </a> {' '} standard. </p>
         <h3>Can I use Kickback for the paid yet?</h3>
         <p>Not yet.</p>
         <h3>My event participants may not have ETH. What should I do?</h3>
