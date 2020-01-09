@@ -546,7 +546,7 @@ class PartyForm extends Component {
                           if (decimals === 0 || decimals === '0') {
                             regex = new RegExp(`^\\d*$`)
                           } else if (decimals > 0) {
-                            regex = new RegExp(`^\\d*(\\.\\d{1,${decimals}})?$`)
+                            regex = new RegExp(`^\\d*(\\.\\d{0,${decimals}})?$`)
                           }
 
                           const isValid = regex.test(val)
