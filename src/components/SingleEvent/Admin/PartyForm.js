@@ -12,6 +12,7 @@ import getEtherPrice from '../../../api/price'
 import { Link } from 'react-router-dom'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import { isAddress } from 'web3-utils'
 
 import {
   getDayAndTimeFromDate,
@@ -201,7 +202,7 @@ class PartyForm extends Component {
       deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 20,
-      tokenAddress = '',
+      tokenAddress = EMPTY_ADDRESS,
       status = 'public'
     } = props
 
@@ -544,11 +545,12 @@ class PartyForm extends Component {
                         maxDecimals={decimals}
                       />
                       <CommitmentInUsdContainer>
-                        {commitmentInUsd({
-                          symbol: symbol,
-                          price: this.state.price,
-                          deposit: this.state.deposit
-                        })}
+                        {isAddress(this.state.tokenAddress) &&
+                          commitmentInUsd({
+                            symbol: symbol,
+                            price: this.state.price,
+                            deposit: this.state.deposit
+                          })}
                       </CommitmentInUsdContainer>
                     </InputWrapper>
                   )
