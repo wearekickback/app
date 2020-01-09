@@ -326,8 +326,8 @@ const resolvers = {
             contract.symbol().call(),
             contract.decimals().call()
           ])
-          name = web3.utils.toAscii(name).replace(/\u0000/g, '')
-          symbol = web3.utils.toAscii(symbol).replace(/\u0000/g, '')
+          name = web3.utils.toAscii(name).replace(/\u0000/g, '') // eslint-disable-line no-control-regex
+          symbol = web3.utils.toAscii(symbol).replace(/\u0000/g, '') // eslint-disable-line no-control-regex
           return { name, symbol, decimals }
         } catch (err) {
           throw new Error(`Failed to get Token`)

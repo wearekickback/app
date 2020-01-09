@@ -168,7 +168,7 @@ const VisibilityDropdown = styled(Dropdown)`
 `
 
 const commitmentInUsd = ({ symbol, price, deposit }) => {
-  if (symbol == 'DAI') return 'DAI' //extend to other stablecoins
+  if (symbol === 'DAI') return 'DAI' //extend to other stablecoins
   if (!price) return symbol
   const totalPrice = (deposit * price).toFixed(2)
   return `${symbol} ($${totalPrice})`
@@ -493,9 +493,9 @@ class PartyForm extends Component {
                           currencyType={this.state.currencyType}
                           onChange={currencyType => {
                             let tokenAddress
-                            if (currencyType == 'ETH') {
+                            if (currencyType === 'ETH') {
                               tokenAddress = EMPTY_ADDRESS
-                            } else if (currencyType == 'DAI') {
+                            } else if (currencyType === 'DAI') {
                               tokenAddress = this.state.daiAddress
                             } else {
                               tokenAddress = ''
@@ -509,7 +509,7 @@ class PartyForm extends Component {
                           }}
                         />
                       </InputWrapper>
-                      {this.state.currencyType == 'TOKEN' && (
+                      {this.state.currencyType === 'TOKEN' && (
                         <InputWrapper>
                           <Label>Token Address</Label>
                           <TextInput

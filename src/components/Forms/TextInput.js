@@ -161,14 +161,14 @@ export class AmountInput extends Component {
   }
 
   _onChange = e => {
-    if (this._isValid(e.target.value) && e.target.value != this.props.value) {
+    if (this._isValid(e.target.value) && e.target.value !== this.props.value) {
       this.props.onChangeText(e.target.value)
     }
   }
 
   _validityRegex() {
     let regex = /.*/
-    if (this.props.maxDecimals == 0 || this.props.maxDecimals == '0') {
+    if (this.props.maxDecimals === 0 || this.props.maxDecimals === '0') {
       regex = new RegExp(`^\\d*$`)
     } else if (this.props.maxDecimals > 0) {
       regex = new RegExp(`^\\d*(\\.\\d{1,${this.props.maxDecimals}})?$`)
