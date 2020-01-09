@@ -500,7 +500,11 @@ class PartyForm extends Component {
                               tokenAddress = ''
                             }
                             console.log(currencyType)
-                            this.setState({ currencyType, tokenAddress })
+                            this.setState({
+                              currencyType,
+                              tokenAddress,
+                              deposit: 0
+                            })
                           }}
                         />
                       </InputWrapper>
