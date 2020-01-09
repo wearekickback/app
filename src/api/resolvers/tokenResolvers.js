@@ -295,7 +295,7 @@ const resolvers = {
           decimals: 18
         }
       } else if (
-        (tokenAddress = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359')
+        tokenAddress === '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
       ) {
         // Fudge name and symbol for DAI v1 (SAI) to prevent confusion
         return {
