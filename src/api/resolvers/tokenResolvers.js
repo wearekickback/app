@@ -263,7 +263,6 @@ const detailedERC20bytes32ABI = [
 let token
 
 const getTokenContract = (web3, address, abi) => {
-  console.log(abi)
   return new web3.eth.Contract(abi, address).methods
 }
 
