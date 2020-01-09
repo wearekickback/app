@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
+import { Helmet } from 'react-helmet'
 
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 import marked from 'marked'
@@ -22,6 +23,7 @@ import { toEthVal } from '../../utils/units'
 import { getHours, getUtcDateFromTimezone } from '../../utils/dates'
 
 import AddToCalendar from './AddToCalendar'
+import { TWITTER_HANDLE } from '../../config'
 
 const EventDate = styled(DefaultEventDate)``
 
@@ -201,8 +203,27 @@ class EventInfo extends Component {
       endTime: getUtcDateFromTimezone(party.end, party.timezone)
     }
 
+    const eventTitle = `Kickback - ${party.name}`
+    const eventDesc = party.description
+    const baseUrl = window.location.protocol + '//' + window.location.host
+    const evenImageSrc =
+      `${baseUrl}${party.headerImg}` || 'https://placeimg.com/640/480/tech'
+
     return (
       <EventInfoContainer className={className}>
+        <Helmet>
+          <title>{eventTitle}</title>
+          <meta property="description" content={eventDesc} />
+          <meta property="og:title" content={eventTitle} />
+          <meta property="og:description" content={eventDesc} />
+          <meta property="og:image" content={evenImageSrc} />
+          <meta property="og:url" content={window.location.href} />
+          <meta property="og:type" content="article" />
+          <meta property="twitter:title" content={eventTitle} />
+          <meta property="twitter:description" content={eventDesc} />
+          <meta property="twitter:image" content={evenImageSrc} />
+          <meta property="twitter:site" content={TWITTER_HANDLE} />
+        </Helmet>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
         <EventImage

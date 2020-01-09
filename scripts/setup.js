@@ -26,6 +26,7 @@ try {
 
 appConfig.ENV = 'local'
 appConfig.API_URL = 'http://localhost:3001'
+appConfig.TWITTER_HANDLE = '@wearekickback'
 
 if (undefined === appConfig.NUM_CONFIRMATIONS) {
   appConfig.NUM_CONFIRMATIONS = 1
