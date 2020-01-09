@@ -205,9 +205,7 @@ class EventInfo extends Component {
 
     const eventTitle = `Kickback - ${party.name}`
     const eventDesc = party.description
-    const baseUrl = window.location.protocol + '//' + window.location.host
-    const evenImageSrc =
-      `${baseUrl}${party.headerImg}` || 'https://placeimg.com/640/480/tech'
+    const eventImageSrc = party.headerImg || 'https://placeimg.com/640/480/tech'
 
     return (
       <EventInfoContainer className={className}>
@@ -216,19 +214,18 @@ class EventInfo extends Component {
           <meta property="description" content={eventDesc} />
           <meta property="og:title" content={eventTitle} />
           <meta property="og:description" content={eventDesc} />
-          <meta property="og:image" content={evenImageSrc} />
+          <meta property="og:image" content={eventImageSrc} />
           <meta property="og:url" content={window.location.href} />
           <meta property="og:type" content="article" />
           <meta property="twitter:title" content={eventTitle} />
           <meta property="twitter:description" content={eventDesc} />
-          <meta property="twitter:image" content={evenImageSrc} />
+          <meta property="twitter:image" content={eventImageSrc} />
           <meta property="twitter:site" content={TWITTER_HANDLE} />
+          <meta property="twitter:card" content="summary_large_image" />
         </Helmet>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
-        <EventImage
-          src={party.headerImg || 'https://placeimg.com/640/480/tech'}
-        />
+        <EventImage src={eventImageSrc} />
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>

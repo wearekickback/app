@@ -4,6 +4,7 @@ import {
   Route as DefaultRoute,
   Switch
 } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 import { RouteAnalytics } from './components/Analytics'
 
@@ -33,6 +34,7 @@ import {
   ADD_TO_CALENDAR
 } from './modals'
 
+import { TWITTER_HANDLE } from 'config'
 import './App.css'
 
 const Route = ({
@@ -54,10 +56,30 @@ const Route = ({
   )
 }
 
+const siteTitle = 'Kickback'
+const siteDesc =
+  'Event no shows? No problem. Kickback reduces no shows by asking registrants to put some skin in the game.'
+const baseUrl = window.location.protocol + '//' + window.location.host
+const siteImageSrc = `${baseUrl}/card.png`
+
 class App extends Component {
   render() {
     return (
       <Fragment>
+        <Helmet>
+          <title>{siteTitle}</title>
+          <meta property="description" content={siteDesc} />
+          <meta property="og:title" content={siteTitle} />
+          <meta property="og:description" content={siteDesc} />
+          <meta property="og:image" content={siteImageSrc} />
+          <meta property="og:url" content={window.location.href} />
+          <meta property="og:type" content="website" />
+          <meta property="twitter:title" content={siteTitle} />
+          <meta property="twitter:description" content={siteDesc} />
+          <meta property="twitter:image" content={siteImageSrc} />
+          <meta property="twitter:site" content={TWITTER_HANDLE} />
+          <meta property="twitter:card" content="summary" />
+        </Helmet>
         <Router>
           <ScrollToTop>
             <Switch>
