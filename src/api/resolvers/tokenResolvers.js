@@ -294,6 +294,15 @@ const resolvers = {
           symbol: 'ETH',
           decimals: 18
         }
+      } else if (
+        (tokenAddress = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359')
+      ) {
+        // Fudge name and symbol for DAI v1 (SAI) to prevent confusion
+        return {
+          name: 'Sai Stablecoin',
+          symbol: 'SAI',
+          decimals: 18
+        }
       }
       const web3 = await getWeb3()
 
