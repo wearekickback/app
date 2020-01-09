@@ -504,7 +504,7 @@ class PartyForm extends Component {
                           }}
                         />
                       </InputWrapper>
-                      {this.state.currencyType == 'Token' && (
+                      {this.state.currencyType == 'TOKEN' && (
                         <InputWrapper>
                           <Label>Token Address</Label>
                           <TextInput

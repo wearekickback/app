@@ -32,14 +32,14 @@ const CurrencyPicker = ({ onChange, currencyType }) => {
           value="DAI"
         />
       </label>
-      Token
       <label className="container">
+        ERC20
         <input
           type="radio"
           onChange={onChangeHandler}
-          checked={isChecked('Token')}
+          checked={isChecked('TOKEN')}
           name="radio"
-          value="Token"
+          value="TOKEN"
         />
       </label>
     </>
