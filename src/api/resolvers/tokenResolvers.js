@@ -304,12 +304,9 @@ const resolvers = {
           contract.symbol().call(),
           contract.decimals().call()
         ])
-        console.log('querystrng', name, symbol)
-
         return { name, symbol, decimals }
       } catch (err) {
         try {
-          console.log('fallback', detailedERC20bytes32ABI)
           const contract = getTokenContract(
             web3,
             tokenAddress,
@@ -320,7 +317,6 @@ const resolvers = {
             contract.symbol().call(),
             contract.decimals().call()
           ])
-          console.log('querybytes', name, symbol)
           name = web3.utils.toAscii(name).replace(/\u0000/g, '')
           symbol = web3.utils.toAscii(symbol).replace(/\u0000/g, '')
           return { name, symbol, decimals }
