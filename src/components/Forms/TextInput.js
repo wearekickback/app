@@ -128,3 +128,48 @@ export default class TextInput extends Component {
     this.props.onChangeText(e.target.value)
   }
 }
+
+export class AmountInput extends Component {
+  render() {
+    const {
+      errors,
+      placeholder = '',
+      innerRef,
+      prefix,
+      onChangeText,
+      className,
+      ...props
+    } = this.props
+
+    return (
+      <InputContainer className={className}>
+        <InputWrapper>
+          {prefix ? <Prefix>{prefix}</Prefix> : null}
+          <Input
+            hasPrefix={prefix}
+            type="number"
+            placeholder={placeholder}
+            innerRef={innerRef}
+            hasError={!!errors}
+            {...props}
+            onChange={this._onChange}
+          />
+        </InputWrapper>
+        <FieldErrors errors={errors} />
+      </InputContainer>
+    )
+  }
+
+  _onChange = e => {
+    let regex = /.+/
+    if (this.props.maxDecimals == 0) {
+      regex = new RegExp(`^\\d+$`)
+    } else if (this.props.maxDecimals > 0) {
+      regex = new RegExp(`^\\d+(\\.\\d{1,${this.props.maxDecimals}})?$`)
+    }
+
+    if (regex.test(e.target.value)) {
+      this.props.onChangeText(e.target.value)
+    }
+  }
+}

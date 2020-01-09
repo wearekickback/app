@@ -18,19 +18,18 @@ import {
   getDateFromDayAndTime,
   getLocalTimezoneOffset
 } from 'utils/dates'
-import { extractNewPartyAddressFromTx } from 'api/utils'
+import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-import { TOKEN_SYMBOL_QUERY } from 'graphql/queries'
+import { TOKEN_QUERY, TOKEN_SYMBOL_QUERY } from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
-import TextInput from 'components/Forms/TextInput'
+import TextInput, { AmountInput } from 'components/Forms/TextInput'
 import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
-import Web3 from 'web3'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
 
@@ -150,7 +149,7 @@ const DateContent = styled('div')`
   display: flex;
 `
 
-const CommitmentInput = styled(TextInput)`
+const CommitmentInput = styled(AmountInput)`
   width: 170px;
   display: inline-table;
 `
@@ -167,11 +166,11 @@ const VisibilityDropdown = styled(Dropdown)`
   }
 `
 
-const commitmentInUsd = ({ tokenAddress, price, deposit }) => {
-  if (Web3.utils.isAddress(tokenAddress)) return 'DAI'
-  if (!price) return 'ETH'
+const commitmentInUsd = ({ symbol, price, deposit }) => {
+  if (symbol == 'DAI') return 'DAI' //extend to other stablecoins
+  if (!price) return symbol
   const totalPrice = (deposit * price).toFixed(2)
-  return `ETH ($${totalPrice})`
+  return `${symbol} ($${totalPrice})`
 }
 
 const unit = 10 // $10 as a guide price
@@ -486,34 +485,71 @@ class PartyForm extends Component {
                     this.setState({ daiAddress: address })
                   }
                   return (
+                    <>
+                      <InputWrapper>
+                        <Label>Currency</Label>
+                        <CurrencyPicker
+                          currencyType={this.state.currencyType}
+                          onChange={currencyType => {
+                            let tokenAddress
+                            if (currencyType == 'ETH') {
+                              tokenAddress = EMPTY_ADDRESS
+                            } else if (currencyType == 'DAI') {
+                              tokenAddress = this.state.daiAddress
+                            } else {
+                              tokenAddress = ''
+                            }
+                            console.log(currencyType)
+                            this.setState({ currencyType, tokenAddress })
+                          }}
+                        />
+                      </InputWrapper>
+                      {this.state.currencyType == 'Token' && (
+                        <InputWrapper>
+                          <Label>Token Address</Label>
+                          <TextInput
+                            value={this.state.tokenAddress}
+                            onChangeText={val => {
+                              this.setState({ tokenAddress: val })
+                            }}
+                            type="text"
+                            placeholder="0x..."
+                          />
+                        </InputWrapper>
+                      )}
+                    </>
+                  )
+                }}
+              </SafeQuery>
+              <SafeQuery
+                query={TOKEN_QUERY}
+                variables={{ tokenAddress: this.state.tokenAddress }}
+              >
+                {({
+                  data: {
+                    token: { name, symbol, decimals }
+                  },
+                  loading
+                }) => {
+                  return (
                     <InputWrapper>
-                      <Label>Currency</Label>
-                      <CurrencyPicker
-                        currencyType={this.state.currencyType}
-                        daiAddress={this.state.daiAddress}
-                        onChange={({ currencyType, tokenAddress }) => {
-                          this.setState({ currencyType, tokenAddress })
-                        }}
+                      <Label>Commitment</Label>
+                      <CommitmentInput
+                        value={deposit}
+                        onChangeText={val => this.setState({ deposit: val })}
+                        maxDecimals={decimals}
                       />
+                      <CommitmentInUsdContainer>
+                        {commitmentInUsd({
+                          symbol: symbol,
+                          price: this.state.price,
+                          deposit: this.state.deposit
+                        })}
+                      </CommitmentInUsdContainer>
                     </InputWrapper>
                   )
                 }}
               </SafeQuery>
-              <InputWrapper>
-                <Label>Commitment</Label>
-                <CommitmentInput
-                  value={deposit}
-                  onChangeText={val => this.setState({ deposit: val })}
-                  type="text"
-                />
-                <CommitmentInUsdContainer>
-                  {commitmentInUsd({
-                    tokenAddress: this.state.tokenAddress,
-                    price: this.state.price,
-                    deposit: this.state.deposit
-                  })}
-                </CommitmentInUsdContainer>
-              </InputWrapper>
               <InputWrapper>
                 <Label>Available spots</Label>
                 <TextInput
