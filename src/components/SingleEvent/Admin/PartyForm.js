@@ -27,7 +27,7 @@ import { TOKEN_QUERY, TOKEN_SYMBOL_QUERY } from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
-import TextInput, { AmountInput } from 'components/Forms/TextInput'
+import TextInput from 'components/Forms/TextInput'
 import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
@@ -150,7 +150,7 @@ const DateContent = styled('div')`
   display: flex;
 `
 
-const CommitmentInput = styled(AmountInput)`
+const CommitmentInput = styled(TextInput)`
   width: 170px;
   display: inline-table;
 `
@@ -541,8 +541,20 @@ class PartyForm extends Component {
                       <Label>Commitment</Label>
                       <CommitmentInput
                         value={deposit}
-                        onChangeText={val => this.setState({ deposit: val })}
-                        maxDecimals={decimals}
+                        onChangeText={val => {
+                          let regex = /.*/
+                          if (decimals === 0 || decimals === '0') {
+                            regex = new RegExp(`^\\d*$`)
+                          } else if (decimals > 0) {
+                            regex = new RegExp(`^\\d*(\\.\\d{1,${decimals}})?$`)
+                          }
+
+                          const isValid = regex.test(val)
+
+                          if (isValid && val !== this.props.value) {
+                            this.setState({ deposit: val })
+                          }
+                        }}
                       />
                       <CommitmentInUsdContainer>
                         {isAddress(this.state.tokenAddress) &&
