@@ -1,8 +1,8 @@
-import { ApolloConsumer } from 'react-apollo'
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import QrReader from 'react-qr-reader'
 
-import { QR_SUPPORTED_QUERY, QR_QUERY } from '../../graphql/queries'
+import { isAddress } from 'web3-utils'
 
 import Button from '../Forms/Button'
 import WarningBox from '../WarningBox'
@@ -10,7 +10,6 @@ import { Search } from '../Forms/TextInput'
 import Label from '../Forms/Label'
 import Select from '../Forms/Select'
 import { ReactComponent as SearchIcon } from '../svg/Search.svg'
-import SafeQuery from '../SafeQuery'
 
 const QRCodeContainer = styled('div')`
   margin-bottom: 20px;
@@ -22,28 +21,52 @@ const Filter = styled('div')`
 
 const EventFiltersContainer = styled('div')``
 
+const QRScannerContainer = styled('div')`
+  margin-top: 20px;
+  width: 100%;
+`
+
+const CenteredQrReader = styled(QrReader)`
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+`
+
 class EventFilters extends Component {
-  state = {}
+  constructor(props) {
+    super(props)
 
-  _scan = client => () => {
-    this.setState({ scanError: null }, async () => {
-      try {
-        const { error, data = {} } = await client.query({
-          query: QR_QUERY,
-          fetchPolicy: 'no-cache'
-        })
+    this.state = {}
 
-        if (error) {
-          throw error
+    if (navigator && navigator.permissions) {
+      navigator.permissions.query({ name: 'camera' }).then(result => {
+        if (result.state === 'denied') {
+          this._disableCamera()
         }
+      })
+    }
+  }
 
-        if (data.qrCode) {
-          this.props.handleSearch(data.qrCode)
-        }
-      } catch (scanError) {
-        this.setState({ scanError })
-      }
-    })
+  _disableCamera = () => {
+    this.setState({ cameraUnavailable: true })
+  }
+
+  _scan = data => {
+    console.log(data)
+    if (!data) {
+      console.log('No data')
+    } else if (isAddress(data)) {
+      console.log('Found Address:', data)
+      this.setState({ scannerOn: false })
+      this.props.handleSearch(data)
+    } else {
+      this.setState({
+        scannerOn: false,
+        scanError: "Couldn't read an address in QR code"
+      })
+      console.log("Can't decode data:", data)
+    }
   }
 
   _onSearch = val => {
@@ -59,7 +82,7 @@ class EventFilters extends Component {
       ended,
       className
     } = this.props
-    const { scanError } = this.state
+    const { scannerOn, scanError, cameraUnavailable } = this.state
 
     return (
       <EventFiltersContainer className={className}>
@@ -90,22 +113,33 @@ class EventFilters extends Component {
           wide
         />
         {enableQrCodeScanner ? (
-          <SafeQuery query={QR_SUPPORTED_QUERY}>
-            {({ data = {} }) => {
-              return data.supported ? (
-                <ApolloConsumer>
-                  {client => (
-                    <QRCodeContainer>
-                      <Button onClick={this._scan(client)}>Scan QRCode</Button>
-                      {scanError ? (
-                        <WarningBox>{`${scanError}`}</WarningBox>
-                      ) : null}
-                    </QRCodeContainer>
-                  )}
-                </ApolloConsumer>
-              ) : null
-            }}
-          </SafeQuery>
+          <QRCodeContainer>
+            <Button
+              onClick={() => this.setState({ scannerOn: !scannerOn })}
+              disabled={cameraUnavailable}
+            >
+              {' '}
+              {scannerOn ? 'Stop Scanning' : 'Scan QRCode'}
+            </Button>
+            {scanError ? <WarningBox>{`${scanError}`}</WarningBox> : null}
+            {this.state.scannerOn ? (
+              <QRScannerContainer>
+                <CenteredQrReader
+                  delay={400} // delay = false stops scanning
+                  onError={() => {
+                    this.setState({
+                      scannerOn: false,
+                      scanError: 'FATAL ERROR'
+                    })
+                    this._disableCamera()
+                    setTimeout(() => this.setState({ scanError: false }), 3000)
+                  }}
+                  onScan={this._scan}
+                  resolution={1200}
+                />
+              </QRScannerContainer>
+            ) : null}
+          </QRCodeContainer>
         ) : null}
       </EventFiltersContainer>
     )
