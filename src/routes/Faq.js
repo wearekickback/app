@@ -64,10 +64,10 @@ class FAQ extends Component {
           good reason for people who have no ETH to actually try to acquire one.
           If you are really worried about alienating newbies, then we would
           suggest that you asked these people who are impossible to acquire ETH
-          to contact you so that you can make them exceptions. The whole reason
-          of asking to commit ETH is to prevent people who have no intention of
-          showing up from taking up spots so it is unlikely that this backdoor
-          will be abused.
+          to contact you so that you can make exceptions for them. The whole
+          reason for asking to commit ETH is to prevent people who have no
+          intention of showing up from taking up spots so it is unlikely that
+          this backdoor will be abused.
         </p>
         <h3>Can I have multiple tiered ticketing</h3>
         <p>
