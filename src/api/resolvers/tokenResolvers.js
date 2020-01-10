@@ -285,6 +285,20 @@ const resolvers = {
         return { allowance: null }
       }
     },
+    async getTokenDecimals(_, { tokenAddress }) {
+      if (isEmptyAddress(tokenAddress)) {
+        return { decimals: 18 } //Ethereum
+      }
+      const web3 = await getWeb3()
+
+      try {
+        const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
+        const decimals = await contract.decimals().call()
+        return { decimals }
+      } catch (err) {
+        throw new Error(`Failed to get Token Decimals`)
+      }
+    },
     async getToken(_, { tokenAddress }) {
       if (token) return token
       if (isEmptyAddress(tokenAddress)) {

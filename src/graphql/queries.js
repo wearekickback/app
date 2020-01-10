@@ -108,6 +108,11 @@ export const TOKEN_ALLOWANCE_QUERY = gql`
     ) @client
   }
 `
+export const TOKEN_DECIMALS_QUERY = gql`
+  query getTokenDecimals($tokenAddress: String!) {
+    token: getTokenDecimals(tokenAddress: $tokenAddress) @client
+  }
+`
 
 export const TOKEN_SYMBOL_QUERY = gql`
   query getTokenBySymbol($symbol: String!) {

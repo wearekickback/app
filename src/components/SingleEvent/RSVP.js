@@ -19,6 +19,7 @@ const RSVP = ({
   tokenAddress,
   className,
   deposit,
+  decimals,
   isAllowed,
   hasBalance
 }) => {
@@ -26,7 +27,8 @@ const RSVP = ({
     return (
       <>
         <RSVPText>RSVP with</RSVPText>
-        {depositValue(deposit)} <Currency tokenAddress={tokenAddress} />
+        {depositValue(deposit, decimals)}{' '}
+        <Currency tokenAddress={tokenAddress} />
       </>
     )
   }

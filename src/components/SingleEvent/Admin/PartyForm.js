@@ -23,7 +23,11 @@ import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-import { TOKEN_QUERY, TOKEN_SYMBOL_QUERY } from 'graphql/queries'
+import {
+  TOKEN_QUERY,
+  TOKEN_DECIMALS_QUERY,
+  TOKEN_SYMBOL_QUERY
+} from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
@@ -526,10 +530,7 @@ class PartyForm extends Component {
                   )
                 }}
               </SafeQuery>
-              <SafeQuery
-                query={TOKEN_QUERY}
-                variables={{ tokenAddress: this.state.tokenAddress }}
-              >
+              <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
                 {({
                   data: {
                     token: { name, symbol, decimals }
@@ -601,26 +602,41 @@ class PartyForm extends Component {
 
                     return (
                       <>
-                        <ChainMutationButton
-                          analyticsId="Deploy Event Contract"
-                          result={result}
-                          type={address ? 'disabled' : ''}
-                          onClick={() => {
-                            mutate().then(({ data: { id } }) => {
-                              createParty({
-                                variables: {
-                                  id,
-                                  deposit,
-                                  limitOfParticipants,
-                                  coolingPeriod,
-                                  tokenAddress
-                                }
-                              })
-                            })
+                        <SafeQuery
+                          query={TOKEN_DECIMALS_QUERY}
+                          variables={{ tokenAddress }}
+                        >
+                          {({
+                            data: {
+                              token: { decimals }
+                            },
+                            loading
+                          }) => {
+                            return (
+                              <ChainMutationButton
+                                analyticsId="Deploy Event Contract"
+                                result={result}
+                                type={address ? 'disabled' : ''}
+                                onClick={() => {
+                                  mutate().then(({ data: { id } }) => {
+                                    createParty({
+                                      variables: {
+                                        id,
+                                        deposit,
+                                        decimals,
+                                        limitOfParticipants,
+                                        coolingPeriod,
+                                        tokenAddress
+                                      }
+                                    })
+                                  })
+                                }}
+                                preContent={getButtonText(type)}
+                                postContent="Deployed!"
+                              />
+                            )
                           }}
-                          preContent={getButtonText(type)}
-                          postContent="Deployed!"
-                        />
+                        </SafeQuery>
                         {address ? (
                           <p>
                             Event deployed at {address}!{' '}
