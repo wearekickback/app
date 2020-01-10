@@ -171,9 +171,8 @@ const VisibilityDropdown = styled(Dropdown)`
   }
 `
 
-const commitmentInUsd = ({ symbol, price, deposit }) => {
-  if (symbol === 'DAI') return 'DAI' //extend to other stablecoins
-  if (!price) return symbol
+const commitmentInUsd = ({ currencyType, symbol, price, deposit }) => {
+  if (currencyType !== 'ETH' || !price) return symbol
   const totalPrice = (deposit * price).toFixed(2)
   return `${symbol} ($${totalPrice})`
 }
@@ -560,6 +559,7 @@ class PartyForm extends Component {
                       <CommitmentInUsdContainer>
                         {isAddress(this.state.tokenAddress) &&
                           commitmentInUsd({
+                            currencyType: this.state.currencyType,
                             symbol: symbol,
                             price: this.state.price,
                             deposit: this.state.deposit
