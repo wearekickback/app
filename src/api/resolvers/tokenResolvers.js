@@ -274,7 +274,7 @@ const resolvers = {
     },
     async getTokenAllowance(_, { tokenAddress, partyAddress }) {
       const web3 = await getWeb3()
-      const contract = getTokenContract(web3, tokenAddress)
+      const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
       try {
         const account = await getAccount()
         const allowance = await contract.allowance(account, partyAddress).call()
@@ -338,7 +338,7 @@ const resolvers = {
     async approveToken(_, { tokenAddress, deposit, address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const contract = getTokenContract(web3, tokenAddress)
+      const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
       try {
         const tx = await txHelper(
           contract.approve(address, deposit).send({
