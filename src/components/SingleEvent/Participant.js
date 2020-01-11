@@ -59,7 +59,7 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
   margin-bottom: 5px;
 `
 
-function Participant({ participant, party, amAdmin }) {
+function Participant({ participant, party, amAdmin, decimals }) {
   const { user, status } = participant
   const { deposit, ended } = party
 
@@ -69,7 +69,12 @@ function Participant({ participant, party, amAdmin }) {
   const numRegistered = party.participants.length
   const numShowedUp = calculateNumAttended(party.participants)
 
-  const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
+  const payout = calculateWinningShare(
+    deposit,
+    numRegistered,
+    numShowedUp,
+    decimals
+  )
 
   return (
     <GlobalConsumer>
@@ -89,7 +94,7 @@ function Participant({ participant, party, amAdmin }) {
               <Status type="lost">
                 Lost{' '}
                 {toEthVal(deposit)
-                  .toEth()
+                  .scaleUp(decimals)
                   .toString()}{' '}
                 <Currency tokenAddress={party.tokenAddress} />{' '}
               </Status>
