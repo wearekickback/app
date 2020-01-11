@@ -24,7 +24,7 @@ const Approve = ({
   let canRSVP, denominatedBalance, denominatedDeposit
   if (tokenAddress !== EMPTY_ADDRESS) {
     denominatedBalance = new EthVal(balance).scaleUp(decimals).toString()
-    denominatedDeposit = new EthVal(decodedDeposit).toEth().toString()
+    denominatedDeposit = new EthVal(decodedDeposit).scaleUp(decimals).toString()
     canRSVP = isAllowed && hasBalance
   } else {
     canRSVP = true
