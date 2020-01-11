@@ -296,7 +296,9 @@ const resolvers = {
         const decimals = await contract.decimals().call()
         return { decimals }
       } catch (err) {
-        throw new Error(`Failed to get Token Decimals`)
+        throw new Error(
+          `Failed to get Token Decimals (tokenAddress: ${tokenAddress})`
+        )
       }
     },
     async getToken(_, { tokenAddress }) {
