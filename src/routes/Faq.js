@@ -28,11 +28,11 @@ class FAQ extends Component {
         </p>
         <h3 id="cooling">What is the cooling period?</h3>
         <p>
-          The cooling period is a limited time window (default is one week but
-          the duration may vary) to withdraw your payout. After the cooling
-          period has passed, you acknowledge that you are not interested in
-          retrieving your funds and the event owner has the right to clear the
-          remaining pot.
+          The cooling period is a limited time window (by default this is one
+          week but the duration may vary) to withdraw your payout. After the
+          cooling period has passed, you acknowledge that you are not interested
+          in retrieving your funds and the event owner has the right to clear
+          the remaining pot.
         </p>
         <h3>
           I don't feel comfortable associating my profile photo to my ETH
@@ -62,7 +62,7 @@ class FAQ extends Component {
           </a>{' '}
           standard.{' '}
         </p>
-        <h3>Can I use Kickback for the paid yet?</h3>
+        <h3>Can I use Kickback to receive payments for tickets yet?</h3>
         <p>Not yet.</p>
         <h3>My event participants may not have ETH. What should I do?</h3>
         <p>
@@ -70,23 +70,23 @@ class FAQ extends Component {
           good reason for people who have no ETH to actually try to acquire one.
           If you are really worried about alienating newbies, then we would
           suggest that you asked these people who are impossible to acquire ETH
-          to contact you so that you can make as exceptions. The whole reason of
-          asking to commit ETH is to prevent people who have no intention of
+          to contact you so that you can make exceptions for them. The whole reason
+          for asking to commit ETH is to prevent people who have no intention of
           showing up from taking up spots so it is unlikely that this backdoor
           will be abused.
         </p>
         <h3>Can I have multiple tiered ticketing</h3>
         <p>
-          We don't natively support such features but you can simple create
+          We don't natively support such features but you can simply create
           multiple events on Kickback or mix with other ticketing platform.
         </p>
         <p>
           It is a common practice to use multiple ticketing systems when you try
-          out Kickback for the first time in a smaller scale. If you decide to
+          out Kickback for the first time at a smaller scale. If you decide to
           go for this approach we recommend that you don't announce both tickets
           side by side as people just try to signup with less constraint
           ticketing systems. What we do recommend is that you announce your
-          event with kickback first for "early birds" ticketing, then use others
+          event with Kickback first for "early birds" ticketing, then use others
           for last minute left over spots.
         </p>
         <h3>I have other questions!</h3>
