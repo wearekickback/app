@@ -3,11 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { isEmptyAddress } from '../../api/utils'
-import {
-  TOKEN_QUERY,
-  TOKEN_DECIMALS_QUERY,
-  TOKEN_ALLOWANCE_QUERY
-} from '../../graphql/queries'
+import { TOKEN_QUERY, TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
@@ -132,44 +128,33 @@ class EventCTA extends Component {
           })
         }
         return (
-          <SafeQuery query={TOKEN_DECIMALS_QUERY} variables={{ tokenAddress }}>
+          <SafeQuery
+            query={TOKEN_ALLOWANCE_QUERY}
+            variables={{ tokenAddress, partyAddress: address }}
+          >
             {({
               data: {
-                token: { decimals }
+                tokenAllowance: { allowance, balance }
               },
-              loading
+              loading,
+              refetch
             }) => {
-              return (
-                <SafeQuery
-                  query={TOKEN_ALLOWANCE_QUERY}
-                  variables={{ tokenAddress, partyAddress: address }}
-                >
-                  {({
-                    data: {
-                      tokenAllowance: { allowance, balance }
-                    },
-                    loading,
-                    refetch
-                  }) => {
-                    const decodedDeposit = parseInt(toBN(deposit).toString())
-                    const isAllowed = parseInt(allowance) >= decodedDeposit
-                    const hasBalance = parseInt(balance) >= decodedDeposit
-                    return this._renderActiveRsvp({
-                      myParticipantEntry,
-                      tokenAddress,
-                      address,
-                      deposit,
-                      decodedDeposit,
-                      participants,
-                      participantLimit,
-                      balance,
-                      isAllowed,
-                      hasBalance,
-                      refetch
-                    })
-                  }}
-                </SafeQuery>
-              )
+              const decodedDeposit = parseInt(toBN(deposit).toString())
+              const isAllowed = parseInt(allowance) >= decodedDeposit
+              const hasBalance = parseInt(balance) >= decodedDeposit
+              return this._renderActiveRsvp({
+                myParticipantEntry,
+                tokenAddress,
+                address,
+                deposit,
+                decodedDeposit,
+                participants,
+                participantLimit,
+                balance,
+                isAllowed,
+                hasBalance,
+                refetch
+              })
             }}
           </SafeQuery>
         )
