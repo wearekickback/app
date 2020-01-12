@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
-import { TOKEN_DECIMALS_QUERY } from '../../graphql/queries'
-import SafeQuery from '../SafeQuery'
-
-import { depositValue } from '../Utils/DepositValue.js'
 import DefaultEventDate from '../Utils/EventDate.js'
 import Currency from '../SingleEvent/Currency'
 
@@ -64,31 +60,9 @@ class EventCard extends Component {
           <EventDetails>
             <EventName>{name}</EventName>
             <EventDate event={party} />
-            <SafeQuery
-              query={TOKEN_DECIMALS_QUERY}
-              variables={{ tokenAddress }}
-              renderError={err => {
-                return (
-                  <Deposit>
-                    Can't find token contract at address {tokenAddress}
-                  </Deposit>
-                )
-              }}
-            >
-              {({
-                data: {
-                  token: { decimals }
-                },
-                loading
-              }) => {
-                return (
-                  <Deposit>
-                    {depositValue(deposit, decimals)}{' '}
-                    <Currency tokenAddress={tokenAddress} />
-                  </Deposit>
-                )
-              }}
-            </SafeQuery>
+            <Deposit>
+              <Currency amount={deposit} tokenAddress={tokenAddress} />
+            </Deposit>
           </EventDetails>
         </Link>
       </EventCardContainer>

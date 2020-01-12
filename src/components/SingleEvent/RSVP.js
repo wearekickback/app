@@ -2,7 +2,6 @@ import React from 'react'
 
 import { PARTY_QUERY } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
-import { depositValue } from '../Utils/DepositValue'
 import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 import Button from '../Forms/Button'
@@ -27,8 +26,7 @@ const RSVP = ({
     return (
       <>
         <RSVPText>RSVP with</RSVPText>
-        {depositValue(deposit, decimals)}{' '}
-        <Currency tokenAddress={tokenAddress} />
+        <Currency amount={deposit} tokenAddress={tokenAddress} />
       </>
     )
   }
