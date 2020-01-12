@@ -33,20 +33,29 @@ const CenteredQrReader = styled(QrReader)`
   width: 75%;
 `
 
+const ERROR_MESSAGES = {
+  MALFORMED_DATA: "Couldn't read an address in QR code",
+  FATAL_ERROR:
+    'Could not access camera! Either you or your browser denied permission for camera access.'
+}
+
 const decodeQR = data => {
   console.log(data)
   if (!data) {
-    return { success: false, message: 'NO_DATA' }
+    return { success: false, payload: { stopScanning: false, type: 'NO_DATA' } }
   } else if (isAddress(data)) {
     // Plain address
-    return { success: true, message: data }
+    return { success: true, payload: { address: data } }
   } else if (/^ethereum:(0x[0-9a-fA-F]{40})$/.test(data)) {
     // Address prefixed with "ethereum:" https://github.com/ethereum/EIPs/blob/master/EIPS/eip-831.md
     // This is used by Coinbase Wallet
     const address = data.replace(/ethereum:/, '')
-    return { success: true, message: address }
+    return { success: true, payload: { address } }
   } else {
-    return { success: false, message: "Couldn't read an address in QR code" }
+    return {
+      success: false,
+      payload: { stopScanning: false, type: 'MALFORMED_DATA' }
+    }
   }
 }
 
@@ -69,7 +78,7 @@ const EventFilters = props => {
     if (navigator && navigator.permissions) {
       navigator.permissions.query({ name: 'camera' }).then(result => {
         if (result.state === 'denied') {
-          setCameraAvailable(false)
+          _onError('FATAL_ERROR')
         }
       })
     }
@@ -80,13 +89,17 @@ const EventFilters = props => {
     props.handleSearch(val)
   }
 
-  const _onError = errorMessage => {
+  const _onError = errorType => {
     setScannerActive(false)
-    setScannerError(errorMessage)
+    setScannerError(ERROR_MESSAGES[errorType])
 
-    // Show error message for 3 seconds then hide again
-    const TIME_ERROR_APPEARS = 3000
-    setTimeout(() => setScannerError(false), TIME_ERROR_APPEARS)
+    if (errorType === 'FATAL_ERROR') {
+      setCameraAvailable(false)
+    } else {
+      // If error is recoverable show error message for 3 seconds then hide again
+      const TIME_ERROR_APPEARS = 3000
+      setTimeout(() => setScannerError(false), TIME_ERROR_APPEARS)
+    }
   }
 
   return (
@@ -132,15 +145,14 @@ const EventFilters = props => {
               <CenteredQrReader
                 delay={400} // delay = false stops scanning
                 onError={err => {
-                  setCameraAvailable(false)
-                  _onError('FATAL ERROR')
+                  _onError('FATAL_ERROR')
                 }}
                 onScan={data => {
-                  const { success, message } = decodeQR(data)
+                  const { success, payload } = decodeQR(data)
                   if (success) {
-                    _onSearch(message)
-                  } else if (message !== 'NO_DATA') {
-                    _onError(message)
+                    _onSearch(payload.address)
+                  } else if (payload.stopScanning) {
+                    _onError(payload.type)
                   }
                 }}
                 resolution={1200}
