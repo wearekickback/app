@@ -5,9 +5,6 @@ import { pluralize } from '@wearekickback/shared'
 import Participant from './Participant'
 import DefaultEventFilters from './EventFilters'
 
-import { TOKEN_DECIMALS_QUERY } from '../../graphql/queries'
-import SafeQuery from '../SafeQuery'
-
 import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
 
@@ -43,7 +40,7 @@ const spotsLeft = ({ ended, participants, participantLimit }) => {
 const EventParticipants = props => {
   const {
     party,
-    party: { participants, ended, tokenAddress },
+    party: { participants, ended },
     amAdmin
   } = props
 
@@ -70,42 +67,17 @@ const EventParticipants = props => {
       />
       <EventParticipantsContainer>
         {participants.length > 0 ? (
-          <SafeQuery
-            query={TOKEN_DECIMALS_QUERY}
-            variables={{ tokenAddress }}
-            renderError={err => {
-              return participants
-                .sort(sortParticipants)
-                .filter(filterParticipants(selectedFilter, search))
-                .map(participant => (
-                  <Participant
-                    amAdmin={amAdmin}
-                    participant={participant}
-                    party={party}
-                    key={`${participant.address}${participant.index}`}
-                  />
-                ))
-            }}
-          >
-            {({
-              data: {
-                token: { decimals }
-              },
-              loading
-            }) => {
-              return participants
-                .sort(sortParticipants)
-                .filter(filterParticipants(selectedFilter, search))
-                .map(participant => (
-                  <Participant
-                    amAdmin={amAdmin}
-                    participant={participant}
-                    party={party}
-                    key={`${participant.address}${participant.index}`}
-                  />
-                ))
-            }}
-          </SafeQuery>
+          participants
+            .sort(sortParticipants)
+            .filter(filterParticipants(selectedFilter, search))
+            .map(participant => (
+              <Participant
+                amAdmin={amAdmin}
+                participant={participant}
+                party={party}
+                key={`${participant.address}${participant.index}`}
+              />
+            ))
         ) : (
           <NoParticipants>No one is attending.</NoParticipants>
         )}
