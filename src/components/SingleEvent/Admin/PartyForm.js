@@ -541,14 +541,25 @@ class PartyForm extends Component {
                       <CommitmentInput
                         value={deposit}
                         onChangeText={val => {
-                          let regex = /.*/
+                          // We need to check that the deposit isn't dividing up the token below its smallest unit.
+
+                          // by default we allow any input
+                          let validityRegex = /.*/
+
+                          const integerRegex = '\\d*'
                           if (decimals === 0 || decimals === '0') {
-                            regex = new RegExp(`^\\d*$`)
+                            // If token is indivisible, then only allow integer input
+                            validityRegex = new RegExp(`^${integerRegex}$`)
                           } else if (decimals > 0) {
-                            regex = new RegExp(`^\\d*(\\.\\d{0,${decimals}})?$`)
+                            // Otherwise optionally allow a decimal point followed by
+                            // up to the number of decimal places as defined in token contract
+                            const decimalsRegex = `\\.\\d{0,${decimals}}`
+                            validityRegex = new RegExp(
+                              `^${integerRegex}(${decimalsRegex})?$`
+                            )
                           }
 
-                          const isValid = regex.test(val)
+                          const isValid = validityRegex.test(val)
 
                           if (isValid && val !== this.props.value) {
                             this.setState({ deposit: val })
