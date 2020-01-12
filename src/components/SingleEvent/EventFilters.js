@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'react-emotion'
 import QrReader from 'react-qr-reader'
 
@@ -64,6 +64,16 @@ const EventFilters = props => {
   const [scannerError, setScannerError] = useState(false)
 
   const [cameraAvailable, setCameraAvailable] = useState(true)
+
+  useEffect(() => {
+    if (navigator && navigator.permissions) {
+      navigator.permissions.query({ name: 'camera' }).then(result => {
+        if (result.state === 'denied') {
+          setCameraAvailable(false)
+        }
+      })
+    }
+  }, [])
 
   const _onSearch = val => {
     setScannerActive(false)
