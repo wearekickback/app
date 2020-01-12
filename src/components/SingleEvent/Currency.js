@@ -9,7 +9,7 @@ const Currency = ({ tokenAddress }) => {
       query={TOKEN_QUERY}
       variables={{ tokenAddress }}
       renderError={err => {
-        return "Can't find token contract at given address"
+        return 'Token not found'
       }}
     >
       {({
