@@ -281,7 +281,6 @@ class EventInfo extends Component {
           </InfoGrid>
         </TimeDetails>
         <EventDescription>
-          {console.log(party.description)}
           <ReactMarkdown source={party.description} />
         </EventDescription>
         <Photos>
