@@ -16,6 +16,16 @@ const GetParty = `
   }
 `
 
+function htmlEncode(str) {
+  return str
+    ? str
+        .replace(/\&/g, '&amp;')
+        .replace(/\>/g, '&gt;')
+        .replace(/\</g, '&lt;')
+        .replace(/\"/g, '&quot;')
+    : ''
+}
+
 module.exports = async (req, res) => {
   const paths = req.url.split('/')
   const address = paths[paths.length - 1]
@@ -33,18 +43,20 @@ module.exports = async (req, res) => {
     const baseUrl = `https://${req.headers.host}`
     const r = await fetch(`${baseUrl}/build/index.html`)
     if (r.ok) {
+      const partyName = htmlEncode(party.name)
+      const partyDesc = htmlEncode(party.description)
       let html = await r.text()
       html = html.replace(
         /\<meta name\=\"description\"(.*?)\/\>/g,
-        `<meta name="description" content="${party.description}" />`
+        `<meta name="description" content="${partyDesc}" />`
       )
       html = html.replace(
         /\<meta property\=\"og\:title\"(.*?)\/\>/g,
-        `<meta property="og:title" content="${party.name}" />`
+        `<meta property="og:title" content="${partyName}" />`
       )
       html = html.replace(
         /\<meta property\=\"og\:description\"(.*?)\/\>/g,
-        `<meta property="og:description" content="${party.description}" />`
+        `<meta property="og:description" content="${partyDesc}" />`
       )
       html = html.replace(
         /\<meta property\=\"og\:image\"(.*?)\/\>/g,
@@ -56,11 +68,11 @@ module.exports = async (req, res) => {
       )
       html = html.replace(
         /\<meta name\=\"twitter\:title\"(.*?)\/\>/g,
-        `<meta name="twitter:title" content="${party.name}" />`
+        `<meta name="twitter:title" content="${partyName}" />`
       )
       html = html.replace(
         /\<meta name\=\"twitter\:description\"(.*?)\/\>/g,
-        `<meta name="twitter:description" content="${party.description}" />`
+        `<meta name="twitter:description" content="${partyDesc}" />`
       )
       html = html.replace(
         /\<meta name\=\"twitter\:image\"(.*?)\/\>/g,
@@ -68,7 +80,7 @@ module.exports = async (req, res) => {
       )
       html = html.replace(
         /\<title\>Kickback\<\/title\>/g,
-        `<title>${party.name}</title>`
+        `<title>${partyName}</title>`
       )
       res.send(html)
     }
