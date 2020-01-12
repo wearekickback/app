@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
-import marked from 'marked'
+import ReactMarkdown from 'react-markdown'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
@@ -303,9 +303,9 @@ class EventInfo extends Component {
             )}
           </InfoGrid>
         </TimeDetails>
-        <EventDescription
-          dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
-        />
+        <EventDescription>
+          <ReactMarkdown source={party.description} />
+        </EventDescription>
         <Photos>
           <PhotoContainer>
             <Photo />
