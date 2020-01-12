@@ -341,8 +341,13 @@ const resolvers = {
             contract.symbol().call(),
             contract.decimals().call()
           ])
-          name = web3.utils.toAscii(name).replace(/\u0000/g, '') // eslint-disable-line no-control-regex
-          symbol = web3.utils.toAscii(symbol).replace(/\u0000/g, '') // eslint-disable-line no-control-regex
+
+          // To fit in a bytes32 on the contract, token name and symbol
+          // have been padded to length using null characters.
+          // We then strip these characters using the regex `/\u0000/g`
+          const NULL_CHAR = '\u0000'
+          name = web3.utils.toAscii(name).replace(`/${NULL_CHAR}/g`, '') // eslint-disable-line no-control-regex
+          symbol = web3.utils.toAscii(symbol).replace(`/${NULL_CHAR}/g`, '') // eslint-disable-line no-control-regex
           return { name, symbol, decimals }
         } catch (err) {
           throw new Error(`Failed to get Token`)
