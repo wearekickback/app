@@ -5,6 +5,9 @@ import { pluralize } from '@wearekickback/shared'
 import Participant from './Participant'
 import DefaultEventFilters from './EventFilters'
 
+import { TOKEN_DECIMALS_QUERY } from '../../graphql/queries'
+import SafeQuery from '../SafeQuery'
+
 import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
 
@@ -44,7 +47,7 @@ class EventParticipants extends Component {
   render() {
     const {
       party,
-      party: { participants, participantLimit, ended },
+      party: { participants, participantLimit, ended, tokenAddress },
       amAdmin
     } = this.props
 
@@ -75,23 +78,35 @@ class EventParticipants extends Component {
           enableQrCodeScanner={amAdmin}
           ended={ended}
         />
-        <EventParticipantsContainer>
-          {participants.length > 0 ? (
-            participants
-              .sort(sortParticipants)
-              .filter(filterParticipants(selectedFilter, search))
-              .map(participant => (
-                <Participant
-                  amAdmin={amAdmin}
-                  participant={participant}
-                  party={party}
-                  key={`${participant.address}${participant.index}`}
-                />
-              ))
-          ) : (
-            <NoParticipants>No one is attending.</NoParticipants>
-          )}
-        </EventParticipantsContainer>
+        <SafeQuery query={TOKEN_DECIMALS_QUERY} variables={{ tokenAddress }}>
+          {({
+            data: {
+              token: { decimals }
+            },
+            loading
+          }) => {
+            return (
+              <EventParticipantsContainer>
+                {participants.length > 0 ? (
+                  participants
+                    .sort(sortParticipants)
+                    .filter(filterParticipants(selectedFilter, search))
+                    .map(participant => (
+                      <Participant
+                        amAdmin={amAdmin}
+                        participant={participant}
+                        party={party}
+                        decimals={decimals}
+                        key={`${participant.address}${participant.index}`}
+                      />
+                    ))
+                ) : (
+                  <NoParticipants>No one is attending.</NoParticipants>
+                )}
+              </EventParticipantsContainer>
+            )
+          }}
+        </SafeQuery>
       </Fragment>
     )
   }

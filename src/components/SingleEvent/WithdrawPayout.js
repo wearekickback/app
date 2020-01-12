@@ -19,6 +19,7 @@ const WithdrawPayoutButton = ({ address, amount, className }) => (
         result={result}
         className={className}
         preContent={`Withdraw payout`}
+        // I need the number of decimals to correctly display an amount!
         // preContent={`Withdraw payout - ${amount} ETH`}
       />
     )}

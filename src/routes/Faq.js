@@ -62,7 +62,7 @@ class FAQ extends Component {
           </a>{' '}
           standard.{' '}
         </p>
-        <h3>Can I use Kickback for the paid yet?</h3>
+        <h3>Can I use Kickback to receive payments for tickets yet?</h3>
         <p>Not yet.</p>
         <h3>My event participants may not have ETH. What should I do?</h3>
         <p>

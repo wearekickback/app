@@ -28,11 +28,16 @@ export const getParticipantsMarkedAttended = participants =>
 export const amAdmin = (party, address) =>
   address && userHasEventRole(address, party, ROLE.EVENT_ADMIN)
 
-export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
+export const calculateWinningShare = (
+  deposit,
+  numRegistered,
+  numAttended,
+  decimals = 18
+) =>
   toEthVal(deposit)
     .mul(numRegistered)
     .div(numAttended)
-    .toEth()
+    .scaleUp(decimals)
     .toFixed(3)
 
 export const sortParticipants = (a, b) => (a.index < b.index ? -1 : 1)

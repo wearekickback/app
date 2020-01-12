@@ -17,6 +17,9 @@ import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 import Currency from './Currency'
 import WarningBox from '../../components/WarningBox'
 
+import { TOKEN_DECIMALS_QUERY } from 'graphql/queries'
+import SafeQuery from '../SafeQuery'
+
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
 import { getHours, getUtcDateFromTimezone } from '../../utils/dates'
@@ -227,40 +230,60 @@ class EventInfo extends Component {
           {party.location || '11 Macclesfield St, London W1D 5BW'}
         </Location>
         <TotalPot>
-          <InfoGrid>
-            <EthIcon />
-            <InfoGridItem>
-              <TotalPot>
-                <strong>Pot: </strong>
-                <span>
-                  {depositValue(party.deposit * party.participants.length)}{' '}
-                  <Currency tokenAddress={party.tokenAddress} />
-                </span>
-              </TotalPot>
-              <Deposit>
-                <strong>RSVP: </strong>
-                <span>
-                  {depositValue(party.deposit)}{' '}
-                  <Currency tokenAddress={party.tokenAddress} />
-                </span>
-              </Deposit>
-            </InfoGridItem>
-            <InfoGridItem>
-              <strong>
-                Cooling Period{' '}
-                <Link to="/faq#cooling">
-                  <InfoIcon />
-                </Link>
-                :{' '}
-              </strong>
-              <span>
-                {moment
-                  .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
-                  .asDays()}{' '}
-                days
-              </span>
-            </InfoGridItem>
-          </InfoGrid>
+          <SafeQuery
+            query={TOKEN_DECIMALS_QUERY}
+            variables={{ tokenAddress: party.tokenAddress }}
+          >
+            {({
+              data: {
+                token: { decimals }
+              },
+              loading
+            }) => {
+              return (
+                <InfoGrid>
+                  <EthIcon />
+                  <InfoGridItem>
+                    <TotalPot>
+                      <strong>Pot: </strong>
+                      <span>
+                        {depositValue(
+                          party.deposit * party.participants.length,
+                          decimals
+                        )}{' '}
+                        <Currency tokenAddress={party.tokenAddress} />
+                      </span>
+                    </TotalPot>
+                    <Deposit>
+                      <strong>RSVP: </strong>
+                      <span>
+                        {depositValue(party.deposit, decimals)}{' '}
+                        <Currency tokenAddress={party.tokenAddress} />
+                      </span>
+                    </Deposit>
+                  </InfoGridItem>
+                  <InfoGridItem>
+                    <strong>
+                      Cooling Period{' '}
+                      <Link to="/faq#cooling">
+                        <InfoIcon />
+                      </Link>
+                      :{' '}
+                    </strong>
+                    <span>
+                      {moment
+                        .duration(
+                          toEthVal(party.coolingPeriod).toNumber(),
+                          'seconds'
+                        )
+                        .asDays()}{' '}
+                      days
+                    </span>
+                  </InfoGridItem>
+                </InfoGrid>
+              )
+            }}
+          </SafeQuery>
         </TotalPot>
         <TimeDetails>
           <InfoGrid>

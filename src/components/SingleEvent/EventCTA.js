@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { isEmptyAddress } from '../../api/utils'
-import { TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
+import {
+  TOKEN_QUERY,
+  TOKEN_DECIMALS_QUERY,
+  TOKEN_ALLOWANCE_QUERY
+} from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
@@ -128,34 +132,44 @@ class EventCTA extends Component {
           })
         }
         return (
-          <SafeQuery
-            query={TOKEN_ALLOWANCE_QUERY}
-            variables={{ tokenAddress, partyAddress: address }}
-          >
+          <SafeQuery query={TOKEN_DECIMALS_QUERY} variables={{ tokenAddress }}>
             {({
               data: {
-                tokenAllowance: { allowance, balance }
+                token: { decimals }
               },
-              loading,
-              refetch
+              loading
             }) => {
-              console.log({ allowance, balance })
-              const decodedDeposit = parseInt(toBN(deposit).toString())
-              const isAllowed = parseInt(allowance) >= decodedDeposit
-              const hasBalance = parseInt(balance) >= decodedDeposit
-              return this._renderActiveRsvp({
-                myParticipantEntry,
-                tokenAddress,
-                address,
-                deposit,
-                decodedDeposit,
-                participants,
-                participantLimit,
-                balance,
-                isAllowed,
-                hasBalance,
-                refetch
-              })
+              return (
+                <SafeQuery
+                  query={TOKEN_ALLOWANCE_QUERY}
+                  variables={{ tokenAddress, partyAddress: address }}
+                >
+                  {({
+                    data: {
+                      tokenAllowance: { allowance, balance }
+                    },
+                    loading,
+                    refetch
+                  }) => {
+                    const decodedDeposit = parseInt(toBN(deposit).toString())
+                    const isAllowed = parseInt(allowance) >= decodedDeposit
+                    const hasBalance = parseInt(balance) >= decodedDeposit
+                    return this._renderActiveRsvp({
+                      myParticipantEntry,
+                      tokenAddress,
+                      address,
+                      deposit,
+                      decodedDeposit,
+                      participants,
+                      participantLimit,
+                      balance,
+                      isAllowed,
+                      hasBalance,
+                      refetch
+                    })
+                  }}
+                </SafeQuery>
+              )
             }}
           </SafeQuery>
         )
@@ -184,28 +198,45 @@ class EventCTA extends Component {
     balance,
     refetch
   }) {
-    const isToken = !isEmptyAddress(tokenAddress) || tokenAddress !== null
     return (
       <>
-        {isToken ? (
-          <Approve
-            tokenAddress={tokenAddress}
-            address={address}
-            deposit={deposit}
-            decodedDeposit={decodedDeposit}
-            balance={balance}
-            isAllowed={isAllowed}
-            hasBalance={hasBalance}
-            refetch={refetch}
-          />
-        ) : null}
-        <RSVP
-          tokenAddress={tokenAddress}
-          address={address}
-          deposit={deposit}
-          isAllowed={isAllowed}
-          hasBalance={hasBalance}
-        />
+        <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
+          {({
+            data: {
+              token: { name, symbol, decimals }
+            },
+            loading
+          }) => {
+            const isToken =
+              !isEmptyAddress(tokenAddress) || tokenAddress !== null
+            return (
+              <>
+                {isToken ? (
+                  <Approve
+                    tokenAddress={tokenAddress}
+                    address={address}
+                    deposit={deposit}
+                    decodedDeposit={decodedDeposit}
+                    decimals={decimals}
+                    balance={balance}
+                    isAllowed={isAllowed}
+                    hasBalance={hasBalance}
+                    refetch={refetch}
+                  />
+                ) : null}
+                <RSVP
+                  tokenAddress={tokenAddress}
+                  address={address}
+                  deposit={deposit}
+                  decimals={decimals}
+                  isAllowed={isAllowed}
+                  hasBalance={hasBalance}
+                />
+              </>
+            )
+          }}
+        </SafeQuery>
+
         <CTAInfo>
           <strong>Kickback rules:</strong>
           <ul>

@@ -16,14 +16,15 @@ const Approve = ({
   deposit,
   decodedDeposit = 0,
   balance = 0,
+  decimals,
   isAllowed,
   hasBalance,
   refetch
 }) => {
   let canRSVP, denominatedBalance, denominatedDeposit
   if (tokenAddress !== EMPTY_ADDRESS) {
-    denominatedBalance = new EthVal(balance).toEth().toString()
-    denominatedDeposit = new EthVal(decodedDeposit).toEth().toString()
+    denominatedBalance = new EthVal(balance).scaleUp(decimals).toString()
+    denominatedDeposit = new EthVal(decodedDeposit).scaleUp(decimals).toString()
     canRSVP = isAllowed && hasBalance
   } else {
     canRSVP = true

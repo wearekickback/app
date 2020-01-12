@@ -127,7 +127,7 @@ const resolvers = {
     async createParty(_, args) {
       console.log(`Deploying party`, args)
 
-      const { id, deposit, limitOfParticipants, coolingPeriod } = args
+      const { id, deposit, decimals, limitOfParticipants, coolingPeriod } = args
       let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
@@ -147,7 +147,7 @@ const resolvers = {
             .deploy(
               id,
               toEthVal(deposit, 'eth')
-                .toWei()
+                .scaleDown(decimals)
                 .toString(16),
               toEthVal(limitOfParticipants).toString(16),
               toEthVal(coolingPeriod).toString(16),

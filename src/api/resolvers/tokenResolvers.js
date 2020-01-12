@@ -285,6 +285,22 @@ const resolvers = {
         return { allowance: null }
       }
     },
+    async getTokenDecimals(_, { tokenAddress }) {
+      if (isEmptyAddress(tokenAddress)) {
+        return { decimals: 18 } //Ethereum
+      }
+      const web3 = await getWeb3()
+
+      try {
+        const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
+        const decimals = await contract.decimals().call()
+        return { decimals }
+      } catch (err) {
+        throw new Error(
+          `Failed to get Token Decimals (tokenAddress: ${tokenAddress})`
+        )
+      }
+    },
     async getToken(_, { tokenAddress }) {
       if (token) return token
       if (isEmptyAddress(tokenAddress)) {
@@ -325,8 +341,13 @@ const resolvers = {
             contract.symbol().call(),
             contract.decimals().call()
           ])
-          name = web3.utils.toAscii(name).replace(/\u0000/g, '') // eslint-disable-line no-control-regex
-          symbol = web3.utils.toAscii(symbol).replace(/\u0000/g, '') // eslint-disable-line no-control-regex
+
+          // To fit in a bytes32 on the contract, token name and symbol
+          // have been padded to length using null characters.
+          // We then strip these characters using the regex `/\u0000/g`
+          const NULL_CHAR = '\u0000'
+          name = web3.utils.toAscii(name).replace(`/${NULL_CHAR}/g`, '') // eslint-disable-line no-control-regex
+          symbol = web3.utils.toAscii(symbol).replace(`/${NULL_CHAR}/g`, '') // eslint-disable-line no-control-regex
           return { name, symbol, decimals }
         } catch (err) {
           throw new Error(`Failed to get Token`)
