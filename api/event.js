@@ -38,14 +38,14 @@ module.exports = async (req, res) => {
   })
   const { party } = await client.request(GetParty, { address })
 
-  if (party) {
-    // fetch index.html and replace placeholders
-    const baseUrl = `https://${req.headers.host}`
-    const r = await fetch(`${baseUrl}/build/index.html`)
-    if (r.ok) {
+  // fetch index.html and replace placeholders
+  const baseUrl = `https://${req.headers.host}`
+  const r = await fetch(`${baseUrl}/build/index.html`)
+  if (r.ok) {
+    let html = await r.text()
+    if (party) {
       const partyName = htmlEncode(party.name)
       const partyDesc = htmlEncode(party.description)
-      let html = await r.text()
       html = html.replace(
         /\<meta name\=\"description\"(.*?)\/\>/g,
         `<meta name="description" content="${partyDesc}" />`
@@ -82,9 +82,7 @@ module.exports = async (req, res) => {
         /\<title\>Kickback\<\/title\>/g,
         `<title>${partyName}</title>`
       )
-      res.send(html)
     }
-  } else {
-    res.status(404)
+    res.send(html)
   }
 }
