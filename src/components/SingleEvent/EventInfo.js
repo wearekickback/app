@@ -230,60 +230,62 @@ class EventInfo extends Component {
           {party.location || '11 Macclesfield St, London W1D 5BW'}
         </Location>
         <TotalPot>
-          <SafeQuery
-            query={TOKEN_DECIMALS_QUERY}
-            variables={{ tokenAddress: party.tokenAddress }}
-          >
-            {({
-              data: {
-                token: { decimals }
-              },
-              loading
-            }) => {
-              return (
-                <InfoGrid>
-                  <EthIcon />
-                  <InfoGridItem>
-                    <TotalPot>
-                      <strong>Pot: </strong>
-                      <span>
-                        {depositValue(
-                          party.deposit * party.participants.length,
-                          decimals
-                        )}{' '}
-                        <Currency tokenAddress={party.tokenAddress} />
-                      </span>
-                    </TotalPot>
-                    <Deposit>
-                      <strong>RSVP: </strong>
-                      <span>
-                        {depositValue(party.deposit, decimals)}{' '}
-                        <Currency tokenAddress={party.tokenAddress} />
-                      </span>
-                    </Deposit>
-                  </InfoGridItem>
-                  <InfoGridItem>
-                    <strong>
-                      Cooling Period{' '}
-                      <Link to="/faq#cooling">
-                        <InfoIcon />
-                      </Link>
-                      :{' '}
-                    </strong>
-                    <span>
-                      {moment
-                        .duration(
-                          toEthVal(party.coolingPeriod).toNumber(),
-                          'seconds'
-                        )
-                        .asDays()}{' '}
-                      days
-                    </span>
-                  </InfoGridItem>
-                </InfoGrid>
-              )
-            }}
-          </SafeQuery>
+          <InfoGrid>
+            <EthIcon />
+            <InfoGridItem>
+              <SafeQuery
+                query={TOKEN_DECIMALS_QUERY}
+                variables={{ tokenAddress: party.tokenAddress }}
+                renderError={err => {
+                  return <WarningBox>Token not found</WarningBox>
+                }}
+              >
+                {({
+                  data: {
+                    token: { decimals }
+                  },
+                  loading
+                }) => {
+                  return (
+                    <>
+                      <TotalPot>
+                        <strong>Pot: </strong>
+                        <span>
+                          {depositValue(
+                            party.deposit * party.participants.length,
+                            decimals
+                          )}{' '}
+                          <Currency tokenAddress={party.tokenAddress} />
+                        </span>
+                      </TotalPot>
+                      <Deposit>
+                        <strong>RSVP: </strong>
+                        <span>
+                          {depositValue(party.deposit, decimals)}{' '}
+                          <Currency tokenAddress={party.tokenAddress} />
+                        </span>
+                      </Deposit>
+                    </>
+                  )
+                }}
+              </SafeQuery>
+            </InfoGridItem>
+            <InfoGridItem>
+              <strong>
+                Cooling Period{' '}
+                <Link to="/faq#cooling">
+                  <InfoIcon />
+                </Link>
+                :{' '}
+              </strong>
+              <span>
+                {moment
+                  .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+                  .asDays()}{' '}
+                days
+              </span>
+            </InfoGridItem>
+          </InfoGrid>
         </TotalPot>
         <TimeDetails>
           <InfoGrid>
