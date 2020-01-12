@@ -126,7 +126,8 @@ class EventFilters extends Component {
               <QRScannerContainer>
                 <CenteredQrReader
                   delay={400} // delay = false stops scanning
-                  onError={() => {
+                  onError={err => {
+                    console.log(err)
                     this.setState({
                       scannerOn: false,
                       scanError: 'FATAL ERROR'
