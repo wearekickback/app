@@ -13,7 +13,6 @@ import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
 import SafeQuery from '../SafeQuery'
 import { toBN } from 'web3-utils'
-import { toEthVal } from '../../utils/units'
 
 import {
   calculateWinningShare,
@@ -152,18 +151,6 @@ class EventCTA extends Component {
                     loading,
                     refetch
                   }) => {
-                    console.log({
-                      decimals,
-                      allowance,
-                      balance,
-                      deposit,
-                      decoded: parseInt(toBN(deposit).toString())
-                    })
-                    console.log(
-                      toEthVal(balance)
-                        .scaleDown(decimals)
-                        .toString()
-                    )
                     const decodedDeposit = parseInt(toBN(deposit).toString())
                     const isAllowed = parseInt(allowance) >= decodedDeposit
                     const hasBalance = parseInt(balance) >= decodedDeposit

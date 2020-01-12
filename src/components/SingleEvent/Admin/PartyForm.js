@@ -503,7 +503,6 @@ class PartyForm extends Component {
                             } else {
                               tokenAddress = ''
                             }
-                            console.log(currencyType)
                             this.setState({
                               currencyType,
                               tokenAddress,
