@@ -5,7 +5,13 @@ import SafeQuery from '../SafeQuery'
 
 const Currency = ({ tokenAddress }) => {
   return (
-    <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
+    <SafeQuery
+      query={TOKEN_QUERY}
+      variables={{ tokenAddress }}
+      renderError={err => {
+        return "Can't find token contract at given address"
+      }}
+    >
       {({
         data: {
           token: { symbol }

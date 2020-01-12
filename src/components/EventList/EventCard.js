@@ -67,6 +67,13 @@ class EventCard extends Component {
             <SafeQuery
               query={TOKEN_DECIMALS_QUERY}
               variables={{ tokenAddress }}
+              renderError={err => {
+                return (
+                  <Deposit>
+                    Can't find token contract at address {tokenAddress}
+                  </Deposit>
+                )
+              }}
             >
               {({
                 data: {

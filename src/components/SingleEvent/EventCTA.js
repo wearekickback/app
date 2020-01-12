@@ -16,6 +16,7 @@ import {
 } from '../../utils/parties'
 import Status, { Going } from './Status'
 import DefaultButton from '../Forms/Button'
+import WarningBox from '../WarningBox'
 
 const AdminPanelButtonWrapper = styled('div')``
 
@@ -185,7 +186,18 @@ class EventCTA extends Component {
   }) {
     return (
       <>
-        <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
+        <SafeQuery
+          query={TOKEN_QUERY}
+          variables={{ tokenAddress }}
+          renderError={err => {
+            return (
+              <WarningBox>
+                {' '}
+                Can't find a token at address: {tokenAddress}
+              </WarningBox>
+            )
+          }}
+        >
           {({
             data: {
               token: { name, symbol, decimals }
