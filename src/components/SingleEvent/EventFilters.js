@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'react-emotion'
 import QrReader from 'react-qr-reader'
 
@@ -33,118 +33,136 @@ const CenteredQrReader = styled(QrReader)`
   width: 75%;
 `
 
-class EventFilters extends Component {
-  constructor(props) {
-    super(props)
+const ERROR_MESSAGES = {
+  MALFORMED_DATA: "Couldn't read an address in QR code",
+  FATAL_ERROR:
+    'Could not access camera! Either you or your browser denied permission for camera access.'
+}
 
-    this.state = {}
+const decodeQR = data => {
+  console.log(data)
+  if (!data) {
+    return { success: false, payload: { stopScanning: false, type: 'NO_DATA' } }
+  } else if (isAddress(data)) {
+    // Plain address
+    return { success: true, payload: { address: data } }
+  } else if (/^ethereum:(0x[0-9a-fA-F]{40})$/.test(data)) {
+    // Address prefixed with "ethereum:" https://github.com/ethereum/EIPs/blob/master/EIPS/eip-831.md
+    // This is used by Coinbase Wallet
+    const address = data.replace(/ethereum:/, '')
+    return { success: true, payload: { address } }
+  } else {
+    return {
+      success: false,
+      payload: { stopScanning: false, type: 'MALFORMED_DATA' }
+    }
+  }
+}
 
+const EventFilters = props => {
+  const {
+    search,
+    enableQrCodeScanner,
+    handleFilterChange,
+    amAdmin,
+    ended,
+    className
+  } = props
+
+  const [scannerActive, setScannerActive] = useState(false)
+  const [scannerError, setScannerError] = useState(false)
+
+  const [cameraAvailable, setCameraAvailable] = useState(true)
+
+  useEffect(() => {
     if (navigator && navigator.permissions) {
       navigator.permissions.query({ name: 'camera' }).then(result => {
         if (result.state === 'denied') {
-          this._disableCamera()
+          _onError('FATAL_ERROR')
         }
       })
     }
+  }, [])
+
+  const _onSearch = val => {
+    setScannerActive(false)
+    props.handleSearch(val)
   }
 
-  _disableCamera = () => {
-    this.setState({ cameraUnavailable: true })
-  }
+  const _onError = errorType => {
+    setScannerActive(false)
+    setScannerError(ERROR_MESSAGES[errorType])
 
-  _scan = data => {
-    console.log(data)
-    if (!data) {
-      console.log('No data')
-    } else if (isAddress(data)) {
-      console.log('Found Address:', data)
-      this.setState({ scannerOn: false })
-      this.props.handleSearch(data)
+    if (errorType === 'FATAL_ERROR') {
+      setCameraAvailable(false)
     } else {
-      this.setState({
-        scannerOn: false,
-        scanError: "Couldn't read an address in QR code"
-      })
-      console.log("Can't decode data:", data)
+      // If error is recoverable show error message for 3 seconds then hide again
+      const TIME_ERROR_APPEARS = 3000
+      setTimeout(() => setScannerError(false), TIME_ERROR_APPEARS)
     }
   }
 
-  _onSearch = val => {
-    this.props.handleSearch(val)
-  }
+  return (
+    <EventFiltersContainer className={className}>
+      {amAdmin && !ended && (
+        <Filter>
+          <Label>Filters</Label>
+          <Select
+            onChange={handleFilterChange}
+            placeholder="Choose"
+            options={[
+              { label: 'All', value: 'all' },
+              {
+                label: 'Not marked attended',
+                value: 'unmarked'
+              },
+              { label: 'Marked attended', value: 'marked' }
+            ]}
+          />
+        </Filter>
+      )}
 
-  render() {
-    const {
-      search,
-      enableQrCodeScanner,
-      handleFilterChange,
-      amAdmin,
-      ended,
-      className
-    } = this.props
-    const { scannerOn, scanError, cameraUnavailable } = this.state
-
-    return (
-      <EventFiltersContainer className={className}>
-        {amAdmin && !ended && (
-          <Filter>
-            <Label>Filters</Label>
-            <Select
-              onChange={handleFilterChange}
-              placeholder="Choose"
-              options={[
-                { label: 'All', value: 'all' },
-                {
-                  label: 'Not marked attended',
-                  value: 'unmarked'
-                },
-                { label: 'Marked attended', value: 'marked' }
-              ]}
-            />
-          </Filter>
-        )}
-
-        <Search
-          type="text"
-          Icon={SearchIcon}
-          onChangeText={this._onSearch}
-          value={search}
-          placeholder="Search for names or addresses"
-          wide
-        />
-        {enableQrCodeScanner ? (
-          <QRCodeContainer>
-            <Button
-              onClick={() => this.setState({ scannerOn: !scannerOn })}
-              disabled={cameraUnavailable}
-            >
-              {' '}
-              {scannerOn ? 'Stop Scanning' : 'Scan QRCode'}
-            </Button>
-            {scanError ? <WarningBox>{`${scanError}`}</WarningBox> : null}
-            {this.state.scannerOn ? (
-              <QRScannerContainer>
-                <CenteredQrReader
-                  delay={400} // delay = false stops scanning
-                  onError={err => {
-                    console.log(err)
-                    this.setState({
-                      scannerOn: false,
-                      scanError: 'FATAL ERROR'
-                    })
-                    this._disableCamera()
-                    setTimeout(() => this.setState({ scanError: false }), 3000)
-                  }}
-                  onScan={this._scan}
-                  resolution={1200}
-                />
-              </QRScannerContainer>
-            ) : null}
-          </QRCodeContainer>
-        ) : null}
-      </EventFiltersContainer>
-    )
-  }
+      <Search
+        type="text"
+        Icon={SearchIcon}
+        onChangeText={_onSearch}
+        value={search}
+        placeholder="Search for names or addresses"
+        wide
+      />
+      {enableQrCodeScanner ? (
+        <QRCodeContainer>
+          <Button
+            onClick={() => setScannerActive(!scannerActive)}
+            disabled={!cameraAvailable}
+          >
+            {' '}
+            {scannerActive ? 'Stop Scanning' : 'Scan QRCode'}
+          </Button>
+          {scannerError ? <WarningBox>{`${scannerError}`}</WarningBox> : null}
+          {scannerActive ? (
+            <QRScannerContainer>
+              <CenteredQrReader
+                delay={400} // delay = false stops scanning
+                onError={err => {
+                  _onError('FATAL_ERROR')
+                }}
+                onScan={data => {
+                  const { success, payload } = decodeQR(data)
+                  if (success) {
+                    _onSearch(payload.address)
+                  } else if (payload.stopScanning) {
+                    _onError(payload.type)
+                  }
+                }}
+                resolution={1200}
+              />
+            </QRScannerContainer>
+          ) : null}
+        </QRCodeContainer>
+      ) : null}
+    </EventFiltersContainer>
+  )
 }
 
 export default EventFilters
