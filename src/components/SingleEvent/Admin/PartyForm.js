@@ -191,6 +191,38 @@ const visibilityOptions = [
   }
 ]
 
+const ImageInput = ({ image, uploading, onDrop }) => {
+  return (
+    <InputWrapper>
+      <Label>Image</Label>
+      <DropZoneWrapper>
+        <Mutation mutation={SINGLE_UPLOAD}>
+          {mutate => (
+            <Dropzone
+              className="dropzone"
+              onDrop={files => onDrop(files, mutate)}
+              accept="image/*"
+            >
+              {image ? (
+                <UploadedImage
+                  src={image}
+                  text="Click or drop a file to change photo"
+                />
+              ) : (
+                <NoImage>
+                  {uploading
+                    ? 'Uploading...'
+                    : 'Click or drop a file to change photo'}
+                </NoImage>
+              )}
+            </Dropzone>
+          )}
+        </Mutation>
+      </DropZoneWrapper>
+    </InputWrapper>
+  )
+}
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -237,7 +269,7 @@ class PartyForm extends Component {
     }
   }
 
-  onDrop = (acceptedFiles, mutate) => {
+  uploadImage = (acceptedFiles, mutate) => {
     acceptedFiles.forEach(file => {
       mutate({ variables: { file } }).then(({ data: { singleUpload } }) => {
         this.setState({ headerImg: singleUpload })
@@ -431,33 +463,7 @@ class PartyForm extends Component {
               />
             </DateContent>
           </InputWrapper>
-          <InputWrapper>
-            <Label>Image</Label>
-            <DropZoneWrapper>
-              <Mutation mutation={SINGLE_UPLOAD}>
-                {mutate => (
-                  <Dropzone
-                    className="dropzone"
-                    onDrop={files => this.onDrop(files, mutate)}
-                    accept="image/*"
-                  >
-                    {headerImg ? (
-                      <UploadedImage
-                        src={headerImg}
-                        text="Click or drop a file to change photo"
-                      />
-                    ) : (
-                      <NoImage>
-                        {this.state.imageUploading
-                          ? 'Uploading...'
-                          : 'Click or drop a file to change photo'}
-                      </NoImage>
-                    )}
-                  </Dropzone>
-                )}
-              </Mutation>
-            </DropZoneWrapper>
-          </InputWrapper>
+          <ImageInput image={headerImg} onDrop={this.uploadImage} />
           <InputWrapper>
             <Label>Visibility</Label>
             <VisibilityDropdown
