@@ -228,7 +228,6 @@ class PartyForm extends Component {
       headerImg,
       deposit,
       tokenAddress,
-      daiAddress: '',
       currencyType: 'ETH',
       price: null,
       coolingPeriod,
@@ -486,9 +485,6 @@ class PartyForm extends Component {
                   },
                   loading
                 }) => {
-                  if (address && !this.state.daiAddress) {
-                    this.setState({ daiAddress: address })
-                  }
                   return (
                     <>
                       <InputWrapper>
@@ -500,7 +496,7 @@ class PartyForm extends Component {
                             if (currencyType === 'ETH') {
                               tokenAddress = EMPTY_ADDRESS
                             } else if (currencyType === 'DAI') {
-                              tokenAddress = this.state.daiAddress
+                              tokenAddress = address
                             } else {
                               tokenAddress = ''
                             }
