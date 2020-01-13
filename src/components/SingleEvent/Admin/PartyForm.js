@@ -223,6 +223,58 @@ const ImageInput = ({ image, uploading, onDrop }) => {
   )
 }
 
+const TokenSelector = ({
+  currencyType,
+  tokenAddress,
+  onChangeCurrencyType,
+  onChangeAddress
+}) => {
+  return (
+    <SafeQuery query={TOKEN_SYMBOL_QUERY} variables={{ symbol: 'DAI' }}>
+      {({
+        data: {
+          token: { address }
+        },
+        loading
+      }) => {
+        return (
+          <>
+            <InputWrapper>
+              <Label>Currency</Label>
+              <CurrencyPicker
+                currencyType={currencyType}
+                onChange={newCurrencyType => {
+                  let tokenAddress
+                  if (newCurrencyType === 'ETH') {
+                    tokenAddress = EMPTY_ADDRESS
+                  } else if (newCurrencyType === 'DAI') {
+                    tokenAddress = address
+                  } else {
+                    tokenAddress = ''
+                  }
+                  onChangeCurrencyType(newCurrencyType)
+                  onChangeAddress(tokenAddress)
+                }}
+              />
+            </InputWrapper>
+            {currencyType === 'TOKEN' && (
+              <InputWrapper>
+                <Label>Token Address</Label>
+                <TextInput
+                  value={tokenAddress}
+                  onChangeText={onChangeAddress}
+                  type="text"
+                  placeholder="0x..."
+                />
+              </InputWrapper>
+            )}
+          </>
+        )
+      }}
+    </SafeQuery>
+  )
+}
+
 const DateTimeInput = ({ label, day, time, setDay, setTime }) => {
   return (
     <InputWrapper>
@@ -302,6 +354,13 @@ class PartyForm extends Component {
     })
   }
 
+  onChangeCurrencyType = currencyType => {
+    this.setState({ currencyType, deposit: 0 })
+  }
+
+  onChangeAddress = tokenAddress => {
+    this.setState({ tokenAddress })
+  }
   componentDidMount() {
     getEtherPrice()
       .then(r => {
@@ -333,6 +392,7 @@ class PartyForm extends Component {
       arriveByDay,
       arriveByTime,
       headerImg,
+      currencyType,
       deposit,
       tokenAddress,
       limitOfParticipants,
@@ -458,56 +518,12 @@ class PartyForm extends Component {
           </InputWrapper>
           {type === 'create' && (
             <>
-              <SafeQuery
-                query={TOKEN_SYMBOL_QUERY}
-                variables={{ symbol: 'DAI' }}
-              >
-                {({
-                  data: {
-                    token: { address }
-                  },
-                  loading
-                }) => {
-                  return (
-                    <>
-                      <InputWrapper>
-                        <Label>Currency</Label>
-                        <CurrencyPicker
-                          currencyType={this.state.currencyType}
-                          onChange={currencyType => {
-                            let tokenAddress
-                            if (currencyType === 'ETH') {
-                              tokenAddress = EMPTY_ADDRESS
-                            } else if (currencyType === 'DAI') {
-                              tokenAddress = address
-                            } else {
-                              tokenAddress = ''
-                            }
-                            this.setState({
-                              currencyType,
-                              tokenAddress,
-                              deposit: 0
-                            })
-                          }}
-                        />
-                      </InputWrapper>
-                      {this.state.currencyType === 'TOKEN' && (
-                        <InputWrapper>
-                          <Label>Token Address</Label>
-                          <TextInput
-                            value={this.state.tokenAddress}
-                            onChangeText={val => {
-                              this.setState({ tokenAddress: val })
-                            }}
-                            type="text"
-                            placeholder="0x..."
-                          />
-                        </InputWrapper>
-                      )}
-                    </>
-                  )
-                }}
-              </SafeQuery>
+              <TokenSelector
+                currencyType={currencyType}
+                tokenAddress={tokenAddress}
+                onChangeCurrencyType={this.onChangeCurrencyType}
+                onChangeAddress={this.onChangeAddress}
+              />
               <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
                 {({
                   data: {
