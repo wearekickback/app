@@ -7,10 +7,10 @@ const DepositValue = ({ className, value, prefix, decimals = 18 }) => (
     .toFixed(2)}`}</span>
 )
 
-export function depositValue(value, decimals = 18) {
+export function depositValue(value, decimals = 18, precision = 2) {
   return toEthVal(value)
     .scaleUp(decimals)
-    .toFixed(2)
+    .toFixed(precision)
 }
 
 export default DepositValue

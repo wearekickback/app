@@ -1,12 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'react-emotion'
 
 import { pluralize } from '@wearekickback/shared'
 import Participant from './Participant'
 import DefaultEventFilters from './EventFilters'
-
-import { TOKEN_DECIMALS_QUERY } from '../../graphql/queries'
-import SafeQuery from '../SafeQuery'
 
 import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
@@ -28,88 +25,65 @@ const Spots = styled('span')`
   font-size: 70%;
 `
 
-class EventParticipants extends Component {
-  state = {
-    search: '',
-    selectedFilter: null
+const spotsLeft = ({ ended, participants, participantLimit }) => {
+  if (ended) {
+    return null
+  } else {
+    const spotsLeft = participantLimit - participants.length
+    return `- ${participants.length} going, ${spotsLeft} ${pluralize(
+      'spot',
+      spotsLeft
+    )} left`
+  }
+}
+
+const EventParticipants = props => {
+  const {
+    party,
+    party: { participants, ended },
+    amAdmin
+  } = props
+
+  const [search, setSearch] = useState('')
+  const [selectedFilter, setSelectedFilter] = useState(null)
+  const spots = spotsLeft(party)
+
+  const handleSearch = search => {
+    setSearch((search || '').toLowerCase())
   }
 
-  handleFilterChange = selectedFilter => {
-    this.setState({ selectedFilter })
-  }
-
-  handleSearch = search => {
-    this.setState({
-      search: (search || '').toLowerCase()
-    })
-  }
-
-  render() {
-    const {
-      party,
-      party: { participants, participantLimit, ended, tokenAddress },
-      amAdmin
-    } = this.props
-
-    const { selectedFilter, search } = this.state
-
-    let spots
-
-    if (ended) {
-      spots = null
-    } else {
-      const spotsLeft = participantLimit - participants.length
-      spots = `- ${participants.length} going, ${spotsLeft} ${pluralize(
-        'spot',
-        spotsLeft
-      )} left`
-    }
-
-    return (
-      <Fragment>
-        <H3>
-          Participants <Spots>{spots}</Spots>
-        </H3>
-        <EventFilters
-          handleSearch={this.handleSearch}
-          handleFilterChange={this.handleFilterChange}
-          amAdmin={amAdmin}
-          search={this.state.search}
-          enableQrCodeScanner={amAdmin}
-          ended={ended}
-        />
-        <SafeQuery query={TOKEN_DECIMALS_QUERY} variables={{ tokenAddress }}>
-          {({
-            data: {
-              token: { decimals }
-            },
-            loading
-          }) => {
-            return (
-              <EventParticipantsContainer>
-                {participants.length > 0 ? (
-                  participants
-                    .sort(sortParticipants)
-                    .filter(filterParticipants(selectedFilter, search))
-                    .map(participant => (
-                      <Participant
-                        amAdmin={amAdmin}
-                        participant={participant}
-                        party={party}
-                        decimals={decimals}
-                        key={`${participant.address}${participant.index}`}
-                      />
-                    ))
-                ) : (
-                  <NoParticipants>No one is attending.</NoParticipants>
-                )}
-              </EventParticipantsContainer>
-            )
-          }}
-        </SafeQuery>
-      </Fragment>
-    )
-  }
+  return (
+    <Fragment>
+      <H3>
+        Participants <Spots>{spots}</Spots>
+      </H3>
+      <EventFilters
+        handleSearch={handleSearch}
+        handleFilterChange={setSelectedFilter}
+        amAdmin={amAdmin}
+        search={search}
+        enableQrCodeScanner={amAdmin}
+        ended={ended}
+      />
+      <EventParticipantsContainer>
+        {participants.length > 0 ? (
+          participants
+            .sort(sortParticipants)
+            .filter(filterParticipants(selectedFilter, search))
+            .map(participant => (
+              <Participant
+                amAdmin={amAdmin}
+                participant={participant}
+                party={party}
+                key={`${participant.address}${participant.index}`}
+              />
+            ))
+        ) : (
+          <NoParticipants>No one is attending.</NoParticipants>
+        )}
+      </EventParticipantsContainer>
+    </Fragment>
+  )
 }
 
 export default EventParticipants

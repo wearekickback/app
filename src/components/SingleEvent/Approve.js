@@ -6,7 +6,6 @@ import { APPROVE_TOKEN } from '../../graphql/mutations'
 import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
-import EthVal from 'ethval'
 import { EMPTY_ADDRESS } from '../../api/utils'
 
 const Approve = ({
@@ -21,24 +20,17 @@ const Approve = ({
   hasBalance,
   refetch
 }) => {
-  let canRSVP, denominatedBalance, denominatedDeposit
-  if (tokenAddress !== EMPTY_ADDRESS) {
-    denominatedBalance = new EthVal(balance).scaleUp(decimals).toString()
-    denominatedDeposit = new EthVal(decodedDeposit).scaleUp(decimals).toString()
-    canRSVP = isAllowed && hasBalance
-  } else {
-    canRSVP = true
-  }
+  const canRSVP = tokenAddress === EMPTY_ADDRESS || (isAllowed && hasBalance)
   if (canRSVP) {
     return <Going>You can now RSVP</Going>
   } else if (!hasBalance) {
     return (
       <WarningBox>
-        This event requires you to commit {denominatedDeposit}&nbsp;
-        <Currency tokenAddress={tokenAddress} />
-        &nbsp; but you only have {denominatedBalance}&nbsp;
-        <Currency tokenAddress={tokenAddress} /> in your wallet. Please top up
-        your wallet and come back again.
+        This event requires you to commit
+        <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
+        &nbsp; but you only have
+        <Currency amount={balance} tokenAddress={tokenAddress} /> in your
+        wallet. Please top up your wallet and come back again.
       </WarningBox>
     )
   } else {

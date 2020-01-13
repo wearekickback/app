@@ -3,12 +3,11 @@ import styled from 'react-emotion'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
-import marked from 'marked'
+import ReactMarkdown from 'react-markdown'
 
 import EtherScanLink from '../ExternalLinks/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
-import { depositValue } from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultClockIcon } from '../svg/clock.svg'
 import DefaultEventDate from '../Utils/EventDate'
@@ -16,9 +15,6 @@ import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
 import Currency from './Currency'
 import WarningBox from '../../components/WarningBox'
-
-import { TOKEN_DECIMALS_QUERY } from 'graphql/queries'
-import SafeQuery from '../SafeQuery'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
@@ -230,60 +226,42 @@ class EventInfo extends Component {
           {party.location || '11 Macclesfield St, London W1D 5BW'}
         </Location>
         <TotalPot>
-          <SafeQuery
-            query={TOKEN_DECIMALS_QUERY}
-            variables={{ tokenAddress: party.tokenAddress }}
-          >
-            {({
-              data: {
-                token: { decimals }
-              },
-              loading
-            }) => {
-              return (
-                <InfoGrid>
-                  <EthIcon />
-                  <InfoGridItem>
-                    <TotalPot>
-                      <strong>Pot: </strong>
-                      <span>
-                        {depositValue(
-                          party.deposit * party.participants.length,
-                          decimals
-                        )}{' '}
-                        <Currency tokenAddress={party.tokenAddress} />
-                      </span>
-                    </TotalPot>
-                    <Deposit>
-                      <strong>RSVP: </strong>
-                      <span>
-                        {depositValue(party.deposit, decimals)}{' '}
-                        <Currency tokenAddress={party.tokenAddress} />
-                      </span>
-                    </Deposit>
-                  </InfoGridItem>
-                  <InfoGridItem>
-                    <strong>
-                      Cooling Period{' '}
-                      <Link to="/faq#cooling">
-                        <InfoIcon />
-                      </Link>
-                      :{' '}
-                    </strong>
-                    <span>
-                      {moment
-                        .duration(
-                          toEthVal(party.coolingPeriod).toNumber(),
-                          'seconds'
-                        )
-                        .asDays()}{' '}
-                      days
-                    </span>
-                  </InfoGridItem>
-                </InfoGrid>
-              )
-            }}
-          </SafeQuery>
+          <InfoGrid>
+            <EthIcon />
+            <InfoGridItem>
+              <TotalPot>
+                <strong>Pot: </strong>
+                <span>
+                  <Currency
+                    amount={party.deposit * party.participants.length}
+                    tokenAddress={party.tokenAddress}
+                  />
+                </span>
+              </TotalPot>
+              <Deposit>
+                <strong>RSVP: </strong>
+                <Currency
+                  amount={party.deposit}
+                  tokenAddress={party.tokenAddress}
+                />
+              </Deposit>
+            </InfoGridItem>
+            <InfoGridItem>
+              <strong>
+                Cooling Period{' '}
+                <Link to="/faq#cooling">
+                  <InfoIcon />
+                </Link>
+                :{' '}
+              </strong>
+              <span>
+                {moment
+                  .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+                  .asDays()}{' '}
+                days
+              </span>
+            </InfoGridItem>
+          </InfoGrid>
         </TotalPot>
         <TimeDetails>
           <InfoGrid>
@@ -303,9 +281,9 @@ class EventInfo extends Component {
             )}
           </InfoGrid>
         </TimeDetails>
-        <EventDescription
-          dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
-        />
+        <EventDescription>
+          <ReactMarkdown source={party.description} />
+        </EventDescription>
         <Photos>
           <PhotoContainer>
             <Photo />

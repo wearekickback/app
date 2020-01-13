@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import sanitizeHtml from 'sanitize-html'
 import styled from 'react-emotion'
 import Dropzone from 'react-dropzone'
 import { Mutation } from 'react-apollo'
@@ -298,7 +299,7 @@ class PartyForm extends Component {
     const variables = {
       meta: {
         name,
-        description,
+        description: sanitizeHtml(description),
         location,
         timezone,
         start,
