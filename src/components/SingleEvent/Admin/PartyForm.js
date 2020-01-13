@@ -275,6 +275,52 @@ const TokenSelector = ({
   )
 }
 
+const DepositInput = ({
+  deposit,
+  onChangeDeposit,
+  currencyType,
+  tokenAddress,
+  symbol,
+  decimals,
+  price
+}) => {
+  return (
+    <InputWrapper>
+      <Label>Commitment</Label>
+      <CommitmentInput
+        value={deposit}
+        onChangeText={val => {
+          // We need to check that the deposit isn't dividing up the token below its smallest unit.
+
+          // by default we allow any input
+          let validityRegex = /.*/
+
+          const integerRegex = '\\d*'
+          if (decimals === 0 || decimals === '0') {
+            // If token is indivisible, then only allow integer input
+            validityRegex = new RegExp(`^${integerRegex}$`)
+          } else if (decimals > 0) {
+            // Otherwise optionally allow a decimal point followed by
+            // up to the number of decimal places as defined in token contract
+            const decimalsRegex = `\\.\\d{0,${decimals}}`
+            validityRegex = new RegExp(`^${integerRegex}(${decimalsRegex})?$`)
+          }
+
+          const isValid = validityRegex.test(val)
+
+          if (isValid && val !== deposit) {
+            onChangeDeposit(val)
+          }
+        }}
+      />
+      <CommitmentInUsdContainer>
+        {isAddress(tokenAddress) &&
+          commitmentInUsd({ currencyType, symbol, price, deposit })}
+      </CommitmentInUsdContainer>
+    </InputWrapper>
+  )
+}
+
 const DateTimeInput = ({ label, day, time, setDay, setTime }) => {
   return (
     <InputWrapper>
@@ -532,46 +578,15 @@ class PartyForm extends Component {
                   loading
                 }) => {
                   return (
-                    <InputWrapper>
-                      <Label>Commitment</Label>
-                      <CommitmentInput
-                        value={deposit}
-                        onChangeText={val => {
-                          // We need to check that the deposit isn't dividing up the token below its smallest unit.
-
-                          // by default we allow any input
-                          let validityRegex = /.*/
-
-                          const integerRegex = '\\d*'
-                          if (decimals === 0 || decimals === '0') {
-                            // If token is indivisible, then only allow integer input
-                            validityRegex = new RegExp(`^${integerRegex}$`)
-                          } else if (decimals > 0) {
-                            // Otherwise optionally allow a decimal point followed by
-                            // up to the number of decimal places as defined in token contract
-                            const decimalsRegex = `\\.\\d{0,${decimals}}`
-                            validityRegex = new RegExp(
-                              `^${integerRegex}(${decimalsRegex})?$`
-                            )
-                          }
-
-                          const isValid = validityRegex.test(val)
-
-                          if (isValid && val !== this.props.value) {
-                            this.setState({ deposit: val })
-                          }
-                        }}
-                      />
-                      <CommitmentInUsdContainer>
-                        {isAddress(this.state.tokenAddress) &&
-                          commitmentInUsd({
-                            currencyType: this.state.currencyType,
-                            symbol: symbol,
-                            price: this.state.price,
-                            deposit: this.state.deposit
-                          })}
-                      </CommitmentInUsdContainer>
-                    </InputWrapper>
+                    <DepositInput
+                      deposit={deposit}
+                      onChangeDeposit={deposit => this.setState({ deposit })}
+                      currencyType={currencyType}
+                      tokenAddress={tokenAddress}
+                      symbol={symbol}
+                      decimals={decimals}
+                      price={this.state.price}
+                    />
                   )
                 }}
               </SafeQuery>
