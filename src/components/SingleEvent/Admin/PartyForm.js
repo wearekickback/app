@@ -400,13 +400,6 @@ class PartyForm extends Component {
     })
   }
 
-  onChangeCurrencyType = currencyType => {
-    this.setState({ currencyType, deposit: 0 })
-  }
-
-  onChangeAddress = tokenAddress => {
-    this.setState({ tokenAddress })
-  }
   componentDidMount() {
     getEtherPrice()
       .then(r => {
@@ -551,11 +544,7 @@ class PartyForm extends Component {
             <Label>Visibility</Label>
             <VisibilityDropdown
               options={visibilityOptions}
-              onChange={option => {
-                this.setState({
-                  status: option.value
-                })
-              }}
+              onChange={option => this.setState({ status: option.value })}
               value={visibilityOptions.find(
                 option => option.value === this.state.status
               )}
@@ -567,8 +556,12 @@ class PartyForm extends Component {
               <TokenSelector
                 currencyType={currencyType}
                 tokenAddress={tokenAddress}
-                onChangeCurrencyType={this.onChangeCurrencyType}
-                onChangeAddress={this.onChangeAddress}
+                onChangeCurrencyType={currencyType =>
+                  this.setState({ currencyType, deposit: 0 })
+                }
+                onChangeAddress={tokenAddress =>
+                  this.setState({ tokenAddress })
+                }
               />
               <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
                 {({
