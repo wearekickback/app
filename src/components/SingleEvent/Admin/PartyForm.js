@@ -223,6 +223,31 @@ const ImageInput = ({ image, uploading, onDrop }) => {
   )
 }
 
+const DateTimeInput = ({ label, day, time, setDay, setTime }) => {
+  return (
+    <InputWrapper>
+      <Label>{label}</Label>
+      <DateContent>
+        <DayPickerInputWrapper>
+          <DayPickerInput value={day} onDayChange={setDay} />
+        </DayPickerInputWrapper>
+        <TimePicker
+          showSecond={false}
+          defaultValue={time}
+          onChange={value => {
+            if (value) {
+              setTime(value)
+            } else {
+              setTime(moment())
+            }
+          }}
+          format="h:mm a"
+        />
+      </DateContent>
+    </InputWrapper>
+  )
+}
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -394,75 +419,27 @@ class PartyForm extends Component {
               }}
             />
           </InputWrapper>
-          <InputWrapper>
-            <Label>Start Date</Label>
-            <DateContent>
-              <DayPickerInputWrapper>
-                <DayPickerInput
-                  value={startDay}
-                  onDayChange={day => this.setState({ startDay: day })}
-                />
-              </DayPickerInputWrapper>
-              <TimePicker
-                showSecond={false}
-                defaultValue={startTime}
-                onChange={value => {
-                  if (value) {
-                    this.setState({ startTime: value })
-                  } else {
-                    this.setState({ startTime: moment() })
-                  }
-                }}
-                format="h:mm a"
-              />
-            </DateContent>
-          </InputWrapper>
-          <InputWrapper>
-            <Label>End Date</Label>
-            <DateContent>
-              <DayPickerInputWrapper>
-                <DayPickerInput
-                  value={endDay}
-                  onDayChange={day => this.setState({ endDay: day })}
-                />
-              </DayPickerInputWrapper>
-              <TimePicker
-                showSecond={false}
-                defaultValue={endTime}
-                onChange={value => {
-                  if (value) {
-                    this.setState({ endTime: value })
-                  } else {
-                    this.setState({ endTime: moment() })
-                  }
-                }}
-                format="h:mm a"
-              />
-            </DateContent>
-          </InputWrapper>
-          <InputWrapper>
-            <Label>Arrive By Date</Label>
-            <DateContent>
-              <DayPickerInputWrapper>
-                <DayPickerInput
-                  value={arriveByDay}
-                  onDayChange={day => this.setState({ arriveByDay: day })}
-                />
-              </DayPickerInputWrapper>
-              <TimePicker
-                showSecond={false}
-                defaultValue={arriveByTime}
-                onChange={value => {
-                  if (value) {
-                    this.setState({ arriveByTime: value })
-                  } else {
-                    this.setState({ arriveByTime: moment() })
-                  }
-                }}
-                format="h:mm a"
-              />
-            </DateContent>
-          </InputWrapper>
+          <DateTimeInput
+            label="Start Date"
+            day={startDay}
+            time={startTime}
+            setDay={startDay => this.setState({ startDay })}
+            setTime={startTime => this.setState({ startTime })}
+          />
+          <DateTimeInput
+            label="End Date"
+            day={endDay}
+            time={endTime}
+            setDay={endDay => this.setState({ endDay })}
+            setTime={endTime => this.setState({ endTime })}
+          />
+          <DateTimeInput
+            label="Arrive By Date"
+            day={arriveByDay}
+            time={arriveByTime}
+            setDay={arriveByDay => this.setState({ arriveByDay })}
+            setTime={arriveByTime => this.setState({ arriveByTime })}
+          />
           <ImageInput image={headerImg} onDrop={this.uploadImage} />
           <InputWrapper>
             <Label>Visibility</Label>
