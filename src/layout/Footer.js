@@ -111,7 +111,7 @@ class Footer extends Component {
             </Links>
           </MiddleRow>
           <Row>
-            <Copyright>&copy; 2019 No Block No Party Ltd</Copyright>
+            <Copyright>&copy; 2020 No Block No Party Ltd</Copyright>
             <Social>
               <a href="https://t.me/wearekickback">
                 <TelegramIcon />
