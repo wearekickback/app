@@ -40,7 +40,6 @@ const ERROR_MESSAGES = {
 }
 
 const decodeQR = data => {
-  console.log(data)
   if (!data) {
     return { success: false, payload: { stopScanning: false, type: 'NO_DATA' } }
   } else if (isAddress(data)) {
