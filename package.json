@@ -27,6 +27,7 @@
     "logrocket": "^0.6.19",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
+    "node-fetch": "^2.6.0",
     "query-string": "^6.2.0",
     "rc-time-picker": "^3.6.2",
     "react": "^16.8.1",
@@ -114,5 +115,8 @@
       "not op_mini all",
       "ie 11"
     ]
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
