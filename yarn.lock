@@ -8704,6 +8704,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jsqr@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/jsqr/-/jsqr-1.2.0.tgz#f93fc65fa7d1ded78b1bcb020fa044352b04261a"
+  integrity sha512-wKcQS9QC2VHGk7aphWCp1RrFyC0CM6fMgC5prZZ2KV/Lk6OKNoCod9IR6bao+yx3KPY0gZFC5dc+h+KFzCI0Wg==
+
 jsx-ast-utils@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
@@ -9761,6 +9766,11 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.npm.taobao.org/node-fetch/download/node-fetch-2.6.0.tgz?cache=0&sync_timestamp=1571657273203&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-fetch%2Fdownload%2Fnode-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha1-5jNFY4bUqlWGP2dqerDaqP3ssP0=
 
 node-forge@0.7.5:
   version "0.7.5"
@@ -11928,6 +11938,15 @@ react-modal@^3.3.2:
     react-lifecycles-compat "^3.0.0"
     warning "^3.0.0"
 
+react-qr-reader@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.2.1.tgz#dc89046d1c1a1da837a683dd970de5926817d55b"
+  integrity sha512-EL5JEj53u2yAOgtpAKAVBzD/SiKWn0Bl7AZy6ZrSf1lub7xHwtaXe6XSx36Wbhl1VMGmvmrwYMRwO1aSCT2fwA==
+  dependencies:
+    jsqr "^1.2.0"
+    prop-types "^15.7.2"
+    webrtc-adapter "^7.2.1"
+
 react-router-dom@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.3.1.tgz#4c2619fc24c4fa87c9fd18f4fb4a43fe63fbd5c6"
@@ -12671,6 +12690,13 @@ rsvp@^3.3.3:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.6.2.tgz#2e96491599a96cde1b515d5674a8f7a91452926a"
 
+rtcpeerconnection-shim@^1.2.15:
+  version "1.2.15"
+  resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.15.tgz#e7cc189a81b435324c4949aa3dfb51888684b243"
+  integrity sha512-C6DxhXt7bssQ1nHb154lqeL0SXz5Dx4RczXZu2Aa/L1NJFnEVDxFwCBo3fqtuljhHIGceg5JKBV4XJ0gW5JKyw==
+  dependencies:
+    sdp "^2.6.0"
+
 run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
@@ -12839,6 +12865,11 @@ scryptsy@^1.2.1:
   resolved "https://registry.yarnpkg.com/scryptsy/-/scryptsy-1.2.1.tgz#a3225fa4b2524f802700761e2855bdf3b2d92163"
   dependencies:
     pbkdf2 "^3.0.3"
+
+sdp@^2.10.0, sdp@^2.6.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.12.0.tgz#338a106af7560c86e4523f858349680350d53b22"
+  integrity sha512-jhXqQAQVM+8Xj5EjJGVweuEzgtGWb3tmEEpl3CLP3cStInSbVHSg0QWOGQzNq8pSID4JkpeV2mPqlMDLrm0/Vw==
 
 secp256k1@^3.0.1:
   version "3.5.2"
@@ -14942,6 +14973,14 @@ webpack@^3.11.0:
     watchpack "^1.4.0"
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
+
+webrtc-adapter@^7.2.1:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-7.3.0.tgz#a65e18aad42759bab6ced7f8cfff11b051321e2a"
+  integrity sha512-pKcwt6IR6RLCD6jlcdOOi88iVwdzppHlkOhtgTSuZHtYTxdD09t5fA1Di7GJU7je8oHcCBlNfb7zwBsetERnmQ==
+  dependencies:
+    rtcpeerconnection-shim "^1.2.15"
+    sdp "^2.10.0"
 
 websocket-driver@>=0.5.1:
   version "0.7.0"
