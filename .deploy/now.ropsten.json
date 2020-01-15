@@ -2,7 +2,10 @@
   "version": 2,
   "name": "kickback-app-ropsten",
   "alias": "ropsten.kickback.events",
-  "builds": [{ "src": "build/**", "use": "@now/static" }],
+  "builds": [
+    { "src": "build/**", "use": "@now/static" },
+    { "src": "api/**", "use": "@now/node" }
+  ],
   "routes": [
     { "src": "/", "dest": "build/index.html" },
     { "src": "/gettingstarted", "dest": "build/index.html" },
@@ -14,7 +17,7 @@
     { "src": "/create/?", "dest": "build/index.html" },
     { "src": "/deploy/?", "dest": "build/index.html" },
     { "src": "/events/?", "dest": "build/index.html" },
-    { "src": "/event/.+", "dest": "build/index.html" },
+    { "src": "/event/.+", "dest": "api/event.js" },
     { "src": "/user/.+", "dest": "build/index.html" },
     {
       "src": "/service-worker.js",
