@@ -3,8 +3,8 @@ const gqlr = require('graphql-request')
 const { GraphQLClient } = gqlr
 const { API_URL } = require('../src/config')
 
-const EndPoint = `${API_URL}/graphql`
-const GetParty = `
+const END_POINT = `${API_URL}/graphql`
+const GET_PARTY = `
   query getParty($address: String!) {
     party(address: $address) {
       id
@@ -30,20 +30,23 @@ module.exports = async (req, res) => {
   const paths = req.url.split('/')
   const address = paths[paths.length - 1]
 
-  // fetch event info via graphql
-  const client = new GraphQLClient(EndPoint, {
+  // fetch event info via graphql, and fetch index.html from site
+  const baseUrl = `https://${req.headers.host}`
+  const client = new GraphQLClient(END_POINT, {
     headers: {
       Authorization: ``
     }
   })
-  const { party } = await client.request(GetParty, { address })
+  const [resPage, resParty] = await Promise.all([
+    fetch(`${baseUrl}/build/index.html`),
+    client.request(GET_PARTY, { address })
+  ])
 
-  // fetch index.html and replace placeholders
-  const baseUrl = `https://${req.headers.host}`
-  const r = await fetch(`${baseUrl}/build/index.html`)
-  if (r.ok) {
-    let html = await r.text()
-    if (party) {
+  // replace placeholders with party info
+  if (resPage.ok) {
+    let html = await resPage.text()
+    if (resParty && resParty.party) {
+      const { party } = resParty
       const partyName = htmlEncode(party.name)
       const partyDesc = htmlEncode(party.description)
       html = html.replace(
@@ -84,5 +87,8 @@ module.exports = async (req, res) => {
       )
     }
     res.send(html)
+  } else {
+    res.status(503)
+    res.send('Cannot open the Kickback app. Please try again later.')
   }
 }
