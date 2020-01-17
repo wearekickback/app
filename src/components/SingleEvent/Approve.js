@@ -6,7 +6,6 @@ import { APPROVE_TOKEN } from '../../graphql/mutations'
 import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
-import { EMPTY_ADDRESS } from '../../api/utils'
 
 const Approve = ({
   tokenAddress,
@@ -20,7 +19,8 @@ const Approve = ({
   hasBalance,
   refetch
 }) => {
-  const canRSVP = tokenAddress === EMPTY_ADDRESS || (isAllowed && hasBalance)
+  const canRSVP = isAllowed && hasBalance
+
   if (canRSVP) {
     return <Going>You can now RSVP</Going>
   } else if (!hasBalance) {
