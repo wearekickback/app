@@ -87,7 +87,10 @@ const getWeb3 = lazyAsync(async () => {
     console.log('Initializing web3')
     networkState = { allGood: true }
 
-    const { expectedNetworkId, expectedNetworkName } = getExpectedNetworkId()
+    const {
+      expectedNetworkId,
+      expectedNetworkName
+    } = await getExpectedNetworkId()
     networkState.expectedNetworkId = expectedNetworkId
     networkState.expectedNetworkName = expectedNetworkName
 
@@ -157,7 +160,7 @@ const getWeb3 = lazyAsync(async () => {
 })
 
 export const getWeb3Read = lazyAsync(async () => {
-  const { expectedNetworkId } = getExpectedNetworkId()
+  const { expectedNetworkId } = await getExpectedNetworkId()
   return new Web3(getNetworkProviderUrl(expectedNetworkId))
 })
 
