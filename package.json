@@ -113,5 +113,8 @@
       "not op_mini all",
       "ie 11"
     ]
+  },
+  "engines": {
+    "node": ">=10.x"
   }
 }
