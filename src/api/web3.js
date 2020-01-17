@@ -80,6 +80,18 @@ const getExpectedNetworkId = lazyAsync(async () => {
   }
 })
 
+const getNetworkId = async web3 => {
+  try {
+    const networkId = (await web3.eth.net.getId()).toString()
+    return {
+      networkId: networkId,
+      networkName: getNetworkName(networkId)
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 const getWeb3 = lazyAsync(async () => {
   let web3
 
@@ -126,8 +138,10 @@ const getWeb3 = lazyAsync(async () => {
         }
       }
     }
-    networkState.networkId = `${await web3.eth.net.getId()}`
-    networkState.networkName = getNetworkName(networkState.networkId)
+
+    const { networkId, networkName } = await getNetworkId(web3)
+    networkState.networkId = networkId
+    networkState.networkName = networkName
     networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
     if (networkState.networkId !== networkState.expectedNetworkId) {
       networkState.wrongNetwork = true
