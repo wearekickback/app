@@ -1,4 +1,4 @@
-import { toBN } from 'web3-utils'
+import { toBN, fromWei } from 'web3-utils'
 import { Deployer } from '@wearekickback/contracts'
 import { Conference } from '@wearekickback/contracts'
 
@@ -36,8 +36,7 @@ const resolvers = {
     },
     async deposit({ contract }) {
       const deposit = await contract.deposit().call()
-      const { utils } = await getWeb3()
-      return utils.fromWei(deposit.toString())
+      return fromWei(deposit.toString())
     },
     async limitOfParticipants({ contract }) {
       const limitOfParticipants = await contract.limitOfParticipants().call()
@@ -69,8 +68,7 @@ const resolvers = {
     },
     async payoutAmount({ contract }) {
       const payoutAmount = await contract.payoutAmount().call()
-      const { utils } = await getWeb3()
-      return utils.fromWei(payoutAmount.toString())
+      return fromWei(payoutAmount.toString())
     },
     async encryption({ contract }) {
       try {
