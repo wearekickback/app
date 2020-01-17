@@ -26,9 +26,9 @@ const Approve = ({
   } else if (!hasBalance) {
     return (
       <WarningBox>
-        This event requires you to commit
+        This event requires you to commit{' '}
         <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
-        &nbsp; but you only have
+        &nbsp; but you only have{' '}
         <Currency amount={balance} tokenAddress={tokenAddress} /> in your
         wallet. Please top up your wallet and come back again.
       </WarningBox>
