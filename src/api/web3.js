@@ -65,23 +65,32 @@ const isLocalNetwork = id => {
   }
 }
 
+const getExpectedNetworkId = lazyAsync(async () => {
+  const result = await clientInstance.query({
+    query: NETWORK_ID_QUERY
+  })
+
+  if (result.error) {
+    throw new Error(result.error)
+  }
+
+  return {
+    expectedNetworkId: result.data.networkId,
+    expectedNetworkName: getNetworkName(networkState.expectedNetworkId)
+  }
+})
+
 const getWeb3 = lazyAsync(async () => {
   let web3
 
   try {
     console.log('Initializing web3')
     networkState = { allGood: true }
-    const result = await clientInstance.query({
-      query: NETWORK_ID_QUERY
-    })
 
-    if (result.error) {
-      throw new Error(result.error)
-    }
-    networkState.expectedNetworkId = result.data.networkId
-    networkState.expectedNetworkName = getNetworkName(
-      networkState.expectedNetworkId
-    )
+    const { expectedNetworkId, expectedNetworkName } = getExpectedNetworkId()
+    networkState.expectedNetworkId = expectedNetworkId
+    networkState.expectedNetworkName = expectedNetworkName
+
     if (window.ethereum) {
       web3 = new Web3(window.ethereum)
     } else if (window.web3 && window.web3.currentProvider) {
@@ -145,6 +154,11 @@ const getWeb3 = lazyAsync(async () => {
   }
 
   return web3
+})
+
+export const getWeb3Read = lazyAsync(async () => {
+  const { expectedNetworkId } = getExpectedNetworkId()
+  return new Web3(getNetworkProviderUrl(expectedNetworkId))
 })
 
 export async function getDeployerAddress() {
