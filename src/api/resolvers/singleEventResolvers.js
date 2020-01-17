@@ -21,7 +21,7 @@ const resolvers = {
     location: party => party.location_text || null,
 
     async balance({ address }) {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
       return web3.eth.getBalance(address)
     },
 
