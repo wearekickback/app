@@ -25,9 +25,9 @@
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.10",
     "logrocket": "^0.6.19",
-    "marked": "^0.6.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
+    "node-fetch": "^2.6.0",
     "query-string": "^6.2.0",
     "rc-time-picker": "^3.6.2",
     "react": "^16.8.1",
@@ -38,6 +38,8 @@
     "react-dropdown": "^1.6.4",
     "react-dropzone": "^7.0.1",
     "react-emotion": "^9.2.6",
+    "react-qr-reader": "2.2.1",
+    "react-markdown": "^4.3.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^5.1.2",
     "react-router-hash-link": "^1.2.0",
@@ -45,6 +47,7 @@
     "react-select": "^2.1.0",
     "react-timezone": "^2.3.0",
     "react-tooltip": "^3.9.0",
+    "sanitize-html": "^1.20.1",
     "truffle": "^5.0.0-beta.0",
     "uuid": "^3.3.2",
     "web3": "1.0.0-beta.36",
@@ -113,5 +116,8 @@
       "not op_mini all",
       "ie 11"
     ]
+  },
+  "engines": {
+    "node": ">=10.x"
   }
 }

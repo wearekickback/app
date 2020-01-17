@@ -82,18 +82,6 @@ export const REVERSE_RECORD_QUERY = gql`
   }
 `
 
-export const QR_SUPPORTED_QUERY = gql`
-  query scanQRCodeSupported {
-    supported: scanQRCodeSupported @client
-  }
-`
-
-export const QR_QUERY = gql`
-  query scanQRCode {
-    qrCode: scanQRCode @client
-  }
-`
-
 export const TOKEN_QUERY = gql`
   query getToken($tokenAddress: String!) {
     token: getToken(tokenAddress: $tokenAddress) @client
@@ -106,6 +94,11 @@ export const TOKEN_ALLOWANCE_QUERY = gql`
       tokenAddress: $tokenAddress
       partyAddress: $partyAddress
     ) @client
+  }
+`
+export const TOKEN_DECIMALS_QUERY = gql`
+  query getTokenDecimals($tokenAddress: String!) {
+    token: getTokenDecimals(tokenAddress: $tokenAddress) @client
   }
 `
 

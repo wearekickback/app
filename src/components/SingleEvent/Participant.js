@@ -6,7 +6,6 @@ import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 import Status from './ParticipantStatus'
 
-import { toEthVal } from '../../utils/units'
 import { calculateWinningShare } from '../../utils/parties'
 import tick from '../svg/tick.svg'
 import Currency from './Currency'
@@ -59,7 +58,7 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
   margin-bottom: 5px;
 `
 
-function Participant({ participant, party, amAdmin }) {
+function Participant({ participant, party, amAdmin, decimals }) {
   const { user, status } = participant
   const { deposit, ended } = party
 
@@ -82,16 +81,17 @@ function Participant({ participant, party, amAdmin }) {
           {ended ? (
             attended ? (
               <Status type="won">
-                {`${withdrawn ? ' Withdrew' : 'Won'} ${payout}`}{' '}
-                <Currency tokenAddress={party.tokenAddress} />
+                {`${withdrawn ? ' Withdrew' : 'Won'} `}
+                <Currency
+                  amount={payout}
+                  tokenAddress={party.tokenAddress}
+                  precision={3}
+                />
               </Status>
             ) : (
               <Status type="lost">
                 Lost{' '}
-                {toEthVal(deposit)
-                  .toEth()
-                  .toString()}{' '}
-                <Currency tokenAddress={party.tokenAddress} />{' '}
+                <Currency amount={deposit} tokenAddress={party.tokenAddress} />{' '}
               </Status>
             )
           ) : (

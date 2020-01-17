@@ -1,16 +1,16 @@
 import React from 'react'
 import { toEthVal } from '../../utils/units'
 
-const DepositValue = ({ className, value, prefix }) => (
+const DepositValue = ({ className, value, prefix, decimals = 18 }) => (
   <span className={className}>{`${prefix || ''}${toEthVal(value)
-    .toEth()
+    .scaleUp(decimals)
     .toFixed(2)}`}</span>
 )
 
-export function depositValue(value) {
+export function depositValue(value, decimals = 18, precision = 2) {
   return toEthVal(value)
-    .toEth()
-    .toFixed(2)
+    .scaleUp(decimals)
+    .toFixed(precision)
 }
 
 export default DepositValue
