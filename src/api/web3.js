@@ -41,13 +41,13 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/`
+      return `https://mainnet.infura.io/${process.env.REACT_APP_INFURA_KEY}`
     case '3':
-      return `https://ropsten.infura.io/`
+      return `https://ropsten.infura.io/${process.env.REACT_APP_INFURA_KEY}`
     case '4':
-      return `https://rinkeby.infura.io/`
+      return `https://rinkeby.infura.io/${process.env.REACT_APP_INFURA_KEY}`
     case '42':
-      return `https://kovan.infura.io/`
+      return `https://kovan.infura.io/${process.env.REACT_APP_INFURA_KEY}`
 
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
@@ -174,6 +174,10 @@ const getWeb3 = lazyAsync(async () => {
 })
 
 export const getWeb3Read = lazyAsync(async () => {
+  if (!networkState.wrongNetwork) {
+    // If browser's web3 is on correct network then use that
+    return getWeb3()
+  }
   const { expectedNetworkId } = await getExpectedNetworkId()
   return new Web3(getNetworkProviderUrl(expectedNetworkId))
 })
