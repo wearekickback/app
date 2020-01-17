@@ -41,13 +41,13 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
     case '3':
-      return `https://ropsten.infura.io/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://ropsten.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
     case '4':
-      return `https://rinkeby.infura.io/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
     case '42':
-      return `https://kovan.infura.io/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://kovan.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
 
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
@@ -59,6 +59,7 @@ const isLocalNetwork = id => {
     case '1':
     case '3':
     case '4':
+    case '42':
       return false
     default:
       return true
@@ -76,7 +77,7 @@ const getExpectedNetworkId = lazyAsync(async () => {
 
   return {
     expectedNetworkId: result.data.networkId,
-    expectedNetworkName: getNetworkName(networkState.expectedNetworkId)
+    expectedNetworkName: getNetworkName(result.data.networkId)
   }
 })
 
