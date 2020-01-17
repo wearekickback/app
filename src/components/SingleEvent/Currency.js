@@ -1,24 +1,34 @@
-const SAIS = [
-  '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
-  '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
-]
+import React from 'react'
 
-function getTokenSymbol(tokenAddress) {
-  if (tokenAddress === null) {
-    return 'ETH'
-  }
+import { TOKEN_QUERY } from 'graphql/queries'
+import SafeQuery from '../SafeQuery'
+import { depositValue } from '../Utils/DepositValue'
 
-  if (parseInt(tokenAddress, 16) !== 0) {
-    if (SAIS.includes(tokenAddress)) return 'SAI'
-    else {
-      return 'DAI'
-    }
-  }
-
-  return 'ETH'
-}
-
-const Currency = ({ tokenAddress }) => {
-  return `${getTokenSymbol(tokenAddress)}`
+const Currency = ({ amount, tokenAddress, precision = 2 }) => {
+  return (
+    <SafeQuery
+      query={TOKEN_QUERY}
+      variables={{ tokenAddress }}
+      renderError={err => {
+        return 'Token not found'
+      }}
+    >
+      {({
+        data: {
+          token: { symbol, decimals }
+        },
+        loading
+      }) => {
+        return (
+          <>
+            {amount !== undefined &&
+              depositValue(amount, decimals, Math.min(precision, decimals))}
+            &nbsp;
+            {symbol}
+          </>
+        )
+      }}
+    </SafeQuery>
+  )
 }
 export default Currency

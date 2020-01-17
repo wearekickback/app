@@ -41,13 +41,13 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/`
+      return `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
     case '3':
-      return `https://ropsten.infura.io/`
+      return `https://ropsten.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
     case '4':
-      return `https://rinkeby.infura.io/`
+      return `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
     case '42':
-      return `https://kovan.infura.io/`
+      return `https://kovan.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
 
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
@@ -59,9 +59,37 @@ const isLocalNetwork = id => {
     case '1':
     case '3':
     case '4':
+    case '42':
       return false
     default:
       return true
+  }
+}
+
+const getExpectedNetworkId = lazyAsync(async () => {
+  const result = await clientInstance.query({
+    query: NETWORK_ID_QUERY
+  })
+
+  if (result.error) {
+    throw new Error(result.error)
+  }
+
+  return {
+    expectedNetworkId: result.data.networkId,
+    expectedNetworkName: getNetworkName(result.data.networkId)
+  }
+})
+
+const getNetworkId = async web3 => {
+  try {
+    const networkId = (await web3.eth.net.getId()).toString()
+    return {
+      networkId: networkId,
+      networkName: getNetworkName(networkId)
+    }
+  } catch (error) {
+    throw new Error(error)
   }
 }
 
@@ -71,17 +99,14 @@ const getWeb3 = lazyAsync(async () => {
   try {
     console.log('Initializing web3')
     networkState = { allGood: true }
-    const result = await clientInstance.query({
-      query: NETWORK_ID_QUERY
-    })
 
-    if (result.error) {
-      throw new Error(result.error)
-    }
-    networkState.expectedNetworkId = result.data.networkId
-    networkState.expectedNetworkName = getNetworkName(
-      networkState.expectedNetworkId
-    )
+    const {
+      expectedNetworkId,
+      expectedNetworkName
+    } = await getExpectedNetworkId()
+    networkState.expectedNetworkId = expectedNetworkId
+    networkState.expectedNetworkName = expectedNetworkName
+
     if (window.ethereum) {
       web3 = new Web3(window.ethereum)
     } else if (window.web3 && window.web3.currentProvider) {
@@ -114,8 +139,10 @@ const getWeb3 = lazyAsync(async () => {
         }
       }
     }
-    networkState.networkId = `${await web3.eth.net.getId()}`
-    networkState.networkName = getNetworkName(networkState.networkId)
+
+    const { networkId, networkName } = await getNetworkId(web3)
+    networkState.networkId = networkId
+    networkState.networkName = networkName
     networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
     if (networkState.networkId !== networkState.expectedNetworkId) {
       networkState.wrongNetwork = true
@@ -145,6 +172,15 @@ const getWeb3 = lazyAsync(async () => {
   }
 
   return web3
+})
+
+export const getWeb3Read = lazyAsync(async () => {
+  if (!networkState.wrongNetwork) {
+    // If browser's web3 is on correct network then use that
+    return getWeb3()
+  }
+  const { expectedNetworkId } = await getExpectedNetworkId()
+  return new Web3(getNetworkProviderUrl(expectedNetworkId))
 })
 
 export async function getDeployerAddress() {
