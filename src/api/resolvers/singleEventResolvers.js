@@ -2,7 +2,7 @@ import { toBN } from 'web3-utils'
 import { Deployer } from '@wearekickback/contracts'
 import { Conference } from '@wearekickback/contracts'
 
-import getWeb3, { getAccount, getDeployerAddress } from '../web3'
+import getWeb3, { getAccount, getDeployerAddress, getWeb3Read } from '../web3'
 import events from '../../fixtures/events.json'
 import { txHelper, EMPTY_ADDRESS } from '../utils'
 import { toEthVal } from '../../utils/units'
@@ -108,7 +108,7 @@ const resolvers = {
   },
   Query: {
     async party(_, { address }) {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
       const contract = new web3.eth.Contract(abi, address)
       const eventFixture = events.filter(event => {
         return event.address === address
