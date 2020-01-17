@@ -1,4 +1,4 @@
-import getWeb3, { getAccount, getTokenBySymbol } from '../web3'
+import getWeb3, { getAccount, getTokenBySymbol, getWeb3Read } from '../web3'
 // import { Token } from '@wearekickback/contracts'
 
 import { txHelper, isEmptyAddress } from '../utils'
@@ -273,7 +273,7 @@ const resolvers = {
       return { address }
     },
     async getTokenAllowance(_, { tokenAddress, partyAddress }) {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
       const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
       try {
         const account = await getAccount()
@@ -289,7 +289,7 @@ const resolvers = {
       if (isEmptyAddress(tokenAddress)) {
         return { decimals: 18 } //Ethereum
       }
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
 
       try {
         const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
@@ -319,7 +319,7 @@ const resolvers = {
           decimals: 18
         }
       }
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
 
       try {
         const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
