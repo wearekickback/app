@@ -7,7 +7,7 @@ import { Going } from './Status'
 import Button from '../Forms/Button'
 import Currency from './Currency'
 import styled from 'react-emotion'
-import { EMPTY_ADDRESS } from '../../api/utils'
+import { isEmptyAddress } from '../../api/utils'
 
 const RSVPText = styled(`span`)`
   margin-right: 0.5em;
@@ -60,10 +60,10 @@ const RSVP = ({
       </ChainMutation>
     )
   }
-  if (tokenAddress !== EMPTY_ADDRESS) {
+  if (!isEmptyAddress(tokenAddress)) {
     return isAllowed && hasBalance ? <ReadyButton /> : <NotReadyButton />
   } else {
-    return isAllowed ? <ReadyButton /> : <NotReadyButton />
+    return hasBalance ? <ReadyButton /> : <NotReadyButton />
   }
 }
 
