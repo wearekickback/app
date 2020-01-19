@@ -174,6 +174,7 @@ const getWeb3 = lazyAsync(async () => {
       } catch {
         try {
           web3 = connectToCloudNode()
+          networkState.readOnly = true
         } catch {
           networkState.allGood = false
           throw new Error('Error setting up web3')
