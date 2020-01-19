@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
-import { isEmptyAddress } from '../../api/utils'
 import { TOKEN_QUERY, TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
@@ -117,17 +116,6 @@ class EventCTA extends Component {
     } = this.props
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
-        if (isEmptyAddress(tokenAddress)) {
-          return this._renderActiveRsvp({
-            myParticipantEntry,
-            tokenAddress,
-            address,
-            deposit,
-            participants,
-            participantLimit,
-            isAllowed: true
-          })
-        }
         return (
           <SafeQuery
             query={TOKEN_ALLOWANCE_QUERY}
@@ -204,23 +192,19 @@ class EventCTA extends Component {
             },
             loading
           }) => {
-            const isToken =
-              !isEmptyAddress(tokenAddress) || tokenAddress !== null
             return (
               <>
-                {isToken ? (
-                  <Approve
-                    tokenAddress={tokenAddress}
-                    address={address}
-                    deposit={deposit}
-                    decodedDeposit={decodedDeposit}
-                    decimals={decimals}
-                    balance={balance}
-                    isAllowed={isAllowed}
-                    hasBalance={hasBalance}
-                    refetch={refetch}
-                  />
-                ) : null}
+                <Approve
+                  tokenAddress={tokenAddress}
+                  address={address}
+                  deposit={deposit}
+                  decodedDeposit={decodedDeposit}
+                  decimals={decimals}
+                  balance={balance}
+                  isAllowed={isAllowed}
+                  hasBalance={hasBalance}
+                  refetch={refetch}
+                />
                 <RSVP
                   tokenAddress={tokenAddress}
                   address={address}
@@ -233,7 +217,6 @@ class EventCTA extends Component {
             )
           }}
         </SafeQuery>
-
         <CTAInfo>
           <strong>Kickback rules:</strong>
           <ul>
