@@ -170,7 +170,7 @@ const getWeb3 = lazyAsync(async () => {
       web3 = connectToInjectedWeb3()
     } catch {
       try {
-        web3 = connectToLocalNode()
+        web3 = await connectToLocalNode()
       } catch {
         try {
           web3 = connectToCloudNode()
