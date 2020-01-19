@@ -38,8 +38,8 @@
     "react-dropdown": "^1.6.4",
     "react-dropzone": "^7.0.1",
     "react-emotion": "^9.2.6",
-    "react-qr-reader": "2.2.1",
     "react-markdown": "^4.3.1",
+    "react-qr-reader": "2.2.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-hash-link": "^1.2.0",
@@ -57,8 +57,8 @@
   "scripts": {
     "setup": "scripts/setup.js",
     "seedParty": "node scripts/seedParty.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --max_old_space_size=2048 start",
+    "build": "react-scripts --max_old_space_size=2048 build",
     "build:release:kovan": "yarn setup --kovan && yarn build",
     "build:release:ropsten": "yarn setup --ropsten && yarn build",
     "build:release:rinkeby": "yarn setup --rinkeby && yarn build",
@@ -117,6 +117,6 @@
     ]
   },
   "engines": {
-    "node": ">=10.x"
+    "node": "10.x"
   }
 }
