@@ -1,8 +1,8 @@
-import { toBN } from 'web3-utils'
+import { toBN, fromWei } from 'web3-utils'
 import { Deployer } from '@wearekickback/contracts'
 import { Conference } from '@wearekickback/contracts'
 
-import getWeb3, { getAccount, getDeployerAddress } from '../web3'
+import getWeb3, { getAccount, getDeployerAddress, getWeb3Read } from '../web3'
 import events from '../../fixtures/events.json'
 import { txHelper, EMPTY_ADDRESS } from '../utils'
 import { toEthVal } from '../../utils/units'
@@ -21,7 +21,7 @@ const resolvers = {
     location: party => party.location_text || null,
 
     async balance({ address }) {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
       return web3.eth.getBalance(address)
     },
 
@@ -36,8 +36,7 @@ const resolvers = {
     },
     async deposit({ contract }) {
       const deposit = await contract.deposit().call()
-      const { utils } = await getWeb3()
-      return utils.fromWei(deposit.toString())
+      return fromWei(deposit.toString())
     },
     async limitOfParticipants({ contract }) {
       const limitOfParticipants = await contract.limitOfParticipants().call()
@@ -69,8 +68,7 @@ const resolvers = {
     },
     async payoutAmount({ contract }) {
       const payoutAmount = await contract.payoutAmount().call()
-      const { utils } = await getWeb3()
-      return utils.fromWei(payoutAmount.toString())
+      return fromWei(payoutAmount.toString())
     },
     async encryption({ contract }) {
       try {
@@ -108,7 +106,7 @@ const resolvers = {
   },
   Query: {
     async party(_, { address }) {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3Read()
       const contract = new web3.eth.Contract(abi, address)
       const eventFixture = events.filter(event => {
         return event.address === address
@@ -127,7 +125,7 @@ const resolvers = {
     async createParty(_, args) {
       console.log(`Deploying party`, args)
 
-      const { id, deposit, limitOfParticipants, coolingPeriod } = args
+      const { id, deposit, decimals, limitOfParticipants, coolingPeriod } = args
       let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
@@ -147,7 +145,7 @@ const resolvers = {
             .deploy(
               id,
               toEthVal(deposit, 'eth')
-                .toWei()
+                .scaleDown(decimals)
                 .toString(16),
               toEthVal(limitOfParticipants).toString(16),
               toEthVal(coolingPeriod).toString(16),

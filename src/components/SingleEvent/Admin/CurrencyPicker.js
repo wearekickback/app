@@ -1,10 +1,9 @@
 import React from 'react'
 
-const CurrencyPicker = ({ daiAddress, onChange, currencyType }) => {
+const CurrencyPicker = ({ onChange, currencyType }) => {
   const onChangeHandler = e => {
     currencyType = e.target.value
-    const tokenAddress = currencyType !== 'ETH' ? daiAddress : null
-    onChange({ currencyType, tokenAddress })
+    onChange(currencyType)
   }
 
   const isChecked = checkedType => {
@@ -13,7 +12,7 @@ const CurrencyPicker = ({ daiAddress, onChange, currencyType }) => {
 
   return (
     <>
-      <label class="container">
+      <label className="container">
         ETH
         <input
           type="radio"
@@ -23,7 +22,7 @@ const CurrencyPicker = ({ daiAddress, onChange, currencyType }) => {
           value="ETH"
         />
       </label>
-      <label class="container">
+      <label className="container">
         DAI
         <input
           type="radio"
@@ -31,6 +30,16 @@ const CurrencyPicker = ({ daiAddress, onChange, currencyType }) => {
           checked={isChecked('DAI')}
           name="radio"
           value="DAI"
+        />
+      </label>
+      <label className="container">
+        ERC20
+        <input
+          type="radio"
+          onChange={onChangeHandler}
+          checked={isChecked('TOKEN')}
+          name="radio"
+          value="TOKEN"
         />
       </label>
     </>

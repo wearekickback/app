@@ -32,8 +32,6 @@ export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
   toEthVal(deposit)
     .mul(numRegistered)
     .div(numAttended)
-    .toEth()
-    .toFixed(3)
 
 export const sortParticipants = (a, b) => (a.index < b.index ? -1 : 1)
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import { Link as DefaultLink } from 'react-router-dom'
 
-import { depositValue } from '../Utils/DepositValue.js'
 import DefaultEventDate from '../Utils/EventDate.js'
 import Currency from '../SingleEvent/Currency'
 
@@ -62,7 +61,7 @@ class EventCard extends Component {
             <EventName>{name}</EventName>
             <EventDate event={party} />
             <Deposit>
-              {depositValue(deposit)} <Currency tokenAddress={tokenAddress} />
+              <Currency amount={deposit} tokenAddress={tokenAddress} />
             </Deposit>
           </EventDetails>
         </Link>
