@@ -38,7 +38,17 @@ const Link = styled('a')`
 `
 
 export const links = [
+  {
+    label: 'Why Kickback',
+    href:
+      'https://medium.com/wearekickback/how-to-improve-attendance-of-your-events-2ba603ad954'
+  },
   { label: 'Getting Started', href: '/gettingstarted' },
+  {
+    label: 'Using Tornado.cash',
+    href:
+      'https://medium.com/wearekickback/private-transactions-on-kickback-events-using-tornado-cash-1705a1d31167'
+  },
   { label: 'FAQ', href: '/faq' },
   {
     label: 'Event Organiser guide',
