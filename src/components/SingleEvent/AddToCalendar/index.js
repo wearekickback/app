@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'react-emotion'
 
-import GlobalContext from '../../../GlobalState'
 import { ADD_TO_CALENDAR } from '../../../modals'
 import Modal from './Modal'
+import { useModalContext } from '../../../contexts/ModalContext'
 
 const Link = styled('a')`
   cursor: pointer;
@@ -14,7 +14,7 @@ const Link = styled('a')`
 `
 
 function AddToCalendar({ event }) {
-  const { showModal, closeModal } = useContext(GlobalContext)
+  const [, { showModal, closeModal }] = useModalContext()
 
   return (
     <Link

@@ -1,47 +1,38 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'react-emotion'
-import { GlobalConsumer } from '../../GlobalState'
 import mq from '../../mediaQuery'
+import { useModalContext } from '../../contexts/ModalContext'
 
-class Modal extends Component {
-  render() {
-    const { small, name, children, component: Component } = this.props
-    return (
-      <GlobalConsumer>
-        {({ currentModal, closeModal }) => {
-          if (!currentModal) {
-            return null
-          }
-          if (name === currentModal.name) {
-            return (
-              <ModalContainer
-                show={name === currentModal.name}
-                onClick={event => {
-                  event.stopPropagation()
-                  closeModal({ name })
-                }}
-              >
-                <ModalContent
-                  onClick={event => event.stopPropagation()}
-                  small={small}
-                >
-                  {Component ? (
-                    <Component name={name} />
-                  ) : currentModal.render ? (
-                    currentModal.render({
-                      ...this.props,
-                      closeModal: () => closeModal({ name })
-                    })
-                  ) : null}
-                  {children}
-                </ModalContent>
-              </ModalContainer>
-            )
-          }
-        }}
-      </GlobalConsumer>
-    )
+const Modal = props => {
+  const [{ currentModal }, { closeModal }] = useModalContext()
+  const { small, name, children, component: Component } = props
+
+  if (!currentModal || name !== currentModal.name) {
+    return null
   }
+  return (
+    <ModalContainer
+      show={name === currentModal.name}
+      onClick={event => {
+        event.stopPropagation()
+        closeModal({ name })
+      }}
+    >
+      <ModalContent onClick={event => event.stopPropagation()} small={small}>
+        {Component ? (
+          <Component name={name} />
+        ) : currentModal.render ? (
+          currentModal.render({
+            ...props,
+            closeModal: () => {
+              closeModal({ name })
+            }
+          })
+        ) : null}
+        {children}
+      </ModalContent>
+    </ModalContainer>
+  )
 }
 
 const ModalContainer = styled('div')`

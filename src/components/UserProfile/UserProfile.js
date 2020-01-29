@@ -6,6 +6,7 @@ import { H2, H3 } from '../Typography/Basic'
 import mq from 'mediaQuery'
 import { EDIT_PROFILE } from '../../modals'
 import GlobalContext from '../../GlobalState'
+import { useModalContext } from '../../contexts/ModalContext'
 import Button from '../Forms/Button'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 
@@ -76,14 +77,16 @@ const WalletButton = styled(Button)`
 `
 
 export default function UserProfile({ profile: p }) {
+  const [, { showModal }] = useModalContext()
+  const { loggedIn, userProfile, signOut, wallet } = useContext(GlobalContext)
+  
   const twitter = getSocialId(p.social, 'twitter')
-  const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
-    GlobalContext
-  )
+
   let walletLink
   if (wallet) {
     walletLink = wallet.url
   }
+
   return (
     <UserProfileWrapper>
       <UserProfileContainer>

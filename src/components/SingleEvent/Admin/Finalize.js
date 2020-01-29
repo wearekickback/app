@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'react-emotion'
 import { calculateFinalizeMaps } from '@wearekickback/shared'
+import { withApollo } from 'react-apollo'
 
-import GlobalContext from '../../../GlobalState'
+import { useModalContext } from '../../../contexts/ModalContext'
 import { PARTY_QUERY } from '../../../graphql/queries'
 import { FINALIZE } from '../../../graphql/mutations'
 
@@ -13,8 +14,8 @@ import ConfirmModal from '../../ConfirmModal'
 
 const FinalizeContainer = styled('div')``
 
-function Finalize({ party }) {
-  const { showModal, closeModal, apolloClient } = useContext(GlobalContext)
+function Finalize({ party, client }) {
+  const [, { showModal, closeModal }] = useModalContext()
   const { ended } = party
   return (
     <FinalizeContainer>
@@ -22,7 +23,7 @@ function Finalize({ party }) {
         <>
           <Button
             onClick={async () => {
-              const result = await apolloClient.query({
+              const result = await client.query({
                 query: PARTY_QUERY,
                 variables: { address: party.address },
                 fetchPolicy: 'network-only'
@@ -79,4 +80,4 @@ function Finalize({ party }) {
   )
 }
 
-export default Finalize
+export default withApollo(Finalize)

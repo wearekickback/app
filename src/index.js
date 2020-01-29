@@ -9,6 +9,7 @@ import './index.css'
 import App from './App'
 import { clientInstance } from './graphql'
 import setupWeb3 from './api/web3'
+import ModalProvider, { ModalContext } from './contexts/ModalContext'
 import { GlobalProvider } from './GlobalState'
 import './globalStyles'
 
@@ -26,9 +27,15 @@ window.addEventListener('load', async () => {
 
   ReactDOM.render(
     <ApolloProvider client={clientInstance}>
-      <GlobalProvider>
-        <App />
-      </GlobalProvider>
+      <ModalProvider>
+        <ModalContext.Consumer>
+          {context => (
+            <GlobalProvider modalContext={context}>
+              <App />
+            </GlobalProvider>
+          )}
+        </ModalContext.Consumer>
+      </ModalProvider>
     </ApolloProvider>,
     document.getElementById('root')
   )
