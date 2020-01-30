@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 
 import {
@@ -42,71 +42,64 @@ const RightContainer = styled('div')`
   `};
 `
 
-class SingleEventWrapper extends Component {
-  render() {
-    const { address } = this.props
-
-    return (
-      <SingleEventContainer>
-        <GlobalConsumer>
-          {({ userAddress }) => (
-            <SafeQuery
-              query={PARTY_QUERY}
-              variables={{ address }}
-              fetchPolicy="cache-and-network"
-              pollInterval={60000}
-              keepExistingResultDuringRefetch={true}
-            >
-              {({ data: { party }, loading }) => {
-                // no party?
-                if (!party) {
-                  if (loading) {
-                    return <Loader />
-                  } else {
-                    return (
-                      <WarningBox>
-                        We could not find an event at the address {address}!
-                      </WarningBox>
-                    )
-                  }
+const SingleEventWrapper = ({ address }) => {
+  return (
+    <SingleEventContainer>
+      <GlobalConsumer>
+        {({ userAddress }) => (
+          <SafeQuery
+            query={PARTY_QUERY}
+            variables={{ address }}
+            fetchPolicy="cache-and-network"
+            pollInterval={60000}
+            keepExistingResultDuringRefetch={true}
+          >
+            {({ data: { party }, loading }) => {
+              // no party?
+              if (!party) {
+                if (loading) {
+                  return <Loader />
+                } else {
+                  return (
+                    <WarningBox>
+                      We could not find an event at the address {address}!
+                    </WarningBox>
+                  )
                 }
-                // pre-calculate some stuff up here
-                const preCalculatedProps = {
-                  amAdmin: amAdmin(party, userAddress),
-                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
-                }
-                party.headerImg = getPartyImage(party.headerImg)
+              }
+              // pre-calculate some stuff up here
+              const preCalculatedProps = {
+                amAdmin: amAdmin(party, userAddress),
+                myParticipantEntry: getMyParticipantEntry(party, userAddress)
+              }
 
-                return (
-                  <Fragment>
-                    <EventInfoContainer>
-                      <EventInfo
-                        party={party}
-                        address={address}
-                        {...preCalculatedProps}
-                      />
-                    </EventInfoContainer>
-                    <RightContainer>
-                      <EventCTA
-                        party={party}
-                        address={address}
-                        userAddress={userAddress}
-                        {...preCalculatedProps}
-                      />
-                      <EventParticipants
-                        party={party}
-                        {...preCalculatedProps}
-                      />
-                    </RightContainer>
-                  </Fragment>
-                )
-              }}
-            </SafeQuery>
-          )}
-        </GlobalConsumer>
-      </SingleEventContainer>
-    )
-  }
+              party.headerImg = getPartyImage(party.headerImg)
+              return (
+                <>
+                  <EventInfoContainer>
+                    <EventInfo
+                      party={party}
+                      address={address}
+                      {...preCalculatedProps}
+                    />
+                  </EventInfoContainer>
+                  <RightContainer>
+                    <EventCTA
+                      party={party}
+                      address={address}
+                      userAddress={userAddress}
+                      {...preCalculatedProps}
+                    />
+                    <EventParticipants party={party} {...preCalculatedProps} />
+                  </RightContainer>
+                </>
+              )
+            }}
+          </SafeQuery>
+        )}
+      </GlobalConsumer>
+    </SingleEventContainer>
+  )
 }
 
 export default SingleEventWrapper

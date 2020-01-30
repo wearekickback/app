@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import Button from '../components/Forms/Button'
 
@@ -22,37 +22,33 @@ const Cancel = styled(Button)`
   margin-right: 20px;
 `
 
-class ConfirmModal extends Component {
-  state = {
-    mutationStarted: false
-  }
-  startMutation = () => this.setState({ mutationStarted: true })
-  render() {
-    const { mutation, mutationComponent, message, closeModal } = this.props
-    return (
-      <ConfirmModalContainer>
-        <Message>{message}</Message>
+const ConfirmModal = ({ mutation, mutationComponent, message, closeModal }) => {
+  const [mutationStarted, setMutationStarted] = useState(false)
+  const startMutation = () => setMutationStarted(true)
 
-        <Buttons>
-          <Cancel onClick={closeModal} type="hollow">
-            {this.state.mutationStarted ? 'Close' : 'Cancel'}
-          </Cancel>
-          {mutationComponent ? (
-            <div onClick={this.startMutation}>{mutationComponent}</div>
-          ) : (
-            <Button
-              onClick={() => {
-                this.startMutation()
-                mutation()
-              }}
-            >
-              Confirm
-            </Button>
-          )}
-        </Buttons>
-      </ConfirmModalContainer>
-    )
-  }
+  return (
+    <ConfirmModalContainer>
+      <Message>{message}</Message>
+
+      <Buttons>
+        <Cancel onClick={closeModal} type="hollow">
+          {mutationStarted ? 'Close' : 'Cancel'}
+        </Cancel>
+        {mutationComponent ? (
+          <div onClick={startMutation}>{mutationComponent}</div>
+        ) : (
+          <Button
+            onClick={() => {
+              startMutation()
+              mutation()
+            }}
+          >
+            Confirm
+          </Button>
+        )}
+      </Buttons>
+    </ConfirmModalContainer>
+  )
 }
 
 export default ConfirmModal

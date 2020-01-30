@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
+
 import { Link as DefaultLink } from 'react-router-dom'
 
 import DefaultEventDate from '../Utils/EventDate.js'
@@ -48,26 +49,23 @@ const Deposit = styled('span')`
   font-style: italic;
 `
 
-class EventCard extends Component {
-  render() {
-    const { party } = this.props
-    const { address, headerImg, deposit, name, tokenAddress } = party
+const EventCard = ({ party }) => {
+  const { address, headerImg, deposit, name, tokenAddress } = party
 
-    return (
-      <EventCardContainer>
-        <Link to={`/event/${address}`}>
-          <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
-          <EventDetails>
-            <EventName>{name}</EventName>
-            <EventDate event={party} />
-            <Deposit>
-              <Currency amount={deposit} tokenAddress={tokenAddress} />
-            </Deposit>
-          </EventDetails>
-        </Link>
-      </EventCardContainer>
-    )
-  }
+  return (
+    <EventCardContainer>
+      <Link to={`/event/${address}`}>
+        <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
+        <EventDetails>
+          <EventName>{name}</EventName>
+          <EventDate event={party} />
+          <Deposit>
+            <Currency amount={deposit} tokenAddress={tokenAddress} />
+          </Deposit>
+        </EventDetails>
+      </Link>
+    </EventCardContainer>
+  )
 }
 
 export default EventCard

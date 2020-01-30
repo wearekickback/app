@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
@@ -186,124 +186,122 @@ const ContractAddressContainer = styled('div')`
   margin-bottom: 1em;
 `
 
-class EventInfo extends Component {
-  render() {
-    const { party, address, className } = this.props
+const EventInfo = ({ party, address, className }) => {
+  const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
 
-    const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
+  const calendarEvent = {
+    title: party.name,
+    description: party.description,
+    location: party.location,
+    startTime: getUtcDateFromTimezone(party.start, party.timezone),
+    endTime: getUtcDateFromTimezone(party.end, party.timezone)
+  }
 
-    const calendarEvent = {
-      title: party.name,
-      description: party.description,
-      location: party.location,
-      startTime: getUtcDateFromTimezone(party.start, party.timezone),
-      endTime: getUtcDateFromTimezone(party.end, party.timezone)
-    }
-
-    return (
-      <EventInfoContainer className={className}>
-        <EventDate event={party} />
-        <EventName>{party.name}</EventName>
-        <EventImage src={party.headerImg} />
-        <Organisers>
-          <H3>Organisers</H3>
-          <OrganiserList>
-            {admins.map(user => {
-              return (
-                <Organiser key={user.username}>
-                  <UserAvatar user={user} size={8} scale={5} />
-                  <HostUsername>{user.username}</HostUsername>
-                </Organiser>
-              )
-            })}
-          </OrganiserList>
-        </Organisers>
-        <H3>Event Details</H3>
-        <Location>
-          <PinIcon />
-          {party.location || '11 Macclesfield St, London W1D 5BW'}
-        </Location>
-        <TotalPot>
-          <InfoGrid>
-            <EthIcon />
-            <InfoGridItem>
-              <TotalPot>
-                <strong>Pot: </strong>
-                <span>
-                  <Currency
-                    amount={party.deposit * party.participants.length}
-                    tokenAddress={party.tokenAddress}
-                  />
-                </span>
-              </TotalPot>
-              <Deposit>
-                <strong>RSVP: </strong>
+  return (
+    <EventInfoContainer className={className}>
+      <EventDate event={party} />
+      <EventName>{party.name}</EventName>
+      <EventImage
+        src={party.headerImg || 'https://placeimg.com/640/480/tech'}
+      />
+      <Organisers>
+        <H3>Organisers</H3>
+        <OrganiserList>
+          {admins.map(user => {
+            return (
+              <Organiser key={user.username}>
+                <UserAvatar user={user} size={8} scale={5} />
+                <HostUsername>{user.username}</HostUsername>
+              </Organiser>
+            )
+          })}
+        </OrganiserList>
+      </Organisers>
+      <H3>Event Details</H3>
+      <Location>
+        <PinIcon />
+        {party.location || '11 Macclesfield St, London W1D 5BW'}
+      </Location>
+      <TotalPot>
+        <InfoGrid>
+          <EthIcon />
+          <InfoGridItem>
+            <TotalPot>
+              <strong>Pot: </strong>
+              <span>
                 <Currency
-                  amount={party.deposit}
+                  amount={party.deposit * party.participants.length}
                   tokenAddress={party.tokenAddress}
                 />
-              </Deposit>
-            </InfoGridItem>
-            <InfoGridItem>
-              <strong>
-                Cooling Period{' '}
-                <Link to="/faq#cooling">
-                  <InfoIcon />
-                </Link>
-                :{' '}
-              </strong>
-              <span>
-                {moment
-                  .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
-                  .asDays()}{' '}
-                days
               </span>
-            </InfoGridItem>
-          </InfoGrid>
-        </TotalPot>
-        <TimeDetails>
-          <InfoGrid>
-            <Clock>
-              <ClockSVG />
-            </Clock>
+            </TotalPot>
+            <Deposit>
+              <strong>RSVP: </strong>
+              <Currency
+                amount={party.deposit}
+                tokenAddress={party.tokenAddress}
+              />
+            </Deposit>
+          </InfoGridItem>
+          <InfoGridItem>
+            <strong>
+              Cooling Period{' '}
+              <Link to="/faq#cooling">
+                <InfoIcon />
+              </Link>
+              :{' '}
+            </strong>
+            <span>
+              {moment
+                .duration(toEthVal(party.coolingPeriod).toNumber(), 'seconds')
+                .asDays()}{' '}
+              days
+            </span>
+          </InfoGridItem>
+        </InfoGrid>
+      </TotalPot>
+      <TimeDetails>
+        <InfoGrid>
+          <Clock>
+            <ClockSVG />
+          </Clock>
+          <InfoGridItem>
+            <TimeLabel>Start:</TimeLabel>
+            <Time>{getHours(party.start)}</Time>
+            <AddToCalendar event={calendarEvent} />
+          </InfoGridItem>
+          {party.arriveBy && (
             <InfoGridItem>
-              <TimeLabel>Start:</TimeLabel>
-              <Time>{getHours(party.start)}</Time>
-              <AddToCalendar event={calendarEvent} />
+              <TimeLabel>Arrive by: </TimeLabel>
+              <Time>{getHours(party.arriveBy)}</Time>
             </InfoGridItem>
-            {party.arriveBy && (
-              <InfoGridItem>
-                <TimeLabel>Arrive by: </TimeLabel>
-                <Time>{getHours(party.arriveBy)}</Time>
-              </InfoGridItem>
-            )}
-          </InfoGrid>
-        </TimeDetails>
-        <EventDescription>
-          <ReactMarkdown source={party.description} />
-        </EventDescription>
-        <Photos>
-          <PhotoContainer>
-            <Photo />
-          </PhotoContainer>
-        </Photos>
-        <Comments>
-          <Comment />
-        </Comments>
-        <ContractAddressContainer>
-          <h3>Contract address</h3>
-          <ContractAddress>
-            <EtherScanLink address={address}>{address}</EtherScanLink>
-          </ContractAddress>
-          <WarningBox warningLevel="medium">
-            <strong>Warning</strong>: Please do NOT send your commitment
-            directly to the contract address. Please read our{' '}
-            <a href="/gettingstarted">guide</a> for more detail.
-          </WarningBox>
-        </ContractAddressContainer>
-      </EventInfoContainer>
-    )
-  }
+          )}
+        </InfoGrid>
+      </TimeDetails>
+      <EventDescription>
+        <ReactMarkdown source={party.description} />
+      </EventDescription>
+      <Photos>
+        <PhotoContainer>
+          <Photo />
+        </PhotoContainer>
+      </Photos>
+      <Comments>
+        <Comment />
+      </Comments>
+      <ContractAddressContainer>
+        <h3>Contract address</h3>
+        <ContractAddress>
+          <EtherScanLink address={address}>{address}</EtherScanLink>
+        </ContractAddress>
+        <WarningBox warningLevel="medium">
+          <strong>Warning</strong>: Please do NOT send your commitment directly
+          to the contract address. Please read our{' '}
+          <a href="/gettingstarted">guide</a> for more detail.
+        </WarningBox>
+      </ContractAddressContainer>
+    </EventInfoContainer>
+  )
 }
 
 const EventInfoContainer = styled('div')``
