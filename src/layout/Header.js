@@ -6,7 +6,7 @@ import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
 
 import Logo from '../components/Icons/LogoFull'
 import GuideDropdown from '../components/Header/Guide'
-import SignInButton from '../components/Header/SignInButton'
+import HeaderSignInButton from '../components/Header/HeaderSignInButton'
 import Hamburger from '../components/Header/Hamburger'
 import HamburgerMenu from '../components/Header/HamburgerMenu'
 
@@ -73,7 +73,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/pricing">Pricing</NavLink>
             <GuideDropdown />
-            <SignInButton />
+            <HeaderSignInButton />
           </RightBar>
         )}
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
-import SignInButton from './SignInButton'
+import SignInButton from './HeaderSignInButton'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;

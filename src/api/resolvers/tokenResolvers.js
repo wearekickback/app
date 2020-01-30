@@ -292,7 +292,7 @@ const resolvers = {
         return { allowance, balance }
       } catch (err) {
         console.log('Failed to fetch tokenAllowance', err)
-        return { allowance: null }
+        return { allowance: null, balance: null }
       }
     },
     async getTokenDecimals(_, { tokenAddress }) {

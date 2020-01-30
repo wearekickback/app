@@ -16,6 +16,7 @@ import {
 import Status, { Going } from './Status'
 import DefaultButton from '../Forms/Button'
 import WarningBox from '../WarningBox'
+import SignInButton from '../Header/SignInButton'
 
 const AdminPanelButtonWrapper = styled('div')``
 
@@ -70,6 +71,11 @@ const RSVP = styled(DefaultRSVP)`
 `
 
 const Approve = styled(DefaultApprove)`
+  width: 100%;
+  margin-bottom: 10px;
+`
+
+const SignIn = styled(SignInButton)`
   width: 100%;
   margin-bottom: 1em;
 `
@@ -194,17 +200,22 @@ class EventCTA extends Component {
           }) => {
             return (
               <>
-                <Approve
-                  tokenAddress={tokenAddress}
-                  address={address}
-                  deposit={deposit}
-                  decodedDeposit={decodedDeposit}
-                  decimals={decimals}
-                  balance={balance}
-                  isAllowed={isAllowed}
-                  hasBalance={hasBalance}
-                  refetch={refetch}
-                />
+                {balance !== null ? (
+                  <Approve
+                    tokenAddress={tokenAddress}
+                    address={address}
+                    deposit={deposit}
+                    decodedDeposit={decodedDeposit}
+                    decimals={decimals}
+                    balance={balance}
+                    isAllowed={isAllowed}
+                    hasBalance={hasBalance}
+                    refetch={refetch}
+                  />
+                ) : (
+                  <SignIn>Sign in to RSVP</SignIn>
+                )}
+
                 <RSVP
                   tokenAddress={tokenAddress}
                   address={address}
