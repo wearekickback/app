@@ -5,6 +5,7 @@ import { Route, Link } from 'react-router-dom'
 import { ReactComponent as DefaultBackArrow } from '../components/svg/arrowBack.svg'
 
 import ParticipantTableList from '../components/SingleEvent/ParticipantTableList'
+import CheckIn from '../components/SingleEvent/Admin/CheckIn'
 import SmartContractFunctions from '../components/SingleEvent/Admin/SmartContractFunctions'
 import WarningBox from '../components/WarningBox'
 import { PARTY_QUERY } from '../graphql/queries'
@@ -140,6 +141,14 @@ class SingleEvent extends Component {
                           Participants
                         </ToggleLink>
                         <ToggleLink
+                          active={
+                            pathname === `/event/${address}/admin/checkin`
+                          }
+                          to={`/event/${address}/admin/checkin`}
+                        >
+                          Check in
+                        </ToggleLink>
+                        <ToggleLink
                           active={pathname === `/event/${address}/admin/edit`}
                           to={`/event/${address}/admin/edit`}
                         >
@@ -162,6 +171,11 @@ class SingleEvent extends Component {
                           render={() => (
                             <ParticipantTableList address={address} />
                           )}
+                        />
+                        <Route
+                          path={`/event/${address}/admin/checkin`}
+                          exact
+                          render={() => <CheckIn address={address} />}
                         />
                         <Route
                           path={`/event/${address}/admin/edit`}

@@ -15,6 +15,9 @@ import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 import tokenResolvers, {
   defaults as tokenDefaults
 } from './resolvers/tokenResolvers'
+import poapResolvers, {
+  defaults as poapDefaults
+} from './resolvers/poapResolvers'
 
 const deployerAbi = Deployer.abi
 
@@ -73,12 +76,14 @@ const defaults = merge(
   rootDefaults,
   singleEventDefaults,
   ensDefaults,
-  tokenDefaults
+  tokenDefaults,
+  poapDefaults
 )
 export default merge(
   resolvers,
   singleEventResolvers,
   ensResolvers,
-  tokenResolvers
+  tokenResolvers,
+  poapResolvers
 )
 export { defaults }

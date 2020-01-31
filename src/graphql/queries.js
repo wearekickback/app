@@ -112,3 +112,9 @@ export const TOKEN_SYMBOL_QUERY = gql`
     token: getTokenBySymbol(symbol: $symbol) @client
   }
 `
+
+export const POAP_USERS_QUERY = gql`
+  query getAttendees($eventId: String) {
+    addresses: getAttendees(eventId: $eventId) @client
+  }
+`
