@@ -123,7 +123,7 @@ class EventCTA extends Component {
           >
             {({
               data: {
-                tokenAllowance: { allowance, balance }
+                tokenAllowance: { allowance, balance, account }
               },
               loading,
               refetch
@@ -142,6 +142,7 @@ class EventCTA extends Component {
                 balance,
                 isAllowed,
                 hasBalance,
+                account,
                 refetch
               })
             }}
@@ -170,7 +171,8 @@ class EventCTA extends Component {
     isAllowed,
     hasBalance,
     balance,
-    refetch
+    refetch,
+    account
   }) {
     return (
       <>
@@ -204,6 +206,7 @@ class EventCTA extends Component {
                   isAllowed={isAllowed}
                   hasBalance={hasBalance}
                   refetch={refetch}
+                  account={account}
                 />
                 <RSVP
                   tokenAddress={tokenAddress}
