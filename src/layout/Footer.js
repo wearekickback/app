@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import { Link as DefaultLink } from 'react-router-dom'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
@@ -91,49 +91,47 @@ const Copyright = styled('div')`
   font-weight: 300;
 `
 
-class Footer extends Component {
-  render() {
-    return (
-      <FooterContainer>
-        <FooterInner>
-          <H2>Get in touch</H2>
-          <Mail href="mailto:hello@kickback.events">hello@kickback.events</Mail>
-          <MiddleRow>
-            <ElevatorPitch>
-              Kickback helps event organisers guarantee a high participation
-              rate at their events. Our service encourages attendees to treat
-              the events they sign up for more seriously.
-            </ElevatorPitch>
-            <Links>
-              <Link to="/team">Team</Link>
-              <Link to="/terms">Terms and conditions</Link>
-              <Link to="/privacy">Privacy</Link>
-            </Links>
-          </MiddleRow>
-          <Row>
-            <Copyright>&copy; 2020 No Block No Party Ltd</Copyright>
-            <Social>
-              <a href="https://t.me/wearekickback">
-                <TelegramIcon />
-              </a>
-              <a href="https://github.com/wearekickback">
-                <GithubIcon />
-              </a>
-              <a href="https://twitter.com/wearekickback" className="twitter">
-                <TwitterIcon />
-              </a>
-              <a href="https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ">
-                <YoutubeIcon />
-              </a>
-              <a href="https://medium.com/wearekickback">
-                <MediumIcon />
-              </a>
-            </Social>
-          </Row>
-        </FooterInner>
-      </FooterContainer>
-    )
-  }
+const Footer = () => {
+  return (
+    <FooterContainer>
+      <FooterInner>
+        <H2>Get in touch</H2>
+        <Mail href="mailto:hello@kickback.events">hello@kickback.events</Mail>
+        <MiddleRow>
+          <ElevatorPitch>
+            Kickback helps event organisers guarantee a high participation rate
+            at their events. Our service encourages attendees to treat the
+            events they sign up for more seriously.
+          </ElevatorPitch>
+          <Links>
+            <Link to="/team">Team</Link>
+            <Link to="/terms">Terms and conditions</Link>
+            <Link to="/privacy">Privacy</Link>
+          </Links>
+        </MiddleRow>
+        <Row>
+          <Copyright>&copy; 2020 No Block No Party Ltd</Copyright>
+          <Social>
+            <a href="https://t.me/wearekickback">
+              <TelegramIcon />
+            </a>
+            <a href="https://github.com/wearekickback">
+              <GithubIcon />
+            </a>
+            <a href="https://twitter.com/wearekickback" className="twitter">
+              <TwitterIcon />
+            </a>
+            <a href="https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ">
+              <YoutubeIcon />
+            </a>
+            <a href="https://medium.com/wearekickback">
+              <MediumIcon />
+            </a>
+          </Social>
+        </Row>
+      </FooterInner>
+    </FooterContainer>
+  )
 }
 
 export default Footer
