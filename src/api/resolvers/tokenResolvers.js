@@ -282,6 +282,7 @@ const resolvers = {
           const balance = await web3.eth.getBalance(account)
           return {
             balance,
+            account,
             allowance: balance
           }
         }
@@ -289,7 +290,7 @@ const resolvers = {
         const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
         const allowance = await contract.allowance(account, partyAddress).call()
         const balance = await contract.balanceOf(account).call()
-        return { allowance, balance }
+        return { allowance, balance, account }
       } catch (err) {
         console.log('Failed to fetch tokenAllowance', err)
         return { allowance: null }
