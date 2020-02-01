@@ -55,11 +55,27 @@ const EventType = styled('div')`
 
 const EditProfile = styled(Button)`
   margin-top: 20px;
+  width: 100%;
+  margin-bottom: 1em;
+`
+
+const ButtonContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`
+
+const SignOutButton = styled(Button)`
+  width: 100%;
+  margin-bottom: 1em;
 `
 
 export default function UserProfile({ profile: p }) {
   const twitter = getSocialId(p.social, 'twitter')
-  const { showModal, loggedIn, userProfile } = useContext(GlobalContext)
+  const { showModal, loggedIn, userProfile, signOut } = useContext(
+    GlobalContext
+  )
   return (
     <UserProfileWrapper>
       <UserProfileContainer>
@@ -73,9 +89,14 @@ export default function UserProfile({ profile: p }) {
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
             )}
             {loggedIn && userProfile && userProfile.username === p.username && (
-              <EditProfile onClick={() => showModal({ name: EDIT_PROFILE })}>
-                Edit Profile
-              </EditProfile>
+              <ButtonContainer>
+                <EditProfile onClick={() => showModal({ name: EDIT_PROFILE })}>
+                  Edit Profile
+                </EditProfile>
+                <SignOutButton onClick={() => signOut()}>
+                  Sign Out
+                </SignOutButton>
+              </ButtonContainer>
             )}
           </Information>
         </ProfileDetails>
