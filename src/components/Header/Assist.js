@@ -81,25 +81,25 @@ const Assist = async ({ action, expectedNetworkId }) => {
     result.error = true
     result.fallback = true
   }
-  if (state && state.mobileDevice) {
-    if (!state.web3Wallet) {
-      result.status = 'Mobile wallet not detected'
-      result.error = true
-    } else {
-      if (state.userCurrentNetworkId !== parseInt(expectedNetworkId)) {
-        result.status = 'Wrong Network'
-        result.error = true
-      }
-    }
-    result.fallback = true
-  } else {
-    try {
-      result.status = await assistInstance.onboard()
-    } catch (error) {
-      result.status = error
-      result.error = true
-    }
+  // if (state && state.mobileDevice) {
+  //   if (!state.web3Wallet) {
+  //     result.status = 'Mobile wallet not detected'
+  //     result.error = true
+  //   } else {
+  //     if (state.userCurrentNetworkId !== parseInt(expectedNetworkId)) {
+  //       result.status = 'Wrong Network'
+  //       result.error = true
+  //     }
+  //   }
+  //   result.fallback = true
+  // } else {
+  try {
+    result.status = await assistInstance.onboard()
+  } catch (error) {
+    result.status = error
+    result.error = true
   }
+  // }
   console.log('Connect to web3', JSON.stringify(result))
   track('Connect to web3', result)
   return result
