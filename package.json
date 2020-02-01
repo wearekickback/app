@@ -12,7 +12,7 @@
     "apollo-link-state": "^0.4.1",
     "apollo-upload-client": "^10.0.0",
     "apollo-utilities": "^1.0.21",
-    "bnc-assist": "^0.5.2",
+    "bnc-assist": "0.10.3",
     "decimal.js": "^10.0.1",
     "emotion": "^9.2.6",
     "es6-promisify": "^6.0.0",

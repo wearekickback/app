@@ -15,7 +15,7 @@ const Assist = async ({ action, expectedNetworkId }) => {
   let assistInstance = await assist.init({
     dappId: BLOCKNATIVE_DAPPID || testid,
     web3: web3,
-    networkId: expectedNetworkId,
+    networkId: parseInt(expectedNetworkId),
     images: {
       welcome: {
         src: 'https://kickback.events/card.png',
