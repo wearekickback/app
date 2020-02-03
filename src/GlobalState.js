@@ -47,12 +47,12 @@ const wallets = [
   { walletName: 'authereum', preferred: true },
   {
     walletName: 'fortmatic',
-    apiKey: 'pk_test_D91CF62E54A9AC42',
+    apiKey: process.env.REACT_APP_FORTMATIC_KEY,
     preferred: true
   },
   {
     walletName: 'portis',
-    apiKey: '782eb0d4-5ebf-40f6-adfc-58bc2aea0076',
+    apiKey: process.env.REACT_APP_PORTIS_KEY,
     preferred: true
   },
   {
@@ -61,7 +61,7 @@ const wallets = [
   },
   {
     walletName: 'squarelink',
-    apiKey: '14414f9bfd6463f45671'
+    apiKey: process.env.REACT_APP_SQUARELINK_KEY
   },
   { walletName: 'opera' },
   { walletName: 'operaTouch' }
