@@ -182,7 +182,7 @@ const getWeb3 = async () => {
 
     // try {
     const { setUpWallet } = await getProvider()
-    web3 = await setUpWallet({ action: 'Sign in' })
+    web3 = await setUpWallet({ action: 'Sign in', expectedNetworkId })
     if (!web3) {
       throw new Error(`Couldn't set up wallet`)
     }
