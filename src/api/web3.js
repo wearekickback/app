@@ -93,43 +93,6 @@ const getNetworkId = async web3 => {
   }
 }
 
-const connectToInjectedWeb3 = () => {
-  let web3
-  if (window.ethereum) {
-    web3 = new Web3(window.ethereum)
-  } else if (window.web3 && window.web3.currentProvider) {
-    web3 = new Web3(window.web3.currentProvider)
-    networkState.readOnly = false
-  } else {
-    throw new Error('No web3 injected from browser')
-  }
-  return web3
-}
-
-const connectToLocalNode = lazyAsync(async () => {
-  const url = 'http://localhost:8545'
-  let web3
-
-  try {
-    await fetch(url)
-    web3 = new Web3(new Web3.providers.HttpProvider(url))
-  } catch (error) {
-    if (
-      error.readyState === 4 &&
-      (error.status === 400 || error.status === 200)
-    ) {
-      web3 = new Web3(new Web3.providers.HttpProvider(url))
-    }
-  }
-
-  if (web3) {
-    console.log('Success: Local node active')
-    return web3
-  } else {
-    throw new Error("Couldn't connect to local node")
-  }
-})
-
 const connectToCloudNode = () => {
   const web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
 
@@ -157,7 +120,7 @@ const getExistingWeb3 = async expectedNetworkId => {
     state: { web3 }
   } = await getProvider()
   const { networkId } = await getNetworkId(web3)
-  if (networkId != expectedNetworkId) {
+  if (networkId !== expectedNetworkId) {
     throw new Error('Existing web3 is not on the right network')
   }
   return web3
