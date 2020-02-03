@@ -6,6 +6,7 @@ import { APPROVE_TOKEN } from '../../graphql/mutations'
 import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
+import { GlobalConsumer } from '../../GlobalState'
 
 const Approve = ({
   tokenAddress,
@@ -32,13 +33,28 @@ const Approve = ({
     )
   } else if (!hasBalance) {
     return (
-      <WarningBox>
-        This event requires you to commit{' '}
-        <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
-        &nbsp; but you only have{' '}
-        <Currency amount={balance} tokenAddress={tokenAddress} /> in your
-        wallet. Please top up your wallet and come back again.
-      </WarningBox>
+      <GlobalConsumer>
+        {({ wallet }) => {
+          return (
+            <WarningBox>
+              <p>
+                This event requires you to commit{' '}
+                <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
+                &nbsp; but you only have{' '}
+                <Currency amount={balance} tokenAddress={tokenAddress} /> in
+                your wallet. Please top up your wallet and come back again.
+              </p>
+
+              {wallet && wallet.url && (
+                <p>
+                  You're currently connected to {wallet.name}. Click{' '}
+                  <a href={wallet.url}>here</a> to top up.
+                </p>
+              )}
+            </WarningBox>
+          )
+        }}
+      </GlobalConsumer>
     )
   } else {
     return (

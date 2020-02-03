@@ -71,11 +71,19 @@ const SignOutButton = styled(Button)`
   margin-bottom: 1em;
 `
 
+const WalletButton = styled(Button)`
+  width: 100%;
+`
+
 export default function UserProfile({ profile: p }) {
   const twitter = getSocialId(p.social, 'twitter')
-  const { showModal, loggedIn, userProfile, signOut } = useContext(
+  const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
     GlobalContext
   )
+  let walletLink
+  if (wallet) {
+    walletLink = wallet.url
+  }
   return (
     <UserProfileWrapper>
       <UserProfileContainer>
@@ -90,6 +98,15 @@ export default function UserProfile({ profile: p }) {
             )}
             {loggedIn && userProfile && userProfile.username === p.username && (
               <ButtonContainer>
+                {walletLink && (
+                  <a
+                    href={walletLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <WalletButton>Open Wallet</WalletButton>
+                  </a>
+                )}
                 <EditProfile onClick={() => showModal({ name: EDIT_PROFILE })}>
                   Edit Profile
                 </EditProfile>

@@ -13,6 +13,7 @@
     "apollo-upload-client": "^10.0.0",
     "apollo-utilities": "^1.0.21",
     "bnc-assist": "0.10.3",
+    "bnc-onboard": "^1.2.1",
     "decimal.js": "^10.0.1",
     "emotion": "^9.2.6",
     "es6-promisify": "^6.0.0",

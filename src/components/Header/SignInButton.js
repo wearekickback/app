@@ -30,11 +30,18 @@ function SignInButton() {
     hideTooltip,
     signIn,
     networkState,
-    reloadUserAddress
+    reloadUserAddress,
+    setUpWallet,
+    web3
   }) => async () => {
     hideTooltip()
-    const address = await reloadUserAddress()
-    if (!networkState.allGood || !address) {
+    if (!web3) {
+      web3 = await setUpWallet({
+        action: 'Sign In',
+        expectedNetworkId: networkState.expectedNetworkId
+      })
+    }
+    if (!networkState.allGood) {
       return showTooltip()
     } else {
       signIn()
@@ -49,7 +56,9 @@ function SignInButton() {
         networkState,
         loggedIn,
         signIn,
-        showModal
+        showModal,
+        setUpWallet,
+        web3
       }) => {
         const twitterProfile =
           userProfile &&
@@ -81,7 +90,9 @@ function SignInButton() {
                   hideTooltip,
                   signIn,
                   reloadUserAddress,
-                  networkState
+                  networkState,
+                  setUpWallet,
+                  web3
                 })}
                 analyticsId="Sign In"
               >
