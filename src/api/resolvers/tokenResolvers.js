@@ -273,10 +273,9 @@ const resolvers = {
       return { address }
     },
     async getTokenAllowance(_, { tokenAddress, partyAddress }) {
-      const web3 = await getWeb3Read()
-      const account = await getAccount()
-
       try {
+        const web3 = await getWeb3Read()
+        const account = await getAccount()
         // If token is Ether then give ether balance as allowance
         if (isEmptyAddress(tokenAddress)) {
           const balance = await web3.eth.getBalance(account)
