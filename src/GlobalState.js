@@ -37,6 +37,36 @@ const WALLET = 'wallet'
 const TOKEN_SECRET = 'kickback'
 const TOKEN_ALGORITHM = 'HS256'
 
+const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
+
+const wallets = [
+  { walletName: 'coinbase', preferred: true },
+  { walletName: 'trust', preferred: true },
+  { walletName: 'metamask', preferred: true },
+  { walletName: 'dapper', preferred: true },
+  { walletName: 'authereum', preferred: true },
+  {
+    walletName: 'fortmatic',
+    apiKey: 'pk_test_D91CF62E54A9AC42',
+    preferred: true
+  },
+  {
+    walletName: 'portis',
+    apiKey: '782eb0d4-5ebf-40f6-adfc-58bc2aea0076',
+    preferred: true
+  },
+  {
+    walletName: 'walletConnect',
+    infuraKey: process.env.REACT_APP_INFURA_KEY
+  },
+  {
+    walletName: 'squarelink',
+    apiKey: '14414f9bfd6463f45671'
+  },
+  { walletName: 'opera' },
+  { walletName: 'operaTouch' }
+]
+
 class Provider extends Component {
   state = {
     apolloClient: this.props.client,
@@ -59,78 +89,90 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action }) => {
+  setUpWallet = async ({ action, expectedNetworkId }) => {
     let web3
     // dappid is mandatory so will have throw away id for local usage.
 
-    const { onboard } = this.state
+    let { onboard } = this.state
+    if (!onboard) {
+      let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
+      onboard = Onboard({
+        dappId: BLOCKNATIVE_DAPPID || testid,
+        networkId: parseInt(expectedNetworkId),
+        walletCheck: walletChecks,
+        walletSelect: {
+          wallets: wallets
+        }
+      })
+      this.setState({ onboard })
+    }
 
     let result = {
       action,
       error: false,
-      hasBalance: false
+      hasBalance: false,
+      expectedNetworkId
     }
 
     try {
       // If user has chosen a wallet before then just use that.
-      console.log('onboarding', LocalStorage.getItem(WALLET))
-      const selected = await onboard.walletSelect(LocalStorage.getItem(WALLET))
+      const lastUsedWallet = LocalStorage.getItem(WALLET)
+      console.log('onboarding', lastUsedWallet)
+      const selected = await onboard.walletSelect(lastUsedWallet)
+
       if (selected) {
         const ready = await onboard.walletCheck()
 
         if (ready) {
           const walletState = onboard.getState()
           let {
-            mobileDevice,
-            network,
             address,
-            wallet: { name: currentProvider }
+            network,
+            balance,
+            wallet,
+            mobileDevice
+            // appNetworkId
           } = walletState
+
+          // Save this wallet provider for next login
+          LocalStorage.setItem(WALLET, wallet.name)
+
+          const web3 = new Web3(wallet.provider)
+          this.setState({ ...walletState, web3 })
 
           result = {
             mobileDevice,
-            currentProvider,
-            supportedNetwork: network,
-            accountAddress: address,
+            network,
+            address,
             ...result
           }
 
-          // console.log(web3, result.currentProvider)
-
-          // result.correctNetwork = network === parseInt(this.state.networkState.expectedNetworkId)
+          result.correctNetwork = network === parseInt(expectedNetworkId)
 
           // We want to know whether the users have any balances in their walllet
           // but don't want to know how much they do.
-          // result.hasBalance = parseInt(state.accountBalance || 0) > 0
-
-          // console.log('Connect to web3', JSON.stringify(result))
-          // track('Connect to web3', result)
-
-          // console.log(web3, result.currentProvider)
-          LocalStorage.setItem(WALLET, result.currentProvider)
-          console.log("I'm writing the new web3")
-          const web3 = new Web3(walletState.wallet.provider)
-          this.setState(
-            state => ({
-              ...walletState,
-              web3,
-              resetWallet: onboard.walletReset
-            }),
-            console.log
-          )
-          setProviderInstance(this)
-          console.log(this.state)
-          // this.reloadUserAddress()
+          result.hasBalance = parseInt(balance || 0) > 0
 
           return web3
+        } else {
+          // Connection to wallet failed
+          result.status = 'aborted'
+          result.error = true
         }
+      } else {
+        // User aborted set up
+        LocalStorage.setItem(WALLET)
+        result.status = 'aborted'
+        result.error = true
       }
     } catch (error) {
       console.log('error onboarding', error)
       result.status = error
       result.error = true
-      return web3
     }
+    console.log('Connect to web3', JSON.stringify(result))
+    track('Connect to web3', result)
+    return web3
   }
 
   signIn = async ({ dontForceSignIn } = {}) => {
@@ -191,7 +233,7 @@ class Provider extends Component {
 
   signOut = async () => {
     try {
-      this.state.resetWallet()
+      this.state.onboard.walletReset()
     } catch (error) {
       console.log(error)
     }
@@ -269,55 +311,10 @@ class Provider extends Component {
   }
 
   async componentDidMount() {
-    this.setState({ networkState: { expectedNetworkId: 42 } })
-    // await this.reloadUserAddress()
-
-    const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
-
-    const wallets = [
-      { walletName: 'coinbase', preferred: true },
-      { walletName: 'trust', preferred: true },
-      { walletName: 'metamask', preferred: true },
-      { walletName: 'dapper', preferred: true },
-      { walletName: 'authereum', preferred: true },
-      {
-        walletName: 'fortmatic',
-        apiKey: 'pk_test_D91CF62E54A9AC42',
-        preferred: true
-      },
-      {
-        walletName: 'portis',
-        apiKey: '782eb0d4-5ebf-40f6-adfc-58bc2aea0076',
-        preferred: true
-      },
-      {
-        walletName: 'walletConnect',
-        infuraKey: process.env.REACT_APP_INFURA_KEY
-      },
-      {
-        walletName: 'squarelink',
-        apiKey: '14414f9bfd6463f45671'
-      },
-      { walletName: 'opera' },
-      { walletName: 'operaTouch' }
-    ]
-
-    let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
-    const onboard = Onboard({
-      dappId: BLOCKNATIVE_DAPPID || testid,
-      networkId: 42,
-      walletCheck: walletChecks,
-      walletSelect: {
-        wallets: wallets
-      }
-    })
-
-    console.log(onboard)
-    this.setState({ onboard })
-    // try and sign in!
-    // await this.signIn({ dontForceSignIn: true })
-
     setProviderInstance(this)
+
+    // try and sign in!
+    await this.signIn({ dontForceSignIn: true })
   }
 
   setNetworkState = networkState => {
