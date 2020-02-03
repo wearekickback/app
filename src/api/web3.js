@@ -177,31 +177,15 @@ const getWeb3 = async () => {
   try {
     web3 = await getExistingWeb3(expectedNetworkId)
   } catch (err) {
-    console.log(err)
     console.log('Initializing web3')
-
-    // try {
     const { setUpWallet } = await getProvider()
     web3 = await setUpWallet({ action: 'Sign in', expectedNetworkId })
+
     if (!web3) {
       throw new Error(`Couldn't set up wallet`)
     }
-    // } catch {
-    //   try {
-    //     web3 = await connectToLocalNode()
-    //   } catch {
-    //     try {
-    //       web3 = connectToCloudNode()
-    //       networkState.readOnly = true
-    //     } catch {
-    //       networkState.allGood = false
-    //       throw new Error('Error setting up web3')
-    //     }
-    //   }
-    // }
+    pollForBlocks(web3)
   } finally {
-    // pollForBlocks(web3)
-
     const { networkId, networkName } = await getNetworkId(web3)
     networkState.networkId = networkId
     networkState.networkName = networkName
