@@ -43,13 +43,14 @@ const Link = styled('a')`
 
 function WalletButton() {
   const [showMenu, setShowMenu] = useState(false)
+  const toggleMenu = () => setShowMenu(!showMenu)
   return (
     <GlobalConsumer>
       {({ wallet, signOut, userAddress }) => {
         if (!wallet) return null
         return (
           <GuideWrapper>
-            <Button type="light" onClick={() => setShowMenu(!showMenu)}>
+            <Button type="light" onClick={toggleMenu}>
               Connected with {wallet.name}
             </Button>
 
@@ -73,7 +74,13 @@ function WalletButton() {
                     </ListItem>
                   )}
                   <ListItem>
-                    <Link href="#" onClick={signOut}>
+                    <Link
+                      href="#"
+                      onClick={() => {
+                        setShowMenu(false)
+                        signOut()
+                      }}
+                    >
                       Disconnect Wallet
                     </Link>
                   </ListItem>
