@@ -50,10 +50,6 @@ function SignInButton() {
   return (
     <GlobalConsumer>
       {({ userProfile, loggedIn, signIn, wallet }) => {
-        const twitterProfile =
-          userProfile &&
-          userProfile.social &&
-          userProfile.social.find(s => s.type === 'twitter')
         if (!wallet) {
           return (
             <Button type="light" onClick={signIn} analyticsId="Sign In">
