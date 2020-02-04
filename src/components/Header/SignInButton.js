@@ -3,10 +3,8 @@ import styled from 'react-emotion'
 import { Link } from 'react-router-dom'
 
 import { GlobalConsumer } from '../../GlobalState'
-import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
 import Avatar from '../User/Avatar'
-import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 
 const Account = styled(Link)`
   display: flex;
@@ -25,41 +23,9 @@ const Username = styled('div')`
 `
 
 function SignInButton() {
-  const _signIn = ({
-    showTooltip,
-    hideTooltip,
-    signIn,
-    networkState,
-    reloadUserAddress,
-    setUpWallet,
-    web3
-  }) => async () => {
-    hideTooltip()
-    if (!web3) {
-      web3 = await setUpWallet({
-        action: 'Sign In',
-        expectedNetworkId: networkState.expectedNetworkId
-      })
-    }
-    if (!networkState.allGood) {
-      return showTooltip()
-    } else {
-      signIn()
-    }
-  }
-
   return (
     <GlobalConsumer>
-      {({
-        reloadUserAddress,
-        userProfile,
-        networkState,
-        loggedIn,
-        signIn,
-        showModal,
-        setUpWallet,
-        web3
-      }) => {
+      {({ userProfile, loggedIn, signIn }) => {
         const twitterProfile =
           userProfile &&
           userProfile.social &&
@@ -81,26 +47,9 @@ function SignInButton() {
             </Account>
           </>
         ) : (
-          <Tooltip text={CANNOT_RESOLVE_ACCOUNT_ADDRESS} position="left">
-            {({ tooltipElement, showTooltip, hideTooltip }) => (
-              <Button
-                type="light"
-                onClick={_signIn({
-                  showTooltip,
-                  hideTooltip,
-                  signIn,
-                  reloadUserAddress,
-                  networkState,
-                  setUpWallet,
-                  web3
-                })}
-                analyticsId="Sign In"
-              >
-                {tooltipElement}
-                Sign in
-              </Button>
-            )}
-          </Tooltip>
+          <Button type="light" onClick={signIn} analyticsId="Sign In">
+            Sign in
+          </Button>
         )
       }}
     </GlobalConsumer>
