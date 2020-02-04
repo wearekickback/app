@@ -138,7 +138,7 @@ class Provider extends Component {
           LocalStorage.setItem(WALLET, wallet.name)
 
           const web3 = new Web3(wallet.provider)
-          this.setState({ ...walletState, web3 })
+          this.setState({ wallet, web3 })
 
           result = {
             mobileDevice,
