@@ -43,7 +43,7 @@ const wallets = [
   { walletName: 'coinbase', preferred: true },
   { walletName: 'trust', preferred: true },
   { walletName: 'metamask', preferred: true },
-  { walletName: 'dapper', preferred: true },
+  { walletName: 'dapper' },
   { walletName: 'authereum', preferred: true },
   {
     walletName: 'fortmatic',
@@ -57,7 +57,14 @@ const wallets = [
   },
   {
     walletName: 'walletConnect',
-    infuraKey: process.env.REACT_APP_INFURA_KEY
+    infuraKey: process.env.REACT_APP_INFURA_KEY,
+    preferred: true
+  },
+  {
+    walletName: 'torus',
+    buildEnv: 'production',
+    // showTorusButton: false,
+    preferred: true
   },
   {
     walletName: 'squarelink',
