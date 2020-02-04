@@ -9,7 +9,7 @@ import { track } from './api/analytics'
 import { BLOCKNATIVE_DAPPID } from './config'
 import { identify as logRocketIdentify } from './api/logRocket'
 import * as LocalStorage from './api/localStorage'
-import { getAccount } from './api/web3'
+import { getAccount, updateNetwork, pollForBlocks } from './api/web3'
 import { SIGN_IN } from './modals'
 import { LOGIN_USER_NO_AUTH } from './graphql/mutations'
 import { buildAuthHeaders } from './utils/requests'
@@ -95,11 +95,11 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action, expectedNetworkId }) => {
+  setUpWallet = async ({ action }) => {
     let web3
     // dappid is mandatory so will have throw away id for local usage.
 
-    let { onboard } = this.state
+    let { onboard, expectedNetworkId } = this.state
     if (!onboard) {
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
@@ -158,8 +158,7 @@ class Provider extends Component {
           // We want to know whether the users have any balances in their walllet
           // but don't want to know how much they do.
           result.hasBalance = parseInt(balance || 0) > 0
-
-          return web3
+          pollForBlocks(web3)
         } else {
           // Connection to wallet failed
           result.status = 'aborted'
@@ -184,6 +183,10 @@ class Provider extends Component {
   signIn = async ({ dontForceSignIn } = {}) => {
     if (this.state.loggedIn) {
       return
+    }
+
+    if (!dontForceSignIn && !this.state.wallet) {
+      await this.setUpWallet({ action: 'Sign in' })
     }
 
     // let's request user's account address
@@ -318,6 +321,9 @@ class Provider extends Component {
 
   async componentDidMount() {
     setProviderInstance(this)
+
+    // Get which network app is on
+    await updateNetwork()
 
     // try and sign in!
     await this.signIn({ dontForceSignIn: true })

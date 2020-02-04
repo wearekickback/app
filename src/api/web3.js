@@ -104,7 +104,7 @@ const connectToCloudNode = () => {
   }
 }
 
-const pollForBlocks = web3 => {
+export const pollForBlocks = web3 => {
   setInterval(async () => {
     try {
       const block = await web3.eth.getBlock('latest')
@@ -115,20 +115,27 @@ const pollForBlocks = web3 => {
   }, 10000)
 }
 
-const getExistingWeb3 = async expectedNetworkId => {
-  const {
-    state: { web3 }
-  } = await getProvider()
-  const { networkId } = await getNetworkId(web3)
-  if (networkId !== expectedNetworkId) {
-    throw new Error('Existing web3 is not on the right network')
+const getWeb3 = async () => {
+  let web3
+
+  const { expectedNetworkId } = await getExpectedNetworkId()
+
+  try {
+    const { state } = await getProvider()
+    web3 = state.web3
+    const { networkId } = await getNetworkId(web3)
+    if (networkId !== expectedNetworkId) {
+      throw new Error('Existing web3 is not on correct network')
+    }
+  } catch (err) {
+    throw new Error(`Couldn't get wallet`)
+  } finally {
+    updateNetwork(web3)
   }
   return web3
 }
 
-const getWeb3 = async () => {
-  let web3
-
+export const updateNetwork = async web3 => {
   networkState = { allGood: true }
   const {
     expectedNetworkId,
@@ -138,17 +145,6 @@ const getWeb3 = async () => {
   networkState.expectedNetworkName = expectedNetworkName
 
   try {
-    web3 = await getExistingWeb3(expectedNetworkId)
-  } catch (err) {
-    console.log('Initializing web3')
-    const { setUpWallet } = await getProvider()
-    web3 = await setUpWallet({ action: 'Sign in', expectedNetworkId })
-
-    if (!web3) {
-      throw new Error(`Couldn't set up wallet`)
-    }
-    pollForBlocks(web3)
-  } finally {
     const { networkId, networkName } = await getNetworkId(web3)
     networkState.networkId = networkId
     networkState.networkName = networkName
@@ -157,21 +153,23 @@ const getWeb3 = async () => {
       networkState.wrongNetwork = true
       networkState.allGood = false
     }
-
-    // update global state with current network state
-    updateGlobalState()
+  } catch (error) {
+    networkState.allGood = false
   }
-  return web3
+
+  // update global state with current network state
+  updateGlobalState()
 }
 
-export const getWeb3Read = lazyAsync(async () => {
-  // try {
-  // If browser's web3 is on correct network then use that
-  // return getExistingWeb3("42")
-  // } catch {
-  return connectToCloudNode()
-  // }
-})
+export const getWeb3Read = async () => {
+  try {
+    // If browser's web3 is on correct network then use that
+    const web3 = await getWeb3()
+    return web3
+  } catch {
+    return connectToCloudNode()
+  }
+}
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
