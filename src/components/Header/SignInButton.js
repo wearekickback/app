@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
-import Avatar from '../User/Avatar'
+import TwitterAvatar from '../User/TwitterAvatar'
 
 const Account = styled(Link)`
   display: flex;
@@ -23,26 +23,11 @@ const Username = styled('div')`
 `
 
 const UserProfileButton = ({ userProfile }) => {
-  const twitterProfile =
-    userProfile &&
-    userProfile.social &&
-    userProfile.social.find(s => s.type === 'twitter')
   return (
-    <>
-      {/* <Notifications>Notification</Notifications> */}
-      <Account to={`/user/${userProfile.username}`}>
-        {userProfile ? (
-          <Username data-testid="userprofile-name">
-            {userProfile.username}
-          </Username>
-        ) : null}
-        <Avatar
-          src={`https://avatars.io/twitter/${
-            twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
-          }/medium`}
-        />
-      </Account>
-    </>
+    <Account to={`/user/${userProfile.username}`}>
+      <Username data-testid="userprofile-name">{userProfile.username}</Username>
+      <TwitterAvatar user={userProfile} size={10} scale={4} />
+    </Account>
   )
 }
 
@@ -50,16 +35,11 @@ function SignInButton() {
   return (
     <GlobalConsumer>
       {({ userProfile, loggedIn, signIn, wallet }) => {
-        if (!wallet) {
-          return (
-            <Button type="light" onClick={signIn} analyticsId="Sign In">
-              Connect to Wallet
-            </Button>
-          )
-        } else if (loggedIn && userProfile) {
+        if (!wallet) return null
+
+        if (loggedIn && userProfile) {
           return <UserProfileButton userProfile={userProfile} />
         }
-
         return (
           <Button type="light" onClick={signIn} analyticsId="Sign In">
             Sign in

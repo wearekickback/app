@@ -46,8 +46,14 @@ function WalletButton() {
   const toggleMenu = () => setShowMenu(!showMenu)
   return (
     <GlobalConsumer>
-      {({ wallet, signOut, userAddress }) => {
-        if (!wallet) return null
+      {({ wallet, signIn, signOut, userAddress }) => {
+        if (!wallet) {
+          return (
+            <Button type="light" onClick={signIn} analyticsId="Sign In">
+              Connect to Wallet
+            </Button>
+          )
+        }
         return (
           <GuideWrapper>
             <Button type="light" onClick={toggleMenu}>
