@@ -2,12 +2,14 @@ import React from 'react'
 import styled from 'react-emotion'
 
 import { GlobalConsumer } from '../../GlobalState'
+import c from '../../colours'
 
 const Link = styled('a')`
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: ${c.primary400};
 `
 
 const EtherScanLink = ({ address, tx, children }) => (
