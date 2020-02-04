@@ -79,7 +79,6 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    wallet: LocalStorage.getItem(WALLET),
     networkState: {},
     web3: null
   }
