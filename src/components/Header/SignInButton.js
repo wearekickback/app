@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { GlobalConsumer } from '../../GlobalState'
 import Tooltip from '../Tooltip'
 import Button from '../Forms/Button'
-import Avatar from '../User/Avatar'
+import TwitterAvatar from '../User/TwitterAvatar'
 import { CANNOT_RESOLVE_ACCOUNT_ADDRESS } from '../../utils/errors'
 import Assist from './Assist'
 
@@ -58,24 +58,14 @@ function SignInButton() {
         signIn,
         showModal
       }) => {
-        const twitterProfile =
-          userProfile &&
-          userProfile.social &&
-          userProfile.social.find(s => s.type === 'twitter')
         return loggedIn && userProfile ? (
           <>
             {/* <Notifications>Notification</Notifications> */}
             <Account to={`/user/${userProfile.username}`}>
-              {userProfile ? (
-                <Username data-testid="userprofile-name">
-                  {userProfile.username}
-                </Username>
-              ) : null}
-              <Avatar
-                src={`https://avatars.io/twitter/${
-                  twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
-                }/medium`}
-              />
+              <Username data-testid="userprofile-name">
+                {userProfile.username}
+              </Username>
+              <TwitterAvatar user={userProfile} size={10} scale={4} />
             </Account>
           </>
         ) : (
