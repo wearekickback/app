@@ -48,7 +48,14 @@ const Approve = ({
               {wallet && wallet.url && (
                 <p>
                   You're currently connected to {wallet.name}. Click{' '}
-                  <a href={wallet.url}>here</a> to top up.
+                  <a
+                    href={wallet.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                  </a>{' '}
+                  to top up.
                 </p>
               )}
             </WarningBox>
