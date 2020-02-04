@@ -22,31 +22,49 @@ const Username = styled('div')`
   text-overflow: ellipsis;
 `
 
+const UserProfileButton = ({ userProfile }) => {
+  const twitterProfile =
+    userProfile &&
+    userProfile.social &&
+    userProfile.social.find(s => s.type === 'twitter')
+  return (
+    <>
+      {/* <Notifications>Notification</Notifications> */}
+      <Account to={`/user/${userProfile.username}`}>
+        {userProfile ? (
+          <Username data-testid="userprofile-name">
+            {userProfile.username}
+          </Username>
+        ) : null}
+        <Avatar
+          src={`https://avatars.io/twitter/${
+            twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
+          }/medium`}
+        />
+      </Account>
+    </>
+  )
+}
+
 function SignInButton() {
   return (
     <GlobalConsumer>
-      {({ userProfile, loggedIn, signIn }) => {
+      {({ userProfile, loggedIn, signIn, wallet }) => {
         const twitterProfile =
           userProfile &&
           userProfile.social &&
           userProfile.social.find(s => s.type === 'twitter')
-        return loggedIn && userProfile ? (
-          <>
-            {/* <Notifications>Notification</Notifications> */}
-            <Account to={`/user/${userProfile.username}`}>
-              {userProfile ? (
-                <Username data-testid="userprofile-name">
-                  {userProfile.username}
-                </Username>
-              ) : null}
-              <Avatar
-                src={`https://avatars.io/twitter/${
-                  twitterProfile ? twitterProfile.value : 'unknowntwitter123abc'
-                }/medium`}
-              />
-            </Account>
-          </>
-        ) : (
+        if (!wallet) {
+          return (
+            <Button type="light" onClick={signIn} analyticsId="Sign In">
+              Connect to Wallet
+            </Button>
+          )
+        } else if (loggedIn && userProfile) {
+          return <UserProfileButton userProfile={userProfile} />
+        }
+
+        return (
           <Button type="light" onClick={signIn} analyticsId="Sign In">
             Sign in
           </Button>
