@@ -112,18 +112,19 @@ class EventCTA extends Component {
   _renderActiveRsvpWrapper() {
     const {
       myParticipantEntry,
-      party: { tokenAddress, address, deposit, participants, participantLimit }
+      party: { tokenAddress, address, deposit, participants, participantLimit },
+      userAddress
     } = this.props
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
         return (
           <SafeQuery
             query={TOKEN_ALLOWANCE_QUERY}
-            variables={{ tokenAddress, partyAddress: address }}
+            variables={{ userAddress, tokenAddress, partyAddress: address }}
           >
             {({
               data: {
-                tokenAllowance: { allowance, balance, account }
+                tokenAllowance: { allowance, balance }
               },
               loading,
               refetch
@@ -142,7 +143,7 @@ class EventCTA extends Component {
                 balance,
                 isAllowed,
                 hasBalance,
-                account,
+                userAddress,
                 refetch
               })
             }}
@@ -172,7 +173,7 @@ class EventCTA extends Component {
     hasBalance,
     balance,
     refetch,
-    account
+    userAddress
   }) {
     return (
       <>
@@ -206,7 +207,7 @@ class EventCTA extends Component {
                   isAllowed={isAllowed}
                   hasBalance={hasBalance}
                   refetch={refetch}
-                  account={account}
+                  userAddress={userAddress}
                 />
                 <RSVP
                   tokenAddress={tokenAddress}
