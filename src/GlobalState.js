@@ -256,6 +256,7 @@ class Provider extends Component {
     this.setState(state => ({
       auth: {
         ...state.auth,
+        address: undefined,
         token: undefined,
         profile: null,
         loggedIn: false
