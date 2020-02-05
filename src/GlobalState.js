@@ -69,7 +69,7 @@ const wallets = [
   {
     walletName: 'torus',
     buildEnv: 'production',
-    // showTorusButton: false,
+    showTorusButton: false,
     preferred: true
   },
   {
