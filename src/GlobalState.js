@@ -6,7 +6,13 @@ import Web3 from 'web3'
 import Onboard from 'bnc-onboard'
 
 import { track } from './api/analytics'
-import { BLOCKNATIVE_DAPPID } from './config'
+import {
+  BLOCKNATIVE_DAPPID,
+  INFURA_KEY,
+  FORTMATIC_KEY,
+  PORTIS_KEY,
+  SQUARELINK_KEY
+} from './config'
 import { identify as logRocketIdentify } from './api/logRocket'
 import * as LocalStorage from './api/localStorage'
 import { getAccount, updateNetwork, pollForBlocks } from './api/web3'
@@ -47,17 +53,17 @@ const wallets = [
   { walletName: 'authereum', preferred: true },
   {
     walletName: 'fortmatic',
-    apiKey: process.env.REACT_APP_FORTMATIC_KEY,
+    apiKey: FORTMATIC_KEY,
     preferred: true
   },
   {
     walletName: 'portis',
-    apiKey: process.env.REACT_APP_PORTIS_KEY,
+    apiKey: PORTIS_KEY,
     preferred: true
   },
   {
     walletName: 'walletConnect',
-    infuraKey: process.env.REACT_APP_INFURA_KEY,
+    infuraKey: INFURA_KEY,
     preferred: true
   },
   {
@@ -68,7 +74,7 @@ const wallets = [
   },
   {
     walletName: 'squarelink',
-    apiKey: process.env.REACT_APP_SQUARELINK_KEY
+    apiKey: SQUARELINK_KEY
   },
   { walletName: 'opera' },
   { walletName: 'operaTouch' }

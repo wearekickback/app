@@ -2,7 +2,11 @@ import { Deployer } from '@wearekickback/contracts'
 import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
 
-import { DEPLOYER_CONTRACT_ADDRESS, DAI_CONTRACT_ADDRESS } from '../config'
+import {
+  DEPLOYER_CONTRACT_ADDRESS,
+  DAI_CONTRACT_ADDRESS,
+  INFURA_KEY
+} from '../config'
 import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
@@ -41,13 +45,13 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://mainnet.infura.io/v3/${INFURA_KEY}`
     case '3':
-      return `https://ropsten.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://ropsten.infura.io/v3/${INFURA_KEY}`
     case '4':
-      return `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://rinkeby.infura.io/v3/${INFURA_KEY}`
     case '42':
-      return `https://kovan.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`
+      return `https://kovan.infura.io/v3/${INFURA_KEY}`
 
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
