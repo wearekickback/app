@@ -384,7 +384,6 @@ class Provider extends Component {
           closeModal: this.closeModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
           setUserProfile: this.setUserProfile,
-          setUpWallet: this.setUpWallet,
           web3: this.state.web3,
           wallet: this.state.wallet
         }}
