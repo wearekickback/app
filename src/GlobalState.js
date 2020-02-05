@@ -367,7 +367,6 @@ class Provider extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <GlobalContext.Provider
         value={{
