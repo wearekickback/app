@@ -110,6 +110,9 @@ class Provider extends Component {
         networkId: parseInt(expectedNetworkId),
         walletCheck: walletChecks,
         walletSelect: {
+          heading: 'Select a wallet to connect to Kickback',
+          description:
+            'To use Kickback you need an Ethereum wallet. Please select one from below:',
           wallets: wallets
         }
       })
