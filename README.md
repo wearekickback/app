@@ -109,7 +109,7 @@ Currently Kickback injects data into it's React front-end using the Apollo Graph
 
 ## Setup
 
-Clone the repo
+Clone the repo and install dependencies
 
 ```
 git clone https://github.com/wearekickback/app.git
@@ -117,17 +117,12 @@ cd app
 yarn
 ```
 
-Add `src/config/env.json` with the following information
+Generate `src/config/env.json`
 
 ```
-{
-  "DEPLOYER_CONTRACT_ADDRESS": "0x9C7DbAe0A2EeF05D08E2e18Ff6173dFf7c5537eB",
-  "API_URL": "https://kovan.api.kickback.events",
-  "NUM_CONFIRMATIONS": 1,
-  "ENV": "kovan",
-  "DAI_CONTRACT_ADDRESS": "0x7d669a64deb8a4a51eea755bb0e19fd39ce25ae9"
-}
+yarn setup --kovan
 ```
+Start the development server
 
 ```
 yarn start

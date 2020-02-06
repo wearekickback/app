@@ -89,8 +89,13 @@ export const TOKEN_QUERY = gql`
 `
 
 export const TOKEN_ALLOWANCE_QUERY = gql`
-  query getTokenAllowance($tokenAddress: String!, $partyAddress: String!) {
+  query getTokenAllowance(
+    $userAddress: String!
+    $tokenAddress: String!
+    $partyAddress: String!
+  ) {
     tokenAllowance: getTokenAllowance(
+      userAddress: $userAddress
       tokenAddress: $tokenAddress
       partyAddress: $partyAddress
     ) @client

@@ -19,13 +19,13 @@ const Approve = ({
   isAllowed,
   hasBalance,
   refetch,
-  account
+  userAddress
 }) => {
   const canRSVP = isAllowed && hasBalance
 
   if (canRSVP) {
     return <Going>You can now RSVP</Going>
-  } else if (!account) {
+  } else if (!userAddress) {
     return (
       <WarningBox>
         We cannot read your wallet balance. Please Sign in first.
@@ -48,7 +48,14 @@ const Approve = ({
               {wallet && wallet.url && (
                 <p>
                   You're currently connected to {wallet.name}. Click{' '}
-                  <a href={wallet.url}>here</a> to top up.
+                  <a
+                    href={wallet.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                  </a>{' '}
+                  to top up.
                 </p>
               )}
             </WarningBox>

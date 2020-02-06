@@ -6,10 +6,16 @@ import Web3 from 'web3'
 import Onboard from 'bnc-onboard'
 
 import { track } from './api/analytics'
-import { BLOCKNATIVE_DAPPID } from './config'
+import {
+  BLOCKNATIVE_DAPPID,
+  INFURA_KEY,
+  FORTMATIC_KEY,
+  PORTIS_KEY,
+  SQUARELINK_KEY
+} from './config'
 import { identify as logRocketIdentify } from './api/logRocket'
 import * as LocalStorage from './api/localStorage'
-import { getAccount } from './api/web3'
+import { getAccount, updateNetwork, pollForBlocks } from './api/web3'
 import { SIGN_IN } from './modals'
 import { LOGIN_USER_NO_AUTH } from './graphql/mutations'
 import { buildAuthHeaders } from './utils/requests'
@@ -43,25 +49,32 @@ const wallets = [
   { walletName: 'coinbase', preferred: true },
   { walletName: 'trust', preferred: true },
   { walletName: 'metamask', preferred: true },
-  { walletName: 'dapper', preferred: true },
+  { walletName: 'dapper' },
   { walletName: 'authereum', preferred: true },
   {
     walletName: 'fortmatic',
-    apiKey: process.env.REACT_APP_FORTMATIC_KEY,
+    apiKey: FORTMATIC_KEY,
     preferred: true
   },
   {
     walletName: 'portis',
-    apiKey: process.env.REACT_APP_PORTIS_KEY,
+    apiKey: PORTIS_KEY,
     preferred: true
   },
   {
     walletName: 'walletConnect',
-    infuraKey: process.env.REACT_APP_INFURA_KEY
+    infuraKey: INFURA_KEY,
+    preferred: true
+  },
+  {
+    walletName: 'torus',
+    buildEnv: 'production',
+    showTorusButton: false,
+    preferred: true
   },
   {
     walletName: 'squarelink',
-    apiKey: process.env.REACT_APP_SQUARELINK_KEY
+    apiKey: SQUARELINK_KEY
   },
   { walletName: 'opera' },
   { walletName: 'operaTouch' }
@@ -72,7 +85,6 @@ class Provider extends Component {
     apolloClient: this.props.client,
     currentModal: null,
     auth: LocalStorage.getItem(AUTH) || {},
-    wallet: LocalStorage.getItem(WALLET),
     networkState: {},
     web3: null
   }
@@ -89,11 +101,14 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action, expectedNetworkId }) => {
+  setUpWallet = async ({ action }) => {
     let web3
     // dappid is mandatory so will have throw away id for local usage.
 
-    let { onboard } = this.state
+    let {
+      onboard,
+      networkState: { expectedNetworkId }
+    } = this.state
     if (!onboard) {
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
@@ -101,6 +116,9 @@ class Provider extends Component {
         networkId: parseInt(expectedNetworkId),
         walletCheck: walletChecks,
         walletSelect: {
+          heading: 'Select a wallet to connect to Kickback',
+          description:
+            'To use Kickback you need an Ethereum wallet. Please select one from below:',
           wallets: wallets
         }
       })
@@ -138,7 +156,7 @@ class Provider extends Component {
           LocalStorage.setItem(WALLET, wallet.name)
 
           const web3 = new Web3(wallet.provider)
-          this.setState({ ...walletState, web3 })
+          this.setState({ wallet, web3 })
 
           result = {
             mobileDevice,
@@ -152,8 +170,7 @@ class Provider extends Component {
           // We want to know whether the users have any balances in their walllet
           // but don't want to know how much they do.
           result.hasBalance = parseInt(balance || 0) > 0
-
-          return web3
+          pollForBlocks(web3)
         } else {
           // Connection to wallet failed
           result.status = 'aborted'
@@ -178,6 +195,10 @@ class Provider extends Component {
   signIn = async ({ dontForceSignIn } = {}) => {
     if (this.state.loggedIn) {
       return
+    }
+
+    if (!dontForceSignIn && !this.state.wallet) {
+      await this.setUpWallet({ action: 'Sign in' })
     }
 
     // let's request user's account address
@@ -241,6 +262,7 @@ class Provider extends Component {
     this.setState(state => ({
       auth: {
         ...state.auth,
+        address: undefined,
         token: undefined,
         profile: null,
         loggedIn: false
@@ -313,6 +335,9 @@ class Provider extends Component {
   async componentDidMount() {
     setProviderInstance(this)
 
+    // Get which network app is on
+    await updateNetwork()
+
     // try and sign in!
     await this.signIn({ dontForceSignIn: true })
   }
@@ -342,7 +367,6 @@ class Provider extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <GlobalContext.Provider
         value={{
@@ -360,7 +384,6 @@ class Provider extends Component {
           closeModal: this.closeModal,
           setAuthTokenFromSignature: this.setAuthTokenFromSignature,
           setUserProfile: this.setUserProfile,
-          setUpWallet: this.setUpWallet,
           web3: this.state.web3,
           wallet: this.state.wallet
         }}
