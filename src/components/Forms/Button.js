@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Link } from 'react-router-dom'
-
 import styled from 'react-emotion'
 
 import { track } from '../../api/analytics'
-import { isExternal } from '../../utils/links'
+import TrackedLink from '../Links/TrackedLink'
 
 function getButtonStyles(type) {
   switch (type) {
@@ -75,22 +73,6 @@ const ButtonContainer = styled('button')`
   ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
   ${({ type }) => getButtonStyles(type)};
 `
-
-const TrackedLink = ({ analyticsId, ...props }) => {
-  const _onClick = () => {
-    if (analyticsId) track(`Click: ${analyticsId}`)
-  }
-
-  return isExternal(props.to) ? (
-    <a onClick={_onClick} href={props.to} {...props}>
-      {props.children}
-    </a>
-  ) : (
-    <Link onClick={_onClick} {...props}>
-      {props.children}
-    </Link>
-  )
-}
 
 export const ButtonLink = styled(TrackedLink)`
   ${props => DefaultButtonStyles(props)} ${({ wide }) =>

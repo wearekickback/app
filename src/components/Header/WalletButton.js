@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
-import EtherScanLink from '../ExternalLinks/EtherScanLink'
+import EtherScanLink from '../Links/EtherScanLink'
 import c from '../../colours'
 
 const GuideWrapper = styled('div')`
