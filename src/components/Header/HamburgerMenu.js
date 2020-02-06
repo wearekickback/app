@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
+import WalletButton from './WalletButton'
 import SignInButton from './SignInButton'
 
 const HamburgerMenuContainer = styled('div')`
@@ -26,6 +27,7 @@ function isExternal(url) {
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
+      <WalletButton />
       <SignInButton />
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
