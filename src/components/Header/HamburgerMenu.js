@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
-import WalletButton from './WalletButton'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
 import SignInButton from './SignInButton'
 
 const HamburgerMenuContainer = styled('div')`
@@ -27,8 +28,30 @@ function isExternal(url) {
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
-      <WalletButton />
       <SignInButton />
+      <GlobalConsumer>
+        {({ wallet, signIn, signOut, userAddress }) => {
+          if (!wallet) {
+            return (
+              <Button type="light" onClick={signIn} analyticsId="Sign In">
+                Connect to Wallet
+              </Button>
+            )
+          }
+          return (
+            <>
+              {wallet.url && (
+                <a href={wallet.url} target="_blank" rel="noopener noreferrer">
+                  Open Wallet
+                </a>
+              )}
+              <Link to="#" onClick={signOut}>
+                Disconnect Wallet
+              </Link>
+            </>
+          )
+        }}
+      </GlobalConsumer>
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
       {links.map(l =>

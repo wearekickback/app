@@ -9,6 +9,7 @@ import TwitterAvatar from '../User/TwitterAvatar'
 const Account = styled(Link)`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   cursor: pointer;
 `
 const Username = styled('div')`
