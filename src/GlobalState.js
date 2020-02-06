@@ -173,6 +173,7 @@ class Provider extends Component {
           pollForBlocks(web3)
         } else {
           // Connection to wallet failed
+          LocalStorage.setItem(WALLET)
           result.status = 'aborted'
           result.error = true
         }
