@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
+
 import styled from 'react-emotion'
 
 import { track } from '../../api/analytics'
+import { isExternal } from '../../utils/links'
 
 function getButtonStyles(type) {
   switch (type) {
@@ -73,27 +76,27 @@ const ButtonContainer = styled('button')`
   ${({ type }) => getButtonStyles(type)};
 `
 
-const Link = styled('a')`
+const TrackedLink = ({ analyticsId, ...props }) => {
+  const _onClick = () => {
+    if (analyticsId) track(`Click: ${analyticsId}`)
+  }
+
+  return isExternal(props.to) ? (
+    <a onClick={_onClick} href={props.to} {...props}>
+      {props.children}
+    </a>
+  ) : (
+    <Link onClick={_onClick} {...props}>
+      {props.children}
+    </Link>
+  )
+}
+
+export const ButtonLink = styled(TrackedLink)`
   ${props => DefaultButtonStyles(props)} ${({ wide }) =>
     wide ? 'width: 100%;' : ''};
   ${({ twoThirds }) => (twoThirds ? 'width: 66%;' : '')};
 `
-
-export class ButtonLink extends PureComponent {
-  _onClick = () => {
-    track(`Click: ${this.props.analyticsId}`)
-  }
-
-  render() {
-    const { children, ...props } = this.props
-
-    return (
-      <Link onClick={this._onClick} {...props}>
-        {children}
-      </Link>
-    )
-  }
-}
 
 export default class Button extends PureComponent {
   _onClick = () => {

@@ -5,6 +5,7 @@ import { links } from './Guide'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import SignInButton from './SignInButton'
+import { isExternal } from '../../utils/links'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
@@ -20,10 +21,6 @@ const HamburgerMenuContainer = styled('div')`
     padding: 10px 0;
   }
 `
-
-function isExternal(url) {
-  return /^https/.test(url)
-}
 
 function HamburgerMenu({ isMenuOpen }) {
   return (
