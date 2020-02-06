@@ -5,7 +5,7 @@ import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 import ReactMarkdown from 'react-markdown'
 
-import EtherScanLink from '../ExternalLinks/EtherScanLink'
+import EtherScanLink from '../Links/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'

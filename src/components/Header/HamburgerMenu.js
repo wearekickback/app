@@ -5,6 +5,7 @@ import { links } from './Guide'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import SignInButton from './SignInButton'
+import TrackedLink from '../Links/TrackedLink'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
@@ -20,10 +21,6 @@ const HamburgerMenuContainer = styled('div')`
     padding: 10px 0;
   }
 `
-
-function isExternal(url) {
-  return /^https/.test(url)
-}
 
 function HamburgerMenu({ isMenuOpen }) {
   return (
@@ -41,9 +38,13 @@ function HamburgerMenu({ isMenuOpen }) {
           return (
             <>
               {wallet.url && (
-                <a href={wallet.url} target="_blank" rel="noopener noreferrer">
+                <TrackedLink
+                  to={wallet.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Open Wallet
-                </a>
+                </TrackedLink>
               )}
               <Link to="#" onClick={signOut}>
                 Disconnect Wallet
@@ -54,13 +55,9 @@ function HamburgerMenu({ isMenuOpen }) {
       </GlobalConsumer>
       <Link to="/events">Events</Link>
       <Link to="/pricing">Pricing</Link>
-      {links.map(l =>
-        isExternal(l.url) ? (
-          <Link to={l.href}>{l.label}</Link>
-        ) : (
-          <a href={l.href}>{l.label}</a>
-        )
-      )}
+      {links.map(l => (
+        <TrackedLink to={l.href}>{l.label}</TrackedLink>
+      ))}
     </HamburgerMenuContainer>
   )
 }
