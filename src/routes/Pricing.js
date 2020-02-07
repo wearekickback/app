@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { P, H3, H1 } from '../components/Typography/Basic'
+import { ButtonLink } from '../components/Forms/Button'
 
 const PricingContainer = styled('div')`
   margin: 0 auto 0;
@@ -13,6 +14,22 @@ const PricingContainer = styled('div')`
 function Pricing() {
   return (
     <PricingContainer>
+      <H1>#EthDenver special Deal!</H1>
+      <P>
+        Want to host an event and want to make sure people come? Try Kickback to
+        make them pledge to come to your event! We are giving away free
+        membership for the first 5 sign up to host events during EthDenver.
+        Mention #Denver in our early access request form!
+        <br />
+        <br />
+        <ButtonLink
+          analyticsId="Request Early Access"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+        >
+          Request early access
+        </ButtonLink>
+      </P>
+
       <H1>Pricing</H1>
       <H3>The event organiser pays $1 per 1 turn up</H3>
       <P>It’s very simple!</P>

@@ -28,7 +28,7 @@ function HamburgerMenu({ isMenuOpen }) {
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
       <SignInButton />
       <Link to="/events">Events</Link>
-      <Link to="/pricing">Pricing</Link>
+      <Link to="/pricing">Hosting Events at #EthDenver</Link>
       {links.map(l =>
         isExternal(l.url) ? (
           <Link to={l.href}>{l.label}</Link>
