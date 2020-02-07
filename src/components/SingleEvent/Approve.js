@@ -17,12 +17,19 @@ const Approve = ({
   decimals,
   isAllowed,
   hasBalance,
-  refetch
+  refetch,
+  account
 }) => {
   const canRSVP = isAllowed && hasBalance
 
   if (canRSVP) {
     return <Going>You can now RSVP</Going>
+  } else if (!account) {
+    return (
+      <WarningBox>
+        We cannot read your wallet balance. Please Sign in first.
+      </WarningBox>
+    )
   } else if (!hasBalance) {
     return (
       <WarningBox>
