@@ -38,7 +38,7 @@ export default withApollo(function CheckIn({ party, client }) {
       addresses.includes(participant.user.address)
     )
 
-    attendees.map(participant =>
+    attendees.forEach(participant =>
       client.mutation({
         mutation: MARK_USER_ATTENDED,
         variables: { address: party.address, participant }
