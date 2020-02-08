@@ -49,7 +49,7 @@ const wallets = [
   { walletName: 'coinbase', preferred: true },
   { walletName: 'trust', preferred: true },
   { walletName: 'metamask', preferred: true },
-  { walletName: 'dapper' },
+  // { walletName: 'dapper' },
   { walletName: 'authereum', preferred: true },
   {
     walletName: 'fortmatic',
@@ -135,7 +135,6 @@ class Provider extends Component {
     try {
       // If user has chosen a wallet before then just use that.
       const lastUsedWallet = LocalStorage.getItem(WALLET)
-      console.log('onboarding', lastUsedWallet)
       const selected = await onboard.walletSelect(lastUsedWallet)
 
       if (selected) {
@@ -173,13 +172,13 @@ class Provider extends Component {
           pollForBlocks(web3)
         } else {
           // Connection to wallet failed
-          LocalStorage.setItem(WALLET)
+          LocalStorage.removeItem(WALLET)
           result.status = 'aborted'
           result.error = true
         }
       } else {
         // User aborted set up
-        LocalStorage.setItem(WALLET)
+        LocalStorage.removeItem(WALLET)
         result.status = 'aborted'
         result.error = true
       }
@@ -188,7 +187,6 @@ class Provider extends Component {
       result.status = error
       result.error = true
     }
-    console.log('Connect to web3', JSON.stringify(result))
     track('Connect to web3', result)
     return web3
   }
@@ -274,7 +272,7 @@ class Provider extends Component {
     }))
 
     // Wipe saved wallet
-    LocalStorage.setItem(WALLET)
+    LocalStorage.removeItem(WALLET)
   }
 
   setUserProfile = profile => {

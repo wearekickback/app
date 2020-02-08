@@ -15,3 +15,11 @@ export function getItem(key) {
     return undefined
   }
 }
+
+export function removeItem(key) {
+  try {
+    localStorage.removeItem(key)
+  } catch (_) {
+    console.error(`Error clearing localStorage`, key)
+  }
+}
