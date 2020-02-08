@@ -40,7 +40,7 @@ if (argv.ropsten) {
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
-  appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
+  appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
 } else if (argv.rinkeby) {
   appConfig.ENV = 'rinkeby'
   appConfig.API_URL = 'https://rinkeby.api.kickback.events'
@@ -50,7 +50,7 @@ if (argv.ropsten) {
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
-  appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
+  appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
 } else if (argv.kovan) {
   appConfig.ENV = 'kovan'
   appConfig.API_URL = 'https://kovan.api.kickback.events'
@@ -60,7 +60,7 @@ if (argv.ropsten) {
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
-  appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
+  appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
 } else if (argv.alpha) {
   appConfig.ENV = 'alpha'
   appConfig.API_URL = 'https://alpha.api.kickback.events'
@@ -70,7 +70,7 @@ if (argv.ropsten) {
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
-  appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
+  appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
 } else if (argv.live) {
   appConfig.ENV = 'live'
   appConfig.API_URL = 'https://live.api.kickback.events'

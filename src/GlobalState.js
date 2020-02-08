@@ -49,7 +49,6 @@ const wallets = [
   { walletName: 'coinbase', preferred: true },
   { walletName: 'trust', preferred: true },
   { walletName: 'metamask', preferred: true },
-  // { walletName: 'dapper' },
   { walletName: 'authereum', preferred: true },
   {
     walletName: 'fortmatic',
@@ -76,6 +75,7 @@ const wallets = [
     walletName: 'squarelink',
     apiKey: SQUARELINK_KEY
   },
+  { walletName: 'dapper' },
   { walletName: 'opera' },
   { walletName: 'operaTouch' }
 ]
