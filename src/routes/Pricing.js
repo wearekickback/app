@@ -11,23 +11,39 @@ const PricingContainer = styled('div')`
   }
 `
 
+const CTAContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const Bold = styled('span')`
+  font-weight: bold;
+  color: #ff7a8a;
+`
+
 function Pricing() {
   return (
     <PricingContainer>
-      <H1>#EthDenver special Deal!</H1>
+      <H1>Free membership!</H1>
       <P>
-        Want to host an event and want to make sure people come? Try Kickback to
-        make them pledge to come to your event! We are giving away free
-        membership for the first 5 sign up to host events during EthDenver.
-        Mention #Denver in our early access request form!
+        To celebrate Ethereum Hackathon month (EthDenver, EthLondon UK,
+        EthParis) , we are giving away <Bold>5 free memberships</Bold> that
+        allow you to host an event during these hackathon weeks. To apply,
+        please fill in our early accessing form and mention #EthDenver,
+        #ETHLondonUK, or #ETHParis at the comment section.
+        <br />
+        The deadline is <Bold>12th Feburary</Bold> so be quick!
         <br />
         <br />
-        <ButtonLink
-          analyticsId="Request Early Access"
-          href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
-        >
-          Request early access
-        </ButtonLink>
+        <CTAContainer>
+          <ButtonLink
+            analyticsId="Request Early Access"
+            to="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+          >
+            Request early access
+          </ButtonLink>
+        </CTAContainer>
       </P>
 
       <H1>Pricing</H1>
