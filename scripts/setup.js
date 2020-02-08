@@ -38,7 +38,7 @@ if (argv.ropsten) {
   appConfig.ROLLBAR_TOKEN = '37e0bca9006a4a348e244ae2d233d660'
   appConfig.BLOCKNATIVE_DAPPID = '18cb2fa0-5941-43a2-b71d-07221c15a50f'
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
-  appConfig.FORTMATIC_KEY = 'pk_test_D91CF62E54A9AC42'
+  appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.rinkeby) {
@@ -48,7 +48,7 @@ if (argv.ropsten) {
   appConfig.ROLLBAR_TOKEN = 'e676d64e462b48d098a12db8a173598a'
   appConfig.BLOCKNATIVE_DAPPID = '27b3eac2-e46c-428a-9a0c-56cce2725d42'
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
-  appConfig.FORTMATIC_KEY = 'pk_test_D91CF62E54A9AC42'
+  appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.kovan) {
@@ -58,7 +58,7 @@ if (argv.ropsten) {
   appConfig.ROLLBAR_TOKEN = ''
   appConfig.BLOCKNATIVE_DAPPID = ''
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
-  appConfig.FORTMATIC_KEY = 'pk_test_D91CF62E54A9AC42'
+  appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.alpha) {
@@ -68,7 +68,7 @@ if (argv.ropsten) {
   appConfig.ROLLBAR_TOKEN = ''
   appConfig.BLOCKNATIVE_DAPPID = ''
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
-  appConfig.FORTMATIC_KEY = 'pk_test_D91CF62E54A9AC42'
+  appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.live) {
@@ -80,7 +80,7 @@ if (argv.ropsten) {
   appConfig.ROLLBAR_TOKEN = 'bfb8dfff7ff44f6fa6a13d4571447c28'
   appConfig.BLOCKNATIVE_DAPPID = '612ef703-3041-442c-b246-cf68604b8ce9'
   appConfig.INFURA_KEY = ''
-  appConfig.FORTMATIC_KEY = ''
+  appConfig.FORTMATIC_KEY = 'pk_live_34FA001C997028B0'
   appConfig.PORTIS_KEY = ''
   appConfig.SQUARELINK_KEY = ''
 }
