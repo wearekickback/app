@@ -9,7 +9,6 @@ import c from '../../colours'
 const GuideWrapper = styled('div')`
   margin-right: 2em;
   position: relative;
-}
 `
 
 const Menu = styled('div')`
