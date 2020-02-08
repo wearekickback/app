@@ -54,7 +54,7 @@ function HamburgerMenu({ isMenuOpen }) {
         }}
       </GlobalConsumer>
       <Link to="/events">Events</Link>
-      <Link to="/pricing">Hosting Events at #EthDenver</Link>
+      <Link to="/pricing">Free membership!</Link>
       {links.map(l => (
         <TrackedLink to={l.href}>{l.label}</TrackedLink>
       ))}
