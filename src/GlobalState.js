@@ -172,13 +172,13 @@ class Provider extends Component {
           pollForBlocks(web3)
         } else {
           // Connection to wallet failed
-          LocalStorage.setItem(WALLET)
+          LocalStorage.removeItem(WALLET)
           result.status = 'aborted'
           result.error = true
         }
       } else {
         // User aborted set up
-        LocalStorage.setItem(WALLET)
+        LocalStorage.removeItem(WALLET)
         result.status = 'aborted'
         result.error = true
       }
@@ -272,7 +272,7 @@ class Provider extends Component {
     }))
 
     // Wipe saved wallet
-    LocalStorage.setItem(WALLET)
+    LocalStorage.removeItem(WALLET)
   }
 
   setUserProfile = profile => {
