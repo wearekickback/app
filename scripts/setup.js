@@ -39,7 +39,7 @@ if (argv.ropsten) {
   appConfig.BLOCKNATIVE_DAPPID = '18cb2fa0-5941-43a2-b71d-07221c15a50f'
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
-  appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
+  appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.rinkeby) {
   appConfig.ENV = 'rinkeby'
@@ -49,7 +49,7 @@ if (argv.ropsten) {
   appConfig.BLOCKNATIVE_DAPPID = '27b3eac2-e46c-428a-9a0c-56cce2725d42'
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
-  appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
+  appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.kovan) {
   appConfig.ENV = 'kovan'
@@ -59,7 +59,7 @@ if (argv.ropsten) {
   appConfig.BLOCKNATIVE_DAPPID = ''
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
-  appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
+  appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.alpha) {
   appConfig.ENV = 'alpha'
@@ -69,7 +69,7 @@ if (argv.ropsten) {
   appConfig.BLOCKNATIVE_DAPPID = ''
   appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
-  appConfig.PORTIS_KEY = '782eb0d4-5ebf-40f6-adfc-58bc2aea0076'
+  appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
   appConfig.SQUARELINK_KEY = '14414f9bfd6463f45671'
 } else if (argv.live) {
   appConfig.ENV = 'live'
