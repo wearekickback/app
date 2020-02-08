@@ -6,6 +6,7 @@ import { APPROVE_TOKEN } from '../../graphql/mutations'
 import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
+import { GlobalConsumer } from '../../GlobalState'
 
 const Approve = ({
   tokenAddress,
@@ -18,13 +19,13 @@ const Approve = ({
   isAllowed,
   hasBalance,
   refetch,
-  account
+  userAddress
 }) => {
   const canRSVP = isAllowed && hasBalance
 
   if (canRSVP) {
     return <Going>You can now RSVP</Going>
-  } else if (!account) {
+  } else if (!userAddress) {
     return (
       <WarningBox>
         We cannot read your wallet balance. Please Sign in first.
@@ -32,13 +33,35 @@ const Approve = ({
     )
   } else if (!hasBalance) {
     return (
-      <WarningBox>
-        This event requires you to commit{' '}
-        <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
-        &nbsp; but you only have{' '}
-        <Currency amount={balance} tokenAddress={tokenAddress} /> in your
-        wallet. Please top up your wallet and come back again.
-      </WarningBox>
+      <GlobalConsumer>
+        {({ wallet }) => {
+          return (
+            <WarningBox>
+              <p>
+                This event requires you to commit{' '}
+                <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
+                &nbsp; but you only have{' '}
+                <Currency amount={balance} tokenAddress={tokenAddress} /> in
+                your wallet. Please top up your wallet and come back again.
+              </p>
+
+              {wallet && wallet.url && (
+                <p>
+                  You're currently connected to {wallet.name}. Click{' '}
+                  <a
+                    href={wallet.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                  </a>{' '}
+                  to top up.
+                </p>
+              )}
+            </WarningBox>
+          )
+        }}
+      </GlobalConsumer>
     )
   } else {
     return (

@@ -184,7 +184,7 @@ class Home extends Component {
             <p>
               We are still in private beta but have a few events already listed
             </p>
-            <ButtonLink analyticsId="See Events" href="/events">
+            <ButtonLink analyticsId="See Events" to="/events">
               Browse events
             </ButtonLink>
           </CTAInner>
@@ -258,7 +258,7 @@ class Home extends Component {
             </p>
             <ButtonLink
               analyticsId="Request Early Access"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+              to="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
             >
               Request early access
             </ButtonLink>

@@ -2,7 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'react-emotion'
 import { links } from './Guide'
+import { GlobalConsumer } from '../../GlobalState'
+import Button from '../Forms/Button'
 import SignInButton from './SignInButton'
+import TrackedLink from '../Links/TrackedLink'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
@@ -19,23 +22,42 @@ const HamburgerMenuContainer = styled('div')`
   }
 `
 
-function isExternal(url) {
-  return /^https/.test(url)
-}
-
 function HamburgerMenu({ isMenuOpen }) {
   return (
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
       <SignInButton />
+      <GlobalConsumer>
+        {({ wallet, signIn, signOut, userAddress }) => {
+          if (!wallet) {
+            return (
+              <Button type="light" onClick={signIn} analyticsId="Sign In">
+                Connect to Wallet
+              </Button>
+            )
+          }
+          return (
+            <>
+              {wallet.url && (
+                <TrackedLink
+                  to={wallet.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open Wallet
+                </TrackedLink>
+              )}
+              <Link to="#" onClick={signOut}>
+                Disconnect Wallet
+              </Link>
+            </>
+          )
+        }}
+      </GlobalConsumer>
       <Link to="/events">Events</Link>
       <Link to="/pricing">Hosting Events at #EthDenver</Link>
-      {links.map(l =>
-        isExternal(l.url) ? (
-          <Link to={l.href}>{l.label}</Link>
-        ) : (
-          <a href={l.href}>{l.label}</a>
-        )
-      )}
+      {links.map(l => (
+        <TrackedLink to={l.href}>{l.label}</TrackedLink>
+      ))}
     </HamburgerMenuContainer>
   )
 }

@@ -272,28 +272,27 @@ const resolvers = {
       const address = await getTokenBySymbol(symbol)
       return { address }
     },
-    async getTokenAllowance(_, { tokenAddress, partyAddress }) {
-      const web3 = await getWeb3Read()
-      const account = await getAccount()
-
+    async getTokenAllowance(_, { userAddress, tokenAddress, partyAddress }) {
       try {
+        const web3 = await getWeb3Read()
         // If token is Ether then give ether balance as allowance
         if (isEmptyAddress(tokenAddress)) {
-          const balance = await web3.eth.getBalance(account)
+          const balance = await web3.eth.getBalance(userAddress)
           return {
             balance,
-            account,
             allowance: balance
           }
         }
 
         const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
-        const allowance = await contract.allowance(account, partyAddress).call()
-        const balance = await contract.balanceOf(account).call()
-        return { allowance, balance, account }
+        const allowance = await contract
+          .allowance(userAddress, partyAddress)
+          .call()
+        const balance = await contract.balanceOf(userAddress).call()
+        return { allowance, balance }
       } catch (err) {
         console.log('Failed to fetch tokenAllowance', err)
-        return { allowance: null }
+        return { allowance: null, balance: null }
       }
     },
     async getTokenDecimals(_, { tokenAddress }) {
