@@ -79,10 +79,10 @@ if (argv.ropsten) {
   appConfig.LOGROCKET_TOKEN = '5gnafo/kickback-live'
   appConfig.ROLLBAR_TOKEN = 'bfb8dfff7ff44f6fa6a13d4571447c28'
   appConfig.BLOCKNATIVE_DAPPID = '612ef703-3041-442c-b246-cf68604b8ce9'
-  appConfig.INFURA_KEY = ''
+  appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
   appConfig.FORTMATIC_KEY = 'pk_live_34FA001C997028B0'
-  appConfig.PORTIS_KEY = ''
-  appConfig.SQUARELINK_KEY = ''
+  appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
+  appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
 }
 
 const str = JSON.stringify(appConfig, null, 2)
