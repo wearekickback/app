@@ -5,10 +5,6 @@ import c from '../../colours'
 const GuideWrapper = styled('div')`
   margin-right: 2em;
   position: relative;
-  & > a,
-  & > div > a {
-    color: white;
-  }
 `
 
 const Menu = styled('div')`
@@ -31,6 +27,10 @@ const List = styled('ul')`
 
 const ListItem = styled('li')`
   padding: 10px 20px;
+`
+
+const GuideButton = styled('a')`
+  color: white;
 `
 
 const Link = styled('a')`
@@ -78,9 +78,9 @@ export default class Guide extends Component {
   render() {
     return (
       <GuideWrapper>
-        <a href="#guide" onClick={this.toggleMenu}>
+        <GuideButton href="#guide" onClick={this.toggleMenu}>
           Guides
-        </a>
+        </GuideButton>
 
         {this.state.showMenu ? (
           <Menu>
