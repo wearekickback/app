@@ -135,7 +135,6 @@ class Provider extends Component {
     try {
       // If user has chosen a wallet before then just use that.
       const lastUsedWallet = LocalStorage.getItem(WALLET)
-      console.log('onboarding', lastUsedWallet)
       const selected = await onboard.walletSelect(lastUsedWallet)
 
       if (selected) {
@@ -188,7 +187,6 @@ class Provider extends Component {
       result.status = error
       result.error = true
     }
-    console.log('Connect to web3', JSON.stringify(result))
     track('Connect to web3', result)
     return web3
   }
