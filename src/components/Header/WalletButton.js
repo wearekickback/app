@@ -6,7 +6,7 @@ import Button from '../Forms/Button'
 import EtherScanLink from '../Links/EtherScanLink'
 import c from '../../colours'
 
-const GuideWrapper = styled('div')`
+const WalletWrapper = styled('div')`
   margin-right: 2em;
   position: relative;
 `
@@ -51,7 +51,7 @@ function WalletButton() {
           )
         }
         return (
-          <GuideWrapper>
+          <WalletWrapper>
             <Button type="light" onClick={toggleMenu}>
               Connected with {wallet.name}
             </Button>
@@ -89,7 +89,7 @@ function WalletButton() {
                 </List>
               </Menu>
             ) : null}
-          </GuideWrapper>
+          </WalletWrapper>
         )
       }}
     </GlobalConsumer>
