@@ -10,8 +10,8 @@ import {
   BLOCKNATIVE_DAPPID,
   INFURA_KEY,
   FORTMATIC_KEY,
-  PORTIS_KEY,
-  SQUARELINK_KEY
+  PORTIS_KEY
+  // SQUARELINK_KEY
 } from './config'
 import { identify as logRocketIdentify } from './api/logRocket'
 import * as LocalStorage from './api/localStorage'
@@ -71,13 +71,15 @@ const wallets = [
     showTorusButton: false,
     preferred: true
   },
-  {
-    walletName: 'squarelink',
-    apiKey: SQUARELINK_KEY
-  },
-  { walletName: 'dapper' },
-  { walletName: 'opera' },
-  { walletName: 'operaTouch' }
+  // Disabled as it throws an error message
+  // {
+  //   walletName: 'squarelink',
+  //   apiKey: SQUARELINK_KEY
+  // },
+  // Disabled as it throws an error message
+  // { walletName: 'dapper' },
+  { walletName: 'opera', preferred: true },
+  { walletName: 'operaTouch', preferred: true }
 ]
 
 class Provider extends Component {
@@ -161,6 +163,7 @@ class Provider extends Component {
             mobileDevice,
             network,
             address,
+            walletName: wallet.name,
             ...result
           }
 
