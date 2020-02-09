@@ -60,7 +60,10 @@ export default class ProfileForm extends Component {
       ''
     const realName = _.get(existingProfile, 'realName') || ''
     const twitter =
-      _.get(social.find(({ type }) => type === 'twitter'), 'value') || ''
+      _.get(
+        social.find(({ type }) => type === 'twitter'),
+        'value'
+      ) || ''
     const terms = _.get(
       getUserAcceptedLegalAgreement(legal, latestLegal, TERMS_AND_CONDITIONS),
       'id'
