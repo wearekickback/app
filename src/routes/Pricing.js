@@ -28,12 +28,12 @@ function Pricing() {
       <H1>Free membership!</H1>
       <P>
         To celebrate Ethereum Hackathon month (EthDenver, EthLondon UK,
-        EthParis) , we are giving away <Bold>5 free memberships</Bold> that
+        EthParis), we are giving away <Bold>5 free memberships</Bold> that
         allow you to host an event during these hackathon weeks. To apply,
         please fill in our early accessing form and mention #EthDenver,
         #ETHLondonUK, or #ETHParis at the comment section.
         <br />
-        The deadline is <Bold>12th Feburary</Bold> so be quick!
+        The deadline is <Bold>12th February</Bold> so be quick!
         <br />
         <br />
         <CTAContainer>
