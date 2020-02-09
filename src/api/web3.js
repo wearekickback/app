@@ -184,8 +184,9 @@ export async function getDeployerAddress() {
 }
 
 export async function getTokenBySymbol(symbol) {
+  const { expectedNetworkId } = await getExpectedNetworkId()
   if (symbol === 'DAI') {
-    switch (networkState.expectedNetworkId) {
+    switch (expectedNetworkId) {
       case '1':
         return '0x6b175474e89094c44da98b954eedeac495271d0f'
       // These are all fake DAI which anyone can mint
@@ -206,7 +207,7 @@ export async function getTokenBySymbol(symbol) {
         return DAI_CONTRACT_ADDRESS
     }
   } else if ('SAI') {
-    switch (networkState.expectedNetworkId) {
+    switch (expectedNetworkId) {
       case '1':
         return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
       case '3':
