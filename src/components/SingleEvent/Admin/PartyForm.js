@@ -232,9 +232,7 @@ const TokenSelector = ({
   return (
     <SafeQuery query={TOKEN_SYMBOL_QUERY} variables={{ symbol: 'DAI' }}>
       {({
-        data: {
-          token: { address }
-        },
+        data: { token: daiAddress },
         loading
       }) => {
         return (
@@ -248,7 +246,7 @@ const TokenSelector = ({
                   if (newCurrencyType === 'ETH') {
                     tokenAddress = EMPTY_ADDRESS
                   } else if (newCurrencyType === 'DAI') {
-                    tokenAddress = address
+                    tokenAddress = daiAddress
                   } else {
                     tokenAddress = ''
                   }
