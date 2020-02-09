@@ -75,7 +75,6 @@ const wallets = [
     walletName: 'squarelink',
     apiKey: SQUARELINK_KEY
   },
-  { walletName: 'dapper' },
   { walletName: 'opera' },
   { walletName: 'operaTouch' }
 ]
