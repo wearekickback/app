@@ -46,40 +46,41 @@ const TOKEN_ALGORITHM = 'HS256'
 const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
 
 const wallets = [
-  { walletName: 'coinbase', preferred: true },
-  { walletName: 'trust', preferred: true },
-  { walletName: 'metamask', preferred: true },
   { walletName: 'authereum', preferred: true },
+  { walletName: 'coinbase', preferred: true },
   {
     walletName: 'fortmatic',
     apiKey: FORTMATIC_KEY,
     preferred: true
   },
+  { walletName: 'metamask', preferred: true },
+  { walletName: 'opera', preferred: true },
+  { walletName: 'operaTouch', preferred: true },
   {
     walletName: 'portis',
     apiKey: PORTIS_KEY,
     preferred: true
   },
-  {
-    walletName: 'walletConnect',
-    infuraKey: INFURA_KEY,
-    preferred: true
-  },
+  { walletName: 'status', preferred: true },
   {
     walletName: 'torus',
     buildEnv: 'production',
     showTorusButton: false,
     preferred: true
   },
+  { walletName: 'trust', preferred: true },
+  {
+    walletName: 'walletConnect',
+    infuraKey: INFURA_KEY,
+    preferred: true
+  }
   // Disabled as it throws an error message
   // {
   //   walletName: 'squarelink',
   //   apiKey: SQUARELINK_KEY
-  // },
+  // }
   // Disabled as it throws an error message
-  // { walletName: 'dapper' },
-  { walletName: 'opera', preferred: true },
-  { walletName: 'operaTouch', preferred: true }
+  // { walletName: 'dapper' }
 ]
 
 class Provider extends Component {
