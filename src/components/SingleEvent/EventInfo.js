@@ -204,9 +204,7 @@ class EventInfo extends Component {
       <EventInfoContainer className={className}>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
-        <EventImage
-          src={party.headerImg || 'https://placeimg.com/640/480/tech'}
-        />
+        <EventImage src={party.headerImg} />
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>
