@@ -51,7 +51,8 @@ module.exports = async (req, res) => {
       const partyName = htmlEncode(party.name)
       const partyDesc = htmlEncode(party.description)
       // Do not render placeholder image
-      const partyImage = party.headerImg ? getPartyImage(party.headerImg) : ''
+      // const partyImage = party.headerImg ? getPartyImage(party.headerImg) : ''
+      const partyImage = party.headerImg
       html = html.replace(
         /\<meta name\=\"description\"(.*?)\/\>/g,
         `<meta name="description" content="${partyDesc}" />`
