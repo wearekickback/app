@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const gqlr = require('graphql-request')
 const { GraphQLClient } = gqlr
 const { API_URL } = require('../src/config')
+const { getPartyImage } = require('../src/utils/parties')
 
 const END_POINT = `${API_URL}/graphql`
 const GET_PARTY = `
@@ -49,6 +50,8 @@ module.exports = async (req, res) => {
       const { party } = resParty
       const partyName = htmlEncode(party.name)
       const partyDesc = htmlEncode(party.description)
+      // Do not render placeholder image
+      const partyImage = party.headerImg ? getPartyImage(party.headerImg) : ''
       html = html.replace(
         /\<meta name\=\"description\"(.*?)\/\>/g,
         `<meta name="description" content="${partyDesc}" />`
@@ -63,7 +66,7 @@ module.exports = async (req, res) => {
       )
       html = html.replace(
         /\<meta property\=\"og\:image\"(.*?)\/\>/g,
-        `<meta property="og:image" content="${party.headerImg}" />`
+        `<meta property="og:image" content="${partyImage}" />`
       )
       html = html.replace(
         /\<meta property\=\"og\:url\"(.*?)\/\>/g,
@@ -79,7 +82,7 @@ module.exports = async (req, res) => {
       )
       html = html.replace(
         /\<meta name\=\"twitter\:image\"(.*?)\/\>/g,
-        `<meta name="twitter:image" content="${party.headerImg}" />`
+        `<meta name="twitter:image" content="${partyImage}" />`
       )
       html = html.replace(
         /\<title\>Kickback\<\/title\>/g,

@@ -58,3 +58,11 @@ export const filterParticipants = (selectedFilter, search) => participant => {
     participant.user.address.toLowerCase().includes(search)
   )
 }
+
+export const getPartyImage = img => {
+  if (img) {
+    return img.replace('image/upload/', `image/upload/c_scale,w_auto,dpr_auto/`)
+  } else {
+    return 'https://placeimg.com/640/480/tech'
+  }
+}

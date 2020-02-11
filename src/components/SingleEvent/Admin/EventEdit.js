@@ -7,6 +7,7 @@ import Loader from '../../Loader'
 import PartyForm from './PartyForm'
 import WarningBox from '../../WarningBox'
 import SafeQuery from '../../SafeQuery'
+import { getPartyImage } from '../../../utils/parties'
 
 function UpdatePartyMetaComponent({ address }) {
   return (
@@ -28,6 +29,7 @@ function UpdatePartyMetaComponent({ address }) {
             )
           }
         }
+        party.headerImg = getPartyImage(party.headerImg)
         return (
           <>
             <PartyForm
