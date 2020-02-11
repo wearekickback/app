@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const gqlr = require('graphql-request')
 const { GraphQLClient } = gqlr
 const { API_URL } = require('../src/config')
-const { getPartyImage } = require('./utils/parties')
+const { getPartyImage } = require('../src/utils/parties')
 
 const END_POINT = `${API_URL}/graphql`
 const GET_PARTY = `
