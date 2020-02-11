@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const gqlr = require('graphql-request')
 const { GraphQLClient } = gqlr
 const { API_URL } = require('../src/config')
-const { getPartyImage } = require('./utils/parties')
+const { getPartyImage } = require('../src/utils/parties')
 
 const END_POINT = `${API_URL}/graphql`
 const GET_PARTY = `
@@ -51,8 +51,7 @@ module.exports = async (req, res) => {
       const partyName = htmlEncode(party.name)
       const partyDesc = htmlEncode(party.description)
       // Do not render placeholder image
-      // const partyImage = party.headerImg ? getPartyImage(party.headerImg) : ''
-      const partyImage = party.headerImg
+      const partyImage = party.headerImg ? getPartyImage(party.headerImg) : ''
       html = html.replace(
         /\<meta name\=\"description\"(.*?)\/\>/g,
         `<meta name="description" content="${partyDesc}" />`
