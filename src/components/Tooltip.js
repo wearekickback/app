@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import uuid from 'uuid'
 import ReactTooltip from 'react-tooltip'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 const DefaultTooltip = styled(ReactTooltip)`
   z-index: 1;

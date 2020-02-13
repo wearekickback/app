@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, getSocialId } from '@wearekickback/shared'
 
 import {

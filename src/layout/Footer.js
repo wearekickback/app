@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { Link as DefaultLink } from 'react-router-dom'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
 import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 import GlobalContext from '../../../GlobalState'
 import { ADD_TO_CALENDAR } from '../../../modals'

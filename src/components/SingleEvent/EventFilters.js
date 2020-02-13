@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import QrReader from 'react-qr-reader'
 
 import { isAddress } from 'web3-utils'
