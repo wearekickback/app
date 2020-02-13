@@ -117,10 +117,10 @@ const signInOrSignUp = ({
 }
 
 export default function SignIn(props) {
-  const [, { setModal }] = useModalContext()
+  const [, { closeModal }] = useModalContext()
 
   const close = () => {
-    setModal({ name: SIGN_IN })
+    closeModal({ name: SIGN_IN })
   }
 
   return (
