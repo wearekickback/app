@@ -25,27 +25,6 @@ const Bold = styled('span')`
 function Pricing() {
   return (
     <PricingContainer>
-      <H1>Free membership!</H1>
-      <P>
-        To celebrate Ethereum Hackathon month (EthDenver, EthLondon UK,
-        EthParis), we are giving away <Bold>5 free memberships</Bold> that allow
-        you to host an event during these hackathon weeks. To apply, please fill
-        in our early access request form and mention #EthDenver, #ETHLondonUK,
-        or #ETHParis at the comment section.
-        <br />
-        The deadline is <Bold>12th February</Bold> so be quick!
-        <br />
-        <br />
-        <CTAContainer>
-          <ButtonLink
-            analyticsId="Request Early Access"
-            to="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
-          >
-            Request early access
-          </ButtonLink>
-        </CTAContainer>
-      </P>
-
       <H1>Pricing</H1>
       <H3>The event organiser pays $1 per 1 turn up</H3>
       <P>It’s very simple!</P>
@@ -61,6 +40,22 @@ function Pricing() {
         country may have tax exemption.
       </P>
 
+      <P>
+        We are still at private beta phase and only offering the service to the
+        seleted partners. Please fill in our early access form if you want to
+        join.
+      </P>
+
+      <CTAContainer>
+        <ButtonLink
+          analyticsId="Request Early Access"
+          to="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+        >
+          Request early access
+        </ButtonLink>
+      </CTAContainer>
+
+      <P></P>
       <H3>Not convinced yet?</H3>
       <P>
         We will send an invoice after the end of each event so that you only pay

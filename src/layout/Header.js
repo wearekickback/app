@@ -72,7 +72,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
         {isMinMedium && (
           <RightBar>
             <NavLink to="/events">Events</NavLink>
-            <NavLink to="/pricing">Free membership!</NavLink>
+            <NavLink to="/pricing">Pricing</NavLink>
             <GuideDropdown />
             <WalletButton />
             <SignInButton />
