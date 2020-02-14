@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { links } from './Guide'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'

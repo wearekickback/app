@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { withRouter } from 'react-router-dom'
 import DefaultTextInput from '../components/Forms/TextInput'
 import Label from '../components/Forms/Label'

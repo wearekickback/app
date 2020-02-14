@@ -5,7 +5,7 @@ import RSVPPng from '../assets/guide/rsvp.png'
 import MarkPng from '../assets/guide/mark.png'
 import WithdrawPng from '../assets/guide/withdraw.png'
 import InternalTransaction from '../assets/guide/internaltransaction.png'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { P, H3, H1 } from '../components/Typography/Basic'
 
 const ImageWrapper = styled('div')`

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { Link as DefaultLink } from 'react-router-dom'
 
 import DefaultEventDate from '../Utils/EventDate.js'

@@ -14,10 +14,10 @@ At Kickback we adhere to some basic front-end coding style guides, so if you are
 
 ### Styles
 
-Styles are added via the library emotion, which is a styled-component style library. You can add a new styled component using the `react-emotion` library
+Styles are added via the library emotion, which is a styled-component style library. You can add a new styled component using the `@emotion/styled` library
 
 ```js
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 const CallToAction = styled('div')`
   background: 'green';

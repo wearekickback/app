@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { getSocialId } from '@wearekickback/shared'
 import EventList from './EventList'
 import { H2, H3 } from '../Typography/Basic'

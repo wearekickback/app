@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { P, H3, H1 } from '../components/Typography/Basic'
 import { ButtonLink } from '../components/Forms/Button'
 

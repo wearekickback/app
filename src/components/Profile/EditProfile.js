@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 import DefaultButton from '../Forms/Button'
 import { H2 as DefaultH2 } from '../Typography/Basic'
