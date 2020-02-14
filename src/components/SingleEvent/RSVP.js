@@ -6,7 +6,7 @@ import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 import Button from '../Forms/Button'
 import Currency from './Currency'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { isEmptyAddress } from '../../api/utils'
 
 const RSVPText = styled(`span`)`
@@ -23,9 +23,11 @@ const RSVP = ({
   hasBalance
 }) => {
   const ButtonText = () => {
+    let stepTwo = ''
+    if (!isEmptyAddress(tokenAddress) && hasBalance) stepTwo = 'Step 2: '
     return (
       <>
-        <RSVPText>RSVP with</RSVPText>
+        <RSVPText>{stepTwo}RSVP with</RSVPText>
         <Currency amount={deposit} tokenAddress={tokenAddress} />
       </>
     )

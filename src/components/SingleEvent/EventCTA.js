@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
 import { TOKEN_QUERY, TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'

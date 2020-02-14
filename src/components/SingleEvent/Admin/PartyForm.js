@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import sanitizeHtml from 'sanitize-html'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import Dropzone from 'react-dropzone'
 import { Mutation } from 'react-apollo'
 import moment from 'moment'

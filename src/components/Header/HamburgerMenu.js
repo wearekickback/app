@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { links } from './Guide'
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
@@ -54,7 +54,7 @@ function HamburgerMenu({ isMenuOpen }) {
         }}
       </GlobalConsumer>
       <Link to="/events">Events</Link>
-      <Link to="/pricing">Free membership!</Link>
+      <Link to="/pricing">Pricing</Link>
       {links.map(l => (
         <TrackedLink to={l.href}>{l.label}</TrackedLink>
       ))}

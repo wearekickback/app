@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'

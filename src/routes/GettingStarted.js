@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
-import ConnectPng from '../assets/guide/connect.png'
-import SignInPng from '../assets/guide/signin.png'
+import RulePng from '../assets/guide/rule.png'
+import ConnectWalletPng from '../assets/guide/connectwallet.png'
+import CreateAccountPng from '../assets/guide/createaccount.png'
+import NoDaiPng from '../assets/guide/nodai.png'
+import OpenWalletPng from '../assets/guide/openwallet.png'
 import RSVPPng from '../assets/guide/rsvp.png'
+import ConfirmationPng from '../assets/guide/confirmation.png'
 import MarkPng from '../assets/guide/mark.png'
 import WithdrawPng from '../assets/guide/withdraw.png'
+import TransactionPng from '../assets/guide/transaction.png'
+import TransactionListPng from '../assets/guide/transactionlist.png'
 import InternalTransaction from '../assets/guide/internaltransaction.png'
-import styled from 'react-emotion'
-import { P, H3, H1 } from '../components/Typography/Basic'
+import styled from '@emotion/styled'
+import { P, H3, H1, H2 } from '../components/Typography/Basic'
 
 const ImageWrapper = styled('div')`
   max-width: 100%;
@@ -41,115 +47,198 @@ class GettingStarted extends Component {
       <GettingStartedContainer className="gettingstarted">
         <H1>Getting Started</H1>
 
-        <H3 id="how-it-works">How it works</H3>
+        <H2 id="how-it-works">Kickback rules</H2>
+
+        <ImageWrapper>
+          <Img src={RulePng} />
+        </ImageWrapper>
+
+        <P></P>
+        <H2 id="how-it-works">How to participate</H2>
+
         <P>
-          Everyone commits a small amount of ETH when they RSVP, which is
-          refunded after the event check-in. Any no-shows lose their ETH, which
-          can then be split amongst the attendees.
+          Our process is pretty similar to any other ticketing service. However,
+          there are a few extra steps involved due to the nature of interacting
+          with shiny new technology called smart contract that takes care of our
+          commitment money without middlemen.
         </P>
 
-        <H3 id="how-to-connect">How to connect</H3>
+        <H3 id="how-to-connect">Connecting to a wallet</H3>
 
         <P>
-          To use our service, you have to access our site with an Ethereum
-          Wallet.
+          To use our service, you have to access our site with so called
+          "Wallet" which is magical internet money. You may have heard of
+          Bitcoin but we use the one called Ethereum that has this special smart
+          contract capability. Click "Connect to Wallet".
+        </P>
+
+        <ImageWrapper>
+          <Img src={ConnectWalletPng} />
+        </ImageWrapper>
+
+        <P>
+          Depending on whether you already have a wallet or not, there are
+          several options{' '}
         </P>
         <WalletsWrapper>
           <WalletColumn>
-            <H3>From Desktop</H3>
+            <H3>I have a crypto wallet</H3>
             <ul>
               <li>
-                <a href="https://metamask.io">Metamask</a> Chrome extension
+                <a href="https://metamask.io">Metamask</a> extension
               </li>
               <li>
-                <a href="https://brave.com">Brave</a>
+                <a href="http://opera.com">Opera</a> browser
               </li>
               <li>
-                <a href="http://opera.com">Opera</a>
+                <a href="https://walletconnect.org">Wallet connect</a> allows
+                you to connect your mobile walletsss
               </li>
             </ul>
           </WalletColumn>
           <WalletColumn>
-            <H3>From Mobile phone</H3>
+            <H3>Register with normal browsers</H3>
             <ul>
               <li>
-                <a href="https://status.im">Status.im</a>
+                <a href="https://authereum.com/">Authereum</a>(by email)
               </li>
               <li>
-                <a href="https://trustwallet.com">Trust</a>
+                <a href="https://www.portis.io/">Portis</a>(by email)
               </li>
               <li>
-                <a href="https://wallet.coinbase.com">Coinbase</a>
+                <a href="https://fortmatic.com">Fortmatic</a>(by phone)
+              </li>
+              <li>
+                <a href="https://tor.us/">Torus</a> (by Gmail)
               </li>
             </ul>
           </WalletColumn>
         </WalletsWrapper>
-        <P>Or any other your favorite wallets</P>
+        <P>
+          Once connected, another window will pop up to create an account
+          Kickback. Please fill in your detail
+        </P>
+
+        <ImageWrapper>
+          <Img src={CreateAccountPng} />
+        </ImageWrapper>
 
         <P>
           Make sure you are connected to the correct network (mainnet unless you
           are testing something) and have enough ETH loaded on the wallet
         </P>
 
-        <ImageWrapper>
-          <Img src={ConnectPng} />
-        </ImageWrapper>
-
-        <H3 id="how-to-sign-in">How to sign in</H3>
-
-        <P>
-          After clicking “Sign in”, and fill in your detail, you will be asked
-          to sign digital signature to confirm your sign in.
-        </P>
-
-        <ImageWrapper>
-          <Img src={SignInPng} />
-        </ImageWrapper>
-
         <H3 id="how-to-rsvp">How to RSVP</H3>
 
         <P>
-          After you signed in , click “RSVP” which asks you to confirm the
-          transaction.
+          To RSVP, you need the token for commitment (usually DAI, which is so
+          called "Stable Token" similar to US Dollar) and a small amount of
+          Ether to pay the transaction cost callled "gas" (that gets paiid among
+          network of people around the world who sustain this middleman-less
+          network we use), hence you will show the alert indicating the lack of
+          the balance.
+        </P>
+
+        <ImageWrapper>
+          <Img src={NoDaiPng} />
+        </ImageWrapper>
+
+        <P>
+          Some of the wallet providers allow you to buy these tokens from their
+          wallet. Click "Connected With" button to show a drop down menu, and
+          select "Open wallet".
+        </P>
+
+        <ImageWrapper>
+          <Img src={OpenWalletPng} />
+        </ImageWrapper>
+
+        <P>
+          Now that you have enough token to commit, you are almost there. To
+          allow the smartcontract to take care of your commitment on your
+          behhalf, click "Allow RSVP with token", which will pop up a window to
+          ask your confirmation. This may take 30 sec to a few minutes depending
+          on the traffic of the network. Some wallets allow you to speed up the
+          speed by increasing the gas. Once you receive a notification from your
+          wallet, the second button "RSVP with x DAI(or any other token)" will
+          become clickable. Follow the same step as you just did.
         </P>
 
         <ImageWrapper>
           <Img src={RSVPPng} />
         </ImageWrapper>
 
+        <P>
+          Once complete, you should receive the following email. To check you
+          in, we either need to know your username, fullname, or your wallet
+          address (which we can scan the QR code).
+        </P>
+
+        <ImageWrapper>
+          <Img src={ConfirmationPng} />
+        </ImageWrapper>
+
+        <P></P>
         <H3 id="when-you-are-at-the-event">When you are at the event</H3>
 
         <P>
           Once at the event, make sure that the event organisers checked you in.
-          Otherwise, your ETH will be split among other attendees.
+          Otherwise, your commitment will be split among other attendees.
         </P>
 
         <ImageWrapper>
           <Img src={MarkPng} />
         </ImageWrapper>
 
-        <H3 id="how-to-get-your-eth-back">How to get your ETH back</H3>
+        <H3 id="how-to-get-your-eth-back">How to receive a payout</H3>
 
         <P>
-          After the event is over, you will receive email that you can now
-          withdraw your ETH. Make sure that you withdraw within the cooling
-          period unless you want to give it away to the organisers.
+          After the event is over, you will receive an email that you can now
+          withdraw your payout (the commitment you paid + the ones from
+          no-shows). Make sure that you withdraw within the cooling period
+          unless you want to give it away to the organisers.
         </P>
 
         <ImageWrapper>
           <Img src={WithdrawPng} />
         </ImageWrapper>
+        <P></P>
+        <H3 id="pro-tip">Pro tip</H3>
+        <P>
+          (NOTE: You can skip this section if not interested)
+          <br />
+          When a wallet confirmation page pops up, you may be surprised that
+          some wallets show the value as 0. It is because they only shows the
+          value you sent, not the value you received triggered by your action.
+          To confirm that you have received your distribution, you can check the
+          log of your transaction from a website called "Etherscan" which you
+          can go by clicking so called "Contract address"
+        </P>
+
+        <ImageWrapper>
+          <Img src={TransactionPng} />
+        </ImageWrapper>
 
         <P>
-          You may be surprised when Metamask shows value as 0. It is because
-          Metamask only shows the value you sent, not the value you received
-          triggered by your action. To confirm that you have received your
-          distribution, please check "Internal transaction" section of the event
-          contract address on Etherscan.
+          Etherscan shows the list of all transactions interacted with the event
+          you attended. You can find your transaction by clicking the "Txn hash"
+          made by your address (you can find at "From")
         </P>
+
+        <ImageWrapper>
+          <Img src={TransactionListPng} />
+        </ImageWrapper>
+
+        <P>Once there</P>
+
         <ImageWrapper>
           <Img src={InternalTransaction} />
         </ImageWrapper>
+
+        <P>
+          please check "Internal transaction" section of the event contract
+          address on Etherscan (which ).
+        </P>
       </GettingStartedContainer>
     )
   }

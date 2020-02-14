@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 import { pluralize } from '@wearekickback/shared'
 import Participant from './Participant'

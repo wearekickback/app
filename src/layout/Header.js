@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
 
 import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
@@ -72,7 +72,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
         {isMinMedium && (
           <RightBar>
             <NavLink to="/events">Events</NavLink>
-            <NavLink to="/pricing">Free membership!</NavLink>
+            <NavLink to="/pricing">Pricing</NavLink>
             <GuideDropdown />
             <WalletButton />
             <SignInButton />
