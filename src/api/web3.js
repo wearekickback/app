@@ -163,6 +163,7 @@ export const updateNetwork = async web3 => {
 
   // update global state with current network state
   updateGlobalState()
+  return networkState
 }
 
 export const getWeb3Read = async () => {
