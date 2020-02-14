@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import mq from '../mediaQuery'
 import { Route, Link } from 'react-router-dom'
 import { ReactComponent as DefaultBackArrow } from '../components/svg/arrowBack.svg'
