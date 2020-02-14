@@ -17,11 +17,6 @@ const CTAContainer = styled('div')`
   align-items: center;
 `
 
-const Bold = styled('span')`
-  font-weight: bold;
-  color: #ff7a8a;
-`
-
 function Pricing() {
   return (
     <PricingContainer>
