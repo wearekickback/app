@@ -23,9 +23,11 @@ const RSVP = ({
   hasBalance
 }) => {
   const ButtonText = () => {
+    let stepTwo = ''
+    if (!isEmptyAddress(tokenAddress) && hasBalance) stepTwo = 'Step 2: '
     return (
       <>
-        <RSVPText>RSVP with</RSVPText>
+        <RSVPText>{stepTwo}RSVP with</RSVPText>
         <Currency amount={deposit} tokenAddress={tokenAddress} />
       </>
     )

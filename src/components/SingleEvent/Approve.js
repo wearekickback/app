@@ -78,7 +78,7 @@ const Approve = ({
             onClick={approve}
             result={result}
             className={className}
-            preContent={<span>Allow RSVP with Token</span>}
+            preContent={<span>Step 1: Allow RSVP with Token</span>}
             postContent={<Going>You can now RSVP</Going>}
           />
         )}
