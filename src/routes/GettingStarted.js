@@ -202,43 +202,6 @@ class GettingStarted extends Component {
         <ImageWrapper>
           <Img src={WithdrawPng} />
         </ImageWrapper>
-        <P></P>
-        <H3 id="pro-tip">Pro tip</H3>
-        <P>
-          (NOTE: You can skip this section if not interested)
-          <br />
-          When a wallet confirmation page pops up, you may be surprised that
-          some wallets show the value as 0. It is because they only shows the
-          value you sent, not the value you received triggered by your action.
-          To confirm that you have received your distribution, you can check the
-          log of your transaction from a website called "Etherscan" which you
-          can go by clicking so called "Contract address"
-        </P>
-
-        <ImageWrapper>
-          <Img src={TransactionPng} />
-        </ImageWrapper>
-
-        <P>
-          Etherscan shows the list of all transactions interacted with the event
-          you attended. You can find your transaction by clicking the "Txn hash"
-          made by your address (you can find at "From")
-        </P>
-
-        <ImageWrapper>
-          <Img src={TransactionListPng} />
-        </ImageWrapper>
-
-        <P>Once there</P>
-
-        <ImageWrapper>
-          <Img src={InternalTransaction} />
-        </ImageWrapper>
-
-        <P>
-          please check "Internal transaction" section of the event contract
-          address on Etherscan (which ).
-        </P>
       </GettingStartedContainer>
     )
   }
