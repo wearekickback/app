@@ -91,8 +91,8 @@ class GettingStarted extends Component {
                 <a href="http://opera.com">Opera</a> browser
               </li>
               <li>
-                <a href="http://opera.com">Wallet connect</a> allows you to
-                connect your mobile wallet
+                <a href="https://walletconnect.org">Wallet connect</a> allows
+                you to connect your mobile walletsss
               </li>
             </ul>
           </WalletColumn>
@@ -100,16 +100,16 @@ class GettingStarted extends Component {
             <H3>Register with normal browsers</H3>
             <ul>
               <li>
-                <a href="https://status.im">Authereum</a>(by email)
+                <a href="https://authereum.com/">Authereum</a>(by email)
               </li>
               <li>
-                <a href="https://trustwallet.com">Portis</a>(by email)
+                <a href="https://www.portis.io/">Portis</a>(by email)
               </li>
               <li>
-                <a href="https://wallet.coinbase.com">Fortmatic</a>(by phone)
+                <a href="https://fortmatic.com">Fortmatic</a>(by phone)
               </li>
               <li>
-                <a href="https://wallet.coinbase.com">Torus</a> (by Gmail)
+                <a href="https://tor.us/">Torus</a> (by Gmail)
               </li>
             </ul>
           </WalletColumn>
