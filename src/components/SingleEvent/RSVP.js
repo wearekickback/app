@@ -25,7 +25,7 @@ const RSVP = ({
   const ButtonText = () => {
     return (
       <>
-        <RSVPText>RSVP with</RSVPText>
+        <RSVPText>Step 2: RSVP with</RSVPText>
         <Currency amount={deposit} tokenAddress={tokenAddress} />
       </>
     )
