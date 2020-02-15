@@ -1,5 +1,5 @@
 import React from 'react'
-
+import styled from '@emotion/styled'
 import { PARTY_QUERY } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import { APPROVE_TOKEN } from '../../graphql/mutations'
@@ -7,6 +7,10 @@ import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
 import { GlobalConsumer } from '../../GlobalState'
+import WalletButton from '../Header/WalletButton'
+const WarningWrapper = styled('div')`
+  margin: 1em;
+`
 
 const Approve = ({
   tokenAddress,
@@ -27,9 +31,13 @@ const Approve = ({
     return <Going>You can now RSVP</Going>
   } else if (!userAddress) {
     return (
-      <WarningBox>
-        We cannot read your wallet balance. Please Sign in first.
-      </WarningBox>
+      <WarningWrapper>
+        <WarningBox>
+          We cannot read your wallet balance. Please Connect to your wallet
+          first.
+        </WarningBox>
+        <WalletButton />
+      </WarningWrapper>
     )
   } else if (!hasBalance) {
     return (

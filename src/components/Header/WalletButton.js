@@ -37,6 +37,11 @@ const Link = styled('a')`
   color: ${c.primary400};
 `
 
+const CTAButton = styled(Button)`
+  font-weight: bold;
+  width: 100%;
+`
+
 function WalletButton() {
   const [showMenu, setShowMenu] = useState(false)
   const toggleMenu = () => setShowMenu(!showMenu)
@@ -45,9 +50,9 @@ function WalletButton() {
       {({ wallet, signIn, signOut, userAddress }) => {
         if (!wallet) {
           return (
-            <Button type="light" onClick={signIn} analyticsId="Sign In">
+            <CTAButton type="light" onClick={signIn} analyticsId="Sign In">
               Connect to Wallet
-            </Button>
+            </CTAButton>
           )
         }
         return (
