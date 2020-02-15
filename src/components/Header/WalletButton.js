@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
+import mq from '../../mediaQuery'
 
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
@@ -40,6 +41,9 @@ const Link = styled('a')`
 const CTAButton = styled(Button)`
   font-weight: bold;
   width: 100%;
+  ${mq.small`
+    width: auto;
+  `};
 `
 
 function WalletButton() {
@@ -51,7 +55,7 @@ function WalletButton() {
         if (!wallet) {
           return (
             <CTAButton type="light" onClick={signIn} analyticsId="Sign In">
-              Connect to Wallet
+              Connect Wallet to Kickback
             </CTAButton>
           )
         }

@@ -7,7 +7,6 @@ import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
 import { GlobalConsumer } from '../../GlobalState'
-import WalletButton from '../Header/WalletButton'
 const WarningWrapper = styled('div')`
   margin: 1em;
 `
@@ -36,7 +35,6 @@ const Approve = ({
           We cannot read your wallet balance. Please Connect to your wallet
           first.
         </WarningBox>
-        <WalletButton />
       </WarningWrapper>
     )
   } else if (!hasBalance) {
