@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import sanitizeHtml from 'sanitize-html'
 import styled from '@emotion/styled'
-import Dropzone from 'react-dropzone'
-import { Mutation } from 'react-apollo'
 import moment from 'moment'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
@@ -14,7 +12,6 @@ import { Link } from 'react-router-dom'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { isAddress } from 'web3-utils'
-
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
@@ -22,7 +19,6 @@ import {
 } from 'utils/dates'
 import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
 
-import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
 import {
   TOKEN_QUERY,
@@ -35,6 +31,7 @@ import Button from 'components/Forms/Button'
 import TextInput from 'components/Forms/TextInput'
 import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
+import InputImage from 'components/Forms/InputImage'
 import { H2 } from 'components/Typography/Basic'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
@@ -78,65 +75,6 @@ const TimePicker = styled(DefaultTimePicker)`
     padding-left: 17px;
   }
 `
-
-const primary2 = `hsla(237, 75%, 72%, 1)`
-
-const NoImage = styled('div')`
-  color: white;
-  background: ${primary2};
-  max-width: 100%;
-  height: 300px;
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  border-radius: 6px;
-  box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
-
-  &:hover {
-    cursor: pointer;
-  }
-`
-
-const ImageWrapper = styled('div')`
-  display: flex;
-  border-radius: 6px;
-
-  &:before {
-    content: "${p => p.text}";
-    border-radius: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: 0.2s;
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: white;
-    width: 100%;
-    height: 100%;
-    background: rgba(110, 118, 255, 0.85);
-    box-shadow: 0 2px 0 hsla(0, 0%, 100%, 0.15)
-  }
-  &:hover {
-    cursor: pointer;
-    &:before {
-      opacity: 1;
-    }
-  }
-`
-
-const DropZoneWrapper = styled('div')`
-  margin-bottom: 20px;
-`
-
-const UploadedImage = ({ src, text }) => (
-  <ImageWrapper text={text}>
-    <img alt="event" src={src} />
-  </ImageWrapper>
-)
 
 const Actions = styled('div')`
   display: flex;
@@ -190,38 +128,6 @@ const visibilityOptions = [
     value: 'private'
   }
 ]
-
-const ImageInput = ({ image, uploading, onDrop }) => {
-  return (
-    <InputWrapper>
-      <Label>Image</Label>
-      <DropZoneWrapper>
-        <Mutation mutation={SINGLE_UPLOAD}>
-          {mutate => (
-            <Dropzone
-              className="dropzone"
-              onDrop={files => onDrop(files, mutate)}
-              accept="image/*"
-            >
-              {image ? (
-                <UploadedImage
-                  src={image}
-                  text="Click or drop a file to change photo"
-                />
-              ) : (
-                <NoImage>
-                  {uploading
-                    ? 'Uploading...'
-                    : 'Click or drop a file to change photo'}
-                </NoImage>
-              )}
-            </Dropzone>
-          )}
-        </Mutation>
-      </DropZoneWrapper>
-    </InputWrapper>
-  )
-}
 
 const TokenSelector = ({
   currencyType,
@@ -539,7 +445,7 @@ class PartyForm extends Component {
             setDay={arriveByDay => this.setState({ arriveByDay })}
             setTime={arriveByTime => this.setState({ arriveByTime })}
           />
-          <ImageInput image={headerImg} onDrop={this.uploadImage} />
+          <InputImage image={headerImg} onDrop={this.uploadImage} />
           <InputWrapper>
             <Label>Visibility</Label>
             <VisibilityDropdown
