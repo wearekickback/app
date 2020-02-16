@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { isAddress } from 'web3-utils'
+import ChangeMeta from './ChangeMeta'
 
 import {
   getDayAndTimeFromDate,
@@ -597,10 +598,10 @@ class PartyForm extends Component {
             </>
           )}
         </PartyFormContent>
-
-        {children}
-
+        1{children}2 {address}
         <Actions>
+          <ChangeMeta address={address} ipfsHash={'hello'} />
+
           <SafeMutation
             mutation={mutation}
             resultKey="id"

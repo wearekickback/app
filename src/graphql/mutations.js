@@ -30,9 +30,7 @@ export const CREATE_PENDING_PARTY = gql`
 
 export const UPDATE_EVENT_META = gql`
   mutation updatePartyMeta($address: String!, $meta: PartyMetaInput!) {
-    updatePartyMeta(address: $address, meta: $meta) @requireAuth {
-      name
-    }
+    updatePartyMeta(address: $address, meta: $meta) @client @requireAuth
   }
 `
 

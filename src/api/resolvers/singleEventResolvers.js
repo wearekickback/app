@@ -1,11 +1,21 @@
 import { toBN, fromWei } from 'web3-utils'
 import { Deployer } from '@wearekickback/contracts'
 import { Conference } from '@wearekickback/contracts'
+import multihash from 'multihashes'
 
 import getWeb3, { getAccount, getDeployerAddress, getWeb3Read } from '../web3'
 import events from '../../fixtures/events.json'
 import { txHelper, EMPTY_ADDRESS } from '../utils'
 import { toEthVal } from '../../utils/units'
+import IpfsHttpClient from 'ipfs-http-client'
+
+const ipfs = IpfsHttpClient({
+  protocol: 'https',
+  // host: 'api.thegraph.com',
+  host: 'cloudflare-ipfs.com',
+  port: '5001',
+  'api-path': '/ipfs/api/v0'
+})
 
 const deployerAbi = Deployer.abi
 const abi = Conference.abi
@@ -138,6 +148,20 @@ const resolvers = {
       const deployerAddress = await getDeployerAddress()
 
       const contract = new web3.eth.Contract(deployerAbi, deployerAddress)
+      console.log(
+        'on chain info',
+        id,
+        deposit,
+        coolingPeriod,
+        limitOfParticipants,
+        tokenAddress,
+        toEthVal(deposit, 'eth')
+          .scaleDown(decimals)
+          .toString(16),
+        toEthVal(limitOfParticipants).toString(16),
+        toEthVal(coolingPeriod).toString(16),
+        tokenAddress
+      )
 
       try {
         const tx = await new Promise((resolve, reject) =>
@@ -288,6 +312,30 @@ const resolvers = {
         return null
       }
     },
+    async changeMeta(_, { address, meta }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      // const depositInWei = toEthVal(deposit, 'eth')
+      //   .toWei()
+      //   .toString(16)
+      // "QmfR8hBapMEruidnTKfV6E5d8TxP7KWBR83NdcEfnNSRYM";
+      // "0x516d665238684261704d45727569646e544b66563645356438547850374b57425238334e646345666e4e5352594d";
+      let contentHash = 'QmfR8hBapMEruidnTKfV6E5d8TxP7KWBR83NdcEfnNSRYM'
+      let ipfsHash = web3.utils.sha3(contentHash)
+      console.log({ address, contentHash, ipfsHash })
+      contract.changeMeta(ipfsHash).send({ from: account })
+      try {
+        const tx = await txHelper(
+          contract.changeMeta(ipfsHash).send({ from: account })
+        )
+
+        return tx
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
     async clear(_, { address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
@@ -300,6 +348,15 @@ const resolvers = {
         console.log(e)
         return null
       }
+    },
+    async updatePartyMeta(_, { address, meta }) {
+      console.log(JSON.stringify(meta))
+      let returnedValue = await ipfs.pin.add(JSON.stringify(meta))
+      // for await (returnedValue of ipfs.add(JSON.stringify(meta), { 'stream-channels': false })) {
+      //   console.log(2, {returnedValue})
+      // }
+      console.log(returnedValue)
+      return returnedValue
     }
   }
 }
