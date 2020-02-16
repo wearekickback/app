@@ -7,12 +7,6 @@ import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import 'react-dropdown/style.css'
 
-import Label from 'components/Forms/Label'
-
-const InputWrapper = styled('div')`
-  margin-bottom: 20px;
-`
-
 const DayPickerInputWrapper = styled('div')`
   margin-right: 10px;
   input {
@@ -40,28 +34,25 @@ const DateContent = styled('div')`
   display: flex;
 `
 
-const InputDateTime = ({ label, day, time, setDay, setTime }) => {
+const InputDateTime = ({ day, time, setDay, setTime }) => {
   return (
-    <InputWrapper>
-      <Label>{label}</Label>
-      <DateContent>
-        <DayPickerInputWrapper>
-          <DayPickerInput value={day} onDayChange={setDay} />
-        </DayPickerInputWrapper>
-        <TimePicker
-          showSecond={false}
-          defaultValue={time}
-          onChange={value => {
-            if (value) {
-              setTime(value)
-            } else {
-              setTime(moment())
-            }
-          }}
-          format="h:mm a"
-        />
-      </DateContent>
-    </InputWrapper>
+    <DateContent>
+      <DayPickerInputWrapper>
+        <DayPickerInput value={day} onDayChange={setDay} />
+      </DayPickerInputWrapper>
+      <TimePicker
+        showSecond={false}
+        defaultValue={time}
+        onChange={value => {
+          if (value) {
+            setTime(value)
+          } else {
+            setTime(moment())
+          }
+        }}
+        format="h:mm a"
+      />
+    </DateContent>
   )
 }
 

@@ -4,11 +4,6 @@ import Dropzone from 'react-dropzone'
 import { Mutation } from 'react-apollo'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
-import Label from 'components/Forms/Label'
-
-const InputWrapper = styled('div')`
-  margin-bottom: 20px;
-`
 
 const primary2 = `hsla(237, 75%, 72%, 1)`
 
@@ -71,33 +66,30 @@ const UploadedImage = ({ src, text }) => (
 
 const InputImage = ({ image, uploading, onDrop }) => {
   return (
-    <InputWrapper>
-      <Label>Image</Label>
-      <DropZoneWrapper>
-        <Mutation mutation={SINGLE_UPLOAD}>
-          {mutate => (
-            <Dropzone
-              className="dropzone"
-              onDrop={files => onDrop(files, mutate)}
-              accept="image/*"
-            >
-              {image ? (
-                <UploadedImage
-                  src={image}
-                  text="Click or drop a file to change photo"
-                />
-              ) : (
-                <NoImage>
-                  {uploading
-                    ? 'Uploading...'
-                    : 'Click or drop a file to change photo'}
-                </NoImage>
-              )}
-            </Dropzone>
-          )}
-        </Mutation>
-      </DropZoneWrapper>
-    </InputWrapper>
+    <DropZoneWrapper>
+      <Mutation mutation={SINGLE_UPLOAD}>
+        {mutate => (
+          <Dropzone
+            className="dropzone"
+            onDrop={files => onDrop(files, mutate)}
+            accept="image/*"
+          >
+            {image ? (
+              <UploadedImage
+                src={image}
+                text="Click or drop a file to change photo"
+              />
+            ) : (
+              <NoImage>
+                {uploading
+                  ? 'Uploading...'
+                  : 'Click or drop a file to change photo'}
+              </NoImage>
+            )}
+          </Dropzone>
+        )}
+      </Mutation>
+    </DropZoneWrapper>
   )
 }
 

@@ -371,28 +371,37 @@ class PartyForm extends Component {
               }}
             />
           </InputWrapper>
-          <InputDateTime
-            label="Start Date"
-            day={startDay}
-            time={startTime}
-            setDay={startDay => this.setState({ startDay })}
-            setTime={startTime => this.setState({ startTime })}
-          />
-          <InputDateTime
-            label="End Date"
-            day={endDay}
-            time={endTime}
-            setDay={endDay => this.setState({ endDay })}
-            setTime={endTime => this.setState({ endTime })}
-          />
-          <InputDateTime
-            label="Arrive By Date"
-            day={arriveByDay}
-            time={arriveByTime}
-            setDay={arriveByDay => this.setState({ arriveByDay })}
-            setTime={arriveByTime => this.setState({ arriveByTime })}
-          />
-          <InputImage image={headerImg} onDrop={this.uploadImage} />
+          <InputWrapper>
+            <Label>Start Date</Label>
+            <InputDateTime
+              day={startDay}
+              time={startTime}
+              setDay={startDay => this.setState({ startDay })}
+              setTime={startTime => this.setState({ startTime })}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>End Date</Label>
+            <InputDateTime
+              day={endDay}
+              time={endTime}
+              setDay={endDay => this.setState({ endDay })}
+              setTime={endTime => this.setState({ endTime })}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Arrive By Date</Label>
+            <InputDateTime
+              day={arriveByDay}
+              time={arriveByTime}
+              setDay={arriveByDay => this.setState({ arriveByDay })}
+              setTime={arriveByTime => this.setState({ arriveByTime })}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label>Image</Label>
+            <InputImage image={headerImg} onDrop={this.uploadImage} />
+          </InputWrapper>
           <InputWrapper>
             <Label>Visibility</Label>
             <VisibilityDropdown
