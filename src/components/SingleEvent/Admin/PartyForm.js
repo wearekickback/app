@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import sanitizeHtml from 'sanitize-html'
 import styled from '@emotion/styled'
 import moment from 'moment'
-import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
-import DefaultTimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
 import DefaultTimezonePicker from 'react-timezone'
 import getEtherPrice from '../../../api/price'
@@ -32,6 +30,7 @@ import TextInput from 'components/Forms/TextInput'
 import TextArea from 'components/Forms/TextArea'
 import Label from 'components/Forms/Label'
 import InputImage from 'components/Forms/InputImage'
+import InputDateTime from 'components/Forms/InputDateTime'
 import { H2 } from 'components/Typography/Basic'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
@@ -53,29 +52,6 @@ const TimezonePicker = styled(DefaultTimezonePicker)`
   }
 `
 
-const DayPickerInputWrapper = styled('div')`
-  margin-right: 10px;
-  input {
-    border: 1px solid #edeef4;
-    border-radius: 6px;
-    color: #2b2b2b;
-    height: 40px;
-    font-size: 14px;
-    padding-left: 17px;
-  }
-`
-
-const TimePicker = styled(DefaultTimePicker)`
-  input {
-    border-radius: 6px;
-    border: 1px solid #edeef4;
-    color: #2b2b2b;
-    height: 40px;
-    font-size: 14px;
-    padding-left: 17px;
-  }
-`
-
 const Actions = styled('div')`
   display: flex;
   flex-direction: column;
@@ -88,10 +64,6 @@ function getButtonText(type) {
     edit: 'Update Event'
   }[type]
 }
-
-const DateContent = styled('div')`
-  display: flex;
-`
 
 const CommitmentInput = styled(TextInput)`
   width: 170px;
@@ -223,31 +195,6 @@ const DepositInput = ({
         {isAddress(tokenAddress) &&
           commitmentInUsd({ currencyType, symbol, price, deposit })}
       </CommitmentInUsdContainer>
-    </InputWrapper>
-  )
-}
-
-const DateTimeInput = ({ label, day, time, setDay, setTime }) => {
-  return (
-    <InputWrapper>
-      <Label>{label}</Label>
-      <DateContent>
-        <DayPickerInputWrapper>
-          <DayPickerInput value={day} onDayChange={setDay} />
-        </DayPickerInputWrapper>
-        <TimePicker
-          showSecond={false}
-          defaultValue={time}
-          onChange={value => {
-            if (value) {
-              setTime(value)
-            } else {
-              setTime(moment())
-            }
-          }}
-          format="h:mm a"
-        />
-      </DateContent>
     </InputWrapper>
   )
 }
@@ -424,21 +371,21 @@ class PartyForm extends Component {
               }}
             />
           </InputWrapper>
-          <DateTimeInput
+          <InputDateTime
             label="Start Date"
             day={startDay}
             time={startTime}
             setDay={startDay => this.setState({ startDay })}
             setTime={startTime => this.setState({ startTime })}
           />
-          <DateTimeInput
+          <InputDateTime
             label="End Date"
             day={endDay}
             time={endTime}
             setDay={endDay => this.setState({ endDay })}
             setTime={endTime => this.setState({ endTime })}
           />
-          <DateTimeInput
+          <InputDateTime
             label="Arrive By Date"
             day={arriveByDay}
             time={arriveByTime}
