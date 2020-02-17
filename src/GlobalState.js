@@ -104,19 +104,22 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action }) => {
-    let web3
-    // dappid is mandatory so will have throw away id for local usage.
+  setUpWallet = async ({ action, networkId, dontForceSetUp }) => {
+    // Check if user has chosen a wallet before, if so just use that.
+    // If not, the user will have to select a wallet so only proceed if required.
+    const lastUsedWallet = LocalStorage.getItem(WALLET)
+    if (!lastUsedWallet && dontForceSetUp) {
+      return null
+    }
 
-    let {
-      onboard,
-      networkState: { expectedNetworkId }
-    } = this.state
+    let { onboard } = this.state
+
     if (!onboard) {
+      // dappid is mandatory so will have throw away id for local usage.
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
         dappId: BLOCKNATIVE_DAPPID || testid,
-        networkId: parseInt(expectedNetworkId),
+        networkId: parseInt(networkId),
         walletCheck: walletChecks,
         walletSelect: {
           heading: 'Select a wallet to connect to Kickback',
@@ -132,17 +135,14 @@ class Provider extends Component {
       action,
       error: false,
       hasBalance: false,
-      expectedNetworkId
+      expectedNetworkId: networkId
     }
 
+    let web3
     try {
-      // If user has chosen a wallet before then just use that.
-      const lastUsedWallet = LocalStorage.getItem(WALLET)
       const selected = await onboard.walletSelect(lastUsedWallet)
-
       if (selected) {
         const ready = await onboard.walletCheck()
-
         if (ready) {
           const walletState = onboard.getState()
           let {
@@ -168,7 +168,7 @@ class Provider extends Component {
             ...result
           }
 
-          result.correctNetwork = network === parseInt(expectedNetworkId)
+          result.correctNetwork = network === parseInt(networkId)
 
           // We want to know whether the users have any balances in their walllet
           // but don't want to know how much they do.
@@ -201,7 +201,11 @@ class Provider extends Component {
     }
 
     if (!dontForceSignIn && !this.state.wallet) {
-      await this.setUpWallet({ action: 'Sign in' })
+      const { expectedNetworkId } = this.state.networkState
+      await this.setUpWallet({
+        action: 'Sign in',
+        networkId: expectedNetworkId
+      })
     }
 
     // let's request user's account address
@@ -339,7 +343,14 @@ class Provider extends Component {
     setProviderInstance(this)
 
     // Get which network app is on
-    await updateNetwork()
+    const networkState = await updateNetwork()
+
+    // Try and open wallet
+    await this.setUpWallet({
+      action: 'Sign In',
+      networkId: networkState.expectedNetworkId,
+      dontForceSetUp: true
+    })
 
     // try and sign in!
     await this.signIn({ dontForceSignIn: true })

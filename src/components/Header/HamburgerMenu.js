@@ -31,7 +31,7 @@ function HamburgerMenu({ isMenuOpen }) {
           if (!wallet) {
             return (
               <Button type="light" onClick={signIn} analyticsId="Sign In">
-                Connect to Wallet
+                Connect Wallet to Kickback
               </Button>
             )
           }
