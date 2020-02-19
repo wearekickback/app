@@ -3,6 +3,7 @@ import React from 'react'
 import { TOKEN_QUERY } from 'graphql/queries'
 import SafeQuery from '../SafeQuery'
 import { depositValue } from '../Utils/DepositValue'
+import Loader from 'components/Loader'
 
 const Currency = ({ amount, tokenAddress, precision = 2 }) => {
   return (
@@ -19,6 +20,7 @@ const Currency = ({ amount, tokenAddress, precision = 2 }) => {
         },
         loading
       }) => {
+        if (loading) return <Loader />
         return (
           <>
             {amount !== undefined &&
