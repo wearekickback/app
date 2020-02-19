@@ -175,7 +175,7 @@ class SingleEvent extends Component {
                         <Route
                           path={`/event/${address}/admin/checkin`}
                           exact
-                          render={() => <CheckIn address={address} />}
+                          render={() => <CheckIn party={party} />}
                         />
                         <Route
                           path={`/event/${address}/admin/edit`}
