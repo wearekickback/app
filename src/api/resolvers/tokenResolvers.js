@@ -33,8 +33,10 @@ const resolvers = {
         }
 
         const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
-        const allowance = await contract.allowance(account, partyAddress).call()
-        const balance = await contract.balanceOf(account).call()
+        const allowance = await contract
+          .allowance(userAddress, partyAddress)
+          .call()
+        const balance = await contract.balanceOf(userAddress).call()
         return { allowance, balance }
       } catch (err) {
         console.log('Failed to fetch tokenAllowance', err)
