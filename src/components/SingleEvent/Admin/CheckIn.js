@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
