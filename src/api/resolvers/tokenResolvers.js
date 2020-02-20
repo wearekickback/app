@@ -361,6 +361,7 @@ const resolvers = {
           return { name, symbol, decimals }
         } catch (err) {
           throw new Error(`Failed to get Token`)
+          return { name: null, symbol: null, decimals: 18 }
         }
       }
     }
