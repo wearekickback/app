@@ -360,7 +360,8 @@ const resolvers = {
           symbol = web3.utils.toAscii(symbol).replace(`/${NULL_CHAR}/g`, '') // eslint-disable-line no-control-regex
           return { name, symbol, decimals }
         } catch (err) {
-          throw new Error(`Failed to get Token`)
+          console.log(`Failed to get Token`)
+          return { name: null, symbol: null, decimals: 18 }
         }
       }
     }
