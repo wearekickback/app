@@ -113,8 +113,16 @@ export const TOKEN_SYMBOL_QUERY = gql`
   }
 `
 
-export const POAP_USERS_QUERY = gql`
-  query getAttendees($eventId: String) {
-    addresses: getAttendees(eventId: $eventId) @client
+export const POAP_USERS_SUBGRAPH_QUERY = gql`
+  query event($eventId: String!) {
+    event: event(id: $eventId) {
+      id
+      tokens {
+        id
+        owner {
+          id
+        }
+      }
+    }
   }
 `
