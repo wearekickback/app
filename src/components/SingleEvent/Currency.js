@@ -14,13 +14,12 @@ const Currency = ({ amount, tokenAddress, precision = 2 }) => {
         return 'Token not found'
       }}
     >
-      {({
-        data: {
-          token: { symbol, decimals }
-        },
-        loading
-      }) => {
+      {({ data, loading, error }) => {
+        if (error || !data) return <div>Error getting token</div>
         if (loading) return <Loader />
+        const {
+          token: { symbol, decimals }
+        } = data
         return (
           <>
             {amount !== undefined &&
