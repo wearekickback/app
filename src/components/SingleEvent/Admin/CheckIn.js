@@ -45,11 +45,12 @@ export default withApollo(function CheckIn({ party, client }) {
     })
     const addresses = event.tokens.map(t => t.owner.id)
 
-    const attendees = party.participants.filter(participant =>
-      addresses.includes(participant.user.address)
+    const newAttendees = party.participants.filter(
+      participant =>
+        addresses.includes(participant.user.address) &&
+        participant.status === PARTICIPANT_STATUS.REGISTERED
     )
-
-    attendees.forEach(participant =>
+    newAttendees.forEach(participant =>
       client.mutate({
         mutation: MARK_USER_ATTENDED,
         variables: {
