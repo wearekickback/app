@@ -16,6 +16,16 @@ import EventEdit from '../components/SingleEvent/Admin/EventEdit'
 import colours from '../colours'
 import { getPartyImage } from '../utils/parties'
 
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://api.thegraph.com/subgraphs/name/amxx/poap'
+})
+
+const client = new ApolloClient({ cache, link })
 const { primary500, primary400, primary300, primary200 } = colours
 
 const SingleEventAdminContainer = styled('div')`
@@ -146,7 +156,7 @@ class SingleEvent extends Component {
                           }
                           to={`/event/${address}/admin/checkin`}
                         >
-                          Check in
+                          POAP Check in
                         </ToggleLink>
                         <ToggleLink
                           active={pathname === `/event/${address}/admin/edit`}
@@ -175,7 +185,9 @@ class SingleEvent extends Component {
                         <Route
                           path={`/event/${address}/admin/checkin`}
                           exact
-                          render={() => <CheckIn party={party} />}
+                          render={() => (
+                            <CheckIn party={party} client={client} />
+                          )}
                         />
                         <Route
                           path={`/event/${address}/admin/edit`}

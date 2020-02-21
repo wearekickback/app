@@ -6,8 +6,18 @@ import TextInput from '../../Forms/TextInput'
 import Label from '../../Forms/Label'
 
 import { withApollo } from 'react-apollo'
-import { POAP_USERS_QUERY } from '../../../graphql/queries'
+import { POAP_USERS_SUBGRAPH_QUERY } from '../../../graphql/queries'
+import { PARTICIPANT_STATUS } from '@wearekickback/shared'
 import { MARK_USER_ATTENDED } from '../../../graphql/mutations'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://api.thegraph.com/subgraphs/name/amxx/poap'
+})
+const graphClient = new ApolloClient({ cache, link })
 
 const Section = styled('section')`
   margin-bottom: 40px;
@@ -28,20 +38,27 @@ export default withApollo(function CheckIn({ party, client }) {
 
   const checkIn = async () => {
     const {
-      data: { addresses }
-    } = await client.query({
-      query: POAP_USERS_QUERY,
+      data: { event }
+    } = await graphClient.query({
+      query: POAP_USERS_SUBGRAPH_QUERY,
       variables: { eventId: poapId }
     })
+    const addresses = event.tokens.map(t => t.owner.id)
 
     const attendees = party.participants.filter(participant =>
       addresses.includes(participant.user.address)
     )
 
     attendees.forEach(participant =>
-      client.mutation({
+      client.mutate({
         mutation: MARK_USER_ATTENDED,
-        variables: { address: party.address, participant }
+        variables: {
+          address: party.address,
+          participant: {
+            address: participant.user.address,
+            status: PARTICIPANT_STATUS.SHOWED_UP
+          }
+        }
       })
     )
   }
@@ -49,7 +66,7 @@ export default withApollo(function CheckIn({ party, client }) {
   return (
     <>
       <Section>
-        <Label>Automatic POAP check in</Label>
+        <Label>Automatic POAP check in (experimental)</Label>
         <p>
           If you are distributing NFTs using{' '}
           <a href={'https://poap.xyz'}>POAP</a>, then you can check in your
