@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
+import useInterval from 'use-interval'
 
 import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
@@ -35,8 +36,23 @@ const EventIdInput = styled(TextInput)`
 
 export default withApollo(function CheckIn({ party, client }) {
   const [poapId, setPoapId] = useState('')
+  const [newAttendees, setNewAttendees] = useState([])
+  const [isRunning, setIsRunning] = useState(false)
 
-  const checkIn = async () => {
+  useInterval(
+    () => {
+      const [attendee, ...rest] = newAttendees
+      console.log('mutate', attendee.user.username)
+      console.log('checkIn3: setting newAttendees to ', rest.length)
+      setNewAttendees(rest)
+      if (rest.length === 0) {
+        setIsRunning(false)
+      }
+    },
+    newAttendees.length > 0 && isRunning ? 1000 : null
+  )
+
+  const loadPOAPUser = async () => {
     const {
       data: { event }
     } = await graphClient.query({
@@ -45,25 +61,42 @@ export default withApollo(function CheckIn({ party, client }) {
     })
     const addresses = event.tokens.map(t => t.owner.id)
 
-    const newAttendees = party.participants.filter(
+    const _newAttendees = party.participants.filter(
       participant =>
         addresses.includes(participant.user.address) &&
         participant.status === PARTICIPANT_STATUS.REGISTERED
     )
-    newAttendees.forEach(participant =>
-      client.mutate({
-        mutation: MARK_USER_ATTENDED,
-        variables: {
-          address: party.address,
-          participant: {
-            address: participant.user.address,
-            status: PARTICIPANT_STATUS.SHOWED_UP
-          }
-        }
-      })
-    )
+    console.log({ newAttendees, _newAttendees })
+    setNewAttendees(_newAttendees)
+    // newAttendees.forEach(participant =>
+    //   client.mutate({
+    //     mutation: MARK_USER_ATTENDED,
+    //     variables: {
+    //       address: party.address,
+    //       participant: {
+    //         address: participant.user.address,
+    //         status: PARTICIPANT_STATUS.SHOWED_UP
+    //       }
+    //     }
+    //   })
+    // )
   }
 
+  const checkIn = async () => {
+    setIsRunning(true)
+    // newAttendees.forEach(participant =>
+    //   client.mutate({
+    //     mutation: MARK_USER_ATTENDED,
+    //     variables: {
+    //       address: party.address,
+    //       participant: {
+    //         address: participant.user.address,
+    //         status: PARTICIPANT_STATUS.SHOWED_UP
+    //       }
+    //     }
+    //   })
+    // )
+  }
   return (
     <>
       <Section>
@@ -96,7 +129,31 @@ export default withApollo(function CheckIn({ party, client }) {
             type="number"
           />
         </EventIdInputContainer>
-        <Button onClick={() => checkIn()}>Start Check In</Button>
+        <Button
+          disabled={newAttendees.length !== 0}
+          onClick={() => loadPOAPUser()}
+        >
+          Load POAP users
+        </Button>
+        <Button
+          disabled={isRunning || newAttendees.length === 0}
+          onClick={() => checkIn()}
+        >
+          Mark Check In
+        </Button>
+      </Section>
+      <Section>
+        {isRunning ? <span>Auto checking in....</span> : ''}
+        {newAttendees.length} POAP tokens to claim.
+        <ul>
+          {newAttendees.map(a => {
+            return (
+              <li>
+                {a.user.username} {a.user.address}
+              </li>
+            )
+          })}
+        </ul>
       </Section>
     </>
   )
