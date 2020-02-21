@@ -55,7 +55,7 @@ function WalletButton() {
         if (!wallet) {
           return (
             <CTAButton type="light" onClick={signIn} analyticsId="Sign In">
-              Connect Wallet to Kickback
+              Connect Kickback to Wallet
             </CTAButton>
           )
         }
