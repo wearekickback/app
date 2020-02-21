@@ -35,6 +35,10 @@ const EventIdInput = styled(TextInput)`
   margin-right: 20px;
 `
 
+const POAPList = styled('ul')`
+  margin-left: 2em;
+`
+
 export default withApollo(function CheckIn({ party, client }) {
   const [poapId, setPoapId] = useState('')
   const [newAttendees, setNewAttendees] = useState([])
@@ -44,6 +48,16 @@ export default withApollo(function CheckIn({ party, client }) {
     () => {
       const [attendee, ...rest] = newAttendees
       console.log('mutate', attendee.user.username)
+      client.mutate({
+        mutation: MARK_USER_ATTENDED,
+        variables: {
+          address: party.address,
+          participant: {
+            address: attendee.user.address,
+            status: PARTICIPANT_STATUS.SHOWED_UP
+          }
+        }
+      })
       console.log('checkIn3: setting newAttendees to ', rest.length)
       setNewAttendees(rest)
       if (rest.length === 0) {
@@ -78,23 +92,8 @@ export default withApollo(function CheckIn({ party, client }) {
           participant.status === PARTICIPANT_STATUS.REGISTERED
       )
     setNewAttendees(_newAttendees)
-    // newAttendees.forEach(participant =>
-    //   client.mutate({
-    //     mutation: MARK_USER_ATTENDED,
-    //     variables: {
-    //       address: party.address,
-    //       participant: {
-    //         address: participant.user.address,
-    //         status: PARTICIPANT_STATUS.SHOWED_UP
-    //       }
-    //     }
-    //   })
-    // )
   }
 
-  const checkIn = async () => {
-    setIsRunning(true)
-  }
   return (
     <>
       <Section>
@@ -135,7 +134,7 @@ export default withApollo(function CheckIn({ party, client }) {
         </Button>
         <Button
           disabled={isRunning || newAttendees.length === 0}
-          onClick={() => checkIn()}
+          onClick={() => setIsRunning(true)}
         >
           Mark Check In
         </Button>
@@ -143,7 +142,7 @@ export default withApollo(function CheckIn({ party, client }) {
       <Section>
         {isRunning ? <span>Auto checking in....</span> : ''}
         {newAttendees.length} POAP tokens to claim.
-        <ul>
+        <POAPList>
           {newAttendees.map(a => {
             const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
             return (
@@ -155,7 +154,7 @@ export default withApollo(function CheckIn({ party, client }) {
               </li>
             )
           })}
-        </ul>
+        </POAPList>
       </Section>
     </>
   )
