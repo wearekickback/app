@@ -47,7 +47,6 @@ export default withApollo(function CheckIn({ party, client }) {
   useInterval(
     () => {
       const [attendee, ...rest] = newAttendees
-      console.log('mutate', attendee.user.username)
       client.mutate({
         mutation: MARK_USER_ATTENDED,
         variables: {
@@ -58,7 +57,6 @@ export default withApollo(function CheckIn({ party, client }) {
           }
         }
       })
-      console.log('checkIn3: setting newAttendees to ', rest.length)
       setNewAttendees(rest)
       if (rest.length === 0) {
         setIsRunning(false)
