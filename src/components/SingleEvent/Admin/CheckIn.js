@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
+import useInterval from 'use-interval'
 
 import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
@@ -17,6 +18,7 @@ const cache = new InMemoryCache()
 const link = new HttpLink({
   uri: 'https://api.thegraph.com/subgraphs/name/amxx/poap'
 })
+const POAP_ADDRESS = '0x22c1f6050e56d2876009903609a2cc3fef83b415'
 const graphClient = new ApolloClient({ cache, link })
 
 const Section = styled('section')`
@@ -33,10 +35,37 @@ const EventIdInput = styled(TextInput)`
   margin-right: 20px;
 `
 
+const POAPList = styled('ul')`
+  margin-left: 2em;
+`
+
 export default withApollo(function CheckIn({ party, client }) {
   const [poapId, setPoapId] = useState('')
+  const [newAttendees, setNewAttendees] = useState([])
+  const [isRunning, setIsRunning] = useState(false)
 
-  const checkIn = async () => {
+  useInterval(
+    () => {
+      const [attendee, ...rest] = newAttendees
+      client.mutate({
+        mutation: MARK_USER_ATTENDED,
+        variables: {
+          address: party.address,
+          participant: {
+            address: attendee.user.address,
+            status: PARTICIPANT_STATUS.SHOWED_UP
+          }
+        }
+      })
+      setNewAttendees(rest)
+      if (rest.length === 0) {
+        setIsRunning(false)
+      }
+    },
+    newAttendees.length > 0 && isRunning ? 1000 : null
+  )
+
+  const loadPOAPUser = async () => {
     const {
       data: { event }
     } = await graphClient.query({
@@ -45,22 +74,22 @@ export default withApollo(function CheckIn({ party, client }) {
     })
     const addresses = event.tokens.map(t => t.owner.id)
 
-    const attendees = party.participants.filter(participant =>
-      addresses.includes(participant.user.address)
-    )
-
-    attendees.forEach(participant =>
-      client.mutate({
-        mutation: MARK_USER_ATTENDED,
-        variables: {
-          address: party.address,
-          participant: {
-            address: participant.user.address,
-            status: PARTICIPANT_STATUS.SHOWED_UP
-          }
+    const _newAttendees = party.participants
+      .map(participant => {
+        let token = event.tokens.filter(
+          t => t.owner.id === participant.user.address
+        )[0]
+        if (token) {
+          participant.poapTokenId = token.id
         }
+        return participant
       })
-    )
+      .filter(
+        participant =>
+          addresses.includes(participant.user.address) &&
+          participant.status === PARTICIPANT_STATUS.REGISTERED
+      )
+    setNewAttendees(_newAttendees)
   }
 
   return (
@@ -95,7 +124,35 @@ export default withApollo(function CheckIn({ party, client }) {
             type="number"
           />
         </EventIdInputContainer>
-        <Button onClick={() => checkIn()}>Start Check In</Button>
+        <Button
+          disabled={newAttendees.length !== 0}
+          onClick={() => loadPOAPUser()}
+        >
+          Load POAP users
+        </Button>
+        <Button
+          disabled={isRunning || newAttendees.length === 0}
+          onClick={() => setIsRunning(true)}
+        >
+          Mark Check In
+        </Button>
+      </Section>
+      <Section>
+        {isRunning ? <span>Auto checking in....</span> : ''}
+        {newAttendees.length} POAP tokens to claim.
+        <POAPList>
+          {newAttendees.map(a => {
+            const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
+            return (
+              <li>
+                <a href={url} target="_blank">
+                  {a.poapTokenId}
+                </a>{' '}
+                {a.user.username} {a.user.address.slice(0, 4)}...
+              </li>
+            )
+          })}
+        </POAPList>
       </Section>
     </>
   )
