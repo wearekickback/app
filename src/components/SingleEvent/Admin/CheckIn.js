@@ -18,6 +18,7 @@ const cache = new InMemoryCache()
 const link = new HttpLink({
   uri: 'https://api.thegraph.com/subgraphs/name/amxx/poap'
 })
+const POAP_ADDRESS = '0x22c1f6050e56d2876009903609a2cc3fef83b415'
 const graphClient = new ApolloClient({ cache, link })
 
 const Section = styled('section')`
@@ -61,12 +62,21 @@ export default withApollo(function CheckIn({ party, client }) {
     })
     const addresses = event.tokens.map(t => t.owner.id)
 
-    const _newAttendees = party.participants.filter(
-      participant =>
-        addresses.includes(participant.user.address) &&
-        participant.status === PARTICIPANT_STATUS.REGISTERED
-    )
-    console.log({ newAttendees, _newAttendees })
+    const _newAttendees = party.participants
+      .map(participant => {
+        let token = event.tokens.filter(
+          t => t.owner.id === participant.user.address
+        )[0]
+        if (token) {
+          participant.poapTokenId = token.id
+        }
+        return participant
+      })
+      .filter(
+        participant =>
+          addresses.includes(participant.user.address) &&
+          participant.status === PARTICIPANT_STATUS.REGISTERED
+      )
     setNewAttendees(_newAttendees)
     // newAttendees.forEach(participant =>
     //   client.mutate({
@@ -84,18 +94,6 @@ export default withApollo(function CheckIn({ party, client }) {
 
   const checkIn = async () => {
     setIsRunning(true)
-    // newAttendees.forEach(participant =>
-    //   client.mutate({
-    //     mutation: MARK_USER_ATTENDED,
-    //     variables: {
-    //       address: party.address,
-    //       participant: {
-    //         address: participant.user.address,
-    //         status: PARTICIPANT_STATUS.SHOWED_UP
-    //       }
-    //     }
-    //   })
-    // )
   }
   return (
     <>
@@ -147,9 +145,13 @@ export default withApollo(function CheckIn({ party, client }) {
         {newAttendees.length} POAP tokens to claim.
         <ul>
           {newAttendees.map(a => {
+            const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
             return (
               <li>
-                {a.user.username} {a.user.address}
+                <a href={url} target="_blank">
+                  {a.poapTokenId}
+                </a>{' '}
+                {a.user.username} {a.user.address.slice(0, 4)}...
               </li>
             )
           })}
