@@ -75,6 +75,16 @@ const DefaultLayout = ({ children }) => {
   )
 }
 
+export const NoWeb3CheckLayout = ({ children }) => (
+  <Fragment>
+    <Header />
+    <Container>
+      <ContainerInner>{children}</ContainerInner>
+    </Container>
+    <Footer />
+  </Fragment>
+)
+
 export const HomePageLayout = ({ children }) => (
   <Fragment>
     {children}
