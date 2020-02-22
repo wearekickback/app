@@ -145,7 +145,7 @@ export default withApollo(function CheckIn({ party, client }) {
             const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
             return (
               <li>
-                <a href={url} target="_blank">
+                <a href={url} target="_blank" rel="noopener noreferrer">
                   {a.poapTokenId}
                 </a>{' '}
                 {a.user.username} {a.user.address.slice(0, 4)}...
