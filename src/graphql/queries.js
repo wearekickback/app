@@ -112,3 +112,17 @@ export const TOKEN_SYMBOL_QUERY = gql`
     token: getTokenBySymbol(symbol: $symbol) @client
   }
 `
+
+export const POAP_USERS_SUBGRAPH_QUERY = gql`
+  query event($eventId: String!) {
+    event: event(id: $eventId) {
+      id
+      tokens {
+        id
+        owner {
+          id
+        }
+      }
+    }
+  }
+`

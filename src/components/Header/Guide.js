@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import c from '../../colours'
+import DefaultTrackedLink from '../Links/TrackedLink'
 
 const GuideWrapper = styled('div')`
   margin-right: 2em;
@@ -33,7 +34,7 @@ const GuideButton = styled('a')`
   color: white;
 `
 
-const Link = styled('a')`
+const Link = styled(DefaultTrackedLink)`
   color: ${c.primary400};
 `
 
@@ -87,7 +88,7 @@ export default class Guide extends Component {
             <List>
               {links.map(l => (
                 <ListItem>
-                  <Link href={l.href}>{l.label}</Link>
+                  <Link to={l.href}>{l.label}</Link>
                 </ListItem>
               ))}
             </List>
