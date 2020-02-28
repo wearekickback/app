@@ -40,8 +40,7 @@ export const PartyFields = gql`
   ${ParticipantFields}
 
   fragment PartyFields on Party {
-    id
-    address
+    #server
     name
     description
     timezone
@@ -50,6 +49,10 @@ export const PartyFields = gql`
     arriveBy
     location
     headerImg
+    id
+    address
+
+    #not needed to be synced by server
     balance
     deposit
     tokenAddress
@@ -57,6 +60,8 @@ export const PartyFields = gql`
     participantLimit
     ended
     cancelled
+    #
+
     status
     roles {
       role
@@ -64,6 +69,7 @@ export const PartyFields = gql`
         ...ProfileFields
       }
     }
+    #remove when subgraph is up
     participants {
       ...ParticipantFields
     }

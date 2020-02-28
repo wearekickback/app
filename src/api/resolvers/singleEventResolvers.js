@@ -14,8 +14,14 @@ export const defaults = {
   markedAttendedList: []
 }
 
+async function getPartyContract(address) {
+  const web3 = await getWeb3Read()
+  const { methods } = new web3.eth.Contract(abi, address)
+  return methods
+}
+
 const resolvers = {
-  Event: {
+  PartyFromContract: {
     description: party => party.description_text || null,
     date: party => party.date || null,
     location: party => party.location_text || null,
@@ -25,8 +31,8 @@ const resolvers = {
       return web3.eth.getBalance(address)
     },
 
-    async owner({ contract }) {
-      console.log('contract', contract)
+    async owner({ address }) {
+      const contract = await getPartyContract(address)
       try {
         const owner = await contract.owner().call()
         console.log('owner', owner)
@@ -35,45 +41,61 @@ const resolvers = {
       }
       return contract.owner().call()
     },
-    async admins({ contract }) {
+    async admins({ address }) {
+      const contract = await getPartyContract(address)
       return contract.getAdmins().call()
     },
-    async name({ contract }) {
+    async name({ address }) {
+      const contract = await getPartyContract(address)
       return contract.name().call()
     },
-    async deposit({ contract }) {
+    async deposit({ address }) {
+      const contract = await getPartyContract(address)
       const deposit = await contract.deposit().call()
       return fromWei(deposit.toString())
     },
-    async limitOfParticipants({ contract }) {
+    async participantsLimit({ address }) {
+      const contract = await getPartyContract(address)
       const limitOfParticipants = await contract.limitOfParticipants().call()
       return parseInt(limitOfParticipants, 10)
     },
-    async registered({ contract }) {
+    async registered({ address }) {
+      const contract = await getPartyContract(address)
       const registered = await contract.registered().call()
       return parseInt(registered, 10)
     },
-    async ended({ contract }) {
+    async ended({ address }) {
+      const contract = await getPartyContract(address)
       const ended = await contract.ended().call()
       return ended
     },
-    async cancelled({ contract }) {
+    async cancelled({ address }) {
+      const contract = await getPartyContract(address)
       const cancelled = await contract.cancelled().call()
       return cancelled
     },
-    async endedAt({ contract }) {
+    async endedAt({ address }) {
+      const contract = await getPartyContract(address)
       const endedAt = await contract.endedAt().call()
       return endedAt
     },
-    async coolingPeriod({ contract }) {
+    async coolingPeriod({ address }) {
+      const contract = await getPartyContract(address)
       const coolingPeriod = await contract.coolingPeriod().call()
       return coolingPeriod
     },
-    async payoutAmount({ contract }) {
+    async tokenAddress({ address }) {
+      const contract = await getPartyContract(address)
+      const tokenAddress = await contract.tokenAddress().call()
+      return tokenAddress
+    },
+    async payoutAmount({ address }) {
+      const contract = await getPartyContract(address)
       const payoutAmount = await contract.payoutAmount().call()
       return fromWei(payoutAmount.toString())
     },
-    async participants({ contract }) {
+    async participants({ address }) {
+      const contract = await getPartyContract(address)
       const registeredRaw = await contract.registered().call()
       const registered = parseInt(registeredRaw)
       const participantsRaw = Array.from({ length: registered }).map((_, i) =>
@@ -99,9 +121,9 @@ const resolvers = {
     }
   },
   Query: {
-    async event(_, { address }) {
+    async partyFromContract(_, { address }) {
       const web3 = await getWeb3Read()
-      const contract = new web3.eth.Contract(abi, address)
+      const { methods: contract } = new web3.eth.Contract(abi, address)
       const eventFixture = events.filter(event => {
         return event.address === address
       })[0]
@@ -110,7 +132,7 @@ const resolvers = {
         contract: contract.methods,
         ...eventFixture,
         __rawContract: contract,
-        __typename: 'Event'
+        __typename: 'PartyFromContract'
       }
     }
   },

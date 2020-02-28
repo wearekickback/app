@@ -49,28 +49,25 @@ class SingleEventWrapper extends Component {
     console.log('address', address)
     return (
       <SingleEventContainer>
-        <Query query={EVENT_QUERY_FROM_CONTRACT} variables={{ address }}>
-          {({ data, error }) => (
-            console.log('data from contract', data, error), (<div />)
-          )}
-        </Query>
         <GlobalConsumer>
           {({ userAddress }) => (
-            <SafeQuery
+            <Query
               query={PARTY_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
               pollInterval={60000}
               keepExistingResultDuringRefetch={true}
             >
-              {({ data: { party }, loading }) => {
-                // no party?
+              {({ data: { party, partyFromContract }, loading, error }) => {
+                console.log(partyFromContract)
                 if (!party) {
                   if (loading) {
                     return <Loader />
                   } else {
                     return (
                       <WarningBox>
+                        {}
+                        {JSON.stringify(error)}
                         We could not find an event at the address {address}!
                       </WarningBox>
                     )
@@ -107,7 +104,7 @@ class SingleEventWrapper extends Component {
                   </Fragment>
                 )
               }}
-            </SafeQuery>
+            </Query>
           )}
         </GlobalConsumer>
       </SingleEventContainer>

@@ -50,12 +50,27 @@ export const PARTY_QUERY = gql`
     party(address: $address) {
       ...PartyFields
     }
+    partyFromContract(address: $address) @client {
+      name
+      balance
+      owner
+      admins
+      deposit
+      participantsLimit
+      registered
+      ended
+      cancelled
+      endedAt
+      coolingPeriod
+      payoutAmount
+      participants
+    }
   }
 `
 
 export const EVENT_QUERY_FROM_CONTRACT = gql`
-  query event($address: String!) @client {
-    event(address: $address) @client {
+  query party($address: String!) @client {
+    partyFromContract(address: $address) @client {
       name
       balance
       owner
