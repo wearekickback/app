@@ -15,7 +15,7 @@ export const defaults = {
 }
 
 const resolvers = {
-  Party: {
+  Event: {
     description: party => party.description_text || null,
     date: party => party.date || null,
     location: party => party.location_text || null,
@@ -26,6 +26,13 @@ const resolvers = {
     },
 
     async owner({ contract }) {
+      console.log('contract', contract)
+      try {
+        const owner = await contract.owner().call()
+        console.log('owner', owner)
+      } catch (e) {
+        console.log('error calling owner', e)
+      }
       return contract.owner().call()
     },
     async admins({ contract }) {
@@ -46,10 +53,6 @@ const resolvers = {
       const registered = await contract.registered().call()
       return parseInt(registered, 10)
     },
-    async attended({ contract }) {
-      const attended = await contract.attended().call()
-      return parseInt(attended, 10)
-    },
     async ended({ contract }) {
       const ended = await contract.ended().call()
       return ended
@@ -69,15 +72,6 @@ const resolvers = {
     async payoutAmount({ contract }) {
       const payoutAmount = await contract.payoutAmount().call()
       return fromWei(payoutAmount.toString())
-    },
-    async encryption({ contract }) {
-      try {
-        const encryption = await contract.encryption().call()
-        return encryption
-      } catch (e) {
-        console.log(e)
-        return null
-      }
     },
     async participants({ contract }) {
       const registeredRaw = await contract.registered().call()
@@ -105,7 +99,7 @@ const resolvers = {
     }
   },
   Query: {
-    async party(_, { address }) {
+    async event(_, { address }) {
       const web3 = await getWeb3Read()
       const contract = new web3.eth.Contract(abi, address)
       const eventFixture = events.filter(event => {
@@ -116,7 +110,7 @@ const resolvers = {
         contract: contract.methods,
         ...eventFixture,
         __rawContract: contract,
-        __typename: 'Party'
+        __typename: 'Event'
       }
     }
   },

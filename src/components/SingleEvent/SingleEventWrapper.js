@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react'
 import styled from '@emotion/styled'
+import { Query } from 'react-apollo'
 
 import {
   amAdmin,
   getMyParticipantEntry,
   getPartyImage
 } from '../../utils/parties'
-import { PARTY_QUERY } from '../../graphql/queries'
+import { PARTY_QUERY, EVENT_QUERY_FROM_CONTRACT } from '../../graphql/queries'
 import mq from '../../mediaQuery'
 
 import Loader from '../Loader'
@@ -45,9 +46,14 @@ const RightContainer = styled('div')`
 class SingleEventWrapper extends Component {
   render() {
     const { address } = this.props
-
+    console.log('address', address)
     return (
       <SingleEventContainer>
+        <Query query={EVENT_QUERY_FROM_CONTRACT} variables={{ address }}>
+          {({ data, error }) => (
+            console.log('data from contract', data, error), (<div />)
+          )}
+        </Query>
         <GlobalConsumer>
           {({ userAddress }) => (
             <SafeQuery
