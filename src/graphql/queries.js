@@ -88,6 +88,23 @@ export const EVENT_QUERY_FROM_CONTRACT = gql`
   }
 `
 
+export const PARTY_QUERY_FROM_GRAPH = gql`
+  {
+    partyEntities(first: 5) {
+      id
+      address
+      name
+      deposit
+    }
+    participantEntities(first: 5) {
+      id
+      partyAddress
+      userAddress
+      state
+    }
+  }
+`
+
 export const PARTY_ADMIN_VIEW_QUERY = gql`
   ${PartyFields}
 

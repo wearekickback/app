@@ -7,7 +7,8 @@ import {
   getMyParticipantEntry,
   getPartyImage
 } from '../../utils/parties'
-import { PARTY_QUERY, EVENT_QUERY_FROM_CONTRACT } from '../../graphql/queries'
+import { PARTY_QUERY, PARTY_QUERY_FROM_GRAPH } from '../../graphql/queries'
+import theGraphClient from '../../graphql/thegraph'
 import mq from '../../mediaQuery'
 
 import Loader from '../Loader'
@@ -49,6 +50,9 @@ class SingleEventWrapper extends Component {
     console.log('address', address)
     return (
       <SingleEventContainer>
+        <Query client={theGraphClient} query={PARTY_QUERY_FROM_GRAPH}>
+          {({ data }) => <div>{JSON.stringify(data)}</div>}
+        </Query>
         <GlobalConsumer>
           {({ userAddress }) => (
             <Query
