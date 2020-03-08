@@ -95,6 +95,9 @@ export const PARTY_QUERY_FROM_GRAPH = gql`
       address
       name
       deposit
+      tokenSymbol
+      tokenDecimals
+      tokenName
     }
     participantEntities(first: 5) {
       id
