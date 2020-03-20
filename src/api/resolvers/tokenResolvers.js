@@ -1,264 +1,12 @@
 import getWeb3, { getAccount, getTokenBySymbol, getWeb3Read } from '../web3'
 // import { Token } from '@wearekickback/contracts'
 
+import DETAILEDERC20_ABI from '../abi/detailedERC20ABI'
+import DETAILEDERC20BYTES32_ABI from '../abi/detailedERC20bytes32ABI'
 import { txHelper, isEmptyAddress } from '../utils'
 export const defaults = {}
 // This is because some token uses string as symbol while others are bytes32
 // We need some workaround like https://ethereum.stackexchange.com/questions/58945/how-to-handle-both-string-and-bytes32-method-returns when supporting any ERC20
-
-const detailedERC20ABI = [
-  {
-    constant: true,
-    inputs: [],
-    name: 'name',
-    outputs: [{ name: '', type: 'string' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' }
-    ],
-    name: 'approve',
-    outputs: [{ name: '', type: 'bool' }],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ name: '', type: 'uint256' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: 'from', type: 'address' },
-      { name: 'to', type: 'address' },
-      { name: 'value', type: 'uint256' }
-    ],
-    name: 'transferFrom',
-    outputs: [{ name: '', type: 'bool' }],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'decimals',
-    outputs: [{ name: '', type: 'uint8' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [{ name: 'who', type: 'address' }],
-    name: 'balanceOf',
-    outputs: [{ name: '', type: 'uint256' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'symbol',
-    outputs: [{ name: '', type: 'string' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: 'to', type: 'address' },
-      { name: 'value', type: 'uint256' }
-    ],
-    name: 'transfer',
-    outputs: [{ name: '', type: 'bool' }],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' }
-    ],
-    name: 'allowance',
-    outputs: [{ name: '', type: 'uint256' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      { name: '_name', type: 'string' },
-      { name: '_symbol', type: 'string' },
-      { name: '_decimals', type: 'uint8' }
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'constructor'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'owner', type: 'address' },
-      { indexed: true, name: 'spender', type: 'address' },
-      { indexed: false, name: 'value', type: 'uint256' }
-    ],
-    name: 'Approval',
-    type: 'event'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'from', type: 'address' },
-      { indexed: true, name: 'to', type: 'address' },
-      { indexed: false, name: 'value', type: 'uint256' }
-    ],
-    name: 'Transfer',
-    type: 'event'
-  }
-]
-
-const detailedERC20bytes32ABI = [
-  {
-    constant: true,
-    inputs: [],
-    name: 'name',
-    outputs: [{ name: '', type: 'bytes32' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' }
-    ],
-    name: 'approve',
-    outputs: [{ name: '', type: 'bool' }],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ name: '', type: 'uint256' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: 'from', type: 'address' },
-      { name: 'to', type: 'address' },
-      { name: 'value', type: 'uint256' }
-    ],
-    name: 'transferFrom',
-    outputs: [{ name: '', type: 'bool' }],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'decimals',
-    outputs: [{ name: '', type: 'uint8' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [{ name: 'who', type: 'address' }],
-    name: 'balanceOf',
-    outputs: [{ name: '', type: 'uint256' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [],
-    name: 'symbol',
-    outputs: [{ name: '', type: 'bytes32' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    constant: false,
-    inputs: [
-      { name: 'to', type: 'address' },
-      { name: 'value', type: 'uint256' }
-    ],
-    name: 'transfer',
-    outputs: [{ name: '', type: 'bool' }],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    constant: true,
-    inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' }
-    ],
-    name: 'allowance',
-    outputs: [{ name: '', type: 'uint256' }],
-    payable: false,
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      { name: '_name', type: 'string' },
-      { name: '_symbol', type: 'string' },
-      { name: '_decimals', type: 'uint8' }
-    ],
-    payable: false,
-    stateMutability: 'nonpayable',
-    type: 'constructor'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'owner', type: 'address' },
-      { indexed: true, name: 'spender', type: 'address' },
-      { indexed: false, name: 'value', type: 'uint256' }
-    ],
-    name: 'Approval',
-    type: 'event'
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'from', type: 'address' },
-      { indexed: true, name: 'to', type: 'address' },
-      { indexed: false, name: 'value', type: 'uint256' }
-    ],
-    name: 'Transfer',
-    type: 'event'
-  }
-]
 
 let token
 
@@ -284,7 +32,7 @@ const resolvers = {
           }
         }
 
-        const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
+        const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
         const allowance = await contract
           .allowance(userAddress, partyAddress)
           .call()
@@ -302,7 +50,7 @@ const resolvers = {
       const web3 = await getWeb3Read()
 
       try {
-        const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
+        const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
         const decimals = await contract.decimals().call()
         return { decimals }
       } catch (err) {
@@ -332,7 +80,7 @@ const resolvers = {
       const web3 = await getWeb3Read()
 
       try {
-        const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
+        const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
         let [name, symbol, decimals] = await Promise.all([
           contract.name().call(),
           contract.symbol().call(),
@@ -344,7 +92,7 @@ const resolvers = {
           const contract = getTokenContract(
             web3,
             tokenAddress,
-            detailedERC20bytes32ABI
+            DETAILEDERC20BYTES32_ABI
           )
           let [name, symbol, decimals] = await Promise.all([
             contract.name().call(),
@@ -360,7 +108,7 @@ const resolvers = {
           symbol = web3.utils.toAscii(symbol).replace(`/${NULL_CHAR}/g`, '') // eslint-disable-line no-control-regex
           return { name, symbol, decimals }
         } catch (err) {
-          console.log(`Failed to get Token`)
+          console.log('Failed to get Token')
           return { name: null, symbol: null, decimals: 18 }
         }
       }
@@ -370,7 +118,7 @@ const resolvers = {
     async approveToken(_, { tokenAddress, deposit, address }) {
       const web3 = await getWeb3()
       const account = await getAccount()
-      const contract = getTokenContract(web3, tokenAddress, detailedERC20ABI)
+      const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
       try {
         const tx = await txHelper(
           contract.approve(address, deposit).send({
