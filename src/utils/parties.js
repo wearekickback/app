@@ -61,7 +61,21 @@ export const filterParticipants = (selectedFilter, search) => participant => {
 
 export const getPartyImage = img => {
   if (img) {
-    return img.replace('image/upload/', `image/upload/c_scale,w_auto,dpr_auto/`)
+    return img.replace(
+      'image/upload/',
+      `image/upload/fl_lossy,f_auto,c_scale,w_500,dpr_auto/`
+    )
+  } else {
+    return 'https://placeimg.com/640/480/tech'
+  }
+}
+
+export const getPartyImageSmall = img => {
+  if (img) {
+    return img.replace(
+      'image/upload/',
+      `image/upload/fl_lossy,f_auto,c_scale,w_300,dpr_auto/`
+    )
   } else {
     return 'https://placeimg.com/640/480/tech'
   }

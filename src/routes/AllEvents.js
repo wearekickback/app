@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import LazyLoad from 'react-lazyload'
 
 import { ALL_PARTIES_QUERY } from '../graphql/queries'
 import EventCard from '../components/EventList/EventCard'
@@ -23,9 +24,9 @@ class AllEvents extends Component {
           {({ data: { parties } }) => {
             return (
               <EventCardGrid>
-                {parties.map((party, index) => {
+                {parties.map(party => {
                   party.headerImg = getPartyImage(party.headerImg)
-                  return <EventCard party={party} key={index} />
+                  return <EventCard party={party} key={party.id} />
                 })}
               </EventCardGrid>
             )
