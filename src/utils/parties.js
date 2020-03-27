@@ -70,11 +70,11 @@ export const getPartyImage = img => {
   }
 }
 
-export const getPartyImageSmall = img => {
+export const getPartyImageLarge = img => {
   if (img) {
     return img.replace(
       'image/upload/',
-      `image/upload/fl_lossy,f_auto,c_scale,w_300,dpr_auto/`
+      `image/upload/fl_lossy,f_auto,c_scale,w_800,dpr_auto/`
     )
   } else {
     return 'https://placeimg.com/640/480/tech'
