@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import LazyLoad from 'react-lazyload'
 
 import { ALL_PARTIES_QUERY } from '../graphql/queries'
 import EventCard from '../components/EventList/EventCard'
