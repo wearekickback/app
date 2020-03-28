@@ -23,9 +23,9 @@ class AllEvents extends Component {
           {({ data: { parties } }) => {
             return (
               <EventCardGrid>
-                {parties.map((party, index) => {
+                {parties.map(party => {
                   party.headerImg = getPartyImage(party.headerImg)
-                  return <EventCard party={party} key={index} />
+                  return <EventCard party={party} key={party.id} />
                 })}
               </EventCardGrid>
             )

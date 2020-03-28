@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import LazyLoad from 'react-lazyload'
 import styled from '@emotion/styled'
 import { Link as DefaultLink } from 'react-router-dom'
 
@@ -56,7 +57,11 @@ class EventCard extends Component {
     return (
       <EventCardContainer>
         <Link to={`/event/${address}`}>
-          <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
+          <LazyLoad height={300}>
+            <EventImage
+              src={headerImg || 'https://placeimg.com/640/480/tech'}
+            />
+          </LazyLoad>
           <EventDetails>
             <EventName>{name}</EventName>
             <EventDate event={party} />
