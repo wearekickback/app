@@ -325,15 +325,7 @@ class SingleEventWrapper extends Component {
 
                                 return (
                                   <TR key={participant.user.id}>
-                                    <TD>
-                                      {participant.index === idx + 1 ? (
-                                        participant.index
-                                      ) : (
-                                        <Mismatched>
-                                          {participant.index}
-                                        </Mismatched>
-                                      )}
-                                    </TD>
+                                    <TD>{participant.index}</TD>
                                     <TD data-csv="no">
                                       {' '}
                                       {ended ? (
