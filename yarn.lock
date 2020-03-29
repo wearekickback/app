@@ -1880,10 +1880,19 @@
     "@wearekickback/shared" "^1.14.0"
     openzeppelin-solidity "^2.3.0"
 
-"@wearekickback/shared@^1.13.0", "@wearekickback/shared@^1.14.0":
+"@wearekickback/shared@^1.14.0":
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.0.tgz#97893086c6851904d1ba430679ee25f722a88dd6"
   integrity sha512-8ahwhjDZEuOVQVJ4TYBAMM3O8OTNpEJyWA64xGJgDqNpit/Xdm+Wwad/zK/hGFhnh7TYAlSfd3iXyedRxmtWbw==
+  dependencies:
+    lodash.get "^4.4.2"
+    validator "^10.8.0"
+    web3-utils "^1.0.0-beta.36"
+
+"@wearekickback/shared@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.1.tgz#1112e65eddf8a384822922353b5764c96ca84f48"
+  integrity sha512-LjQFG9VTTu5x36thWIu44QWQmHsImyH5nME9klYhWioYJJFEiq137g76BCLgUCDiL7bw9ztocL26xaxYc9KH5Q==
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
