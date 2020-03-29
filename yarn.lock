@@ -1880,10 +1880,19 @@
     "@wearekickback/shared" "^1.14.0"
     openzeppelin-solidity "^2.3.0"
 
-"@wearekickback/shared@^1.13.0", "@wearekickback/shared@^1.14.0":
+"@wearekickback/shared@^1.14.0":
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.0.tgz#97893086c6851904d1ba430679ee25f722a88dd6"
   integrity sha512-8ahwhjDZEuOVQVJ4TYBAMM3O8OTNpEJyWA64xGJgDqNpit/Xdm+Wwad/zK/hGFhnh7TYAlSfd3iXyedRxmtWbw==
+  dependencies:
+    lodash.get "^4.4.2"
+    validator "^10.8.0"
+    web3-utils "^1.0.0-beta.36"
+
+"@wearekickback/shared@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.1.tgz#1112e65eddf8a384822922353b5764c96ca84f48"
+  integrity sha512-LjQFG9VTTu5x36thWIu44QWQmHsImyH5nME9klYhWioYJJFEiq137g76BCLgUCDiL7bw9ztocL26xaxYc9KH5Q==
   dependencies:
     lodash.get "^4.4.2"
     validator "^10.8.0"
@@ -14400,6 +14409,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
+
+react-lazyload@^2.6.5:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/react-lazyload/-/react-lazyload-2.6.5.tgz#7a5ac001f0f8aeddc10c30e4ce318c10f13aa723"
+  integrity sha512-C/juO9l7dGS7jEARBLjM3oG7F1lL5bqajz/55sk3GFc0Ippd9vnSkdRxdiaE6gf5si3YxIow8dSJ+YuB2D/3vg==
 
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
