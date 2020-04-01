@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
-import { amAdmin, getMyParticipantEntry } from '../../utils/parties'
+import {
+  amAdmin,
+  getMyParticipantEntry,
+  getPartyImage
+} from '../../utils/parties'
 import { PARTY_QUERY } from '../../graphql/queries'
 import mq from '../../mediaQuery'
 
@@ -71,6 +75,7 @@ class SingleEventWrapper extends Component {
                   amAdmin: amAdmin(party, userAddress),
                   myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
+                party.headerImg = getPartyImage(party.headerImg)
 
                 return (
                   <Fragment>

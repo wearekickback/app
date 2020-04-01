@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import LazyLoad from 'react-lazyload'
+import styled from '@emotion/styled'
 import { Link as DefaultLink } from 'react-router-dom'
 
-import { depositValue } from '../Utils/DepositValue.js'
 import DefaultEventDate from '../Utils/EventDate.js'
 import Currency from '../SingleEvent/Currency'
 
@@ -57,12 +57,16 @@ class EventCard extends Component {
     return (
       <EventCardContainer>
         <Link to={`/event/${address}`}>
-          <EventImage src={headerImg || 'https://placeimg.com/640/480/tech'} />
+          <LazyLoad height={300}>
+            <EventImage
+              src={headerImg || 'https://placeimg.com/640/480/tech'}
+            />
+          </LazyLoad>
           <EventDetails>
             <EventName>{name}</EventName>
             <EventDate event={party} />
             <Deposit>
-              {depositValue(deposit)} <Currency tokenAddress={tokenAddress} />
+              <Currency amount={deposit} tokenAddress={tokenAddress} />
             </Deposit>
           </EventDetails>
         </Link>

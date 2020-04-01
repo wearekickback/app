@@ -12,9 +12,6 @@ import singleEventResolvers, {
   defaults as singleEventDefaults
 } from './resolvers/singleEventResolvers'
 import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
-import qrCodeResolvers, {
-  defaults as qrCodeDefaults
-} from './resolvers/qrCodeResolvers'
 import tokenResolvers, {
   defaults as tokenDefaults
 } from './resolvers/tokenResolvers'
@@ -76,14 +73,12 @@ const defaults = merge(
   rootDefaults,
   singleEventDefaults,
   ensDefaults,
-  qrCodeDefaults,
   tokenDefaults
 )
 export default merge(
   resolvers,
   singleEventResolvers,
   ensResolvers,
-  qrCodeResolvers,
   tokenResolvers
 )
 export { defaults }

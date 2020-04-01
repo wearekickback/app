@@ -2,7 +2,11 @@ import { Deployer } from '@wearekickback/contracts'
 import Web3 from 'web3'
 import EventEmitter from 'eventemitter3'
 
-import { DEPLOYER_CONTRACT_ADDRESS, DAI_CONTRACT_ADDRESS } from '../config'
+import {
+  DEPLOYER_CONTRACT_ADDRESS,
+  DAI_CONTRACT_ADDRESS,
+  INFURA_KEY
+} from '../config'
 import { getProvider } from '../GlobalState'
 import { NEW_BLOCK } from '../utils/events'
 import { clientInstance } from '../graphql'
@@ -41,13 +45,13 @@ const getNetworkName = id => {
 const getNetworkProviderUrl = id => {
   switch (id) {
     case '1':
-      return `https://mainnet.infura.io/`
+      return `https://mainnet.infura.io/v3/${INFURA_KEY}`
     case '3':
-      return `https://ropsten.infura.io/`
+      return `https://ropsten.infura.io/v3/${INFURA_KEY}`
     case '4':
-      return `https://rinkeby.infura.io/`
+      return `https://rinkeby.infura.io/v3/${INFURA_KEY}`
     case '42':
-      return `https://kovan.infura.io/`
+      return `https://kovan.infura.io/v3/${INFURA_KEY}`
 
     default:
       throw new Error(`Cannot connect to unsupported network: ${id}`)
@@ -59,93 +63,118 @@ const isLocalNetwork = id => {
     case '1':
     case '3':
     case '4':
+    case '42':
       return false
     default:
       return true
   }
 }
 
-const getWeb3 = lazyAsync(async () => {
+const getExpectedNetworkId = lazyAsync(async () => {
+  const result = await clientInstance.query({
+    query: NETWORK_ID_QUERY
+  })
+
+  if (result.error) {
+    throw new Error(result.error)
+  }
+
+  return {
+    expectedNetworkId: result.data.networkId,
+    expectedNetworkName: getNetworkName(result.data.networkId)
+  }
+})
+
+const getNetworkId = async web3 => {
+  try {
+    const networkId = (await web3.eth.net.getId()).toString()
+    return {
+      networkId: networkId,
+      networkName: getNetworkName(networkId)
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+const connectToCloudNode = () => {
+  const web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
+
+  if (web3) {
+    console.log('Success: Cloud node active')
+    return web3
+  } else {
+    throw new Error("Couldn't connect to cloud node")
+  }
+}
+
+export const pollForBlocks = web3 => {
+  setInterval(async () => {
+    try {
+      const block = await web3.eth.getBlock('latest')
+      events.emit(NEW_BLOCK, block)
+    } catch (__) {
+      /* nothing to do */
+    }
+  }, 10000)
+}
+
+const getWeb3 = async () => {
   let web3
 
+  const { expectedNetworkId } = await getExpectedNetworkId()
+
   try {
-    console.log('Initializing web3')
-    networkState = { allGood: true }
-    const result = await clientInstance.query({
-      query: NETWORK_ID_QUERY
-    })
-
-    if (result.error) {
-      throw new Error(result.error)
+    const { state } = await getProvider()
+    web3 = state.web3
+    const { networkId } = await getNetworkId(web3)
+    if (networkId !== expectedNetworkId) {
+      throw new Error('Existing web3 is not on correct network')
     }
-    networkState.expectedNetworkId = result.data.networkId
-    networkState.expectedNetworkName = getNetworkName(
-      networkState.expectedNetworkId
-    )
-    if (window.ethereum) {
-      web3 = new Web3(window.ethereum)
-    } else if (window.web3 && window.web3.currentProvider) {
-      web3 = new Web3(window.web3.currentProvider)
-      networkState.readOnly = false
-    } else {
-      //local node
-      const url = 'http://localhost:8545'
+  } catch (err) {
+    throw new Error(`Couldn't get wallet`)
+  } finally {
+    updateNetwork(web3)
+  }
+  return web3
+}
 
-      try {
-        await fetch(url)
-        localEndpoint = true
-        web3 = new Web3(new Web3.providers.HttpProvider(url))
-      } catch (error) {
-        if (
-          error.readyState === 4 &&
-          (error.status === 400 || error.status === 200)
-        ) {
-          localEndpoint = true
-          web3 = new Web3(new Web3.providers.HttpProvider(url))
-        } else {
-          web3 = new Web3(getNetworkProviderUrl(networkState.expectedNetworkId))
-          networkState.readOnly = true
-        }
-      } finally {
-        if (web3 && localEndpoint) {
-          console.log('Success: Local node active')
-        } else if (web3) {
-          console.log('Success: Cloud node active')
-        }
-      }
-    }
-    networkState.networkId = `${await web3.eth.net.getId()}`
-    networkState.networkName = getNetworkName(networkState.networkId)
+export const updateNetwork = async web3 => {
+  networkState = { allGood: true }
+  const {
+    expectedNetworkId,
+    expectedNetworkName
+  } = await getExpectedNetworkId()
+  networkState.expectedNetworkId = expectedNetworkId
+  networkState.expectedNetworkName = expectedNetworkName
+
+  try {
+    const { networkId, networkName } = await getNetworkId(web3)
+    networkState.networkId = networkId
+    networkState.networkName = networkName
     networkState.isLocalNetwork = isLocalNetwork(networkState.networkId)
     if (networkState.networkId !== networkState.expectedNetworkId) {
       networkState.wrongNetwork = true
       networkState.allGood = false
     }
-    // if web3 not set then something failed
-    if (!web3) {
-      networkState.allGood = false
-      throw new Error('Error setting up web3')
-    }
-
-    // poll for blocks
-    setInterval(async () => {
-      try {
-        const block = await web3.eth.getBlock('latest')
-        events.emit(NEW_BLOCK, block)
-      } catch (__) {
-        /* nothing to do */
-      }
-    }, 10000)
-  } catch (err) {
-    console.warn(err)
-    web3 = null
-  } finally {
-    // update global state with current network state
-    updateGlobalState()
+  } catch (error) {
+    networkState.allGood = false
   }
 
-  return web3
-})
+  // update global state with current network state
+  updateGlobalState()
+  return networkState
+}
+
+export const getWeb3Read = async () => {
+  try {
+    // If browser's web3 is on correct network then use that
+    const web3 = await getWeb3()
+    return web3
+  } catch {
+    return connectToCloudNode()
+  }
+}
 
 export async function getDeployerAddress() {
   // if local env doesn't specify address then assume we're on a public net
@@ -156,8 +185,9 @@ export async function getDeployerAddress() {
 }
 
 export async function getTokenBySymbol(symbol) {
+  const { expectedNetworkId } = await getExpectedNetworkId()
   if (symbol === 'DAI') {
-    switch (networkState.expectedNetworkId) {
+    switch (expectedNetworkId) {
       case '1':
         return '0x6b175474e89094c44da98b954eedeac495271d0f'
       // These are all fake DAI which anyone can mint
@@ -178,7 +208,7 @@ export async function getTokenBySymbol(symbol) {
         return DAI_CONTRACT_ADDRESS
     }
   } else if ('SAI') {
-    switch (networkState.expectedNetworkId) {
+    switch (expectedNetworkId) {
       case '1':
         return '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
       case '3':

@@ -7,8 +7,10 @@ import {
 
 import { RouteAnalytics } from './components/Analytics'
 
-import DefaultLayout from './layout/Layouts'
-import { HomePageLayout } from './layout/Layouts'
+import DefaultLayout, {
+  HomePageLayout,
+  NoWeb3CheckLayout
+} from './layout/Layouts'
 
 import AllEvents from './routes/AllEvents'
 import CreateEvent from './routes/CreateEvent'
@@ -73,14 +75,34 @@ class App extends Component {
                 path="/event/:address/admin"
                 component={SingleEventAdmin}
               />
-              <Route path="/user/:username" component={UserProfile} />
+              <Route
+                path="/user/:username"
+                component={UserProfile}
+                layout={NoWeb3CheckLayout}
+              />
               <Route path="/create" component={CreateEvent} />
-              <Route path="/faq" component={Faq} />
-              <Route path="/terms" component={Terms} />
-              <Route path="/privacy" component={Privacy} />
-              <Route path="/pricing" component={Pricing} />
-              <Route path="/team" component={Team} />
-              <Route path="/gettingstarted" component={GettingStarted} />
+              <Route path="/faq" component={Faq} layout={NoWeb3CheckLayout} />
+              <Route
+                path="/terms"
+                component={Terms}
+                layout={NoWeb3CheckLayout}
+              />
+              <Route
+                path="/privacy"
+                component={Privacy}
+                layout={NoWeb3CheckLayout}
+              />
+              <Route
+                path="/pricing"
+                component={Pricing}
+                layout={NoWeb3CheckLayout}
+              />
+              <Route path="/team" component={Team} layout={NoWeb3CheckLayout} />
+              <Route
+                path="/gettingstarted"
+                component={GettingStarted}
+                layout={NoWeb3CheckLayout}
+              />
             </Switch>
             <Modal name={SIGN_IN} component={SignIn} />
             <Modal name={EDIT_PROFILE} component={EditProfile} />

@@ -6,6 +6,7 @@ export const CREATE_PARTY = gql`
   mutation createParty(
     $id: String
     $deposit: String
+    $decimals: String
     $limitOfParticipants: String
     $coolingPeriod: String
     $tokenAddress: String
@@ -13,6 +14,7 @@ export const CREATE_PARTY = gql`
     create: createParty(
       id: $id
       deposit: $deposit
+      decimals: $decimals
       limitOfParticipants: $limitOfParticipants
       coolingPeriod: $coolingPeriod
       tokenAddress: $tokenAddress

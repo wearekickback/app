@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { css } from 'emotion'
 
 const breakpoints = {
   // Numerical values will result in a min-width query
@@ -15,38 +14,31 @@ const mq = Object.keys(breakpoints).reduce((accumulator, label) => {
   let prefix = typeof breakpoints[label] === 'string' ? '' : 'min-width:'
   let suffix = typeof breakpoints[label] === 'string' ? '' : 'px'
   accumulator[label] = cls =>
-    css`
-      @media (${prefix + breakpoints[label] + suffix}) {
-        ${css`
-          ${cls};
-        `};
-      }
-    `
+    `@media (${prefix + breakpoints[label] + suffix}) {
+        ${cls};
+      }`
   return accumulator
 }, {})
 
 const useMedia = (query, defaultState) => {
   const [state, setState] = useState(defaultState)
 
-  useEffect(
-    () => {
-      let mounted = true
-      const mql = window.matchMedia(query)
-      const onChange = () => {
-        if (!mounted) return
-        setState(!!mql.matches)
-      }
+  useEffect(() => {
+    let mounted = true
+    const mql = window.matchMedia(query)
+    const onChange = () => {
+      if (!mounted) return
+      setState(!!mql.matches)
+    }
 
-      mql.addListener(onChange)
-      setState(mql.matches)
+    mql.addListener(onChange)
+    setState(mql.matches)
 
-      return () => {
-        mounted = false
-        mql.removeListener(onChange)
-      }
-    },
-    [query]
-  )
+    return () => {
+      mounted = false
+      mql.removeListener(onChange)
+    }
+  }, [query])
 
   return state
 }

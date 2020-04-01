@@ -32,8 +32,6 @@ export const calculateWinningShare = (deposit, numRegistered, numAttended) =>
   toEthVal(deposit)
     .mul(numRegistered)
     .div(numAttended)
-    .toEth()
-    .toFixed(3)
 
 export const sortParticipants = (a, b) => (a.index < b.index ? -1 : 1)
 
@@ -59,4 +57,26 @@ export const filterParticipants = (selectedFilter, search) => participant => {
     (participant.user.username || '').toLowerCase().includes(search) ||
     participant.user.address.toLowerCase().includes(search)
   )
+}
+
+export const getPartyImage = img => {
+  if (img) {
+    return img.replace(
+      'image/upload/',
+      `image/upload/fl_lossy,f_auto,c_scale,w_500,dpr_auto/`
+    )
+  } else {
+    return 'https://placeimg.com/640/480/tech'
+  }
+}
+
+export const getPartyImageLarge = img => {
+  if (img) {
+    return img.replace(
+      'image/upload/',
+      `image/upload/fl_lossy,f_auto,c_scale,w_800,dpr_auto/`
+    )
+  } else {
+    return 'https://placeimg.com/640/480/tech'
+  }
 }

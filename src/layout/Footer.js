@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { Link as DefaultLink } from 'react-router-dom'
 import { H2 as DefaultH2 } from '../components/Typography/Basic'
 import { ReactComponent as TwitterIcon } from '../components/svg/twitter.svg'
@@ -111,7 +111,7 @@ class Footer extends Component {
             </Links>
           </MiddleRow>
           <Row>
-            <Copyright>&copy; 2019 No Block No Party Ltd</Copyright>
+            <Copyright>&copy; 2020 No Block No Party Ltd</Copyright>
             <Social>
               <a href="https://t.me/wearekickback">
                 <TelegramIcon />

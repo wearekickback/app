@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { HashLink as DefaultHashLink } from 'react-router-hash-link'
 
 import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
-import marked from 'marked'
+import ReactMarkdown from 'react-markdown'
 
-import EtherScanLink from '../ExternalLinks/EtherScanLink'
+import EtherScanLink from '../Links/EtherScanLink'
 import { H2, H3 } from '../Typography/Basic'
 import TwitterAvatar from '../User/TwitterAvatar'
-import { depositValue } from '../Utils/DepositValue'
 import { ReactComponent as DefaultEthIcon } from '../svg/Ethereum.svg'
 import { ReactComponent as DefaultClockIcon } from '../svg/clock.svg'
 import DefaultEventDate from '../Utils/EventDate'
@@ -205,9 +204,7 @@ class EventInfo extends Component {
       <EventInfoContainer className={className}>
         <EventDate event={party} />
         <EventName>{party.name}</EventName>
-        <EventImage
-          src={party.headerImg || 'https://placeimg.com/640/480/tech'}
-        />
+        <EventImage src={party.headerImg} />
         <Organisers>
           <H3>Organisers</H3>
           <OrganiserList>
@@ -233,16 +230,18 @@ class EventInfo extends Component {
               <TotalPot>
                 <strong>Pot: </strong>
                 <span>
-                  {depositValue(party.deposit * party.participants.length)}{' '}
-                  <Currency tokenAddress={party.tokenAddress} />
+                  <Currency
+                    amount={party.deposit * party.participants.length}
+                    tokenAddress={party.tokenAddress}
+                  />
                 </span>
               </TotalPot>
               <Deposit>
                 <strong>RSVP: </strong>
-                <span>
-                  {depositValue(party.deposit)}{' '}
-                  <Currency tokenAddress={party.tokenAddress} />
-                </span>
+                <Currency
+                  amount={party.deposit}
+                  tokenAddress={party.tokenAddress}
+                />
               </Deposit>
             </InfoGridItem>
             <InfoGridItem>
@@ -280,9 +279,9 @@ class EventInfo extends Component {
             )}
           </InfoGrid>
         </TimeDetails>
-        <EventDescription
-          dangerouslySetInnerHTML={{ __html: marked(party.description || '') }}
-        />
+        <EventDescription>
+          <ReactMarkdown source={party.description} />
+        </EventDescription>
         <Photos>
           <PhotoContainer>
             <Photo />

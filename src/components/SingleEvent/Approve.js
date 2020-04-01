@@ -1,13 +1,15 @@
 import React from 'react'
-
+import styled from '@emotion/styled'
 import { PARTY_QUERY } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 import { APPROVE_TOKEN } from '../../graphql/mutations'
 import { Going } from './Status'
 import WarningBox from '../WarningBox'
 import Currency from '../SingleEvent/Currency'
-import EthVal from 'ethval'
-import { EMPTY_ADDRESS } from '../../api/utils'
+import { GlobalConsumer } from '../../GlobalState'
+const WarningWrapper = styled('div')`
+  margin: 1em;
+`
 
 const Approve = ({
   tokenAddress,
@@ -16,29 +18,56 @@ const Approve = ({
   deposit,
   decodedDeposit = 0,
   balance = 0,
+  decimals,
   isAllowed,
   hasBalance,
-  refetch
+  refetch,
+  userAddress
 }) => {
-  let canRSVP, denominatedBalance, denominatedDeposit
-  if (tokenAddress !== EMPTY_ADDRESS) {
-    denominatedBalance = new EthVal(balance).toEth().toString()
-    denominatedDeposit = new EthVal(decodedDeposit).toEth().toString()
-    canRSVP = isAllowed && hasBalance
-  } else {
-    canRSVP = true
-  }
+  const canRSVP = isAllowed && hasBalance
+
   if (canRSVP) {
     return <Going>You can now RSVP</Going>
+  } else if (!userAddress) {
+    return (
+      <WarningWrapper>
+        <WarningBox>
+          We cannot read your wallet balance. Please Connect to your wallet
+          first.
+        </WarningBox>
+      </WarningWrapper>
+    )
   } else if (!hasBalance) {
     return (
-      <WarningBox>
-        This event requires you to commit {denominatedDeposit}&nbsp;
-        <Currency tokenAddress={tokenAddress} />
-        &nbsp; but you only have {denominatedBalance}&nbsp;
-        <Currency tokenAddress={tokenAddress} /> in your wallet. Please top up
-        your wallet and come back again.
-      </WarningBox>
+      <GlobalConsumer>
+        {({ wallet }) => {
+          return (
+            <WarningBox>
+              <p>
+                This event requires you to commit{' '}
+                <Currency amount={decodedDeposit} tokenAddress={tokenAddress} />
+                &nbsp; but you only have{' '}
+                <Currency amount={balance} tokenAddress={tokenAddress} /> in
+                your wallet. Please top up your wallet and come back again.
+              </p>
+
+              {wallet && wallet.url && (
+                <p>
+                  You're currently connected to {wallet.name}. Click{' '}
+                  <a
+                    href={wallet.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here
+                  </a>{' '}
+                  to top up.
+                </p>
+              )}
+            </WarningBox>
+          )
+        }}
+      </GlobalConsumer>
     )
   } else {
     return (
@@ -55,7 +84,7 @@ const Approve = ({
             onClick={approve}
             result={result}
             className={className}
-            preContent={<span>Allow RSVP with Token</span>}
+            preContent={<span>Step 1: Allow RSVP with Token</span>}
             postContent={<Going>You can now RSVP</Going>}
           />
         )}

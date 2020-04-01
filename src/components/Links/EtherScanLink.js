@@ -1,18 +1,29 @@
 import React from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 import { GlobalConsumer } from '../../GlobalState'
+import c from '../../colours'
 
 const Link = styled('a')`
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: ${c.primary400};
 `
 
 const EtherScanLink = ({ address, tx, children }) => (
   <GlobalConsumer>
     {({ networkState: { expectedNetworkName, expectedNetworkId } }) => {
+      // If network state is unknown then just print the data
+      if (!expectedNetworkId || !expectedNetworkName) {
+        if (address) {
+          return address
+        } else if (tx) {
+          return tx
+        }
+      }
+
       const prefix =
         '1' === expectedNetworkId ? '' : `${expectedNetworkName.toLowerCase()}.`
 

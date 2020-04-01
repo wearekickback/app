@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import c from '../../colours'
+import DefaultTrackedLink from '../Links/TrackedLink'
 
 const GuideWrapper = styled('div')`
   margin-right: 2em;
   position: relative;
-  & > a,
-  & > div > a {
-    color: white;
-  }
 `
 
 const Menu = styled('div')`
@@ -33,12 +30,26 @@ const ListItem = styled('li')`
   padding: 10px 20px;
 `
 
-const Link = styled('a')`
+const GuideButton = styled('a')`
+  color: white;
+`
+
+const Link = styled(DefaultTrackedLink)`
   color: ${c.primary400};
 `
 
 export const links = [
+  {
+    label: 'Why Kickback',
+    href:
+      'https://medium.com/wearekickback/how-to-improve-attendance-of-your-events-2ba603ad954'
+  },
   { label: 'Getting Started', href: '/gettingstarted' },
+  {
+    label: 'Using Tornado.cash',
+    href:
+      'https://medium.com/wearekickback/private-transactions-on-kickback-events-using-tornado-cash-1705a1d31167'
+  },
   { label: 'FAQ', href: '/faq' },
   {
     label: 'Event Organiser guide',
@@ -68,16 +79,16 @@ export default class Guide extends Component {
   render() {
     return (
       <GuideWrapper>
-        <a href="#guide" onClick={this.toggleMenu}>
+        <GuideButton href="#guide" onClick={this.toggleMenu}>
           Guides
-        </a>
+        </GuideButton>
 
         {this.state.showMenu ? (
           <Menu>
             <List>
               {links.map(l => (
                 <ListItem>
-                  <Link href={l.href}>{l.label}</Link>
+                  <Link to={l.href}>{l.label}</Link>
                 </ListItem>
               ))}
             </List>

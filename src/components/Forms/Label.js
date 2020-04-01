@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 const LabelContainer = styled('label')`
   margin-bottom: 10px;

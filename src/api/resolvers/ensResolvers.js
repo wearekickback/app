@@ -1,4 +1,4 @@
-import getWeb3 from '../web3'
+import { getWeb3Read } from '../web3'
 
 export const defaults = {}
 
@@ -11,7 +11,7 @@ const resolvers = {
       }
 
       try {
-        const web3 = await getWeb3()
+        const web3 = await getWeb3Read()
         const resolver = await web3.eth.ens.resolver(
           `${address.slice(0, 2)}.addr.reverse`
         )

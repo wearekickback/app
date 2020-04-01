@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import styled from 'react-emotion'
-
+import styled from '@emotion/styled'
+import WalletButton from '../components/Header/WalletButton'
 import Header from './Header'
 import Footer from './Footer'
 import WarningBox from '../components/WarningBox'
@@ -9,6 +9,10 @@ import { GlobalConsumer } from '../GlobalState'
 const Container = styled('main')`
   background: white;
   padding: 0 0 60px;
+`
+
+const WalletButtonContainer = styled('div')`
+  padding: 0 0 20px;
 `
 
 export const ContainerInner = styled('div')`
@@ -54,7 +58,9 @@ const DefaultLayout = ({ children }) => {
           return content ? (
             <WarningBox padding>
               {content}
-              <br />
+              <WalletButtonContainer />
+              <WalletButton />
+              <WalletButtonContainer />
               Not sure what to do? Click <A href="/gettingstarted">here</A> to
               read "Getting started" guide
             </WarningBox>
@@ -68,6 +74,16 @@ const DefaultLayout = ({ children }) => {
     </Fragment>
   )
 }
+
+export const NoWeb3CheckLayout = ({ children }) => (
+  <Fragment>
+    <Header />
+    <Container>
+      <ContainerInner>{children}</ContainerInner>
+    </Container>
+    <Footer />
+  </Fragment>
+)
 
 export const HomePageLayout = ({ children }) => (
   <Fragment>

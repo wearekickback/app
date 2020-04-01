@@ -6,6 +6,7 @@ import EventCard from '../components/EventList/EventCard'
 import EventCardGrid from '../components/EventList/EventCardGrid'
 import Loader from '../components/Loader'
 import SafeQuery from '../components/SafeQuery'
+import { getPartyImage } from '../utils/parties'
 
 class AllEvents extends Component {
   _renderLoading = () => <Loader large />
@@ -22,9 +23,10 @@ class AllEvents extends Component {
           {({ data: { parties } }) => {
             return (
               <EventCardGrid>
-                {parties.map((party, index) => (
-                  <EventCard party={party} key={index} />
-                ))}
+                {parties.map(party => {
+                  party.headerImg = getPartyImage(party.headerImg)
+                  return <EventCard party={party} key={party.id} />
+                })}
               </EventCardGrid>
             )
           }}

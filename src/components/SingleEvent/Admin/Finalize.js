@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { calculateFinalizeMaps } from '@wearekickback/shared'
 
 import GlobalContext from '../../../GlobalState'
@@ -14,14 +14,22 @@ import ConfirmModal from '../../ConfirmModal'
 const FinalizeContainer = styled('div')``
 
 function Finalize({ party }) {
-  const { showModal, closeModal } = useContext(GlobalContext)
-  const { address, participants, ended } = party
+  const { showModal, closeModal, apolloClient } = useContext(GlobalContext)
+  const { ended } = party
   return (
     <FinalizeContainer>
       {!ended ? (
         <>
           <Button
-            onClick={() => {
+            onClick={async () => {
+              const result = await apolloClient.query({
+                query: PARTY_QUERY,
+                variables: { address: party.address },
+                fetchPolicy: 'network-only'
+              })
+
+              const { address, participants } = result.data.party
+
               showModal({
                 name: CONFIRM_TRANSACTION,
                 render: () => (

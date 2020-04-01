@@ -1,10 +1,10 @@
 import React from 'react'
-import styled from 'react-emotion'
-import { Link as DefaultLink } from 'react-router-dom'
+import styled from '@emotion/styled'
+import TrackedLink from '../Links/TrackedLink'
 
 import LogoIconDefault from './Logo'
 
-const Link = styled(DefaultLink)`
+const Link = styled(TrackedLink)`
   display: flex;
   align-items: center;
 `

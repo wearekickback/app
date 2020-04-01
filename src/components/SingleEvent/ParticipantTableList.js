@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, getSocialId } from '@wearekickback/shared'
 
 import {
@@ -22,6 +22,10 @@ import mq from '../../mediaQuery'
 import MarkedAttended from './MarkedAttendedRP'
 import tick from '../svg/tick.svg'
 import Number from '../Icons/Number'
+
+const Mismatched = styled('span')`
+  color: orange;
+`
 
 const SingleEventContainer = styled('div')`
   display: flex;
@@ -219,7 +223,6 @@ class SingleEventWrapper extends Component {
               query={PARTY_ADMIN_VIEW_QUERY}
               variables={{ address }}
               fetchPolicy="cache-and-network"
-              pollInterval={30000}
             >
               {({
                 data: { partyAdminView: party },
@@ -248,7 +251,7 @@ class SingleEventWrapper extends Component {
                 }
 
                 preCalculatedProps.amAdmin = amAdmin(party, userAddress)
-
+                const lastParticipant = participants[participants.length - 1]
                 return (
                   <TableList>
                     <MarkedAttendedInfo>
@@ -262,6 +265,14 @@ class SingleEventWrapper extends Component {
                           100
                         }
                       />
+                      {participants.length === lastParticipant.index ? null : (
+                        <Mismatched>
+                          The total participants ({participants.length}) does
+                          not match with participant index (
+                          {lastParticipant.index}). May have missing participant
+                          info due to reorg.
+                        </Mismatched>
+                      )}
                     </MarkedAttendedInfo>
                     {participants.length > 0 ? (
                       <>
@@ -287,6 +298,7 @@ class SingleEventWrapper extends Component {
                         <Table>
                           <Tbody>
                             <TR>
+                              <TH>#</TH>
                               <TH>Action</TH>
                               <TH>Status</TH>
                               {cells.map(
@@ -303,7 +315,7 @@ class SingleEventWrapper extends Component {
                               .filter(
                                 filterParticipants(selectedFilter, search)
                               )
-                              .map(participant => {
+                              .map((participant, idx) => {
                                 const { status } = participant
                                 const withdrawn =
                                   status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
@@ -313,6 +325,7 @@ class SingleEventWrapper extends Component {
 
                                 return (
                                   <TR key={participant.user.id}>
+                                    <TD>{participant.index}</TD>
                                     <TD data-csv="no">
                                       {' '}
                                       {ended ? (

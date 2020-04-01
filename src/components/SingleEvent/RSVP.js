@@ -2,13 +2,12 @@ import React from 'react'
 
 import { PARTY_QUERY } from '../../graphql/queries'
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
-import { depositValue } from '../Utils/DepositValue'
 import { RSVP_TO_EVENT } from '../../graphql/mutations'
 import { Going } from './Status'
 import Button from '../Forms/Button'
 import Currency from './Currency'
-import styled from 'react-emotion'
-import { EMPTY_ADDRESS } from '../../api/utils'
+import styled from '@emotion/styled'
+import { isEmptyAddress } from '../../api/utils'
 
 const RSVPText = styled(`span`)`
   margin-right: 0.5em;
@@ -19,14 +18,17 @@ const RSVP = ({
   tokenAddress,
   className,
   deposit,
+  decimals,
   isAllowed,
   hasBalance
 }) => {
   const ButtonText = () => {
+    let stepTwo = ''
+    if (!isEmptyAddress(tokenAddress) && hasBalance) stepTwo = 'Step 2: '
     return (
       <>
-        <RSVPText>RSVP with</RSVPText>
-        {depositValue(deposit)} <Currency tokenAddress={tokenAddress} />
+        <RSVPText>{stepTwo}RSVP with</RSVPText>
+        <Currency amount={deposit} tokenAddress={tokenAddress} />
       </>
     )
   }
@@ -60,10 +62,10 @@ const RSVP = ({
       </ChainMutation>
     )
   }
-  if (tokenAddress !== EMPTY_ADDRESS) {
+  if (!isEmptyAddress(tokenAddress)) {
     return isAllowed && hasBalance ? <ReadyButton /> : <NotReadyButton />
   } else {
-    return isAllowed ? <ReadyButton /> : <NotReadyButton />
+    return hasBalance ? <ReadyButton /> : <NotReadyButton />
   }
 }
 

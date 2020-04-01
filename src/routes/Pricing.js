@@ -1,6 +1,7 @@
 import React from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 import { P, H3, H1 } from '../components/Typography/Basic'
+import { ButtonLink } from '../components/Forms/Button'
 
 const PricingContainer = styled('div')`
   margin: 0 auto 0;
@@ -8,6 +9,12 @@ const PricingContainer = styled('div')`
   ul {
     padding-left: 2em;
   }
+`
+
+const CTAContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 function Pricing() {
@@ -28,6 +35,22 @@ function Pricing() {
         country may have tax exemption.
       </P>
 
+      <P>
+        We are still at private beta phase and only offering the service to the
+        seleted partners. Please fill in our early access form if you want to
+        join.
+      </P>
+
+      <CTAContainer>
+        <ButtonLink
+          analyticsId="Request Early Access"
+          to="https://docs.google.com/forms/d/e/1FAIpQLSe2RX1yCpGomlG8JI0GiNuUFdWZIyLvCa4YM5VNR7Md4hkqWQ/viewform"
+        >
+          Request early access
+        </ButtonLink>
+      </CTAContainer>
+
+      <P></P>
       <H3>Not convinced yet?</H3>
       <P>
         We will send an invoice after the end of each event so that you only pay

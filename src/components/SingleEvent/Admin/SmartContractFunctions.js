@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
 
 import Label from '../../Forms/Label'
 import Clear from './Clear'
@@ -19,7 +19,7 @@ const AdminIntro = styled('p')`
   color: #000;
 `
 
-export default function AdminPanel({ party }) {
+export default function SmartContractFunctions({ party }) {
   return (
     <>
       <AdminIntro>

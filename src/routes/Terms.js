@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled from '@emotion/styled'
+import TrackedLink from '../components/Links/TrackedLink'
 
 const TermsDiv = styled('div')`
   ul {
@@ -37,7 +38,7 @@ class Terms extends Component {
           <strong>1.4</strong> Our website uses cookies; by using our website or
           agreeing to these terms and conditions, you consent to our use of
           cookies in accordance with the terms of our{' '}
-          <a href="/privacy">privacy and cookies policy</a>.
+          <TrackedLink to="/privacy">privacy and cookies policy</TrackedLink>.
         </p>
         <h2 id="2-copyright-notice">2. Copyright notice</h2>
         <p>
@@ -719,10 +720,10 @@ class Terms extends Component {
         <p>
           <strong>24.1</strong> Subject to Section 14.1, these terms and
           conditions, together with our{' '}
-          <a href="/privacy">privacy and cookies policy</a>, constitute the
-          entire agreement between you and us in relation to your use of our
-          website and supersede all previous agreements between you and us in
-          relation to your use of our website.
+          <TrackedLink to="/privacy">privacy and cookies policy</TrackedLink>,
+          constitute the entire agreement between you and us in relation to your
+          use of our website and supersede all previous agreements between you
+          and us in relation to your use of our website.
         </p>
         <h2 id="25-law-and-jurisdiction">25. Law and jurisdiction</h2>
         <p>
