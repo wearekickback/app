@@ -27,7 +27,7 @@ function HamburgerMenu({ isMenuOpen }) {
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
       <SignInButton />
       <GlobalConsumer>
-        {({ wallet, signIn, signOut, userAddress }) => {
+        {({ wallet, signIn, signOut, loggedIn, userProfile }) => {
           if (!wallet) {
             return (
               <Button type="light" onClick={signIn} analyticsId="Sign In">
@@ -43,11 +43,19 @@ function HamburgerMenu({ isMenuOpen }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open Wallet
+                  {wallet.name} Wallet
                 </TrackedLink>
               )}
+              {loggedIn && userProfile && (
+                <Link to={`/user/${userProfile.username}`}>
+                  Kickback Profile
+                </Link>
+              )}
+              {wallet.type === 'sdk' && wallet.dashboard && (
+                <Link onClick={wallet.dashboard}>{wallet.name} Dashboard</Link>
+              )}
               <Link to="#" onClick={signOut}>
-                Disconnect Wallet
+                Switch Wallet
               </Link>
             </>
           )
