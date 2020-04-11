@@ -46,7 +46,6 @@ const TOKEN_ALGORITHM = 'HS256'
 const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
 
 const wallets = [
-  { walletName: 'unilogin', preferred: true },
   { walletName: 'authereum', preferred: true },
   { walletName: 'coinbase', preferred: true },
   {
@@ -70,6 +69,7 @@ const wallets = [
     preferred: true
   },
   { walletName: 'trust', preferred: true },
+  { walletName: 'unilogin', preferred: true },
   {
     walletName: 'walletConnect',
     infuraKey: INFURA_KEY,
