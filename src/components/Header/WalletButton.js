@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { Link as ReactLink } from 'react-router-dom'
 import styled from '@emotion/styled'
 import mq from '../../mediaQuery'
 
 import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
+import UserProfileButton from './UserProfileButton'
 import EtherScanLink from '../Links/EtherScanLink'
 import c from '../../colours'
 
@@ -36,9 +38,11 @@ const ListItem = styled('li')`
 
 const Link = styled('a')`
   color: ${c.primary400};
+  cursor: pointer;
 `
 
 const CTAButton = styled(Button)`
+  min-width: 200px;
   font-weight: bold;
   width: 100%;
   ${mq.small`
@@ -51,7 +55,7 @@ function WalletButton() {
   const toggleMenu = () => setShowMenu(!showMenu)
   return (
     <GlobalConsumer>
-      {({ wallet, signIn, signOut, userAddress }) => {
+      {({ wallet, signIn, signOut, userAddress, loggedIn, userProfile }) => {
         if (!wallet) {
           return (
             <CTAButton type="light" onClick={signIn} analyticsId="Sign In">
@@ -59,28 +63,48 @@ function WalletButton() {
             </CTAButton>
           )
         }
+
         return (
           <WalletWrapper>
-            <Button type="light" onClick={toggleMenu}>
-              Connected with {wallet.name}
-            </Button>
-
+            <CTAButton type="light" onClick={toggleMenu}>
+              {loggedIn && userProfile ? (
+                <UserProfileButton userProfile={userProfile} />
+              ) : (
+                <>Manage your wallet</>
+              )}
+            </CTAButton>
             {showMenu ? (
               <Menu>
                 <List>
-                  <ListItem>
-                    <EtherScanLink address={userAddress}>
-                      {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
-                    </EtherScanLink>
-                  </ListItem>
-                  {wallet.url && (
+                  {userAddress && (
+                    <ListItem>
+                      <EtherScanLink address={userAddress}>
+                        {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
+                      </EtherScanLink>
+                    </ListItem>
+                  )}
+                  {loggedIn && userProfile && (
+                    <ListItem>
+                      <ReactLink to={`/user/${userProfile.username}`}>
+                        Kickback Profile
+                      </ReactLink>
+                    </ListItem>
+                  )}
+                  {wallet.type === 'sdk' && wallet.dashboard && (
+                    <ListItem>
+                      <Link onClick={wallet.dashboard}>
+                        {wallet.name} Dashboard
+                      </Link>
+                    </ListItem>
+                  )}
+                  {wallet.dashboard && wallet.url && (
                     <ListItem>
                       <Link
                         href={wallet.url}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Open Wallet
+                        {wallet.name} Wallet
                       </Link>
                     </ListItem>
                   )}
@@ -92,7 +116,7 @@ function WalletButton() {
                         signOut()
                       }}
                     >
-                      Disconnect Wallet
+                      Switch Wallet
                     </Link>
                   </ListItem>
                 </List>
