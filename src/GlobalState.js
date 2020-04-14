@@ -69,6 +69,7 @@ const wallets = [
     preferred: true
   },
   { walletName: 'trust', preferred: true },
+  { walletName: 'unilogin', preferred: true },
   {
     walletName: 'walletConnect',
     infuraKey: INFURA_KEY,
