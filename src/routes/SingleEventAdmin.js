@@ -130,7 +130,6 @@ class SingleEvent extends Component {
                       </WarningBox>
                     )
                   }
-                  party.headerImg = getPartyImageLarge(party.headerImg)
                   return (
                     <SingleEventAdminContainer>
                       <TabNavigation>
