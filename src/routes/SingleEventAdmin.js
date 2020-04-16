@@ -14,7 +14,6 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import EventEdit from '../components/SingleEvent/Admin/EventEdit'
 import colours from '../colours'
-import { getPartyImageLarge } from '../utils/parties'
 
 const { primary500, primary400, primary300, primary200 } = colours
 
@@ -130,7 +129,6 @@ class SingleEvent extends Component {
                       </WarningBox>
                     )
                   }
-                  party.headerImg = getPartyImageLarge(party.headerImg)
                   return (
                     <SingleEventAdminContainer>
                       <TabNavigation>
