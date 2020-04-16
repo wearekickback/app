@@ -15,6 +15,7 @@ import SafeQuery from '../SafeQuery'
 import EventInfo from './EventInfo'
 import EventCTA from './EventCTA'
 import EventParticipants from './EventParticipants'
+import Chat from './Chat'
 import { GlobalConsumer } from '../../GlobalState'
 
 const SingleEventContainer = styled('div')`
@@ -49,7 +50,7 @@ class SingleEventWrapper extends Component {
     return (
       <SingleEventContainer>
         <GlobalConsumer>
-          {({ userAddress }) => (
+          {({ userAddress, web3 }) => (
             <SafeQuery
               query={PARTY_QUERY}
               variables={{ address }}
@@ -95,6 +96,11 @@ class SingleEventWrapper extends Component {
                       />
                       <EventParticipants
                         party={party}
+                        {...preCalculatedProps}
+                      />
+                      <Chat
+                        party={party}
+                        web3={web3}
                         {...preCalculatedProps}
                       />
                     </RightContainer>
