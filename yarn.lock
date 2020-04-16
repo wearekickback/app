@@ -21205,10 +21205,10 @@ smart-buffer@^4.0.2:
   resolved "https://registry.npm.taobao.org/smart-buffer/download/smart-buffer-4.1.0.tgz#91605c25d91652f4661ea69ccf45f1b331ca21ba"
   integrity sha1-kWBcJdkWUvRmHqacz0XxszHKIbo=
 
-smart-chat-react@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npm.taobao.org/smart-chat-react/download/smart-chat-react-0.1.2.tgz#9db2d1f6dc32f19c17ac0937fd2fbbb0e93096f3"
-  integrity sha1-nbLR9twy8ZwXrAk3/S+7sOkwlvM=
+smart-chat-react@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npm.taobao.org/smart-chat-react/download/smart-chat-react-0.1.3.tgz?cache=0&sync_timestamp=1587040337767&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsmart-chat-react%2Fdownload%2Fsmart-chat-react-0.1.3.tgz#b10bd1829ff6ee2819ae09e5852e9b871d5a243e"
+  integrity sha1-sQvRgp/27igZrgnlhS6bhx1aJD4=
   dependencies:
     "3box" "^1.17.1"
     "3box-chatbox-react-enhanced" "^0.1.11"
