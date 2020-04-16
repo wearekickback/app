@@ -59,24 +59,19 @@ export const filterParticipants = (selectedFilter, search) => participant => {
   )
 }
 
-export const getPartyImage = img => {
+export const getPartyImage = (img, size = 500) => {
+  const resizedImag = `image/upload/fl_lossy,f_auto,c_scale,w_${size},dpr_auto/`
   if (img) {
-    return img.replace(
-      'image/upload/',
-      `image/upload/fl_lossy,f_auto,c_scale,w_500,dpr_auto/`
-    )
+    if (img.match(resizedImag)) {
+      return img
+    } else {
+      return img.replace('image/upload/', resizedImag)
+    }
   } else {
     return 'https://placeimg.com/640/480/tech'
   }
 }
 
 export const getPartyImageLarge = img => {
-  if (img) {
-    return img.replace(
-      'image/upload/',
-      `image/upload/fl_lossy,f_auto,c_scale,w_800,dpr_auto/`
-    )
-  } else {
-    return 'https://placeimg.com/640/480/tech'
-  }
+  return getPartyImage(img, 800)
 }
