@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import styled from '@emotion/styled'
 
 import ChatRoom from 'smart-chat-react'
@@ -20,8 +20,7 @@ const Chat = props => {
   const {
     party,
     party: { participants, ended },
-    web3,
-    amAdmin
+    web3
   } = props
 
   const members = party.participants.map(p => p.user.address)
