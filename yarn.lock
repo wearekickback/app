@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"3box-chatbox-react-enhanced@^0.1.13":
-  version "0.1.13"
-  resolved "https://registry.npm.taobao.org/3box-chatbox-react-enhanced/download/3box-chatbox-react-enhanced-0.1.13.tgz#d0af3e56cde0c96ef01c01cf8fee666476b04ae8"
-  integrity sha1-0K8+Vs3gyW7wHAHPj+5mZHawSug=
+"3box-chatbox-react-enhanced@^0.1.14":
+  version "0.1.14"
+  resolved "https://registry.npm.taobao.org/3box-chatbox-react-enhanced/download/3box-chatbox-react-enhanced-0.1.14.tgz#9ab12e6e153c11031e8546dd3f3346cdabb7c778"
+  integrity sha1-mrEubhU8EQMehUbdPzNGzau3x3g=
   dependencies:
     "3box" "^1.17.1"
     "3id-resolver" "0.0.6"
@@ -21205,13 +21205,13 @@ smart-buffer@^4.0.2:
   resolved "https://registry.npm.taobao.org/smart-buffer/download/smart-buffer-4.1.0.tgz#91605c25d91652f4661ea69ccf45f1b331ca21ba"
   integrity sha1-kWBcJdkWUvRmHqacz0XxszHKIbo=
 
-smart-chat-react@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.npm.taobao.org/smart-chat-react/download/smart-chat-react-0.1.6.tgz?cache=0&sync_timestamp=1587214818308&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsmart-chat-react%2Fdownload%2Fsmart-chat-react-0.1.6.tgz#65a8b1dd10e7c881e1f98b99970e7261dc08cedf"
-  integrity sha1-Zaix3RDnyIHh+YuZlw5yYdwIzt8=
+smart-chat-react@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.npm.taobao.org/smart-chat-react/download/smart-chat-react-0.1.7.tgz#ee1c648be73bafdf2d302eafdd7c63e4b366b87a"
+  integrity sha1-7hxki+c7r98tMC6v3Xxj5LNmuHo=
   dependencies:
     "3box" "^1.17.1"
-    "3box-chatbox-react-enhanced" "^0.1.13"
+    "3box-chatbox-react-enhanced" "^0.1.14"
     react "^16.13.1"
     react-dom "^16.6.0"
     react-hot-loader "^4.12.18"
