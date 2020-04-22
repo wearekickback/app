@@ -10,7 +10,9 @@ import WalletButton from '../components/Header/WalletButton'
 import SignInButton from '../components/Header/SignInButton'
 import Hamburger from '../components/Header/Hamburger'
 import HamburgerMenu from '../components/Header/HamburgerMenu'
-
+import { GlobalConsumer } from '../GlobalState'
+import RenewalWidget from '@ensdomains/renewal-widget'
+console.log({ RenewalWidget })
 const HeaderContainer = styled('header')`
   width: 100%;
   height: 70px;
@@ -62,29 +64,48 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
   return (
-    <HeaderContainer
-      noMargin={noMargin}
-      noBackground={noBackground}
-      positionAbsolute={positionAbsolute}
-    >
-      <HeaderInner positionAbsolute={positionAbsolute}>
-        <Logo />
-        {isMinMedium && (
-          <RightBar>
-            <NavLink to="/events">Events</NavLink>
-            <NavLink to="/pricing">Pricing</NavLink>
-            <GuideDropdown />
-            <WalletButton />
-            <SignInButton />
-          </RightBar>
-        )}
+    <GlobalConsumer>
+      {({ userAddress }) => {
+        if (userAddress) {
+          RenewalWidget({
+            userAddress,
+            utmParams: {
+              utm_source: 'Kickback',
+              utm_medium: 'web',
+              utm_campaign: 'renewal'
+            }
+          })
+        }
+        return (
+          <HeaderContainer
+            noMargin={noMargin}
+            noBackground={noBackground}
+            positionAbsolute={positionAbsolute}
+          >
+            <HeaderInner positionAbsolute={positionAbsolute}>
+              <Logo />
+              {isMinMedium && (
+                <RightBar>
+                  <NavLink to="/events">Events</NavLink>
+                  <NavLink to="/pricing">Pricing</NavLink>
+                  <GuideDropdown />
+                  <WalletButton />
+                  <SignInButton />
+                </RightBar>
+              )}
 
-        {isMaxMedium && (
-          <Hamburger isMenuOpen={open} toggleOpen={() => setOpen(!open)} />
-        )}
-      </HeaderInner>
-      {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
-    </HeaderContainer>
+              {isMaxMedium && (
+                <Hamburger
+                  isMenuOpen={open}
+                  toggleOpen={() => setOpen(!open)}
+                />
+              )}
+            </HeaderInner>
+            {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
+          </HeaderContainer>
+        )
+      }}
+    </GlobalConsumer>
   )
 }
 

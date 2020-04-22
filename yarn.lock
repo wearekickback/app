@@ -1212,6 +1212,27 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
+"@ensdomains/renewal-widget@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@ensdomains/renewal-widget/-/renewal-widget-0.1.5.tgz#5462ad1d830cebec3f2aeabb8c6c48f061ab0ab7"
+  integrity sha512-nYeAd52A6MJNjl3i57BKdAQIopdJOEFcrWtIUObXHS/ivdAsT+OD19DcSfV4Z9PkBfS8HrbUIXeFOQ5fo6xjYA==
+  dependencies:
+    "@ensdomains/renewal" "0.0.9"
+    penpal "^4.1.1"
+    preact "^10.4.0"
+    preact-habitat "^3.1.0"
+    preact-render-to-string "^5.1.6"
+    preact-router "^3.2.1"
+
+"@ensdomains/renewal@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@ensdomains/renewal/-/renewal-0.0.9.tgz#8e81d09e8f50b13568422c7b64a600bbc2fbf056"
+  integrity sha512-nY6kjelMjLG5ib64h5DPSaRCBajBV0R7/SD2hs1Ql0tVMjqvXt0x6RAa7P6aT3sixIKKVborc6yrwVl1ISHWdQ==
+  dependencies:
+    esm "^3.2.25"
+    graphql-request "^1.8.2"
+    graphql-tag "^2.10.3"
+
 "@ethersproject/address@5.0.0-beta.134":
   version "5.0.0-beta.134"
   resolved "https://registry.yarnpkg.com/@ethersproject/address/-/address-5.0.0-beta.134.tgz#9c1790c87b763dc547ac12e2dbc9fa78d0799a71"
@@ -6883,6 +6904,11 @@ eslint@5.12.0:
     table "^5.0.2"
     text-table "^0.2.0"
 
+esm@^3.2.25:
+  version "3.2.25"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
+  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
+
 espree@^5.0.0:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/espree/-/espree-5.0.1.tgz#5d6526fa4fc7f0788a5cf75b15f30323e2f81f7a"
@@ -8619,7 +8645,7 @@ graphql-subscriptions@^1.0.0:
   dependencies:
     iterall "^1.2.1"
 
-graphql-tag@^2.9.2:
+graphql-tag@^2.10.3, graphql-tag@^2.9.2:
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.3.tgz#ea1baba5eb8fc6339e4c4cf049dabe522b0edf03"
   integrity sha512-4FOv3ZKfA4WdOKJeHdz6B3F/vxBLSgmBcGeAFPf4n1F64ltJUvOOerNj0rsJxONQGdhUMynQIvd6LzB+1J5oKA==
@@ -13897,6 +13923,28 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+preact-habitat@^3.1.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/preact-habitat/-/preact-habitat-3.3.0.tgz#3a176709d9c754d9acd72d2379f0d84fcf532324"
+  integrity sha512-jlwc5sJNFYpAcXx+35Wiw0Smm0oaydJ6pY49c9/klwnYgRdXaBYHzXC6RRof/9W2zMPdHt6c1vXxTXJ0n7V+xQ==
+
+preact-render-to-string@^5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-5.1.6.tgz#6e8f6c7d657743d8bb27c8ea3d5ac218354c87a4"
+  integrity sha512-/8mDzzfMrxx5tzJazKGdyYADrmjzBR3QJsvdZs03aV9VjeXpDrzDHs6dhzlMA1EsdCBq4cqioKjVKUs58uNckg==
+  dependencies:
+    pretty-format "^3.8.0"
+
+preact-router@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/preact-router/-/preact-router-3.2.1.tgz#c7d12d8fc7a60bfbe5cadf23a234551bec783468"
+  integrity sha512-KEN2VN1DxUlTwzW5IFkF13YIA2OdQ2OvgJTkQREF+AA2NrHRLaGbB68EjS4IeZOa1shvQ1FvEm3bSLta4sXBhg==
+
+preact@^10.4.0:
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.4.1.tgz#9b3ba020547673a231c6cf16f0fbaef0e8863431"
+  integrity sha512-WKrRpCSwL2t3tpOOGhf2WfTpcmbpxaWtDbdJdKdjd0aEiTkvOmS4NBkG6kzlaAHI9AkQ3iVqbFWM3Ei7mZ4o1Q==
+
 precond@0.2:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/precond/-/precond-0.2.3.tgz#aa9591bcaa24923f1e0f4849d240f47efc1075ac"
@@ -13952,6 +14000,11 @@ pretty-format@^24.7.0:
     ansi-regex "^4.0.0"
     ansi-styles "^3.2.0"
     react-is "^16.8.4"
+
+pretty-format@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
+  integrity sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=
 
 private@^0.1.6, private@^0.1.8, private@~0.1.5:
   version "0.1.8"
