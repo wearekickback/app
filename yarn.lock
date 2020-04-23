@@ -1212,22 +1212,22 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@ensdomains/renewal-widget@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@ensdomains/renewal-widget/-/renewal-widget-0.1.5.tgz#5462ad1d830cebec3f2aeabb8c6c48f061ab0ab7"
-  integrity sha512-nYeAd52A6MJNjl3i57BKdAQIopdJOEFcrWtIUObXHS/ivdAsT+OD19DcSfV4Z9PkBfS8HrbUIXeFOQ5fo6xjYA==
+"@ensdomains/renewal-widget@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@ensdomains/renewal-widget/-/renewal-widget-0.1.6.tgz#6d4d2b87fe19b9e42462d04ed17f391712b4e434"
+  integrity sha512-UPes4Uj9+67uMiEuY1Kk632pG5CrjfOTm5dXn338JmODO5Nq5Hp8JSOPcUB5xPjuE5zgsuL0SYvaEO0psaVq9g==
   dependencies:
-    "@ensdomains/renewal" "0.0.9"
+    "@ensdomains/renewal" "0.0.10"
     penpal "^4.1.1"
     preact "^10.4.0"
     preact-habitat "^3.1.0"
     preact-render-to-string "^5.1.6"
     preact-router "^3.2.1"
 
-"@ensdomains/renewal@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@ensdomains/renewal/-/renewal-0.0.9.tgz#8e81d09e8f50b13568422c7b64a600bbc2fbf056"
-  integrity sha512-nY6kjelMjLG5ib64h5DPSaRCBajBV0R7/SD2hs1Ql0tVMjqvXt0x6RAa7P6aT3sixIKKVborc6yrwVl1ISHWdQ==
+"@ensdomains/renewal@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@ensdomains/renewal/-/renewal-0.0.10.tgz#b504d4f0d039e4409d1528624bb26d38985e80f4"
+  integrity sha512-capWt+LeZDZMjNGekzs1iYa7XcSS9MxgsqiYWzzumruxliIfMheXhvt9BnNSxXoFlV5O2cDZsb6S4hlw52zskQ==
   dependencies:
     esm "^3.2.25"
     graphql-request "^1.8.2"

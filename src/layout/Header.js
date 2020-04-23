@@ -12,6 +12,8 @@ import Hamburger from '../components/Header/Hamburger'
 import HamburgerMenu from '../components/Header/HamburgerMenu'
 import { GlobalConsumer } from '../GlobalState'
 import RenewalWidget from '@ensdomains/renewal-widget'
+import queryString from 'query-string'
+
 console.log({ RenewalWidget })
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -63,17 +65,19 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
+  const { RWdays, RWuserAddress } = queryString.parse(window.location.search)
   return (
     <GlobalConsumer>
       {({ userAddress }) => {
-        if (userAddress) {
+        if (RWuserAddress || userAddress) {
           RenewalWidget({
-            userAddress,
-            utmParams: {
+            userAddress: RWuserAddress || userAddress,
+            queryParams: {
               utm_source: 'Kickback',
               utm_medium: 'web',
               utm_campaign: 'renewal'
-            }
+            },
+            days: RWdays ? parseInt(RWdays) : 30
           })
         }
         return (
