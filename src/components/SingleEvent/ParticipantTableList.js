@@ -265,7 +265,8 @@ class SingleEventWrapper extends Component {
                           100
                         }
                       />
-                      {participants.length === lastParticipant.index ? null : (
+                      {!lastParticipant ||
+                      participants.length === lastParticipant.index ? null : (
                         <Mismatched>
                           The total participants ({participants.length}) does
                           not match with participant index (
@@ -315,7 +316,7 @@ class SingleEventWrapper extends Component {
                               .filter(
                                 filterParticipants(selectedFilter, search)
                               )
-                              .map((participant, idx) => {
+                              .map(participant => {
                                 const { status } = participant
                                 const withdrawn =
                                   status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
