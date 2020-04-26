@@ -7715,6 +7715,11 @@ did-resolver@0.0.6:
   resolved "https://registry.npm.taobao.org/did-resolver/download/did-resolver-0.0.6.tgz#2d4638b8914871c19945fb3243f6f298c1cca9db"
   integrity sha1-LUY4uJFIccGZRfsyQ/bymMHMqds=
 
+did-resolver@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/did-resolver/-/did-resolver-0.0.7.tgz#f012a8ec9b576f4b8ff1af07465e87dbed607411"
+  integrity sha512-IjzstiCky5TCzL9PeoLZ8uwlP92100/rM4RzmL5glK4Ah5rNkywhr9WxiYGrAdEBD6ezg4+kZIjV94mHLGRMnA==
+
 diff-match-patch@^1.0.0:
   version "1.0.4"
   resolved "https://registry.npm.taobao.org/diff-match-patch/download/diff-match-patch-1.0.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdiff-match-patch%2Fdownload%2Fdiff-match-patch-1.0.4.tgz#6ac4b55237463761c4daf0dc603eb869124744b1"
@@ -21205,13 +21210,14 @@ smart-buffer@^4.0.2:
   resolved "https://registry.npm.taobao.org/smart-buffer/download/smart-buffer-4.1.0.tgz#91605c25d91652f4661ea69ccf45f1b331ca21ba"
   integrity sha1-kWBcJdkWUvRmHqacz0XxszHKIbo=
 
-smart-chat-react@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.npm.taobao.org/smart-chat-react/download/smart-chat-react-0.1.8.tgz#8477b88e02015316a924a611867ddcf82e0f2212"
-  integrity sha1-hHe4jgIBUxapJKYRhn3c+C4PIhI=
+smart-chat-react@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.npmjs.org/smart-chat-react/-/smart-chat-react-0.1.10.tgz#67f8ba49ce191fbdb0580e874dd51bd93e0ed30c"
+  integrity sha512-lQFT4RLVV+LGg3KUibs43gX4vld9/HE6/JazE4/d2MBITYkQIP+co4OEYLz80j8oTaBzrPPfYqizoMAc10aUGg==
   dependencies:
     "3box" "^1.17.1"
     "3box-chatbox-react-enhanced" "^0.1.15"
+    did-resolver "0.0.7"
     react "^16.13.1"
     react-dom "^16.6.0"
     react-hot-loader "^4.12.18"
