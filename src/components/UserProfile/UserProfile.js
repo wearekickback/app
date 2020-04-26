@@ -107,6 +107,11 @@ export default function UserProfile({ profile: p }) {
                     <WalletButton>Open Wallet</WalletButton>
                   </a>
                 )}
+                {wallet.type === 'sdk' && wallet.dashboard && (
+                  <Button onClick={wallet.dashboard}>
+                    {wallet.name} Dashboard
+                  </Button>
+                )}
                 <EditProfile onClick={() => showModal({ name: EDIT_PROFILE })}>
                   Edit Profile
                 </EditProfile>

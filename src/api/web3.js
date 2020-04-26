@@ -266,7 +266,7 @@ export async function getAccount() {
       return accounts[accountIndex]
     } else {
       try {
-        const accounts = await window.ethereum.send('eth_requestAccounts')
+        const accounts = await web3.eth.requestAccounts()
         return accounts[accountIndex]
       } catch (error) {
         console.warn('Did not allow app to access dapp browser')
