@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ApolloProvider } from 'react-apollo'
 
-import { setup as setupLogRocket } from './api/logRocket'
+// import { setup as setupLogRocket } from './api/logRocket'
 import { setup as setupRollbar } from './api/rollbar'
 import { setup as setupAnalytics } from './api/analytics'
 import './index.css'
