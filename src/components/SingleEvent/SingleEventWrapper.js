@@ -49,7 +49,7 @@ class SingleEventWrapper extends Component {
     return (
       <SingleEventContainer>
         <GlobalConsumer>
-          {({ userAddress }) => (
+          {({ userAddress, web3 }) => (
             <SafeQuery
               query={PARTY_QUERY}
               variables={{ address }}
