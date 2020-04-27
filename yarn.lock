@@ -1212,10 +1212,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@ensdomains/renewal-widget@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@ensdomains/renewal-widget/-/renewal-widget-0.1.8.tgz#e35e0705556bd58044dbf6ecbf281e54e6eac6f7"
-  integrity sha512-ab/VRmX0N3lsghSf+Hmq/AADIYJN6jUb9HcelEEzo2tiTurX6jq9h1DxLVkwBFntlUNXxbwV4f6iR0z5wGlXDg==
+"@ensdomains/renewal-widget@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@ensdomains/renewal-widget/-/renewal-widget-0.1.9.tgz#810492fd63be6d914cc304bfe53370858ed8e983"
+  integrity sha512-n3WW5TN9hD3IGCGhG28koG6lr3NmGBHikCJEIvqLctndpvNwXOzmeScA97/RGf2DLJnTKC4fPelas0MSdl/QpA==
   dependencies:
     "@ensdomains/renewal" "0.0.12"
     penpal "^4.1.1"
