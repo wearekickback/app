@@ -6,7 +6,6 @@ import { extractUsersWithGivenEventRole, ROLE } from '@wearekickback/shared'
 
 const { Conference } = require('@wearekickback/contracts')
 
-
 const ChatContainer = styled('div')`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -17,7 +16,6 @@ const ChatContainer = styled('div')`
 const NoParticipants = styled('div')``
 
 class Chat extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -49,7 +47,7 @@ class Chat extends Component {
 
   async updateContract() {
     const { party, web3 } = this.props
-    let owner = null;
+    let owner = null
     let canJoin = null
     let canModerate = null
     if (web3) {
@@ -57,15 +55,15 @@ class Chat extends Component {
         const contract = new web3.eth.Contract(Conference.abi, party.address)
         canJoin = {
           contract,
-          method: "isRegistered"
+          method: 'isRegistered'
         }
         canModerate = {
           contract,
-          method: "isAdmin"
+          method: 'isAdmin'
         }
         owner = await contract.methods.owner().call()
       } catch (e) {
-        console.log("Failed to load contract", party, e)
+        console.log('Failed to load contract', party, e)
       }
     }
     this.setState({ owner, canJoin, canModerate })
@@ -74,15 +72,9 @@ class Chat extends Component {
   render() {
     const {
       party,
-      party: { participants, ended },
-    } = this.props;
-    const {
-      members,
-      moderators,
-      owner,
-      canJoin,
-      canModerate
-    } = this.state;
+      party: { participants }
+    } = this.props
+    const { members, moderators, owner, canJoin, canModerate } = this.state
 
     if (!owner) {
       return <div></div>
