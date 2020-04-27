@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { isAddress } from 'web3-utils'
+import { getPartyImageLarge } from '../../../utils/parties'
 
 import {
   getDayAndTimeFromDate,
@@ -134,7 +135,7 @@ const DropZoneWrapper = styled('div')`
 
 const UploadedImage = ({ src, text }) => (
   <ImageWrapper text={text}>
-    <img alt="event" src={src} />
+    <img alt="event" src={getPartyImageLarge(src)} />
   </ImageWrapper>
 )
 

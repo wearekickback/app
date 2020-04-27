@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
+    "@ensdomains/renewal-widget": "^0.1.8",
     "@wearekickback/contracts": "^1.2.9",
     "@wearekickback/shared": "^1.14.1",
     "apollo-cache-inmemory": "^1.2.8",
@@ -14,7 +15,7 @@
     "apollo-link-state": "^0.4.1",
     "apollo-upload-client": "^10.0.0",
     "apollo-utilities": "^1.0.21",
-    "bnc-onboard": "^1.2.3",
+    "bnc-onboard": "^1.7.1",
     "decimal.js": "^10.0.1",
     "es6-promisify": "^6.0.0",
     "ethereum-event-logs": "^1.0.2",
