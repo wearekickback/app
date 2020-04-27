@@ -71,6 +71,7 @@ class Chat extends Component {
 
   render() {
     const {
+      party,
       party: { participants }
     } = this.props
     const { members, moderators, owner, canJoin, canModerate } = this.state
