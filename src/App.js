@@ -15,6 +15,7 @@ import DefaultLayout, {
 import AllEvents from './routes/AllEvents'
 import CreateEvent from './routes/CreateEvent'
 import SingleEvent from './routes/SingleEvent'
+import SingleEventChallenge from './routes/SingleEventChallenge'
 import SingleEventAdmin from './routes/SingleEventAdmin'
 import LandingPage from './routes/LandingPage'
 import Team from './routes/Team'
@@ -74,6 +75,10 @@ class App extends Component {
               <Route
                 path="/event/:address/admin"
                 component={SingleEventAdmin}
+              />
+              <Route
+                path="/event/:address/challenge"
+                component={SingleEventChallenge}
               />
               <Route
                 path="/user/:username"
