@@ -10,7 +10,11 @@ import WalletButton from '../components/Header/WalletButton'
 import SignInButton from '../components/Header/SignInButton'
 import Hamburger from '../components/Header/Hamburger'
 import HamburgerMenu from '../components/Header/HamburgerMenu'
+import { GlobalConsumer } from '../GlobalState'
+import RenewalWidget from '@ensdomains/renewal-widget'
+import queryString from 'query-string'
 
+console.log({ RenewalWidget })
 const HeaderContainer = styled('header')`
   width: 100%;
   height: 70px;
@@ -61,30 +65,51 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
+  const { RWdays, RWuserAddress } = queryString.parse(window.location.search)
   return (
-    <HeaderContainer
-      noMargin={noMargin}
-      noBackground={noBackground}
-      positionAbsolute={positionAbsolute}
-    >
-      <HeaderInner positionAbsolute={positionAbsolute}>
-        <Logo />
-        {isMinMedium && (
-          <RightBar>
-            <NavLink to="/events">Events</NavLink>
-            <NavLink to="/pricing">Pricing</NavLink>
-            <GuideDropdown />
-            <WalletButton />
-            <SignInButton />
-          </RightBar>
-        )}
+    <GlobalConsumer>
+      {({ userAddress }) => {
+        if (RWuserAddress || userAddress) {
+          RenewalWidget({
+            userAddress: RWuserAddress || userAddress,
+            queryParams: {
+              utm_source: 'Kickback',
+              utm_medium: 'web',
+              utm_campaign: 'renewal'
+            },
+            days: RWdays ? parseInt(RWdays) : 30
+          })
+        }
+        return (
+          <HeaderContainer
+            noMargin={noMargin}
+            noBackground={noBackground}
+            positionAbsolute={positionAbsolute}
+          >
+            <HeaderInner positionAbsolute={positionAbsolute}>
+              <Logo />
+              {isMinMedium && (
+                <RightBar>
+                  <NavLink to="/events">Events</NavLink>
+                  <NavLink to="/pricing">Pricing</NavLink>
+                  <GuideDropdown />
+                  <WalletButton />
+                  <SignInButton />
+                </RightBar>
+              )}
 
-        {isMaxMedium && (
-          <Hamburger isMenuOpen={open} toggleOpen={() => setOpen(!open)} />
-        )}
-      </HeaderInner>
-      {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
-    </HeaderContainer>
+              {isMaxMedium && (
+                <Hamburger
+                  isMenuOpen={open}
+                  toggleOpen={() => setOpen(!open)}
+                />
+              )}
+            </HeaderInner>
+            {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
+          </HeaderContainer>
+        )
+      }}
+    </GlobalConsumer>
   )
 }
 

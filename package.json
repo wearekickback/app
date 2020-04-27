@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
+    "@ensdomains/renewal-widget": "^0.1.7",
     "@wearekickback/contracts": "^1.2.9",
     "@wearekickback/shared": "^1.14.1",
     "apollo-cache-inmemory": "^1.2.8",
