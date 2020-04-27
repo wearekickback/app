@@ -61,7 +61,7 @@
     "setup": "scripts/setup.js",
     "seedParty": "node scripts/seedParty.js",
     "start": "react-scripts --max_old_space_size=2048 start",
-    "build": "react-scripts --max_old_space_size=2048 build",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "build:release:kovan": "yarn setup --kovan && yarn build",
     "build:release:ropsten": "yarn setup --ropsten && yarn build",
     "build:release:rinkeby": "yarn setup --rinkeby && yarn build",
