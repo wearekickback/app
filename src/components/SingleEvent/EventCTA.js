@@ -96,17 +96,53 @@ class EventCTA extends Component {
     const numWent = calculateNumAttended(participants)
 
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
-
+    let CTAButton
+    let won = false
+    let CTAMessage = ''
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
-        return <Status>You didn't show up :/</Status>
+        CTAButton = <Status>You didn't show up :/</Status>
+        break
       case PARTICIPANT_STATUS.SHOWED_UP:
-        return <WithdrawPayout address={address} amount={myShare} />
+        CTAButton = <WithdrawPayout address={address} amount={myShare} />
+        CTAMessage = 'Please withdraw your payout now.'
+        won = true
+        break
       case PARTICIPANT_STATUS.WITHDRAWN_PAYOUT:
-        return <Status>You have withdrawn your payout!</Status>
+        CTAButton = ''
+        won = true
+        CTAMessage = 'You have withdrawn your payout.'
+        break
       default:
-        return ''
+        CTAButton = ''
+        break
     }
+    return (
+      <>
+        {won ? (
+          <CTAInfo>
+            <h3>Congratulations!</h3>
+            <p>
+              You made it! Are you feeling good? If you think you gained
+              something from this experience, please give a few DAIs to{' '}
+              <strong>
+                <a
+                  target="_blank"
+                  href="https://etherscan.io/address/give.wearekickback.eth"
+                >
+                  give.wearekickback.eth
+                </a>
+              </strong>{' '}
+              to push us to improve our platform.
+            </p>
+            <p>{CTAMessage}</p>
+          </CTAInfo>
+        ) : (
+          ''
+        )}
+        {CTAButton}
+      </>
+    )
   }
 
   _renderActiveRsvpWrapper() {
