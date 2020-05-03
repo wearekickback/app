@@ -129,6 +129,7 @@ class EventCTA extends Component {
                 <a
                   target="_blank"
                   href="https://etherscan.io/address/give.wearekickback.eth"
+                  rel="noopener noreferrer"
                 >
                   give.wearekickback.eth
                 </a>
