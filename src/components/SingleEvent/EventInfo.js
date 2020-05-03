@@ -13,8 +13,8 @@ import { ReactComponent as DefaultClockIcon } from '../svg/clock.svg'
 import DefaultEventDate from '../Utils/EventDate'
 import { ReactComponent as DefaultPinIcon } from '../svg/Pin.svg'
 import { ReactComponent as DefaultInfoIcon } from '../svg/info.svg'
+import { ReactComponent as DefaultContractIcon } from '../svg/contract.svg'
 import Currency from './Currency'
-import WarningBox from '../../components/WarningBox'
 
 import moment from 'moment'
 import { toEthVal } from '../../utils/units'
@@ -25,16 +25,6 @@ import AddToCalendar from './AddToCalendar'
 const EventDate = styled(DefaultEventDate)``
 
 const EventName = styled(H2)``
-const ContractAddress = styled('h3')`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-family: Muli;
-  font-weight: 500;
-  font-size: 13px;
-  color: #6e76ff;
-  letter-spacing: 0;
-`
 const EventImage = styled('img')`
   border-radius: 4px;
   margin-bottom: 20px;
@@ -79,6 +69,34 @@ const InfoIcon = styled(DefaultInfoIcon)`
 const PinIcon = styled(DefaultPinIcon)`
   margin-right: 10px;
   flex-shrink: 0;
+`
+
+const ContractDetail = styled('div')`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  font-family: Muli;
+  font-weight: 500;
+  font-size: 14px;
+  color: #3d3f50;
+  line-height: 21px;
+`
+
+const ContractIcon = styled('div')`
+  margin-right: 10px;
+  background: #e9eaff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+`
+
+const ContractSVG = styled(DefaultContractIcon)`
+  margin-right: 10px;
+  margin-left: 10px;
 `
 
 const Location = styled('div')`
@@ -182,10 +200,6 @@ const HostUsername = styled('span')`
   font-weight: bold;
 `
 
-const ContractAddressContainer = styled('div')`
-  margin-bottom: 1em;
-`
-
 class EventInfo extends Component {
   render() {
     const { party, address, className } = this.props
@@ -279,6 +293,12 @@ class EventInfo extends Component {
             )}
           </InfoGrid>
         </TimeDetails>
+        <ContractDetail>
+          <ContractIcon>
+            <ContractSVG></ContractSVG>
+          </ContractIcon>
+          <EtherScanLink address={address}>{address}</EtherScanLink>
+        </ContractDetail>
         <EventDescription>
           <ReactMarkdown source={party.description} />
         </EventDescription>
@@ -290,17 +310,6 @@ class EventInfo extends Component {
         <Comments>
           <Comment />
         </Comments>
-        <ContractAddressContainer>
-          <h3>Contract address</h3>
-          <ContractAddress>
-            <EtherScanLink address={address}>{address}</EtherScanLink>
-          </ContractAddress>
-          <WarningBox warningLevel="medium">
-            <strong>Warning</strong>: Please do NOT send your commitment
-            directly to the contract address. Please read our{' '}
-            <a href="/gettingstarted">guide</a> for more detail.
-          </WarningBox>
-        </ContractAddressContainer>
       </EventInfoContainer>
     )
   }
