@@ -108,17 +108,27 @@ class SingleEventWrapper extends Component {
                   amAdmin: amAdmin(party, userAddress),
                   myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
-
+                console.log(JSON.stringify(party))
                 preCalculatedProps.amAdmin = amAdmin(party, userAddress)
                 return (
                   <TableList>
-                    <h1>Kickback Challenge Dashboard</h1>
-                    <h3>Sumission Rule</h3>
-                    When you want to submit, post into our chat page with the
-                    following format.
-                    <>
-                      <PRE>/submit HTTPS://PROOFURL</PRE>
-                    </>
+                    <p>
+                      <h2>"{party.name}" challenge dashbaord</h2>
+                      <h3>Command guide</h3>
+                      If you have specific goal you want to achieve.
+                      <>
+                        <PRE>/setgoal GOAL DESCRIPTION</PRE>
+                      </>
+                      When you want to submit, post into our chat page with the
+                      following format.
+                      <>
+                        <PRE>/submit HTTPS://PROOFURL NUMBER</PRE>
+                      </>
+                      "NUMBER" is required only if your challenge requires you
+                      to record number (eg: number of pushups, km of jogging,
+                      etc)
+                    </p>
+
                     <Button onClick={() => checkProgress()}>
                       Check Submissions
                     </Button>
@@ -136,6 +146,8 @@ class SingleEventWrapper extends Component {
                               <TH>#</TH>
                               <TH>Submissions</TH>
                               <TH>Username</TH>
+                              <TH>Goal</TH>
+                              <TH>Activities</TH>
                             </TR>
 
                             {participants
@@ -144,7 +156,17 @@ class SingleEventWrapper extends Component {
                                 filterParticipants(selectedFilter, search)
                               )
                               .map(participant => {
+                                let userGoal = ''
                                 const userPost = posts.filter(post => {
+                                  if (
+                                    post.address === participant.user.address &&
+                                    post.message.match(/\/setgoal/)
+                                  ) {
+                                    userGoal = post.message.replace(
+                                      '/setgoal ',
+                                      ''
+                                    )
+                                  }
                                   return (
                                     post.address === participant.user.address &&
                                     post.message.match(/\/submit/)
@@ -154,8 +176,9 @@ class SingleEventWrapper extends Component {
                                   <TR key={participant.user.id}>
                                     <TD>{participant.index}</TD>
                                     <TD>{userPost.length}</TD>
+                                    <TD>{participant.user.username}</TD>
+                                    <TD>{userGoal}</TD>
                                     <TD>
-                                      {participant.user.username}
                                       <ul>
                                         {userPost.map(post => {
                                           let date = moment(
@@ -164,7 +187,12 @@ class SingleEventWrapper extends Component {
                                           console.log({ post })
                                           return (
                                             <li>
-                                              {date} {post.message}
+                                              {date}{' '}
+                                              {post.message &&
+                                                post.message.replace(
+                                                  '/submit ',
+                                                  ''
+                                                )}
                                             </li>
                                           )
                                         })}
