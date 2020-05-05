@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"3box-chatbox-react-enhanced@^0.1.18":
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/3box-chatbox-react-enhanced/-/3box-chatbox-react-enhanced-0.1.18.tgz#2560e6bce18258e44ff8e85a77d88cced4fb91e1"
-  integrity sha512-n50WGl6bgCzfwGZ/pMiz/nkIiUWa1KDnlq02mAZeIe2r7fI7VJSV8VhOF3XPzxU3zRtap2aHeO9JbFQlZRCvbg==
+"3box-chatbox-react-enhanced@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/3box-chatbox-react-enhanced/-/3box-chatbox-react-enhanced-0.1.19.tgz#6dfcec0b40664305e5fa59eb22af5ec96d54767d"
+  integrity sha512-lHDlfCA3ae4UkYDBUXRTcOrnMOfUddJU3B3PxtlONCGWZuzIYSwTMvE4XQMAjoAfNGChu/SUDl25JW+D9SmbAA==
   dependencies:
     "3box" "^1.17.1"
     "3id-resolver" "0.0.6"
@@ -20011,6 +20011,21 @@ react-tiny-link@^3.3.1:
     styled-components "^4.1.3"
     typescript "^3.3.4000"
 
+react-tiny-link@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/react-tiny-link/-/react-tiny-link-3.4.0.tgz#7a3539251022f5b92cbb50c53b43bc5fac6acc37"
+  integrity sha512-qsRCGQj10+OlS62U5vV/fn7vNB5+iK2ZD3CmTrUtBbbGKkYOlMsMhwoJgWwlj5HPYeRE4pgvHLAjm+EK93Mx2g==
+  dependencies:
+    "@types/node" "^11.12.1"
+    "@types/react" "^16.8.10"
+    "@types/react-dom" "^16.8.3"
+    awesome-typescript-loader "^5.2.1"
+    node "^11.12.0"
+    react "^16.8.6"
+    react-dom "^16.8.6"
+    styled-components "^4.1.3"
+    typescript "^3.3.4000"
+
 react-tooltip@^3.9.0:
   version "3.11.6"
   resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.11.6.tgz#4f9735a2a4aa50580af351ce23e74a56f41afc0c"
@@ -21445,13 +21460,13 @@ smart-buffer@^4.0.2:
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.1.0.tgz#91605c25d91652f4661ea69ccf45f1b331ca21ba"
   integrity sha512-iVICrxOzCynf/SNaBQCw34eM9jROU/s5rzIhpOvzhzuYHfJR/DhZfDkXiZSgKXfgv26HT3Yni3AV/DGw0cGnnw==
 
-smart-chat-react@^0.1.14:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/smart-chat-react/-/smart-chat-react-0.1.14.tgz#02bb544a3b382b7dabacc3402f7de34f86be078b"
-  integrity sha512-RYl1usGHwd2EunsfsHWk0GdwkVWGLiC5cty5m0u/wz93jAghi8gWJu1m3EFlvFRc64HLLYl2JmCjiLl137TduA==
+smart-chat-react@^0.1.15:
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/smart-chat-react/-/smart-chat-react-0.1.15.tgz#a1f1bf383d5ad32cdcc46ab046cff5fe98bd5846"
+  integrity sha512-A6rinMIzqWlrkoZ0xN3OwXS1SZE4GWidXUg/8NVDbcCZV8V6fkoT8J1M4WO5okQuNRVTithqgCoiAVwS8K4JzA==
   dependencies:
     "3box" "^1.17.1"
-    "3box-chatbox-react-enhanced" "^0.1.18"
+    "3box-chatbox-react-enhanced" "^0.1.19"
     did-resolver "0.0.7"
 
 snapdragon-node@^2.0.1:
