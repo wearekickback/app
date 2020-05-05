@@ -94,6 +94,29 @@ class Chat extends Component {
               moderators={moderators}
               onLoad={this.props.onLoad}
               colorTheme="#6E76FF"
+              onError={(
+                error,
+                { currentUserAddr, addedMembers, members },
+                showError
+              ) => {
+                console.log({ showError })
+                if (
+                  error &&
+                  error.message &&
+                  error.message.includes('not a member of the thread')
+                ) {
+                  if (members && !members.includes(currentUserAddr)) {
+                    // user is not in the list of members
+                    return 'You need to RSVP to get access'
+                  } else if (
+                    addedMembers &&
+                    !addedMembers.includes(currentUserAddr)
+                  ) {
+                    // moderators haven't added user to the chat
+                    return 'Request pending to add you to the chat'
+                  }
+                }
+              }}
               popup
             />
           ) : (
