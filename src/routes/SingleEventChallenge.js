@@ -11,7 +11,6 @@ import SafeQuery from '../components/SafeQuery'
 import { GlobalConsumer } from '../GlobalState'
 import colours from '../colours'
 import { getPartyImageLarge } from '../utils/parties'
-import Chat from '../components/SingleEvent/Chat'
 
 const { primary500, primary400, primary300, primary200 } = colours
 
@@ -133,10 +132,11 @@ class SingleEvent extends Component {
                         <Route
                           path={`/event/${address}/challenge`}
                           exact
-                          render={() => <ActivityList address={address} />}
+                          render={() => (
+                            <ActivityList address={address} web3={web3} />
+                          )}
                         />
                       </TabContent>
-                      <Chat party={party} web3={web3} />
                     </SingleEventAdminContainer>
                   )
                 }}

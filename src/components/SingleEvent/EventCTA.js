@@ -342,7 +342,7 @@ class EventCTA extends Component {
   render() {
     let {
       // party: { ended, cancelled, participants, balance }
-      party: { ended, cancelled, participants }
+      party: { address, ended, cancelled, participants }
     } = this.props
     // const cleared =
     //   balance &&
@@ -367,6 +367,16 @@ class EventCTA extends Component {
             ? this._renderCanceled()
             : this._renderEnded()
           : this._renderAdminCTA()}
+
+        {this.props.myParticipantEntry ? (
+          <Button>
+            <Link to={`/event/${address}/challenge`}>
+              Enter the challenge room
+            </Link>
+          </Button>
+        ) : (
+          ''
+        )}
         <MarkAttended>
           {`${getParticipantsMarkedAttended(participants)}/${
             participants.length
