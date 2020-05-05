@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import moment from 'moment'
+import Chat from './Chat'
+import { ReactTinyLink } from 'react-tiny-link'
 
 import {
   amAdmin,
@@ -53,6 +55,8 @@ const TableList = styled('div')`
   flex-direction: column;
 `
 
+const urlRegex = /(https?:\/\/[^ ]*)/
+
 class SingleEventWrapper extends Component {
   state = {
     search: '',
@@ -69,7 +73,7 @@ class SingleEventWrapper extends Component {
     this.setState({ selectedFilter })
   }
 
-  checkProgress = async address => {
+  checkProgress = async () => {
     const chat = window.smart_chat
     let posts = await chat.getHistory()
     this.setState({ posts })
@@ -78,7 +82,7 @@ class SingleEventWrapper extends Component {
   render() {
     const { search, selectedFilter, posts = [] } = this.state
     const { handleSearch, checkProgress } = this
-    const { address } = this.props
+    const { address, web3 } = this.props
     return (
       <SingleEventContainer>
         <GlobalConsumer>
@@ -108,20 +112,28 @@ class SingleEventWrapper extends Component {
                   amAdmin: amAdmin(party, userAddress),
                   myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
-
+                console.log(JSON.stringify(party))
                 preCalculatedProps.amAdmin = amAdmin(party, userAddress)
                 return (
                   <TableList>
-                    <h1>Kickback Challenge Dashboard</h1>
-                    <h3>Sumission Rule</h3>
-                    When you want to submit, post into our chat page with the
-                    following format.
-                    <>
-                      <PRE>/submit HTTPS://PROOFURL</PRE>
-                    </>
-                    <Button onClick={() => checkProgress()}>
-                      Check Submissions
-                    </Button>
+                    <p>
+                      <h2>"{party.name}" challenge dashbaord</h2>
+                      <h3>Command guide</h3>
+                      If you have specific goal you want to achieve.
+                      <>
+                        <PRE>/setgoal GOAL DESCRIPTION</PRE>
+                      </>
+                      When you want to submit, post into our chat page with the
+                      following format.
+                      <>
+                        <PRE>/submit HTTPS://PROOFURL NUMBER</PRE>
+                      </>
+                      "NUMBER" is required only if your challenge requires you
+                      to record number (eg: number of pushups, km of jogging,
+                      etc)
+                    </p>
+
+                    <Button onClick={() => checkProgress()}>Check Posts</Button>
                     {participants.length > 0 ? (
                       <>
                         <EventFilters
@@ -134,8 +146,11 @@ class SingleEventWrapper extends Component {
                           <Tbody>
                             <TR>
                               <TH>#</TH>
-                              <TH>Submissions</TH>
+                              <TH>posts</TH>
                               <TH>Username</TH>
+                              <TH>Goal</TH>
+                              <TH>Updated at</TH>
+                              <TH>Last post</TH>
                             </TR>
 
                             {participants
@@ -144,37 +159,67 @@ class SingleEventWrapper extends Component {
                                 filterParticipants(selectedFilter, search)
                               )
                               .map(participant => {
+                                let userGoal = ''
                                 const userPost = posts.filter(post => {
+                                  if (
+                                    post.address === participant.user.address &&
+                                    post.message.match(/\/setgoal/)
+                                  ) {
+                                    userGoal = post.message.replace(
+                                      '/setgoal ',
+                                      ''
+                                    )
+                                  }
                                   return (
                                     post.address === participant.user.address &&
                                     post.message.match(/\/submit/)
                                   )
                                 })
+                                let post = userPost[userPost.length - 1]
+                                let date, message, url
+                                if (post) {
+                                  date = moment(
+                                    new Date(post.timestamp * 1000)
+                                  ).fromNow()
+
+                                  message =
+                                    post.message &&
+                                    post.message.replace('/submit ', '')
+                                  url = message.match(urlRegex)[1]
+                                }
+
                                 return (
                                   <TR key={participant.user.id}>
                                     <TD>{participant.index}</TD>
                                     <TD>{userPost.length}</TD>
+                                    <TD>{participant.user.username}</TD>
+                                    <TD>{userGoal}</TD>
+                                    <TD>{date}</TD>
                                     <TD>
-                                      {participant.user.username}
-                                      <ul>
-                                        {userPost.map(post => {
-                                          let date = moment(
-                                            new Date(post.timestamp * 1000)
-                                          ).format('MMMM Do YYYY, h:mm:ss a')
-                                          console.log({ post })
-                                          return (
-                                            <li>
-                                              {date} {post.message}
-                                            </li>
-                                          )
-                                        })}
-                                      </ul>
+                                      {url ? (
+                                        <ReactTinyLink
+                                          cardSize="small"
+                                          showGraphic={true}
+                                          maxLine={2}
+                                          minLine={1}
+                                          url={url}
+                                        />
+                                      ) : (
+                                        <span>{message}</span>
+                                      )}
                                     </TD>
                                   </TR>
                                 )
                               })}
                           </Tbody>
                         </Table>
+                        <Chat
+                          party={party}
+                          web3={web3}
+                          onLoad={() => {
+                            checkProgress()
+                          }}
+                        />
                       </>
                     ) : (
                       <NoParticipants>No one is attending</NoParticipants>
