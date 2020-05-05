@@ -92,6 +92,7 @@ class Chat extends Component {
               organizer={owner}
               members={members}
               moderators={moderators}
+              onLoad={this.props.onLoad}
               colorTheme="#6E76FF"
               popup
             />
