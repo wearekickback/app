@@ -69,7 +69,7 @@ const TeamMembers = () => (
     <h1>The Kickback team</h1>
     <TeamInner>
       <Member>
-        <Avatar src="https://avatars.io/twitter/makoto_inoue" />
+        <Avatar src="https://twitter-avatar.now.sh/makoto_inoue" />
         <MemberName href="https://twitter.com/makoto_inoue">
           Makoto Inoue
         </MemberName>
@@ -83,7 +83,7 @@ const TeamMembers = () => (
         </Bio>
       </Member>
       <Member>
-        <Avatar src="https://avatars.io/twitter/_jefflau" />
+        <Avatar src="https://twitter-avatar.now.sh/_jefflau" />
         <MemberName href="https://twitter.com/_jefflau">Jeff Lau</MemberName>
         <Bio>
           Javascripter. Climber. Developer at{' '}
@@ -92,7 +92,7 @@ const TeamMembers = () => (
         </Bio>
       </Member>
       <Member>
-        <Avatar src="https://avatars.io/twitter/hiddentao" />
+        <Avatar src="https://twitter-avatar.now.sh/hiddentao" />
         <MemberName href="https://twitter.com/hiddentao">
           Ramesh Nair
         </MemberName>

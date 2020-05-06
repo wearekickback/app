@@ -16,10 +16,7 @@ const TwitterAvatar = ({ className, user, size, scale }) => {
   let blockies
 
   if (avatarId) {
-    avatarUrl =
-      scale > 10
-        ? `https://avatars.io/twitter/${avatarId}/medium`
-        : `https://avatars.io/twitter/${avatarId}/large`
+    avatarUrl = `https://twitter-avatar.now.sh/${avatarId}/`
   } else {
     blockies = user.address
   }
