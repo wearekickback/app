@@ -18,8 +18,8 @@ const TwitterAvatar = ({ className, user, size, scale }) => {
   if (avatarId) {
     avatarUrl =
       scale > 10
-        ? `https://avatars.io/twitter/${avatarId}/medium`
-        : `https://avatars.io/twitter/${avatarId}/large`
+        ? `https://twitter-avatar.now.sh/${avatarId}/medium`
+        : `https://twitter-avatar.now.sh/${avatarId}/large`
   } else {
     blockies = user.address
   }
