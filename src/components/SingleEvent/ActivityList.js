@@ -12,13 +12,19 @@ import {
 } from '../../utils/parties'
 import { PARTY_QUERY } from '../../graphql/queries'
 
-import { Table, Tbody, TH, TR, TD } from '../Table'
+import { Table as DefaultTable, Tbody, TH, TR, TD } from '../Table'
 import DefaultButton from '../Forms/Button'
 import WarningBox from '../WarningBox'
 import SafeQuery from '../SafeQuery'
 import EventFilters from './EventFilters'
 import { GlobalConsumer } from '../../GlobalState'
 import mq from '../../mediaQuery'
+
+const Table = styled(DefaultTable)`
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+`
 
 const PRE = styled('pre')`
   white-space: pre-wrap;
@@ -147,9 +153,7 @@ class SingleEventWrapper extends Component {
                             <TR>
                               <TH>#</TH>
                               <TH>posts</TH>
-                              <TH>Username</TH>
-                              <TH>Goal</TH>
-                              <TH>Updated at</TH>
+                              <TH>User(Goal)</TH>
                               <TH>Last post</TH>
                             </TR>
 
@@ -192,10 +196,14 @@ class SingleEventWrapper extends Component {
                                   <TR key={participant.user.id}>
                                     <TD>{participant.index}</TD>
                                     <TD>{userPost.length}</TD>
-                                    <TD>{participant.user.username}</TD>
-                                    <TD>{userGoal}</TD>
-                                    <TD>{date}</TD>
                                     <TD>
+                                      {participant.user.username}
+                                      <br />
+                                      {userGoal ? `(${userGoal})` : ''}
+                                    </TD>
+                                    <TD>
+                                      {date}
+                                      <br />
                                       {url ? (
                                         <ReactTinyLink
                                           cardSize="small"
