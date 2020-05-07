@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import moment from 'moment'
 import Chat from './Chat'
 import { ReactTinyLink } from 'react-tiny-link'
-
+import _ from 'lodash'
 import {
   amAdmin,
   getMyParticipantEntry,
@@ -12,13 +12,33 @@ import {
 } from '../../utils/parties'
 import { PARTY_QUERY } from '../../graphql/queries'
 
-import { Table, Tbody, TH, TR, TD } from '../Table'
+import {
+  Table as DefaultTable,
+  Tbody,
+  TH as DefaultTH,
+  TR,
+  TD as DefaultTD
+} from '../Table'
 import DefaultButton from '../Forms/Button'
 import WarningBox from '../WarningBox'
 import SafeQuery from '../SafeQuery'
 import EventFilters from './EventFilters'
 import { GlobalConsumer } from '../../GlobalState'
 import mq from '../../mediaQuery'
+
+const Table = styled(DefaultTable)`
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+`
+
+const TH = styled(DefaultTH)``
+
+const TD = styled(DefaultTD)``
+
+const UL = styled('ul')`
+  list-style: none;
+`
 
 const PRE = styled('pre')`
   white-space: pre-wrap;
@@ -112,7 +132,6 @@ class SingleEventWrapper extends Component {
                   amAdmin: amAdmin(party, userAddress),
                   myParticipantEntry: getMyParticipantEntry(party, userAddress)
                 }
-                console.log(JSON.stringify(party))
                 preCalculatedProps.amAdmin = amAdmin(party, userAddress)
                 return (
                   <TableList>
@@ -126,11 +145,10 @@ class SingleEventWrapper extends Component {
                       When you want to submit, post into our chat page with the
                       following format.
                       <>
-                        <PRE>/submit HTTPS://PROOFURL NUMBER</PRE>
+                        <PRE>/submit HTTPS://PROOFURL COUNT</PRE>
                       </>
-                      "NUMBER" is required only if your challenge requires you
-                      to record number (eg: number of pushups, km of jogging,
-                      etc)
+                      "COUNT" is required only if your challenge requires you to
+                      count (eg: number of pushups, km of jogging, etc)
                     </p>
 
                     <Button onClick={() => checkProgress()}>Check Posts</Button>
@@ -141,15 +159,15 @@ class SingleEventWrapper extends Component {
                           search={search}
                           ended={ended}
                         />
-
+                        <span>
+                          (n)ame, (g)oal, number of (s)ubmissions, number of
+                          (d)ays submitted, total (c)ounts
+                        </span>
                         <Table>
                           <Tbody>
                             <TR>
                               <TH>#</TH>
-                              <TH>posts</TH>
-                              <TH>Username</TH>
-                              <TH>Goal</TH>
-                              <TH>Updated at</TH>
+                              <TH>Summary</TH>
                               <TH>Last post</TH>
                             </TR>
 
@@ -176,6 +194,15 @@ class SingleEventWrapper extends Component {
                                   )
                                 })
                                 let post = userPost[userPost.length - 1]
+                                let counts = userPost.map(p => {
+                                  let matched = p.message.match(/ \d+/)
+                                  if (matched) {
+                                    return parseInt(matched[0])
+                                  } else {
+                                    return 0
+                                  }
+                                })
+
                                 let date, message, url
                                 if (post) {
                                   date = moment(
@@ -187,15 +214,28 @@ class SingleEventWrapper extends Component {
                                     post.message.replace('/submit ', '')
                                   url = message.match(urlRegex)[1]
                                 }
-
+                                let dayCount = Object.keys(
+                                  _.groupBy(userPost, p =>
+                                    new Date(p.timestamp * 1000).getDay()
+                                  )
+                                ).length
                                 return (
                                   <TR key={participant.user.id}>
                                     <TD>{participant.index}</TD>
-                                    <TD>{userPost.length}</TD>
-                                    <TD>{participant.user.username}</TD>
-                                    <TD>{userGoal}</TD>
-                                    <TD>{date}</TD>
                                     <TD>
+                                      <UL>
+                                        <li>n: {participant.user.username}</li>
+                                        {userGoal ? <li>g: {userGoal}</li> : ''}
+                                        <li>
+                                          s: {`${userPost.length} times`}{' '}
+                                        </li>
+                                        <li>d: {`${dayCount} days`} </li>
+                                        <li>c: {_.sum(counts)} </li>
+                                      </UL>
+                                    </TD>
+                                    <TD>
+                                      {date}
+                                      <br />
                                       {url ? (
                                         <ReactTinyLink
                                           cardSize="small"
