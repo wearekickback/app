@@ -181,7 +181,7 @@ class SingleEventWrapper extends Component {
                                 const userPost = posts.filter(post => {
                                   if (
                                     post.address === participant.user.address &&
-                                    post.message.match(/\/setgoal/)
+                                    post.message.match(/^\/setgoal/)
                                   ) {
                                     userGoal = post.message.replace(
                                       '/setgoal ',
@@ -190,7 +190,7 @@ class SingleEventWrapper extends Component {
                                   }
                                   return (
                                     post.address === participant.user.address &&
-                                    post.message.match(/\/submit/)
+                                    post.message.match(/^\/submit/)
                                   )
                                 })
                                 let post = userPost[userPost.length - 1]
@@ -212,7 +212,9 @@ class SingleEventWrapper extends Component {
                                   message =
                                     post.message &&
                                     post.message.replace('/submit ', '')
-                                  url = message.match(urlRegex)[1]
+                                  url =
+                                    message.match(urlRegex) &&
+                                    message.match(urlRegex)[1]
                                 }
                                 let dayCount = Object.keys(
                                   _.groupBy(userPost, p =>
