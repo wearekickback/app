@@ -29,12 +29,22 @@ import mq from '../../mediaQuery'
 const Table = styled(DefaultTable)`
   display: block;
   overflow-x: auto;
-  white-space: nowrap;
+  table-layout: fixed;
 `
 
 const TH = styled(DefaultTH)``
 
 const TD = styled(DefaultTD)``
+
+const FirstTH = styled(DefaultTH)`
+  width: 1em;
+  word-wrap: break-word;
+`
+
+const SecondTH = styled(DefaultTH)`
+  width: 30%;
+  word-wrap: break-word;
+`
 
 const UL = styled('ul')`
   list-style: none;
@@ -126,7 +136,9 @@ class SingleEventWrapper extends Component {
                   }
                 }
                 const { participants, ended } = party
+                window.moment = moment
 
+                const startDay = moment(party.start)
                 // pre-calculate some stuff up here
                 const preCalculatedProps = {
                   amAdmin: amAdmin(party, userAddress),
@@ -166,11 +178,10 @@ class SingleEventWrapper extends Component {
                         <Table>
                           <Tbody>
                             <TR>
-                              <TH>#</TH>
-                              <TH>Summary</TH>
+                              <FirstTH>#</FirstTH>
+                              <SecondTH>Summary</SecondTH>
                               <TH>Last post</TH>
                             </TR>
-
                             {participants
                               .sort(sortParticipants)
                               .filter(
@@ -179,6 +190,15 @@ class SingleEventWrapper extends Component {
                               .map(participant => {
                                 let userGoal = ''
                                 const userPost = posts.filter(post => {
+                                  let postDate = moment(
+                                    new Date(post.timestamp * 1000)
+                                  )
+                                  if (
+                                    !!moment().isBefore(startDay) &&
+                                    postDate.isBefore(startDay)
+                                  )
+                                    return false
+
                                   if (
                                     post.address === participant.user.address &&
                                     post.message.match(/^\/setgoal/)
