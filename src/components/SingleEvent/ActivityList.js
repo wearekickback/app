@@ -1,16 +1,10 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import moment from 'moment'
 import Chat from './Chat'
 import { ReactTinyLink } from 'react-tiny-link'
 import _ from 'lodash'
-import {
-  amAdmin,
-  getMyParticipantEntry,
-  sortParticipants,
-  filterParticipants
-} from '../../utils/parties'
-import { PARTY_QUERY } from '../../graphql/queries'
+import { sortParticipants, filterParticipants } from '../../utils/parties'
 
 import {
   Table as DefaultTable,
@@ -21,10 +15,7 @@ import {
 } from '../Table'
 import DefaultButton from '../Forms/Button'
 import WarningBox from '../WarningBox'
-import SafeQuery from '../SafeQuery'
 import EventFilters from './EventFilters'
-import { GlobalConsumer } from '../../GlobalState'
-import mq from '../../mediaQuery'
 
 const Table = styled(DefaultTable)`
   display: block;
@@ -61,18 +52,6 @@ const PRE = styled('pre')`
   padding: 1em;
 `
 
-const SingleEventContainer = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  max-width: 100%;
-  margin: 0 auto 0;
-  flex-direction: column;
-  ${mq.medium`
-    flex-direction: row;
-  `};
-`
-
 const Button = styled(DefaultButton)`
   display: flex;
 `
@@ -86,215 +65,221 @@ const TableList = styled('div')`
 `
 
 const urlRegex = /(https?:\/\/[^ ]*)/
+const today = moment().format('DDMM')
+const yesterday = moment()
+  .subtract(1, 'd')
+  .format('DDMM')
+let counter = 0
 
-class SingleEventWrapper extends Component {
-  state = {
-    search: '',
-    selectedFilter: null
+function ActivityList({ address, web3, party }) {
+  let todayEntries = []
+  let yesterdayEntries = []
+
+  counter = counter + 1
+  const [search, setSearch] = useState('')
+  const [selectedFilter] = useState(null)
+  const [posts, setPosts] = useState(null)
+
+  const handleSearch = value => {
+    setSearch(value.toLowerCase())
   }
 
-  handleSearch = value => {
-    this.setState({
-      search: value.toLowerCase()
-    })
+  const checkProgress = async messages => {
+    if (messages) {
+      setPosts(messages)
+    } else {
+      setPosts(await window.smart_chat.getHistory())
+    }
   }
 
-  handleFilterChange = selectedFilter => {
-    this.setState({ selectedFilter })
-  }
-
-  checkProgress = async () => {
-    const chat = window.smart_chat
-    let posts = await chat.getHistory()
-    this.setState({ posts })
-  }
-
-  render() {
-    const { search, selectedFilter, posts = [] } = this.state
-    const { handleSearch, checkProgress } = this
-    const { address, web3 } = this.props
+  if (!party) {
     return (
-      <SingleEventContainer>
-        <GlobalConsumer>
-          {({ userAddress }) => (
-            <SafeQuery
-              query={PARTY_QUERY}
-              variables={{ address }}
-              fetchPolicy="cache-and-network"
-            >
-              {({ data: { party }, loading, error, refetch }) => {
-                // no party?
-                if (!party) {
-                  if (loading) {
-                    return 'Loading ...'
-                  } else {
-                    return (
-                      <WarningBox>
-                        We could not find an event at the address {address}!
-                      </WarningBox>
-                    )
-                  }
-                }
-                const { participants, ended } = party
-                window.moment = moment
-
-                const startDay = moment(party.start)
-                // pre-calculate some stuff up here
-                const preCalculatedProps = {
-                  amAdmin: amAdmin(party, userAddress),
-                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
-                }
-                preCalculatedProps.amAdmin = amAdmin(party, userAddress)
-                return (
-                  <TableList>
-                    <p>
-                      <h2>"{party.name}" challenge dashbaord</h2>
-                      <h3>Command guide</h3>
-                      If you have specific goal you want to achieve.
-                      <>
-                        <PRE>/setgoal GOAL DESCRIPTION</PRE>
-                      </>
-                      When you want to submit, post into our chat page with the
-                      following format.
-                      <>
-                        <PRE>/submit HTTPS://PROOFURL COUNT</PRE>
-                      </>
-                      "COUNT" is required only if your challenge requires you to
-                      count (eg: number of pushups, km of jogging, etc)
-                    </p>
-
-                    <Button onClick={() => checkProgress()}>Check Posts</Button>
-                    {participants.length > 0 ? (
-                      <>
-                        <EventFilters
-                          handleSearch={handleSearch}
-                          search={search}
-                          ended={ended}
-                        />
-                        <span>
-                          (n)ame, (g)oal, number of (s)ubmissions, number of
-                          (d)ays submitted, total (c)ounts
-                        </span>
-                        <Table>
-                          <Tbody>
-                            <TR>
-                              <FirstTH>#</FirstTH>
-                              <SecondTH>Summary</SecondTH>
-                              <TH>Last post</TH>
-                            </TR>
-                            {participants
-                              .sort(sortParticipants)
-                              .filter(
-                                filterParticipants(selectedFilter, search)
-                              )
-                              .map(participant => {
-                                let userGoal = ''
-                                const userPost = posts.filter(post => {
-                                  let postDate = moment(
-                                    new Date(post.timestamp * 1000)
-                                  )
-                                  if (
-                                    !moment().isBefore(startDay) &&
-                                    postDate.isBefore(startDay)
-                                  )
-                                    return false
-
-                                  if (
-                                    post.address === participant.user.address &&
-                                    post.message.match(/^\/setgoal/)
-                                  ) {
-                                    userGoal = post.message.replace(
-                                      '/setgoal ',
-                                      ''
-                                    )
-                                  }
-                                  return (
-                                    post.address === participant.user.address &&
-                                    post.message.match(/^\/submit/)
-                                  )
-                                })
-                                let post = userPost[userPost.length - 1]
-                                let counts = userPost.map(p => {
-                                  let matched = p.message.match(/ \d+/)
-                                  if (matched) {
-                                    return parseInt(matched[0])
-                                  } else {
-                                    return 0
-                                  }
-                                })
-
-                                let date, message, url
-                                if (post) {
-                                  date = moment(
-                                    new Date(post.timestamp * 1000)
-                                  ).fromNow()
-
-                                  message =
-                                    post.message &&
-                                    post.message.replace('/submit ', '')
-                                  url =
-                                    message.match(urlRegex) &&
-                                    message.match(urlRegex)[1]
-                                }
-                                let dayCount = Object.keys(
-                                  _.groupBy(userPost, p =>
-                                    new Date(p.timestamp * 1000).getDay()
-                                  )
-                                ).length
-                                return (
-                                  <TR key={participant.user.id}>
-                                    <TD>{participant.index}</TD>
-                                    <TD>
-                                      <UL>
-                                        <li>n: {participant.user.username}</li>
-                                        {userGoal ? <li>g: {userGoal}</li> : ''}
-                                        <li>
-                                          s: {`${userPost.length} times`}{' '}
-                                        </li>
-                                        <li>d: {`${dayCount} days`} </li>
-                                        <li>c: {_.sum(counts)} </li>
-                                      </UL>
-                                    </TD>
-                                    <TD>
-                                      {date}
-                                      <br />
-                                      {url ? (
-                                        <ReactTinyLink
-                                          cardSize="small"
-                                          showGraphic={true}
-                                          maxLine={2}
-                                          minLine={1}
-                                          url={url}
-                                        />
-                                      ) : (
-                                        <span>{message}</span>
-                                      )}
-                                    </TD>
-                                  </TR>
-                                )
-                              })}
-                          </Tbody>
-                        </Table>
-                        <Chat
-                          party={party}
-                          web3={web3}
-                          onLoad={() => {
-                            checkProgress()
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <NoParticipants>No one is attending</NoParticipants>
-                    )}
-                  </TableList>
-                )
-              }}
-            </SafeQuery>
-          )}
-        </GlobalConsumer>
-      </SingleEventContainer>
+      <WarningBox>
+        We could not find an event at the address {address}!
+      </WarningBox>
     )
   }
+  const { participants, ended } = party
+  if (participants.length === 0) {
+    return <NoParticipants>No one is attending</NoParticipants>
+  }
+  const participantNames = participants.map(p => p.user.username)
+  const startDay = moment(party.start)
+
+  const participantsToRender = participants
+    .sort(sortParticipants)
+    .filter(filterParticipants(selectedFilter, search))
+    .map(participant => {
+      let userGoal = ''
+      const userPost = posts
+        ? posts.filter(post => {
+            let postDate = moment(new Date(post.timestamp * 1000))
+            if (
+              post.address === participant.user.address &&
+              post.message.match(/^\/setgoal/)
+            ) {
+              userGoal = post.message.replace('/setgoal ', '')
+            }
+            if (!moment().isBefore(startDay) && postDate.isBefore(startDay))
+              return false
+
+            return (
+              post.address === participant.user.address &&
+              post.message.match(/^\/submit/)
+            )
+          })
+        : []
+      let post = userPost[userPost.length - 1]
+      let counts = userPost.map(p => {
+        let matched = p.message.match(/ \d+/)
+        if (matched) {
+          return parseInt(matched[0])
+        } else {
+          return 0
+        }
+      })
+
+      let updatedAt, message, url
+      if (post) {
+        updatedAt = moment(new Date(post.timestamp * 1000))
+        message = post.message && post.message.replace('/submit ', '')
+        url = message.match(urlRegex) && message.match(urlRegex)[1]
+      }
+
+      let groupByDate = _.groupBy(userPost, p =>
+        moment(new Date(p.timestamp * 1000)).format('DDMM')
+      )
+      if (groupByDate[today]) {
+        todayEntries.push(participant.user.username)
+      }
+      if (groupByDate[yesterday]) {
+        yesterdayEntries.push(participant.user.username)
+      }
+
+      let dayCount = Object.keys(groupByDate).length
+      let obj = {
+        participant,
+        userGoal,
+        userPost,
+        dayCount,
+        counts,
+        updatedAt,
+        url,
+        message
+      }
+      return obj
+    })
+  if (participantsToRender.length === 0) {
+    return <NoParticipants>Waiting for submissions</NoParticipants>
+  }
+  const todayMissing =
+    todayEntries.length > 0
+      ? _.xor(todayEntries, participantNames).join(', ')
+      : ''
+  const yesterdayMissing =
+    yesterdayEntries.length > 0
+      ? _.xor(yesterdayEntries, participantNames).join(', ')
+      : ''
+  return (
+    <>
+      <TableList>
+        <p>
+          <h2>"{party.name}" challenge dashbaord</h2>
+          <h3>Command guide</h3>
+          If you have specific goal you want to achieve.
+          <>
+            <PRE>/setgoal GOAL DESCRIPTION</PRE>
+          </>
+          When you want to submit, post into our chat page with the following
+          format.
+          <>
+            <PRE>/submit HTTPS://PROOFURL COUNT</PRE>
+          </>
+          "COUNT" is required only if your challenge requires you to count (eg:
+          number of pushups, km of jogging, etc)
+        </p>
+        <h3>Daily summary</h3>
+        <h4>Today</h4>
+        {todayEntries.length} missing ({todayMissing})<h4>Yesterday</h4>
+        {yesterdayEntries.length} missing ({yesterdayMissing})
+        <Button onClick={() => checkProgress()}>Check Posts</Button>
+        <EventFilters
+          handleSearch={handleSearch}
+          search={search}
+          ended={ended}
+        />
+        <span>
+          (n)ame, (g)oal, number of (s)ubmissions, number of (d)ays submitted,
+          total (c)ounts
+        </span>
+        <Table>
+          <Tbody>
+            <TR>
+              <FirstTH>#</FirstTH>
+              <SecondTH>Summary</SecondTH>
+              <TH>Last post</TH>
+            </TR>
+            {participantsToRender.map(
+              ({
+                participant,
+                userGoal,
+                userPost,
+                dayCount,
+                counts,
+                updatedAt,
+                url,
+                message
+              }) => {
+                return (
+                  <TR
+                    key={participant && participant.user && participant.user.id}
+                  >
+                    <TD>{participant && participant.index}</TD>
+                    <TD>
+                      <UL>
+                        <li>
+                          n:{' '}
+                          {participant &&
+                            participant.user &&
+                            participant.user.username}
+                        </li>
+                        {userGoal ? <li>g: {userGoal}</li> : ''}
+                        <li>s: {`${userPost && userPost.length} times`} </li>
+                        <li>d: {`${dayCount} days`} </li>
+                        <li>c: {_.sum(counts)} </li>
+                      </UL>
+                    </TD>
+                    <TD>
+                      {updatedAt && updatedAt.fromNow()}
+                      <br />
+                      {url ? (
+                        <ReactTinyLink
+                          cardSize="small"
+                          showGraphic={true}
+                          maxLine={2}
+                          minLine={1}
+                          url={url}
+                        />
+                      ) : (
+                        <span>{message}</span>
+                      )}
+                    </TD>
+                  </TR>
+                )
+              }
+            )}
+          </Tbody>
+        </Table>
+        <Chat
+          party={party}
+          web3={web3}
+          onLoad={() => {
+            checkProgress()
+          }}
+        />
+      </TableList>
+    </>
+  )
 }
 
-export default SingleEventWrapper
+export default ActivityList

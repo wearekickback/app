@@ -133,7 +133,11 @@ class SingleEvent extends Component {
                           path={`/event/${address}/challenge`}
                           exact
                           render={() => (
-                            <ActivityList address={address} web3={web3} />
+                            <ActivityList
+                              address={address}
+                              web3={web3}
+                              party={party}
+                            />
                           )}
                         />
                       </TabContent>
