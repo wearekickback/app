@@ -194,7 +194,7 @@ class SingleEventWrapper extends Component {
                                     new Date(post.timestamp * 1000)
                                   )
                                   if (
-                                    !!moment().isBefore(startDay) &&
+                                    !moment().isBefore(startDay) &&
                                     postDate.isBefore(startDay)
                                   )
                                     return false
