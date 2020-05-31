@@ -1,6 +1,6 @@
 # Kickback Dapp
 
-- Dev version: https://kovan.kickback.events
+- Dev version: https://rinkeby.kickback.events
 - Live version: https://kickback.events
 
 ## Dev guide
@@ -120,7 +120,7 @@ yarn
 Generate `src/config/env.json`
 
 ```
-yarn setup --kovan
+yarn setup --rinkeby
 ```
 Start the development server
 
