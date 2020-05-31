@@ -342,7 +342,7 @@ class EventCTA extends Component {
   render() {
     let {
       // party: { ended, cancelled, participants, balance }
-      party: { address, ended, cancelled, participants }
+      party: { ended, cancelled, participants }
     } = this.props
     // const cleared =
     //   balance &&
