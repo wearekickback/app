@@ -368,15 +368,6 @@ class EventCTA extends Component {
             : this._renderEnded()
           : this._renderAdminCTA()}
 
-        {this.props.myParticipantEntry ? (
-          <Button>
-            <Link to={`/event/${address}/challenge`}>
-              Enter the challenge room
-            </Link>
-          </Button>
-        ) : (
-          ''
-        )}
         <MarkAttended>
           {`${getParticipantsMarkedAttended(participants)}/${
             participants.length
