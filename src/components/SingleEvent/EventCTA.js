@@ -226,12 +226,8 @@ class EventCTA extends Component {
             )
           }}
         >
-          {({
-            data: {
-              token: { name, symbol, decimals }
-            },
-            loading
-          }) => {
+          {({ data: { token }, loading }) => {
+            const decimals = token ? token.decimals : 18
             return (
               <>
                 <Approve

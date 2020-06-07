@@ -17,6 +17,7 @@ const Currency = ({ amount, tokenAddress, precision = 2 }) => {
       {({ data, loading, error }) => {
         if (error) return <div>Error getting token</div>
         if (!data) return <div>Error getting token, no data found</div>
+        if (!data.token) return <div>Error getting token, no token in data</div>
         if (loading) return <Loader />
         const {
           token: { symbol, decimals }
