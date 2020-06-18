@@ -30,6 +30,10 @@ const EventImage = styled('img')`
   margin-bottom: 20px;
 `
 
+const Reveal = styled('span')`
+  color: #ffc107;
+`
+
 const Organisers = styled('div')`
   display: flex;
   flex-direction: column;
@@ -202,7 +206,7 @@ const HostUsername = styled('span')`
 
 class EventInfo extends Component {
   render() {
-    const { party, address, className } = this.props
+    const { party, address, className, myParticipantEntry } = this.props
 
     const admins = extractUsersWithGivenEventRole(party, ROLE.EVENT_ADMIN)
 
@@ -212,6 +216,19 @@ class EventInfo extends Component {
       location: party.location,
       startTime: getUtcDateFromTimezone(party.start, party.timezone),
       endTime: getUtcDateFromTimezone(party.end, party.timezone)
+    }
+
+    let location
+    // TODO: Move the logic to server side
+    const secretLocation = party.location.match(/\[SECRET\](.*)/)
+    if (secretLocation) {
+      if (myParticipantEntry) {
+        location = secretLocation[1]
+      } else {
+        location = <Reveal>RSVP to reveal</Reveal>
+      }
+    } else {
+      location = party.location || 'TBD'
     }
 
     return (
@@ -235,7 +252,7 @@ class EventInfo extends Component {
         <H3>Event Details</H3>
         <Location>
           <PinIcon />
-          {party.location || '11 Macclesfield St, London W1D 5BW'}
+          {location}
         </Location>
         <TotalPot>
           <InfoGrid>
