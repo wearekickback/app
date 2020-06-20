@@ -15,6 +15,7 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { isAddress } from 'web3-utils'
 import { getPartyImageLarge } from '../../../utils/parties'
+import { GlobalConsumer } from '../../../GlobalState'
 
 import {
   getDayAndTimeFromDate,
@@ -472,207 +473,228 @@ class PartyForm extends Component {
     }
 
     return (
-      <PartyFormContainer>
-        <H2>Event Details</H2>
-        <PartyFormContent>
-          <InputWrapper>
-            <Label>Event Name</Label>
-            <TextInput
-              wide
-              value={name}
-              onChangeText={val => this.setState({ name: val })}
-              type="text"
-              placeholder="Name of the event"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <Label>Description</Label>
-            <TextArea
-              wide
-              value={description}
-              onChangeText={val => this.setState({ description: val })}
-              type="text"
-              placeholder="Description of the event"
-              rows="10"
-            >
-              {description}
-            </TextArea>
-          </InputWrapper>
-          <InputWrapper>
-            <Label>Location</Label>
-            <TextInput
-              wide
-              value={location}
-              onChangeText={val => this.setState({ location: val })}
-              type="text"
-              placeholder="Location of the event"
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <Label>Timezone</Label>
-            <TimezonePicker
-              value={timezone}
-              onChange={timezone => this.setState({ timezone })}
-              inputProps={{
-                placeholder: 'Select Timezone...',
-                name: 'timezone'
-              }}
-            />
-          </InputWrapper>
-          <DateTimeInput
-            label="Start Date"
-            day={startDay}
-            time={startTime}
-            setDay={startDay => this.setState({ startDay })}
-            setTime={startTime => this.setState({ startTime })}
-          />
-          <DateTimeInput
-            label="End Date"
-            day={endDay}
-            time={endTime}
-            setDay={endDay => this.setState({ endDay })}
-            setTime={endTime => this.setState({ endTime })}
-          />
-          <DateTimeInput
-            label="Arrive By Date"
-            day={arriveByDay}
-            time={arriveByTime}
-            setDay={arriveByDay => this.setState({ arriveByDay })}
-            setTime={arriveByTime => this.setState({ arriveByTime })}
-          />
-          <ImageInput image={headerImg} onDrop={this.uploadImage} />
-          <InputWrapper>
-            <Label>Visibility</Label>
-            <VisibilityDropdown
-              options={visibilityOptions}
-              onChange={option => this.setState({ status: option.value })}
-              value={visibilityOptions.find(
-                option => option.value === this.state.status
-              )}
-              placeholder="Select an option"
-            />
-          </InputWrapper>
-          {type === 'create' && (
-            <>
-              <TokenSelector
-                currencyType={currencyType}
-                tokenAddress={tokenAddress}
-                onChangeCurrencyType={currencyType =>
-                  this.setState({ currencyType, deposit: 0 })
-                }
-                onChangeAddress={tokenAddress =>
-                  this.setState({ tokenAddress })
-                }
-              />
-              <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
-                {({
-                  data: {
-                    token: { name, symbol, decimals }
-                  },
-                  loading
-                }) => {
-                  return (
-                    <DepositInput
-                      deposit={deposit}
-                      onChangeDeposit={deposit => this.setState({ deposit })}
-                      currencyType={currencyType}
-                      tokenAddress={tokenAddress}
-                      symbol={symbol}
-                      decimals={decimals}
-                      price={this.state.price}
-                    />
-                  )
-                }}
-              </SafeQuery>
+      <GlobalConsumer>
+        {({ networkState }) => (
+          <PartyFormContainer>
+            <H2>Event Details</H2>
+            <PartyFormContent>
               <InputWrapper>
-                <Label>Available spots</Label>
+                <Label>Event Name</Label>
                 <TextInput
-                  value={limitOfParticipants}
-                  onChangeText={val =>
-                    this.setState({ limitOfParticipants: val })
-                  }
+                  wide
+                  value={name}
+                  onChangeText={val => this.setState({ name: val })}
                   type="text"
-                  placeholder="number of participants"
+                  placeholder="Name of the event"
                 />
               </InputWrapper>
-            </>
-          )}
-        </PartyFormContent>
-
-        {children}
-
-        <Actions>
-          <SafeMutation
-            mutation={mutation}
-            resultKey="id"
-            variables={variables}
-          >
-            {mutate =>
-              type === 'create' ? (
-                <ChainMutation mutation={CREATE_PARTY} resultKey="create">
-                  {(createParty, result) => {
-                    const address = result.data
-                      ? extractNewPartyAddressFromTx(result.data)
-                      : null
-
-                    return (
-                      <>
-                        <SafeQuery
-                          query={TOKEN_DECIMALS_QUERY}
-                          variables={{ tokenAddress }}
-                        >
-                          {({
-                            data: {
-                              token: { decimals }
-                            },
-                            loading
-                          }) => {
-                            return (
-                              <ChainMutationButton
-                                analyticsId="Deploy Event Contract"
-                                result={result}
-                                type={address ? 'disabled' : ''}
-                                onClick={() => {
-                                  mutate().then(({ data: { id } }) => {
-                                    createParty({
-                                      variables: {
-                                        id,
-                                        deposit,
-                                        decimals,
-                                        limitOfParticipants,
-                                        coolingPeriod,
-                                        tokenAddress
-                                      }
-                                    })
-                                  })
-                                }}
-                                preContent={getButtonText(type)}
-                                postContent="Deployed!"
-                              />
-                            )
-                          }}
-                        </SafeQuery>
-                        {address ? (
-                          <p>
-                            Event deployed at {address}!{' '}
-                            <Link to={`/event/${address}`}>
-                              View event page
-                            </Link>
-                          </p>
-                        ) : null}
-                      </>
-                    )
+              <InputWrapper>
+                <Label>Description</Label>
+                <TextArea
+                  wide
+                  value={description}
+                  onChangeText={val => this.setState({ description: val })}
+                  type="text"
+                  placeholder="Description of the event"
+                  rows="10"
+                >
+                  {description}
+                </TextArea>
+              </InputWrapper>
+              <InputWrapper>
+                <Label>Location</Label>
+                <TextInput
+                  wide
+                  value={location}
+                  onChangeText={val => this.setState({ location: val })}
+                  type="text"
+                  placeholder="Location of the event"
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Label>Timezone</Label>
+                <TimezonePicker
+                  value={timezone}
+                  onChange={timezone => this.setState({ timezone })}
+                  inputProps={{
+                    placeholder: 'Select Timezone...',
+                    name: 'timezone'
                   }}
-                </ChainMutation>
-              ) : (
-                <Button onClick={mutate} analyticsId={type}>
-                  {getButtonText(type)}
-                </Button>
-              )
-            }
-          </SafeMutation>
-        </Actions>
-      </PartyFormContainer>
+                />
+              </InputWrapper>
+              <DateTimeInput
+                label="Start Date"
+                day={startDay}
+                time={startTime}
+                setDay={startDay => this.setState({ startDay })}
+                setTime={startTime => this.setState({ startTime })}
+              />
+              <DateTimeInput
+                label="End Date"
+                day={endDay}
+                time={endTime}
+                setDay={endDay => this.setState({ endDay })}
+                setTime={endTime => this.setState({ endTime })}
+              />
+              <DateTimeInput
+                label="Arrive By Date"
+                day={arriveByDay}
+                time={arriveByTime}
+                setDay={arriveByDay => this.setState({ arriveByDay })}
+                setTime={arriveByTime => this.setState({ arriveByTime })}
+              />
+              <ImageInput image={headerImg} onDrop={this.uploadImage} />
+              <InputWrapper>
+                <Label>Visibility</Label>
+                <VisibilityDropdown
+                  options={visibilityOptions}
+                  onChange={option => this.setState({ status: option.value })}
+                  value={visibilityOptions.find(
+                    option => option.value === this.state.status
+                  )}
+                  placeholder="Select an option"
+                />
+              </InputWrapper>
+              {type === 'create' && (
+                <>
+                  <TokenSelector
+                    currencyType={currencyType}
+                    tokenAddress={tokenAddress}
+                    onChangeCurrencyType={currencyType =>
+                      this.setState({ currencyType, deposit: 0 })
+                    }
+                    onChangeAddress={tokenAddress =>
+                      this.setState({ tokenAddress })
+                    }
+                  />
+                  <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
+                    {({
+                      data: {
+                        token: { name, symbol, decimals }
+                      },
+                      loading
+                    }) => {
+                      return (
+                        <DepositInput
+                          deposit={deposit}
+                          onChangeDeposit={deposit =>
+                            this.setState({ deposit })
+                          }
+                          currencyType={currencyType}
+                          tokenAddress={tokenAddress}
+                          symbol={symbol}
+                          decimals={decimals}
+                          price={this.state.price}
+                        />
+                      )
+                    }}
+                  </SafeQuery>
+                  <InputWrapper>
+                    <Label>Available spots</Label>
+                    <TextInput
+                      value={limitOfParticipants}
+                      onChangeText={val =>
+                        this.setState({ limitOfParticipants: val })
+                      }
+                      type="text"
+                      placeholder="number of participants"
+                    />
+                  </InputWrapper>
+                  {networkState.expectedNetworkName !== 'Mainnet' ? (
+                    <InputWrapper>
+                      <Label>Cooling Period</Label>
+                      <TextInput
+                        value={coolingPeriod}
+                        onChangeText={val =>
+                          this.setState({ coolingPeriod: val })
+                        }
+                        type="text"
+                        placeholder="cooling period"
+                      />
+                    </InputWrapper>
+                  ) : (
+                    ''
+                  )}
+                </>
+              )}
+            </PartyFormContent>
+
+            {children}
+
+            <Actions>
+              <SafeMutation
+                mutation={mutation}
+                resultKey="id"
+                variables={variables}
+              >
+                {mutate =>
+                  type === 'create' ? (
+                    <ChainMutation mutation={CREATE_PARTY} resultKey="create">
+                      {(createParty, result) => {
+                        const address = result.data
+                          ? extractNewPartyAddressFromTx(result.data)
+                          : null
+
+                        return (
+                          <>
+                            <SafeQuery
+                              query={TOKEN_DECIMALS_QUERY}
+                              variables={{ tokenAddress }}
+                            >
+                              {({
+                                data: {
+                                  token: { decimals }
+                                },
+                                loading
+                              }) => {
+                                return (
+                                  <ChainMutationButton
+                                    analyticsId="Deploy Event Contract"
+                                    result={result}
+                                    type={address ? 'disabled' : ''}
+                                    onClick={() => {
+                                      mutate().then(({ data: { id } }) => {
+                                        createParty({
+                                          variables: {
+                                            id,
+                                            deposit,
+                                            decimals,
+                                            limitOfParticipants,
+                                            coolingPeriod,
+                                            tokenAddress
+                                          }
+                                        })
+                                      })
+                                    }}
+                                    preContent={getButtonText(type)}
+                                    postContent="Deployed!"
+                                  />
+                                )
+                              }}
+                            </SafeQuery>
+                            {address ? (
+                              <p>
+                                Event deployed at {address}!{' '}
+                                <Link to={`/event/${address}`}>
+                                  View event page
+                                </Link>
+                              </p>
+                            ) : null}
+                          </>
+                        )
+                      }}
+                    </ChainMutation>
+                  ) : (
+                    <Button onClick={mutate} analyticsId={type}>
+                      {getButtonText(type)}
+                    </Button>
+                  )
+                }
+              </SafeMutation>
+            </Actions>
+          </PartyFormContainer>
+        )}
+      </GlobalConsumer>
     )
   }
 }

@@ -341,18 +341,9 @@ class EventCTA extends Component {
 
   render() {
     let {
-      // party: { ended, cancelled, participants, balance }
-      party: { ended, cancelled, participants }
+      party: { ended, cancelled, participants, balance }
     } = this.props
-    // const cleared =
-    //   balance &&
-    //   toEthVal(balance)
-    //     .toEth()
-    //     .toNumber() === 0 &&
-    //   ended
-    // ERC20 has no balance hence always 0
-    // TODO: Refactor balance function
-    const cleared = false
+    const cleared = parseInt(balance) === 0
     return (
       <EventCTAContainer>
         <RSVPContainer>

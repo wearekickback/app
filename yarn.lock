@@ -2782,22 +2782,13 @@
     web3-provider-engine "15.0.4"
     xhr2-cookies "1.1.0"
 
-"@wearekickback/contracts@^1.2.9":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.3.0.tgz#f5bb92c962818ed8e1bedd4d9068034d72c0ee94"
-  integrity sha512-hxMSpqUV5qVi6S2kjYlQBNBqk+OX7OB/LdVWaImaO8ylY6M+doQ73EmaIsg7HxvCz6ggSEA4A5xlva9fyXYwyg==
+"@wearekickback/contracts@npm:@wearekickback/contracts-integration@1.3.6":
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-integration/-/contracts-integration-1.3.6.tgz#fdeca502e0d35672c92af2ccd6ecd8344e542794"
+  integrity sha512-sxCQHKkZrqcuu/J7LYDSv1GR0DhFgSGuK55cch9lBLxKuAR0+mN2DUi9BbtTGLlXd0h+pK8E2rKoMBHBpctCcg==
   dependencies:
-    "@wearekickback/shared" "^1.14.0"
+    "@wearekickback/shared" "^1.14.1"
     openzeppelin-solidity "^2.3.0"
-
-"@wearekickback/shared@^1.14.0":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@wearekickback/shared/-/shared-1.14.0.tgz#97893086c6851904d1ba430679ee25f722a88dd6"
-  integrity sha512-8ahwhjDZEuOVQVJ4TYBAMM3O8OTNpEJyWA64xGJgDqNpit/Xdm+Wwad/zK/hGFhnh7TYAlSfd3iXyedRxmtWbw==
-  dependencies:
-    lodash.get "^4.4.2"
-    validator "^10.8.0"
-    web3-utils "^1.0.0-beta.36"
 
 "@wearekickback/shared@^1.14.1":
   version "1.14.1"
@@ -23001,10 +22992,10 @@ trough@^1.0.0:
   dependencies:
     glob "^7.1.2"
 
-truffle@^5.0.0-beta.0:
-  version "5.1.12"
-  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.12.tgz#7d41fe2205b223e5631fcbe5c7faa09899b6ca38"
-  integrity sha512-lw5NC3S4esGqKIbqKXWutOcOMz3G+2LCKvacnrwH/PNh/Wk0qPKia7daiLJqRdqjJkHPtAUpRf8b1aqrcot2Ww==
+truffle@^5.1.30:
+  version "5.1.31"
+  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.31.tgz#fbf1416a2855442189d124c03343b7f8523dadf2"
+  integrity sha512-T9CJ90qInf+/rFxSLdF/nhTZNUV8cZx70iO0EsqXWm6ibcC5/dzRDDfl6FC/xLndpnKZIhs4RJL0TEG7rLohJg==
   dependencies:
     app-module-path "^2.2.0"
     mocha "5.2.0"

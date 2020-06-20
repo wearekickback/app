@@ -300,6 +300,20 @@ const resolvers = {
         console.log(e)
         return null
       }
+    },
+    async clearAndSend(_, { address, num }) {
+      const web3 = await getWeb3()
+      const account = await getAccount()
+      const { methods: contract } = new web3.eth.Contract(abi, address)
+      try {
+        const tx = await txHelper(
+          contract.clearAndSend(num).send({ from: account })
+        )
+        return tx
+      } catch (e) {
+        console.log(e)
+        return null
+      }
     }
   }
 }
