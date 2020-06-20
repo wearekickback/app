@@ -58,6 +58,8 @@ export const PartyFields = gql`
     ended
     cancelled
     status
+    clearFee
+    withdrawn
     roles {
       role
       user {

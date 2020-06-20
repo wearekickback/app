@@ -343,7 +343,7 @@ class EventCTA extends Component {
     let {
       party: { ended, cancelled, participants, balance }
     } = this.props
-    const cleared = parseInt(balance) === 0
+    const cleared = ended && parseInt(balance) === 0
     return (
       <EventCTAContainer>
         <RSVPContainer>

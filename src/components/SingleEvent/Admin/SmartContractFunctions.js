@@ -24,29 +24,38 @@ const SendAndClear = function({ party }) {
   const coolingPeriod = parseInt(party.coolingPeriod)
   const endOfCoolingPeriod = moment(party.end).add(coolingPeriod, 's')
   const coolingPeriodEnded = endOfCoolingPeriod.isBefore(moment())
-
+  const clearFee = party.clearFee
   const notWithdrawn = party.participants.filter(p => p.status === 'SHOWED_UP')
     .length
-
+  const balance = parseInt(party.balance || 0) / Math.pow(10, 18)
   if (party.ended) {
     if (coolingPeriodEnded) {
-      return (
-        <>
+      if (notWithdrawn) {
+        return (
+          <Section>
+            <Label>Resend to the user</Label>
+            <p>
+              Resend all remaining funds ({balance}) to {notWithdrawn}{' '}
+              participants. <br /> Your gas cost is covered by taking clear fee
+              ({clearFee / 10} % of payout) from each participant.
+            </p>
+            <ClearAndSend address={party.address} num={notWithdrawn} />
+          </Section>
+        )
+      } else if (balance > 0) {
+        return (
           <Section>
             <Label>Clear</Label>
             <p>
-              Clear will return all remaining funds to the host. Participants
-              will no longer be able to withdraw.
+              Clear will return all remaining funds ({balance}) to the host.
+              Participants will no longer be able to withdraw.
             </p>
             <Clear address={party.address} />
           </Section>
-          <Section>
-            <Label>Resend to the user</Label>
-            <p>Resend all remaining funds to {notWithdrawn} participants.</p>
-            <ClearAndSend address={party.address} num={notWithdrawn} />
-          </Section>
-        </>
-      )
+        )
+      } else {
+        return 'No fund left in this contract'
+      }
     } else {
       return `Cooling period ends on ${endOfCoolingPeriod}`
     }
