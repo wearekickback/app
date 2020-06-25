@@ -151,6 +151,7 @@ class EventCTA extends Component {
         deposit,
         participants,
         tokenAddress,
+        ownerAddress,
         coolingPeriod,
         end,
         timezone,
@@ -193,7 +194,7 @@ class EventCTA extends Component {
           CTAButton = (
             <Contribute
               address={address}
-              addresses={[address]}
+              addresses={[ownerAddress]}
               percentage={this.state.percentage}
               myShare={myShare}
               tokenAddress={tokenAddress}

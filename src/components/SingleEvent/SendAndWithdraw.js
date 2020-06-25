@@ -15,7 +15,6 @@ const SendAndWithdrawButton = ({ address, addresses, values, className }) => (
     ]}
   >
     {(sendAndWithdrawPayout, result) => {
-      console.log({ sendAndWithdrawPayout, result, address, addresses, values })
       return (
         <ChainMutationButton
           analyticsId="Send and Withdraw Payout"
