@@ -230,7 +230,7 @@ class EventCTA extends Component {
         {won ? (
           <CTAInfo>
             <h3>
-              Congratulations, your won {myShare / delimiters} {symbol} !
+              You have payout of {myShare / delimiters} {symbol} !
             </h3>
             <p>
               You have a choice of either withdrawing all amount or contributing
