@@ -153,6 +153,7 @@ class EventCTA extends Component {
         tokenAddress,
         coolingPeriod,
         end,
+        timezone,
         clearFee
       }
     } = this.props
@@ -239,7 +240,8 @@ class EventCTA extends Component {
               {coolingPeriodEnded
                 ? `Now that cooling period is over, `
                 : `If you do not withdraw by the end of cooling period (${toPrettyDate(
-                    endOfCoolingPeriod.unix()
+                    endOfCoolingPeriod.unix(),
+                    timezone
                   )}), `}
               admins may automatically send back to you after substracting{' '}
               {clearFee / 10} % as clearing fee from your payout.
