@@ -169,8 +169,12 @@ class EventCTA extends Component {
     let CTAButton
     let won = false
     let CTAMessage = ''
-    const endOfCoolingPeriod = moment(end).add(parseInt(coolingPeriod), 's')
-    const coolingPeriodEnded = endOfCoolingPeriod.isBefore(moment())
+    const endOfCoolingPeriod = end
+      ? moment(end).add(parseInt(coolingPeriod), 's')
+      : null
+    const coolingPeriodEnded = endOfCoolingPeriod
+      ? endOfCoolingPeriod.isBefore(moment())
+      : false
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         CTAButton = <Status>You didn't show up :/</Status>
@@ -225,7 +229,7 @@ class EventCTA extends Component {
         {won ? (
           <CTAInfo>
             <h3>
-              Congratulations, you earned {myShare / delimiters} {symbol} !
+              Congratulations, your won {myShare / delimiters} {symbol} !
             </h3>
             <p>
               You have a choice of either withdrawing all amount or contributing
@@ -235,7 +239,7 @@ class EventCTA extends Component {
               {coolingPeriodEnded
                 ? `Now that cooling period is over, `
                 : `If you do not withdraw by the end of cooling period (${toPrettyDate(
-                    endOfCoolingPeriod
+                    endOfCoolingPeriod.unix()
                   )}), `}
               admins may automatically send back to you after substracting{' '}
               {clearFee / 10} % as clearing fee from your payout.
