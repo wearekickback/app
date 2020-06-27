@@ -27,7 +27,7 @@ class Create extends Component {
           return (
             <SafeQuery
               query={IS_WHITELISTED}
-              variables={{ address: userAddress }}
+              variables={{ address: userAddress || '' }}
             >
               {({ data: { isWhitelisted } }) => {
                 if (!isWhitelisted) {

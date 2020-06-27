@@ -87,7 +87,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
         return (
           <SafeQuery
             query={IS_WHITELISTED}
-            variables={{ address: userAddress }}
+            variables={{ address: userAddress || '' }}
           >
             {({ data: { isWhitelisted } }) => {
               return (
