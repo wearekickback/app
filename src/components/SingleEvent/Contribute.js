@@ -12,7 +12,7 @@ const Contribute = ({
   delimiters,
   addresses
 }) => {
-  const value = myShare * (percentage / 100)
+  const value = parseInt(myShare * (percentage / 100))
   const leftOver = myShare - value
   return (
     <>
