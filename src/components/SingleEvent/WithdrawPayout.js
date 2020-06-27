@@ -5,7 +5,7 @@ import { WITHDRAW_PAYOUT } from '../../graphql/mutations'
 
 import ChainMutation, { ChainMutationButton } from '../ChainMutation'
 
-const WithdrawPayoutButton = ({ address, amount, className }) => (
+const WithdrawPayoutButton = ({ address, className }) => (
   <ChainMutation
     mutation={WITHDRAW_PAYOUT}
     resultKey="withdrawPayout"
@@ -19,8 +19,6 @@ const WithdrawPayoutButton = ({ address, amount, className }) => (
         result={result}
         className={className}
         preContent={`Withdraw payout`}
-        // I need the number of decimals to correctly display an amount!
-        // preContent={`Withdraw payout - ${amount} ETH`}
       />
     )}
   </ChainMutation>
