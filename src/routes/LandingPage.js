@@ -19,7 +19,6 @@ const Hero = styled('section')`
   background: url(${backgroundDark});
   height: 600px;
   background-size: cover;
-  padding: 5px 20px;
   position: relative;
 
   ${mq.medium`
@@ -165,7 +164,7 @@ class Home extends Component {
     return (
       <>
         <Hero>
-          <Header noMargin={true} noBackground={true} positionAbsolute={true} />
+          <Header noMargin={true} noBackground={true} />
           <ContainerInner>
             <h2>Say hello to Kickback!</h2>
             <p>
