@@ -14,6 +14,12 @@ export const CHECK_IF_USERNAME_IS_AVAILABLE_QUERY = gql`
   }
 `
 
+export const IS_WHITELISTED = gql`
+  query isWhitelisted($address: String!) {
+    isWhitelisted: isWhitelisted(address: $address)
+  }
+`
+
 export const LEGAL_AGREEMENTS_QUERY = gql`
   query getLegalAgreements {
     legal: legalAgreements {
