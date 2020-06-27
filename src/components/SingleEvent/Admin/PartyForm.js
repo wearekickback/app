@@ -26,11 +26,7 @@ import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-import {
-  TOKEN_QUERY,
-  TOKEN_DECIMALS_QUERY,
-  TOKEN_SYMBOL_QUERY
-} from 'graphql/queries'
+import { TOKEN_QUERY, TOKEN_SYMBOL_QUERY } from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
@@ -175,7 +171,7 @@ const VisibilityDropdown = styled(Dropdown)`
 `
 
 const commitmentInUsd = ({ currencyType, symbol, price, deposit }) => {
-  if (currencyType !== 'ETH' || !price) return symbol
+  if (symbol !== 'ETH' || !price) return symbol
   const totalPrice = (deposit * price).toFixed(2)
   return `${symbol} ($${totalPrice})`
 }
@@ -557,17 +553,10 @@ class PartyForm extends Component {
               </InputWrapper>
               {type === 'create' && (
                 <>
-                  <TokenSelector
-                    currencyType={currencyType}
-                    tokenAddress={tokenAddress}
-                    onChangeCurrencyType={currencyType =>
-                      this.setState({ currencyType, deposit: 0 })
-                    }
-                    onChangeAddress={tokenAddress =>
-                      this.setState({ tokenAddress })
-                    }
-                  />
-                  <SafeQuery query={TOKEN_QUERY} variables={{ tokenAddress }}>
+                  <SafeQuery
+                    query={TOKEN_QUERY}
+                    variables={{ address: tokenAddress }}
+                  >
                     {({
                       data: {
                         token: { name, symbol, decimals }
@@ -575,17 +564,33 @@ class PartyForm extends Component {
                       loading
                     }) => {
                       return (
-                        <DepositInput
-                          deposit={deposit}
-                          onChangeDeposit={deposit =>
-                            this.setState({ deposit })
-                          }
-                          currencyType={currencyType}
-                          tokenAddress={tokenAddress}
-                          symbol={symbol}
-                          decimals={decimals}
-                          price={this.state.price}
-                        />
+                        <>
+                          {symbol === 'XDAI' ? (
+                            ''
+                          ) : (
+                            <TokenSelector
+                              currencyType={currencyType}
+                              tokenAddress={tokenAddress}
+                              onChangeCurrencyType={currencyType =>
+                                this.setState({ currencyType, deposit: 0 })
+                              }
+                              onChangeAddress={tokenAddress =>
+                                this.setState({ tokenAddress })
+                              }
+                            />
+                          )}
+                          <DepositInput
+                            deposit={deposit}
+                            onChangeDeposit={deposit =>
+                              this.setState({ deposit })
+                            }
+                            currencyType={currencyType}
+                            tokenAddress={tokenAddress}
+                            symbol={symbol}
+                            decimals={decimals}
+                            price={this.state.price}
+                          />
+                        </>
                       )
                     }}
                   </SafeQuery>
@@ -638,8 +643,8 @@ class PartyForm extends Component {
                         return (
                           <>
                             <SafeQuery
-                              query={TOKEN_DECIMALS_QUERY}
-                              variables={{ tokenAddress }}
+                              query={TOKEN_QUERY}
+                              variables={{ address: tokenAddress }}
                             >
                               {({
                                 data: {

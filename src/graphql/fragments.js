@@ -53,6 +53,8 @@ export const PartyFields = gql`
     balance
     deposit
     tokenAddress
+    symbol
+    decimals
     coolingPeriod
     participantLimit
     ended
