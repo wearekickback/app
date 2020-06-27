@@ -256,13 +256,9 @@ const resolvers = {
       }
     },
     async sendAndWithdrawPayout(_, { address, addresses, values }) {
-      console.log('***sendAndWithdrawPayout 1', { address, addresses, values })
       const web3 = await getWeb3()
       const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
-      console.log('***sendAndWithdrawPayout 2', address, addresses, values)
-      window.toEthVal = toEthVal
-      // [toEthVal(values[0]).toString(16)]
       try {
         const tx = await txHelper(
           contract.sendAndWithdraw(addresses, values).send({
