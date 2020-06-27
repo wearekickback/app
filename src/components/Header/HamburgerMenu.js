@@ -40,7 +40,7 @@ function HamburgerMenu({ isMenuOpen }) {
           return (
             <SafeQuery
               query={IS_WHITELISTED}
-              variables={{ address: userAddress }}
+              variables={{ address: userAddress || '' }}
             >
               {({ data: { isWhitelisted } }) => {
                 return (
