@@ -6,6 +6,8 @@ import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import SignInButton from './SignInButton'
 import TrackedLink from '../Links/TrackedLink'
+import SafeQuery from '../../components/SafeQuery'
+import { IS_WHITELISTED } from '../../graphql/queries'
 
 const HamburgerMenuContainer = styled('div')`
   display: flex;
@@ -27,7 +29,7 @@ function HamburgerMenu({ isMenuOpen }) {
     <HamburgerMenuContainer isMenuOpen={isMenuOpen}>
       <SignInButton />
       <GlobalConsumer>
-        {({ wallet, signIn, signOut, loggedIn, userProfile }) => {
+        {({ wallet, signIn, signOut, loggedIn, userProfile, userAddress }) => {
           if (!wallet) {
             return (
               <Button type="light" onClick={signIn} analyticsId="Sign In">
@@ -36,28 +38,44 @@ function HamburgerMenu({ isMenuOpen }) {
             )
           }
           return (
-            <>
-              {wallet.url && (
-                <TrackedLink
-                  to={wallet.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {wallet.name} Wallet
-                </TrackedLink>
-              )}
-              {loggedIn && userProfile && (
-                <Link to={`/user/${userProfile.username}`}>
-                  Kickback Profile
-                </Link>
-              )}
-              {wallet.type === 'sdk' && wallet.dashboard && (
-                <Link onClick={wallet.dashboard}>{wallet.name} Dashboard</Link>
-              )}
-              <Link to="#" onClick={signOut}>
-                Switch Wallet
-              </Link>
-            </>
+            <SafeQuery
+              query={IS_WHITELISTED}
+              variables={{ address: userAddress }}
+            >
+              {({ data: { isWhitelisted } }) => {
+                return (
+                  <>
+                    {wallet.url && (
+                      <TrackedLink
+                        to={wallet.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {wallet.name} Wallet
+                      </TrackedLink>
+                    )}
+                    {loggedIn && userProfile && (
+                      <Link to={`/user/${userProfile.username}`}>
+                        Kickback Profile
+                      </Link>
+                    )}
+                    {wallet.type === 'sdk' && wallet.dashboard && (
+                      <Link onClick={wallet.dashboard}>
+                        {wallet.name} Dashboard
+                      </Link>
+                    )}
+                    <Link to="#" onClick={signOut}>
+                      Switch Wallet
+                    </Link>
+                    {isWhitelisted ? (
+                      <Link to="/create">Create Event</Link>
+                    ) : (
+                      ''
+                    )}
+                  </>
+                )
+              }}
+            </SafeQuery>
           )
         }}
       </GlobalConsumer>

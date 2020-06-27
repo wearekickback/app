@@ -13,6 +13,8 @@ import SignInButton from '../components/Header/SignInButton'
 import Hamburger from '../components/Header/Hamburger'
 import HamburgerMenu from '../components/Header/HamburgerMenu'
 import { GlobalConsumer } from '../GlobalState'
+import SafeQuery from '../components/SafeQuery'
+import { IS_WHITELISTED } from '../graphql/queries'
 
 import Banner from './Banner'
 
@@ -81,36 +83,51 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
             days: RWdays ? parseInt(RWdays) : 30
           })
         }
-        return (
-          <>
-            <Banner />
-            <HeaderContainer
-              noMargin={noMargin}
-              noBackground={noBackground}
-              positionAbsolute={positionAbsolute}
-            >
-              <HeaderInner positionAbsolute={positionAbsolute}>
-                <Logo />
-                {isMinMedium && (
-                  <RightBar>
-                    <NavLink to="/events">Events</NavLink>
-                    <NavLink to="/pricing">Pricing</NavLink>
-                    <GuideDropdown />
-                    <WalletButton />
-                    <SignInButton />
-                  </RightBar>
-                )}
 
-                {isMaxMedium && (
-                  <Hamburger
-                    isMenuOpen={open}
-                    toggleOpen={() => setOpen(!open)}
-                  />
-                )}
-              </HeaderInner>
-              {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
-            </HeaderContainer>
-          </>
+        return (
+          <SafeQuery
+            query={IS_WHITELISTED}
+            variables={{ address: userAddress }}
+          >
+            {({ data: { isWhitelisted } }) => {
+              return (
+                <>
+                  <Banner />
+                  <HeaderContainer
+                    noMargin={noMargin}
+                    noBackground={noBackground}
+                    positionAbsolute={positionAbsolute}
+                  >
+                    <HeaderInner positionAbsolute={positionAbsolute}>
+                      <Logo />
+                      {isMinMedium && (
+                        <RightBar>
+                          {isWhitelisted ? (
+                            <NavLink to="/create">Create Event</NavLink>
+                          ) : (
+                            ''
+                          )}
+                          <NavLink to="/events">Events</NavLink>
+                          <NavLink to="/pricing">Pricing</NavLink>
+                          <GuideDropdown />
+                          <WalletButton />
+                          <SignInButton />
+                        </RightBar>
+                      )}
+
+                      {isMaxMedium && (
+                        <Hamburger
+                          isMenuOpen={open}
+                          toggleOpen={() => setOpen(!open)}
+                        />
+                      )}
+                    </HeaderInner>
+                    {isMaxMedium && <HamburgerMenu isMenuOpen={open} />}
+                  </HeaderContainer>
+                </>
+              )
+            }}
+          </SafeQuery>
         )
       }}
     </GlobalConsumer>
