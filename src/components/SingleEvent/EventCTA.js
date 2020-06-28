@@ -327,7 +327,7 @@ class EventCTA extends Component {
       <>
         <SafeQuery
           query={TOKEN_QUERY}
-          variables={{ tokenAddress }}
+          variables={{ address: tokenAddress }}
           renderError={err => {
             return (
               <WarningBox>
@@ -458,7 +458,7 @@ class EventCTA extends Component {
     return (
       <SafeQuery
         query={TOKEN_QUERY}
-        variables={{ tokenAddress }}
+        variables={{ address: tokenAddress }}
         // renderError={err => {
         //   return (
         //     <WarningBox>

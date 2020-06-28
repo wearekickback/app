@@ -89,8 +89,12 @@ export const REVERSE_RECORD_QUERY = gql`
 `
 
 export const TOKEN_QUERY = gql`
-  query getToken($tokenAddress: String!) {
-    token: getToken(tokenAddress: $tokenAddress) @client
+  query getToken($address: String!) {
+    token: getToken(address: $address) {
+      address
+      symbol
+      decimals
+    }
   }
 `
 
@@ -105,11 +109,6 @@ export const TOKEN_ALLOWANCE_QUERY = gql`
       tokenAddress: $tokenAddress
       partyAddress: $partyAddress
     ) @client
-  }
-`
-export const TOKEN_DECIMALS_QUERY = gql`
-  query getTokenDecimals($tokenAddress: String!) {
-    token: getTokenDecimals(tokenAddress: $tokenAddress) @client
   }
 `
 

@@ -35,9 +35,10 @@ const SendAndClear = function({ party }) {
           <Section>
             <Label>Resend to the user</Label>
             <p>
-              Resend all remaining funds ({balance}) to {notWithdrawn}{' '}
-              participants. <br /> Your gas cost is covered by taking clear fee
-              ({clearFee / 10} % of payout) from each participant.
+              Resend all remaining funds ({balance} {party.symbol}) to{' '}
+              {notWithdrawn} participants. <br /> Your gas cost is covered by
+              taking clear fee ({clearFee / 10} % of payout) from each
+              participant.
             </p>
             <ClearAndSend address={party.address} num={notWithdrawn} />
           </Section>
