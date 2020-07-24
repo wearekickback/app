@@ -74,6 +74,7 @@
     "deploy:kovan": "yarn build:release:kovan && yarn now -f --local-config .deploy/now.kovan.json --public && yarn now alias --local-config .deploy/now.kovan.json && yarn now rm kickback-app-kovan --safe --yes",
     "deploy:alpha": "yarn build:release:alpha && yarn now -f --local-config .deploy/now.alpha.json --public && yarn now alias --local-config .deploy/now.alpha.json && yarn now rm kickback-app-alpha --safe --yes",
     "deploy:live": "yarn build:release:live && yarn now -f --local-config .deploy/now.live.json --public && yarn now alias --local-config .deploy/now.live.json && yarn now rm kickback-app-live --safe --yes",
+    "deploy:xdai": "yarn build:release:xdai && yarn now -f --local-config .deploy/now.xdai.json --public && yarn now alias --local-config .deploy/now.xdai.json && yarn now rm kickback-app-xdai --safe --yes",
     "deploy:dev": "yarn deploy:rinkeby",
     "deploy:branch": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn deploy:live; elif [ \"$TRAVIS_BRANCH\" = \"dev\" ]; then yarn deploy:dev; fi'",
     "deploy:pr": "yarn build:release:rinkeby && scripts/deployTravisBuildToSurge.sh",
