@@ -58,6 +58,7 @@ export const PartyFields = gql`
     coolingPeriod
     participantLimit
     ended
+    finalizedAt
     cancelled
     status
     clearFee
@@ -85,6 +86,24 @@ export const ProfileFieldsDetailed = gql`
     }
     eventsHosted {
       ...PartyFields
+    }
+    eventsContributed {
+      amount
+      createdAt
+      username
+      name
+      partyAddress
+      decimals
+      symbol
+    }
+    eventsContributionReceived {
+      amount
+      createdAt
+      username
+      name
+      partyAddress
+      decimals
+      symbol
     }
   }
 `

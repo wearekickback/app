@@ -154,6 +154,7 @@ class EventCTA extends Component {
         ownerAddress,
         coolingPeriod,
         end,
+        finalizedAt,
         timezone,
         clearFee
       }
@@ -172,7 +173,7 @@ class EventCTA extends Component {
     let won = false
     let CTAMessage = ''
     const endOfCoolingPeriod = end
-      ? moment(end).add(parseInt(coolingPeriod), 's')
+      ? moment(finalizedAt).add(parseInt(coolingPeriod), 's')
       : null
     const coolingPeriodEnded = endOfCoolingPeriod
       ? endOfCoolingPeriod.isBefore(moment())
@@ -241,7 +242,7 @@ class EventCTA extends Component {
               {coolingPeriodEnded
                 ? `Now that cooling period is over, `
                 : `If you do not withdraw by the end of cooling period (${toPrettyDate(
-                    endOfCoolingPeriod.unix(),
+                    endOfCoolingPeriod.unix() * 1000,
                     timezone
                   )}), `}
               admins may automatically send back to you after substracting{' '}

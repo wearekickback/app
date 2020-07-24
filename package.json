@@ -6,7 +6,7 @@
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
     "@ensdomains/renewal-widget": "^0.1.9",
-    "@wearekickback/contracts": "npm:@wearekickback/contracts-integration@1.4.2",
+    "@wearekickback/contracts": "npm:@wearekickback/contracts-integration@1.4.4",
     "@wearekickback/shared": "^1.14.1",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",

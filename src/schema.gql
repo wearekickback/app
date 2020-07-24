@@ -17,6 +17,7 @@ type Party {
   cancelled: Boolean
   endedAt: Int #Date
   coolingPeriod: Int #Time in seconds
+  finalizedAt: Int #Date
   payoutAmount: Int #Big Number in wei
   encryption: String
   participants: [Participants] #Possibly want to paginate?

@@ -358,7 +358,7 @@ class PartyForm extends Component {
       headerImg = '',
       deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
-      limitOfParticipants = 20,
+      limitOfParticipants = 10,
       tokenAddress = EMPTY_ADDRESS,
       status = 'public'
     } = props
@@ -412,7 +412,7 @@ class PartyForm extends Component {
       })
       .finally(() => {
         if (!this.state.deposit) {
-          this.setState({ deposit: 0.02 })
+          this.setState({ deposit: 10 })
         }
       })
   }

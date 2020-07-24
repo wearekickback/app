@@ -261,9 +261,11 @@ const resolvers = {
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.sendAndWithdraw(addresses, values).send({
-            from: account
-          })
+          contract
+            .sendAndWithdraw(addresses, [toEthVal(values[0]).toString(16)])
+            .send({
+              from: account
+            })
         )
 
         return tx

@@ -8,6 +8,13 @@ import { EDIT_PROFILE } from '../../modals'
 import GlobalContext from '../../GlobalState'
 import Button from '../Forms/Button'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
+import { depositValue } from '../Utils/DepositValue'
+import { Link } from 'react-router-dom'
+const EventLink = styled(Link)``
+
+const ContributionList = styled('ul')`
+  list-style: none;
+`
 
 const UserProfileWrapper = styled('div')`
   display: flex;
@@ -130,6 +137,48 @@ export default function UserProfile({ profile: p }) {
           <EventType>
             <H3>Events Hosted ({p.eventsHosted.length})</H3>
             <EventList events={p.eventsHosted} />
+          </EventType>
+          <EventType>
+            <H3>Events Contributed ({p.eventsContributed.length})</H3>
+            <ContributionList>
+              {p.eventsContributed.map(t => {
+                return (
+                  <li>
+                    Contributed {depositValue(t.amount, t.decimals)} {t.symbol}{' '}
+                    to{' '}
+                    <EventLink to={`/event/${t.username}`}>
+                      {t.username}
+                    </EventLink>{' '}
+                    at{' '}
+                    <EventLink to={`/event/${t.partyAddress}`}>
+                      {t.name}
+                    </EventLink>
+                  </li>
+                )
+              })}
+            </ContributionList>
+          </EventType>
+          <EventType>
+            <H3>
+              Contribution received ({p.eventsContributionReceived.length})
+            </H3>
+            <ContributionList>
+              {p.eventsContributionReceived.map(t => {
+                return (
+                  <li>
+                    Received {depositValue(t.amount, t.decimals)} {t.symbol}{' '}
+                    from{' '}
+                    <EventLink to={`/event/${t.username}`}>
+                      {t.username}
+                    </EventLink>{' '}
+                    at{' '}
+                    <EventLink to={`/event/${t.partyAddress}`}>
+                      {t.name}
+                    </EventLink>
+                  </li>
+                )
+              })}
+            </ContributionList>
           </EventType>
         </Events>
       </UserProfileContainer>

@@ -2782,10 +2782,10 @@
     web3-provider-engine "15.0.4"
     xhr2-cookies "1.1.0"
 
-"@wearekickback/contracts@npm:@wearekickback/contracts-integration@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-integration/-/contracts-integration-1.4.2.tgz#7cc7883fd4242256d5bea6d39264fa5fe98680cc"
-  integrity sha512-WXoljoQ0ml/yrGJ//p0KTgw3qtQNEIg8rqMtfUZJE4DqS61PQ2q5r9dCH39OFi6+/4nt48IWgCM/BTjMFTPe3w==
+"@wearekickback/contracts@npm:@wearekickback/contracts-integration@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-integration/-/contracts-integration-1.4.4.tgz#ed3e7baeea86a8483c5bbdf9a00c6d61f94a87c4"
+  integrity sha512-+P3CrvWsDZAAee7nHlnW0+xJmGcOoNNOSjK3G57KypUGJR2hq7P3LOLt9nsemcO5u2f9AyhVMprBItukusv3Zw==
   dependencies:
     "@wearekickback/shared" "^1.14.1"
     openzeppelin-solidity "^2.3.0"
