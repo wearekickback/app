@@ -144,8 +144,8 @@ export default function UserProfile({ profile: p }) {
               {p.eventsContributed.map(t => {
                 return (
                   <li>
-                    Contributed {depositValue(t.amount, t.decimals)} {t.symbol}{' '}
-                    to{' '}
+                    Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
+                    {t.symbol} to{' '}
                     <EventLink to={`/event/${t.username}`}>
                       {t.username}
                     </EventLink>{' '}
@@ -166,7 +166,7 @@ export default function UserProfile({ profile: p }) {
               {p.eventsContributionReceived.map(t => {
                 return (
                   <li>
-                    Received {depositValue(t.amount, t.decimals)} {t.symbol}{' '}
+                    Received {depositValue(t.amount, t.decimals, 3)} {t.symbol}{' '}
                     from{' '}
                     <EventLink to={`/event/${t.username}`}>
                       {t.username}
