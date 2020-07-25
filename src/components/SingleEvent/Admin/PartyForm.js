@@ -37,6 +37,10 @@ import { H2 } from 'components/Typography/Basic'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
 
+const Warning = styled('div')`
+  color: red;
+`
+
 const PartyFormContainer = styled('div')`
   max-width: 768px;
 `
@@ -590,6 +594,10 @@ class PartyForm extends Component {
                             decimals={decimals}
                             price={this.state.price}
                           />
+                          <Warning>
+                            Please do not set more than 10 XDAI as this is in
+                            alpha and could have some bugs.
+                          </Warning>
                         </>
                       )
                     }}
