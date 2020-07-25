@@ -10,6 +10,7 @@ import SafeQuery from '../SafeQuery'
 import Contribute from './Contribute'
 import moment from 'moment'
 import { toPrettyDate } from '../../utils/dates'
+import { depositValue } from '../Utils/DepositValue'
 
 import { toBN } from 'web3-utils'
 
@@ -232,7 +233,8 @@ class EventCTA extends Component {
         {won ? (
           <CTAInfo>
             <h3>
-              You have payout of {myShare / delimiters} {symbol} !
+              You have payout of {depositValue(myShare, delimiters.length, 3)}{' '}
+              {symbol} !
             </h3>
             <p>
               You have a choice of either withdrawing all amount or contributing

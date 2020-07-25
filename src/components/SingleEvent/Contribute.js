@@ -1,6 +1,7 @@
 import React from 'react'
 import SendAndWithdraw from './SendAndWithdraw'
 import WithdrawAll from './EventCTA'
+import { depositValue } from '../Utils/DepositValue'
 
 const Contribute = ({
   address,
@@ -28,8 +29,9 @@ const Contribute = ({
       />
       <br></br>
       <p>
-        Total contribution: {value / delimiters} {currencySymbol} (and withdraw{' '}
-        {leftOver / delimiters} {currencySymbol})
+        Total contribution: {depositValue(value, delimiters.length, 3)}{' '}
+        {currencySymbol} (and withdraw{' '}
+        {depositValue(leftOver, delimiters.length, 3)} {currencySymbol})
       </p>
       <SendAndWithdraw
         address={address}
