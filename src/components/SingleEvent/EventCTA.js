@@ -157,7 +157,8 @@ class EventCTA extends Component {
         end,
         finalizedAt,
         timezone,
-        clearFee
+        clearFee,
+        roles
       }
     } = this.props
 
@@ -169,7 +170,9 @@ class EventCTA extends Component {
     const numWent = calculateNumAttended(participants)
     const delimiters = Math.pow(10, decimals)
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
-
+    // Put Cooper's address for now
+    const recipientAddress = '0x5b93ff82faaf241c15997ea3975419dddd8362c5'
+    // const recipientAddress = ownerAddress
     let CTAButton
     let won = false
     let CTAMessage = ''
@@ -196,7 +199,8 @@ class EventCTA extends Component {
           CTAButton = (
             <Contribute
               address={address}
-              addresses={[ownerAddress]}
+              addresses={[recipientAddress]}
+              roles={roles}
               percentage={this.state.percentage}
               myShare={myShare}
               tokenAddress={tokenAddress}
