@@ -131,3 +131,15 @@ export const POAP_USERS_SUBGRAPH_QUERY = gql`
     }
   }
 `
+
+export const GET_CONTRIBUTIONS_BY_PARTY = gql`
+  query getContributionsByParty($address: String!) {
+    getContributionsByParty(address: $address) {
+      senderAddress
+      recipientAddress
+      amount
+      createdAt
+      decimals
+    }
+  }
+`
