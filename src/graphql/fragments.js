@@ -90,7 +90,7 @@ export const ProfileFieldsDetailed = gql`
     eventsContributed {
       amount
       createdAt
-      username
+      recipientUsername
       name
       partyAddress
       decimals
@@ -99,7 +99,7 @@ export const ProfileFieldsDetailed = gql`
     eventsContributionReceived {
       amount
       createdAt
-      username
+      senderUsername
       name
       partyAddress
       decimals

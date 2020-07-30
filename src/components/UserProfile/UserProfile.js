@@ -146,8 +146,8 @@ export default function UserProfile({ profile: p }) {
                   <li>
                     Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
                     {t.symbol} to{' '}
-                    <EventLink to={`/user/${t.username}`}>
-                      {t.username}
+                    <EventLink to={`/user/${t.recipientUsername}`}>
+                      {t.recipientUsername}
                     </EventLink>{' '}
                     at{' '}
                     <EventLink to={`/event/${t.partyAddress}`}>
@@ -168,8 +168,8 @@ export default function UserProfile({ profile: p }) {
                   <li>
                     Received {depositValue(t.amount, t.decimals, 3)} {t.symbol}{' '}
                     from{' '}
-                    <EventLink to={`/user/${t.username}`}>
-                      {t.username}
+                    <EventLink to={`/user/${t.senderUsername}`}>
+                      {t.senderUsername}
                     </EventLink>{' '}
                     at{' '}
                     <EventLink to={`/event/${t.partyAddress}`}>
