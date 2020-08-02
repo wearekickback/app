@@ -259,7 +259,7 @@ const resolvers = {
       try {
         const tx = await txHelper(
           contract
-            .sendAndWithdraw(addresses, [toEthVal(values[0]).toString(16)])
+            .sendAndWithdraw(addresses, [toEthVal(values[0]).toFixed(0)])
             .send(option)
         )
 

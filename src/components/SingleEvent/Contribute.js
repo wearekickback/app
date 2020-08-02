@@ -25,8 +25,8 @@ const Contribute = ({
   addresses,
   roles
 }) => {
-  const value = parseInt(myShare * (percentage / 100))
-  const leftOver = myShare - value
+  const value = myShare.mul(percentage).div(100)
+  const leftOver = myShare.sub(value)
   const recipient = roles.filter(r => r.user.address === addresses[0])[0]
 
   return (
