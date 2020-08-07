@@ -64,6 +64,7 @@ export const PartyFields = gql`
     clearFee
     withdrawn
     ownerAddress
+    optional
     roles {
       role
       user {

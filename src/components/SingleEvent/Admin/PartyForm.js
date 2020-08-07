@@ -364,7 +364,9 @@ class PartyForm extends Component {
       coolingPeriod = `${60 * 60 * 24 * 7}`,
       limitOfParticipants = 10,
       tokenAddress = EMPTY_ADDRESS,
-      status = 'public'
+      status = 'public',
+      optional,
+      roles = []
     } = props
 
     const [startDay, startTime] = getDayAndTimeFromDate(start)
@@ -390,7 +392,9 @@ class PartyForm extends Component {
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false,
-      status
+      status,
+      optional,
+      roles
     }
   }
 
@@ -438,7 +442,9 @@ class PartyForm extends Component {
       tokenAddress,
       limitOfParticipants,
       coolingPeriod,
-      status
+      status,
+      roles,
+      optional
     } = this.state
 
     const {
@@ -463,7 +469,8 @@ class PartyForm extends Component {
         end,
         arriveBy,
         headerImg,
-        status
+        status,
+        optional
       },
       ...extraVariables
     }
@@ -472,6 +479,12 @@ class PartyForm extends Component {
       variables.address = address
     }
 
+    const contributionOptions = roles.map(r => {
+      return {
+        label: r.user.username,
+        value: r.user.address
+      }
+    })
     return (
       <GlobalConsumer>
         {({ networkState }) => (
@@ -555,6 +568,26 @@ class PartyForm extends Component {
                   placeholder="Select an option"
                 />
               </InputWrapper>
+              <InputWrapper>
+                <Label>Contribution</Label>
+                <p>
+                  At the end of the event, you can ask attendees to contribute
+                  part of payout
+                </p>
+                <VisibilityDropdown
+                  options={contributionOptions}
+                  onChange={option => {
+                    this.setState({ optional: { recepients: [option.value] } })
+                  }}
+                  value={contributionOptions.find(option => {
+                    let recepient =
+                      this.state.optional && this.state.optional.recepients[0]
+                    return option.value === recepient
+                  })}
+                  placeholder="Select an option"
+                />
+              </InputWrapper>
+
               {type === 'create' && (
                 <>
                   <SafeQuery

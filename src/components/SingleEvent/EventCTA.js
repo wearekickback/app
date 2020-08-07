@@ -103,7 +103,7 @@ const Choose = ({ changeMode }) => {
   )
 }
 
-const WithdrawOrBack = ({ changeMode, address, myShare }) => {
+const WithdrawOrBack = ({ changeMode, address, myShare, canGoBack }) => {
   return (
     <div>
       <WithdrawPayout address={address} amount={myShare} />
@@ -115,7 +115,7 @@ const WithdrawOrBack = ({ changeMode, address, myShare }) => {
         }}
       >
         {' '}
-        Or Go back
+        {canGoBack ? 'Or Go back' : ''}
       </a>
     </div>
   )
@@ -158,6 +158,7 @@ class EventCTA extends Component {
         finalizedAt,
         timezone,
         clearFee,
+        optional,
         roles
       }
     } = this.props
@@ -170,9 +171,7 @@ class EventCTA extends Component {
     const numWent = calculateNumAttended(participants)
     const delimiters = Math.pow(10, decimals)
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
-    // Put Cooper's address for now
-    const recipientAddress = '0x5b93ff82faaf241c15997ea3975419dddd8362c5'
-    // const recipientAddress = ownerAddress
+    const recipientAddresses = optional && optional.recepients
     let CTAButton
     let won = false
     let CTAMessage = ''
@@ -187,19 +186,24 @@ class EventCTA extends Component {
         CTAButton = <Status>You didn't show up :/</Status>
         break
       case PARTICIPANT_STATUS.SHOWED_UP:
-        if (this.state.mode === 'withdraw') {
+        if (
+          !recipientAddresses ||
+          recipientAddresses.length === 0 ||
+          this.state.mode === 'withdraw'
+        ) {
           CTAButton = (
             <WithdrawOrBack
               changeMode={this.changeMode}
               address={address}
               myShare={myShare}
+              canGoBack={recipientAddresses && recipientAddresses.length > 0}
             />
           )
         } else if (this.state.mode === 'contribute') {
           CTAButton = (
             <Contribute
               address={address}
-              addresses={[recipientAddress]}
+              addresses={recipientAddresses}
               roles={roles}
               percentage={this.state.percentage}
               myShare={myShare}
