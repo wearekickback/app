@@ -243,7 +243,7 @@ const resolvers = {
       const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(contract.withdraw(option).send(option))
+        const tx = await txHelper(contract.withdraw().send(option))
 
         return tx
       } catch (err) {
