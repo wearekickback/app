@@ -27,7 +27,9 @@ const Contribute = ({
 }) => {
   const value = myShare.mul(percentage).div(100)
   const leftOver = myShare.sub(value)
-  const recipient = roles.filter(r => r.user.address === addresses[0])[0]
+  const recipient = roles.filter(
+    r => r.user.address === addresses[0].address
+  )[0]
 
   return (
     <>
@@ -41,7 +43,7 @@ const Contribute = ({
         min="0"
         max="100"
       />
-      <br></br>
+      <br />
       <ContributionDetail>
         Total contribution: {depositValue(value, delimiters.length, 3)}{' '}
         {currencySymbol} (and withdraw{' '}
@@ -49,12 +51,12 @@ const Contribute = ({
         {recipient ? (
           <UserAvatar user={recipient.user} size={5} scale={5} />
         ) : (
-          `${addresses[0].slice(0, 5)}...`
+          `${recipient.user.address.slice(0, 5)}...`
         )}
       </ContributionDetail>
       <SendAndWithdraw
         address={address}
-        addresses={addresses}
+        addresses={addresses.map(a => a.address)}
         values={[value]}
       ></SendAndWithdraw>
       <a

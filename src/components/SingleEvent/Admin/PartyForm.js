@@ -577,11 +577,14 @@ class PartyForm extends Component {
                 <VisibilityDropdown
                   options={contributionOptions}
                   onChange={option => {
-                    this.setState({ optional: { recepients: [option.value] } })
+                    this.setState({
+                      optional: { recepients: [{ address: option.value }] }
+                    })
                   }}
                   value={contributionOptions.find(option => {
                     let recepient =
-                      this.state.optional && this.state.optional.recepients[0]
+                      this.state.optional &&
+                      this.state.optional.recepients[0].address
                     return option.value === recepient
                   })}
                   placeholder="Select an option"
