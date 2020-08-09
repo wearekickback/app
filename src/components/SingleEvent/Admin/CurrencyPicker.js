@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CurrencyPicker = ({ onChange, currencyType }) => {
+const CurrencyPicker = ({ onChange, currencyType, nativeCurrencyType }) => {
   const onChangeHandler = e => {
     currencyType = e.target.value
     onChange(currencyType)
@@ -13,25 +13,29 @@ const CurrencyPicker = ({ onChange, currencyType }) => {
   return (
     <>
       <label className="container">
-        ETH
+        {nativeCurrencyType}
         <input
           type="radio"
           onChange={onChangeHandler}
-          checked={isChecked('ETH')}
+          checked={isChecked(nativeCurrencyType)}
           name="radio"
-          value="ETH"
+          value={nativeCurrencyType}
         />
       </label>
-      <label className="container">
-        DAI
-        <input
-          type="radio"
-          onChange={onChangeHandler}
-          checked={isChecked('DAI')}
-          name="radio"
-          value="DAI"
-        />
-      </label>
+      {nativeCurrencyType === 'ETH' ? (
+        <label className="container">
+          DAI
+          <input
+            type="radio"
+            onChange={onChangeHandler}
+            checked={isChecked('DAI')}
+            name="radio"
+            value="DAI"
+          />
+        </label>
+      ) : (
+        ''
+      )}
       <label className="container">
         ERC20
         <input

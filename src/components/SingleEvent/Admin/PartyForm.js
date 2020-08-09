@@ -26,7 +26,11 @@ import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-import { TOKEN_QUERY, TOKEN_SYMBOL_QUERY } from 'graphql/queries'
+import {
+  TOKEN_QUERY,
+  TOKEN_CLIENT_QUERY,
+  TOKEN_SYMBOL_QUERY
+} from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
@@ -226,6 +230,7 @@ const ImageInput = ({ image, uploading, onDrop }) => {
 }
 
 const TokenSelector = ({
+  nativeCurrencyType,
   currencyType,
   tokenAddress,
   onChangeCurrencyType,
@@ -244,10 +249,11 @@ const TokenSelector = ({
             <InputWrapper>
               <Label>Currency</Label>
               <CurrencyPicker
+                nativeCurrencyType={nativeCurrencyType}
                 currencyType={currencyType}
                 onChange={newCurrencyType => {
                   let tokenAddress
-                  if (newCurrencyType === 'ETH') {
+                  if (newCurrencyType === nativeCurrencyType) {
                     tokenAddress = EMPTY_ADDRESS
                   } else if (newCurrencyType === 'DAI') {
                     tokenAddress = daiAddress
@@ -387,7 +393,7 @@ class PartyForm extends Component {
       headerImg,
       deposit,
       tokenAddress,
-      currencyType: 'ETH',
+      currencyType: null,
       price: null,
       coolingPeriod,
       limitOfParticipants,
@@ -595,46 +601,71 @@ class PartyForm extends Component {
                 <>
                   <SafeQuery
                     query={TOKEN_QUERY}
-                    variables={{ address: tokenAddress }}
+                    variables={{ address: EMPTY_ADDRESS }}
                   >
                     {({
                       data: {
-                        token: { name, symbol, decimals }
-                      },
-                      loading
+                        token: {
+                          symbol: nativeTokenSymbol,
+                          decimals: nativeTokenDecimals
+                        }
+                      }
                     }) => {
+                      if (!currencyType)
+                        this.setState({ currencyType: nativeTokenSymbol })
                       return (
-                        <>
-                          {symbol === 'XDAI' ? (
-                            ''
-                          ) : (
-                            <TokenSelector
-                              currencyType={currencyType}
-                              tokenAddress={tokenAddress}
-                              onChangeCurrencyType={currencyType =>
-                                this.setState({ currencyType, deposit: 0 })
-                              }
-                              onChangeAddress={tokenAddress =>
-                                this.setState({ tokenAddress })
-                              }
-                            />
-                          )}
-                          <DepositInput
-                            deposit={deposit}
-                            onChangeDeposit={deposit =>
-                              this.setState({ deposit })
-                            }
-                            currencyType={currencyType}
-                            tokenAddress={tokenAddress}
-                            symbol={symbol}
-                            decimals={decimals}
-                            price={this.state.price}
-                          />
-                          <Warning>
-                            Please do not set more than 10 XDAI as this is in
-                            alpha and could have some bugs.
-                          </Warning>
-                        </>
+                        <SafeQuery
+                          query={TOKEN_CLIENT_QUERY}
+                          variables={{ tokenAddress }}
+                        >
+                          {({
+                            data: {
+                              token: { name, symbol, decimals }
+                            },
+                            loading
+                          }) => {
+                            const currentTokenSymbol =
+                              symbol || nativeTokenSymbol
+                            const currentTokenDecimals =
+                              decimals || nativeTokenDecimals
+                            return (
+                              <>
+                                <TokenSelector
+                                  nativeCurrencyType={nativeTokenSymbol}
+                                  currencyType={currencyType}
+                                  tokenAddress={tokenAddress}
+                                  onChangeCurrencyType={currencyType =>
+                                    this.setState({ currencyType, deposit: 0 })
+                                  }
+                                  onChangeAddress={tokenAddress =>
+                                    this.setState({ tokenAddress })
+                                  }
+                                />
+                                <DepositInput
+                                  deposit={deposit}
+                                  onChangeDeposit={deposit =>
+                                    this.setState({ deposit })
+                                  }
+                                  currencyType={currencyType}
+                                  tokenAddress={tokenAddress}
+                                  symbol={currentTokenSymbol}
+                                  decimals={currentTokenDecimals}
+                                  price={this.state.price}
+                                />
+                                {currentTokenSymbol === 'DAI' ||
+                                currentTokenSymbol === 'XDAI' ? (
+                                  <Warning>
+                                    Please do not set more than 10{' '}
+                                    {currentTokenSymbol} as this is in alpha and
+                                    could have some bugs.
+                                  </Warning>
+                                ) : (
+                                  ''
+                                )}
+                              </>
+                            )
+                          }}
+                        </SafeQuery>
                       )
                     }}
                   </SafeQuery>
@@ -687,8 +718,8 @@ class PartyForm extends Component {
                         return (
                           <>
                             <SafeQuery
-                              query={TOKEN_QUERY}
-                              variables={{ address: tokenAddress }}
+                              query={TOKEN_CLIENT_QUERY}
+                              variables={{ tokenAddress }}
                             >
                               {({
                                 data: {
@@ -707,7 +738,7 @@ class PartyForm extends Component {
                                           variables: {
                                             id,
                                             deposit,
-                                            decimals,
+                                            decimals: decimals || 18,
                                             limitOfParticipants,
                                             coolingPeriod,
                                             tokenAddress

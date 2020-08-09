@@ -98,6 +98,12 @@ export const TOKEN_QUERY = gql`
   }
 `
 
+export const TOKEN_CLIENT_QUERY = gql`
+  query getClientToken($tokenAddress: String!) {
+    token: getClientToken(tokenAddress: $tokenAddress) @client
+  }
+`
+
 export const TOKEN_ALLOWANCE_QUERY = gql`
   query getTokenAllowance(
     $userAddress: String!
