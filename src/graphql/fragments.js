@@ -48,6 +48,7 @@ export const PartyFields = gql`
     start
     end
     arriveBy
+    createdAt
     location
     headerImg
     balance

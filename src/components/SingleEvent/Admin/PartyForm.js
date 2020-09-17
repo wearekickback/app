@@ -336,13 +336,30 @@ const DepositInput = ({
   )
 }
 
-const DateTimeInput = ({ label, day, time, setDay, setTime }) => {
+const DateTimeInput = ({
+  label,
+  day,
+  time,
+  setDay,
+  setTime,
+  before,
+  after
+}) => {
   return (
     <InputWrapper>
       <Label>{label}</Label>
       <DateContent>
         <DayPickerInputWrapper>
-          <DayPickerInput value={day} onDayChange={setDay} />
+          <DayPickerInput
+            value={day}
+            onDayChange={setDay}
+            dayPickerProps={{
+              disabledDays: [
+                { before: before.toDate() },
+                { after: after.toDate() }
+              ]
+            }}
+          />
         </DayPickerInputWrapper>
         <TimePicker
           showSecond={false}
@@ -465,12 +482,15 @@ class PartyForm extends Component {
       mutation,
       address,
       children,
+      createdAt,
       variables: extraVariables = {}
     } = this.props
 
     const start = getDateFromDayAndTime(startDay, startTime.valueOf())
     const end = getDateFromDayAndTime(endDay, endTime.valueOf())
     const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
+    const before = createdAt ? moment(createdAt) : moment()
+    const after = before.clone().add(1, 'month')
 
     const variables = {
       meta: {
@@ -552,6 +572,8 @@ class PartyForm extends Component {
                 label="Start Date"
                 day={startDay}
                 time={startTime}
+                before={before}
+                after={after}
                 setDay={startDay => this.setState({ startDay })}
                 setTime={startTime => this.setState({ startTime })}
               />
@@ -559,6 +581,8 @@ class PartyForm extends Component {
                 label="End Date"
                 day={endDay}
                 time={endTime}
+                before={before}
+                after={after.clone().add(1, 'month')}
                 setDay={endDay => this.setState({ endDay })}
                 setTime={endTime => this.setState({ endTime })}
               />
@@ -566,6 +590,8 @@ class PartyForm extends Component {
                 label="Arrive By Date"
                 day={arriveByDay}
                 time={arriveByTime}
+                before={before}
+                after={after}
                 setDay={arriveByDay => this.setState({ arriveByDay })}
                 setTime={arriveByTime => this.setState({ arriveByTime })}
               />
