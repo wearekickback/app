@@ -60,6 +60,13 @@ const TimezonePicker = styled(DefaultTimezonePicker)`
     border-radius: 6px;
     width: 300px;
   }
+  ul {
+    li {
+      button {
+        background: white;
+      }
+    }
+  }
 `
 
 const DayPickerInputWrapper = styled('div')`
