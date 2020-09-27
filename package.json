@@ -55,6 +55,7 @@
     "truffle": "^5.1.30",
     "use-interval": "^1.2.1",
     "uuid": "^3.3.2",
+    "vercel": "^20.1.0",
     "web3": "1.0.0-beta.36",
     "web3-utils": "^1.0.0-beta.36",
     "whatwg-fetch": "^3.0.0"
@@ -87,7 +88,7 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "now": "now --team wearekickback --token $NOW_TOKEN"
+    "now": "vercel --scope wearekickback"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.11",
