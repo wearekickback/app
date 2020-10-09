@@ -23,15 +23,20 @@ const EtherScanLink = ({ address, tx, children }) => (
           return tx
         }
       }
-
+      let host
       const prefix =
         '1' === expectedNetworkId ? '' : `${expectedNetworkName.toLowerCase()}.`
+      if (expectedNetworkId === '100') {
+        host = `https://blockscout.com/poa/xdai`
+      } else {
+        host = `https://${prefix}etherscan.io`
+      }
 
       let link
       if (address) {
-        link = `https://${prefix}etherscan.io/address/${address}`
+        link = `${host}/address/${address}`
       } else if (tx) {
-        link = `https://${prefix}etherscan.io/tx/${tx}`
+        link = `${host}/tx/${tx}`
       }
       return link ? (
         <Link target="_blank" href={link}>

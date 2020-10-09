@@ -26,7 +26,11 @@ import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
 
 import { SINGLE_UPLOAD } from 'graphql/mutations'
 import { CREATE_PARTY } from 'graphql/mutations'
-import { TOKEN_QUERY, TOKEN_SYMBOL_QUERY } from 'graphql/queries'
+import {
+  TOKEN_QUERY,
+  TOKEN_CLIENT_QUERY,
+  TOKEN_SYMBOL_QUERY
+} from 'graphql/queries'
 import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
 import SafeMutation from 'components/SafeMutation'
 import Button from 'components/Forms/Button'
@@ -36,6 +40,10 @@ import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
+
+const Warning = styled('div')`
+  color: red;
+`
 
 const PartyFormContainer = styled('div')`
   max-width: 768px;
@@ -51,6 +59,13 @@ const TimezonePicker = styled(DefaultTimezonePicker)`
   input[type='text'] {
     border-radius: 6px;
     width: 300px;
+  }
+  ul {
+    li {
+      button {
+        background: white;
+      }
+    }
   }
 `
 
@@ -222,6 +237,7 @@ const ImageInput = ({ image, uploading, onDrop }) => {
 }
 
 const TokenSelector = ({
+  nativeCurrencyType,
   currencyType,
   tokenAddress,
   onChangeCurrencyType,
@@ -240,10 +256,11 @@ const TokenSelector = ({
             <InputWrapper>
               <Label>Currency</Label>
               <CurrencyPicker
+                nativeCurrencyType={nativeCurrencyType}
                 currencyType={currencyType}
                 onChange={newCurrencyType => {
                   let tokenAddress
-                  if (newCurrencyType === 'ETH') {
+                  if (newCurrencyType === nativeCurrencyType) {
                     tokenAddress = EMPTY_ADDRESS
                   } else if (newCurrencyType === 'DAI') {
                     tokenAddress = daiAddress
@@ -319,13 +336,30 @@ const DepositInput = ({
   )
 }
 
-const DateTimeInput = ({ label, day, time, setDay, setTime }) => {
+const DateTimeInput = ({
+  label,
+  day,
+  time,
+  setDay,
+  setTime,
+  before,
+  after
+}) => {
   return (
     <InputWrapper>
       <Label>{label}</Label>
       <DateContent>
         <DayPickerInputWrapper>
-          <DayPickerInput value={day} onDayChange={setDay} />
+          <DayPickerInput
+            value={day}
+            onDayChange={setDay}
+            dayPickerProps={{
+              disabledDays: [
+                { before: before.toDate() },
+                { after: after.toDate() }
+              ]
+            }}
+          />
         </DayPickerInputWrapper>
         <TimePicker
           showSecond={false}
@@ -358,9 +392,11 @@ class PartyForm extends Component {
       headerImg = '',
       deposit = null,
       coolingPeriod = `${60 * 60 * 24 * 7}`,
-      limitOfParticipants = 20,
+      limitOfParticipants = 10,
       tokenAddress = EMPTY_ADDRESS,
-      status = 'public'
+      status = 'public',
+      optional,
+      roles = []
     } = props
 
     const [startDay, startTime] = getDayAndTimeFromDate(start)
@@ -381,12 +417,14 @@ class PartyForm extends Component {
       headerImg,
       deposit,
       tokenAddress,
-      currencyType: 'ETH',
+      currencyType: null,
       price: null,
       coolingPeriod,
       limitOfParticipants,
       imageUploading: false,
-      status
+      status,
+      optional,
+      roles
     }
   }
 
@@ -412,7 +450,7 @@ class PartyForm extends Component {
       })
       .finally(() => {
         if (!this.state.deposit) {
-          this.setState({ deposit: 0.02 })
+          this.setState({ deposit: 10 })
         }
       })
   }
@@ -434,7 +472,9 @@ class PartyForm extends Component {
       tokenAddress,
       limitOfParticipants,
       coolingPeriod,
-      status
+      status,
+      roles,
+      optional
     } = this.state
 
     const {
@@ -442,12 +482,15 @@ class PartyForm extends Component {
       mutation,
       address,
       children,
+      createdAt,
       variables: extraVariables = {}
     } = this.props
 
     const start = getDateFromDayAndTime(startDay, startTime.valueOf())
     const end = getDateFromDayAndTime(endDay, endTime.valueOf())
     const arriveBy = getDateFromDayAndTime(arriveByDay, arriveByTime.valueOf())
+    const before = createdAt ? moment(createdAt) : moment()
+    const after = before.clone().add(1, 'month')
 
     const variables = {
       meta: {
@@ -459,7 +502,8 @@ class PartyForm extends Component {
         end,
         arriveBy,
         headerImg,
-        status
+        status,
+        optional
       },
       ...extraVariables
     }
@@ -468,6 +512,12 @@ class PartyForm extends Component {
       variables.address = address
     }
 
+    const contributionOptions = roles.map(r => {
+      return {
+        label: r.user.username,
+        value: r.user.address
+      }
+    })
     return (
       <GlobalConsumer>
         {({ networkState }) => (
@@ -522,6 +572,8 @@ class PartyForm extends Component {
                 label="Start Date"
                 day={startDay}
                 time={startTime}
+                before={before}
+                after={after}
                 setDay={startDay => this.setState({ startDay })}
                 setTime={startTime => this.setState({ startTime })}
               />
@@ -529,6 +581,8 @@ class PartyForm extends Component {
                 label="End Date"
                 day={endDay}
                 time={endTime}
+                before={before}
+                after={after.clone().add(1, 'month')}
                 setDay={endDay => this.setState({ endDay })}
                 setTime={endTime => this.setState({ endTime })}
               />
@@ -536,6 +590,8 @@ class PartyForm extends Component {
                 label="Arrive By Date"
                 day={arriveByDay}
                 time={arriveByTime}
+                before={before}
+                after={after}
                 setDay={arriveByDay => this.setState({ arriveByDay })}
                 setTime={arriveByTime => this.setState({ arriveByTime })}
               />
@@ -551,46 +607,98 @@ class PartyForm extends Component {
                   placeholder="Select an option"
                 />
               </InputWrapper>
+              <InputWrapper>
+                <Label>Contribution</Label>
+                <p>
+                  At the end of the event, you can ask attendees to contribute
+                  part of payout
+                </p>
+                <VisibilityDropdown
+                  options={contributionOptions}
+                  onChange={option => {
+                    this.setState({
+                      optional: { recepients: [{ address: option.value }] }
+                    })
+                  }}
+                  value={contributionOptions.find(option => {
+                    let recepient =
+                      this.state.optional &&
+                      this.state.optional.recepients[0].address
+                    return option.value === recepient
+                  })}
+                  placeholder="Select an option"
+                />
+              </InputWrapper>
+
               {type === 'create' && (
                 <>
                   <SafeQuery
                     query={TOKEN_QUERY}
-                    variables={{ address: tokenAddress }}
+                    variables={{ address: EMPTY_ADDRESS }}
                   >
                     {({
                       data: {
-                        token: { name, symbol, decimals }
-                      },
-                      loading
+                        token: {
+                          symbol: nativeTokenSymbol,
+                          decimals: nativeTokenDecimals
+                        }
+                      }
                     }) => {
+                      if (!currencyType)
+                        this.setState({ currencyType: nativeTokenSymbol })
                       return (
-                        <>
-                          {symbol === 'XDAI' ? (
-                            ''
-                          ) : (
-                            <TokenSelector
-                              currencyType={currencyType}
-                              tokenAddress={tokenAddress}
-                              onChangeCurrencyType={currencyType =>
-                                this.setState({ currencyType, deposit: 0 })
-                              }
-                              onChangeAddress={tokenAddress =>
-                                this.setState({ tokenAddress })
-                              }
-                            />
-                          )}
-                          <DepositInput
-                            deposit={deposit}
-                            onChangeDeposit={deposit =>
-                              this.setState({ deposit })
-                            }
-                            currencyType={currencyType}
-                            tokenAddress={tokenAddress}
-                            symbol={symbol}
-                            decimals={decimals}
-                            price={this.state.price}
-                          />
-                        </>
+                        <SafeQuery
+                          query={TOKEN_CLIENT_QUERY}
+                          variables={{ tokenAddress }}
+                        >
+                          {({
+                            data: {
+                              token: { name, symbol, decimals }
+                            },
+                            loading
+                          }) => {
+                            const currentTokenSymbol =
+                              symbol || nativeTokenSymbol
+                            const currentTokenDecimals =
+                              decimals || nativeTokenDecimals
+                            return (
+                              <>
+                                <TokenSelector
+                                  nativeCurrencyType={nativeTokenSymbol}
+                                  currencyType={currencyType}
+                                  tokenAddress={tokenAddress}
+                                  onChangeCurrencyType={currencyType =>
+                                    this.setState({ currencyType, deposit: 0 })
+                                  }
+                                  onChangeAddress={tokenAddress =>
+                                    this.setState({ tokenAddress })
+                                  }
+                                />
+                                <DepositInput
+                                  deposit={deposit}
+                                  onChangeDeposit={deposit =>
+                                    this.setState({ deposit })
+                                  }
+                                  currencyType={currencyType}
+                                  tokenAddress={tokenAddress}
+                                  symbol={currentTokenSymbol}
+                                  decimals={currentTokenDecimals}
+                                  price={this.state.price}
+                                />
+                                {currentTokenSymbol === 'DAI' ||
+                                currentTokenSymbol === 'XDAI' ? (
+                                  <Warning>
+                                    Please do not set more than 10{' '}
+                                    {currentTokenSymbol} as this is in alpha and
+                                    could have some bugs.
+                                  </Warning>
+                                ) : (
+                                  ''
+                                )}
+                              </>
+                            )
+                          }}
+                        </SafeQuery>
                       )
                     }}
                   </SafeQuery>
@@ -643,8 +751,8 @@ class PartyForm extends Component {
                         return (
                           <>
                             <SafeQuery
-                              query={TOKEN_QUERY}
-                              variables={{ address: tokenAddress }}
+                              query={TOKEN_CLIENT_QUERY}
+                              variables={{ tokenAddress }}
                             >
                               {({
                                 data: {
@@ -663,7 +771,7 @@ class PartyForm extends Component {
                                           variables: {
                                             id,
                                             deposit,
-                                            decimals,
+                                            decimals: decimals || 18,
                                             limitOfParticipants,
                                             coolingPeriod,
                                             tokenAddress

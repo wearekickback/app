@@ -7,6 +7,8 @@ import DefaultEventFilters from './EventFilters'
 
 import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
+import { GET_CONTRIBUTIONS_BY_PARTY } from 'graphql/queries'
+import SafeQuery from '../SafeQuery'
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
@@ -53,36 +55,46 @@ const EventParticipants = props => {
   }
 
   return (
-    <Fragment>
-      <H3>
-        Participants <Spots>{spots}</Spots>
-      </H3>
-      <EventFilters
-        handleSearch={handleSearch}
-        handleFilterChange={setSelectedFilter}
-        amAdmin={amAdmin}
-        search={search}
-        enableQrCodeScanner={amAdmin}
-        ended={ended}
-      />
-      <EventParticipantsContainer>
-        {participants.length > 0 ? (
-          participants
-            .sort(sortParticipants)
-            .filter(filterParticipants(selectedFilter, search))
-            .map(participant => (
-              <Participant
-                amAdmin={amAdmin}
-                participant={participant}
-                party={party}
-                key={`${participant.address}${participant.index}`}
-              />
-            ))
-        ) : (
-          <NoParticipants>No one is attending.</NoParticipants>
-        )}
-      </EventParticipantsContainer>
-    </Fragment>
+    <SafeQuery
+      query={GET_CONTRIBUTIONS_BY_PARTY}
+      variables={{ address: party.address }}
+    >
+      {({ data, loading }) => {
+        return (
+          <Fragment>
+            <H3>
+              Participants <Spots>{spots}</Spots>
+            </H3>
+            <EventFilters
+              handleSearch={handleSearch}
+              handleFilterChange={setSelectedFilter}
+              amAdmin={amAdmin}
+              search={search}
+              enableQrCodeScanner={amAdmin}
+              ended={ended}
+            />
+            <EventParticipantsContainer>
+              {participants.length > 0 ? (
+                participants
+                  .sort(sortParticipants)
+                  .filter(filterParticipants(selectedFilter, search))
+                  .map(participant => (
+                    <Participant
+                      amAdmin={amAdmin}
+                      participant={participant}
+                      contributions={data && data.getContributionsByParty}
+                      party={party}
+                      key={`${participant.address}${participant.index}`}
+                    />
+                  ))
+              ) : (
+                <NoParticipants>No one is attending.</NoParticipants>
+              )}
+            </EventParticipantsContainer>
+          </Fragment>
+        )
+      }}
+    </SafeQuery>
   )
 }
 

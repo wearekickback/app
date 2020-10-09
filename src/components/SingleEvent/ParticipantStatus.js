@@ -3,6 +3,11 @@ import styled from '@emotion/styled'
 const Status = styled('div')`
   ${({ type }) => {
     switch (type) {
+      case 'contributed':
+        return `
+        color: #ffac32;
+        background-color: #FEF6EB;
+      `
       case 'won':
         return `
         color: #5cca94;

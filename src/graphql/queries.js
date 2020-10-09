@@ -98,6 +98,12 @@ export const TOKEN_QUERY = gql`
   }
 `
 
+export const TOKEN_CLIENT_QUERY = gql`
+  query getClientToken($tokenAddress: String!) {
+    token: getClientToken(tokenAddress: $tokenAddress) @client
+  }
+`
+
 export const TOKEN_ALLOWANCE_QUERY = gql`
   query getTokenAllowance(
     $userAddress: String!
@@ -128,6 +134,18 @@ export const POAP_USERS_SUBGRAPH_QUERY = gql`
           id
         }
       }
+    }
+  }
+`
+
+export const GET_CONTRIBUTIONS_BY_PARTY = gql`
+  query getContributionsByParty($address: String!) {
+    getContributionsByParty(address: $address) {
+      senderAddress
+      recipientAddress
+      amount
+      createdAt
+      decimals
     }
   }
 `

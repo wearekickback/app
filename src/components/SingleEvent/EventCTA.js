@@ -10,6 +10,7 @@ import SafeQuery from '../SafeQuery'
 import Contribute from './Contribute'
 import moment from 'moment'
 import { toPrettyDate } from '../../utils/dates'
+import { depositValue } from '../Utils/DepositValue'
 
 import { toBN } from 'web3-utils'
 
@@ -102,7 +103,7 @@ const Choose = ({ changeMode }) => {
   )
 }
 
-const WithdrawOrBack = ({ changeMode, address, myShare }) => {
+const WithdrawOrBack = ({ changeMode, address, myShare, canGoBack }) => {
   return (
     <div>
       <WithdrawPayout address={address} amount={myShare} />
@@ -114,7 +115,7 @@ const WithdrawOrBack = ({ changeMode, address, myShare }) => {
         }}
       >
         {' '}
-        Or Go back
+        {canGoBack ? 'Or Go back' : ''}
       </a>
     </div>
   )
@@ -154,8 +155,11 @@ class EventCTA extends Component {
         ownerAddress,
         coolingPeriod,
         end,
+        finalizedAt,
         timezone,
-        clearFee
+        clearFee,
+        optional,
+        roles
       }
     } = this.props
 
@@ -167,12 +171,12 @@ class EventCTA extends Component {
     const numWent = calculateNumAttended(participants)
     const delimiters = Math.pow(10, decimals)
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
-
+    const recipientAddresses = optional && optional.recepients
     let CTAButton
     let won = false
     let CTAMessage = ''
     const endOfCoolingPeriod = end
-      ? moment(end).add(parseInt(coolingPeriod), 's')
+      ? moment(finalizedAt).add(parseInt(coolingPeriod), 's')
       : null
     const coolingPeriodEnded = endOfCoolingPeriod
       ? endOfCoolingPeriod.isBefore(moment())
@@ -182,19 +186,25 @@ class EventCTA extends Component {
         CTAButton = <Status>You didn't show up :/</Status>
         break
       case PARTICIPANT_STATUS.SHOWED_UP:
-        if (this.state.mode === 'withdraw') {
+        if (
+          !recipientAddresses ||
+          recipientAddresses.length === 0 ||
+          this.state.mode === 'withdraw'
+        ) {
           CTAButton = (
             <WithdrawOrBack
               changeMode={this.changeMode}
               address={address}
               myShare={myShare}
+              canGoBack={recipientAddresses && recipientAddresses.length > 0}
             />
           )
         } else if (this.state.mode === 'contribute') {
           CTAButton = (
             <Contribute
               address={address}
-              addresses={[ownerAddress]}
+              addresses={recipientAddresses}
+              roles={roles}
               percentage={this.state.percentage}
               myShare={myShare}
               tokenAddress={tokenAddress}
@@ -231,7 +241,8 @@ class EventCTA extends Component {
         {won ? (
           <CTAInfo>
             <h3>
-              You have payout of {myShare / delimiters} {symbol} !
+              You have payout of {depositValue(myShare, delimiters.length, 3)}{' '}
+              {symbol} !
             </h3>
             <p>
               You have a choice of either withdrawing all amount or contributing
@@ -241,7 +252,7 @@ class EventCTA extends Component {
               {coolingPeriodEnded
                 ? `Now that cooling period is over, `
                 : `If you do not withdraw by the end of cooling period (${toPrettyDate(
-                    endOfCoolingPeriod.unix(),
+                    endOfCoolingPeriod.unix() * 1000,
                     timezone
                   )}), `}
               admins may automatically send back to you after substracting{' '}

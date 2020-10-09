@@ -14,6 +14,22 @@ export const defaults = {
   markedAttendedList: []
 }
 
+const getOption = async args => {
+  const web3 = await getWeb3Read()
+  const account = await getAccount()
+  const option = {
+    from: account
+  }
+  // TODO: Do this only for xDai.
+  if (true) {
+    option.gasPrice = 1000000000 // 1gwei
+  }
+  return {
+    ...option,
+    ...args
+  }
+}
+
 const resolvers = {
   Party: {
     description: party => party.description_text || null,
@@ -129,8 +145,7 @@ const resolvers = {
       let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
-      const account = await getAccount()
-
+      const option = await getOption({ gas: 3000000 })
       if (tokenAddress === '') {
         tokenAddress = EMPTY_ADDRESS
       }
@@ -151,10 +166,7 @@ const resolvers = {
               toEthVal(coolingPeriod).toString(16),
               tokenAddress
             )
-            .send({
-              gas: 3000000,
-              from: account
-            })
+            .send(option)
             .on('transactionHash', hash => {
               resolve(hash)
             })
@@ -173,14 +185,10 @@ const resolvers = {
       console.log(`Adding admins:\n${userAddresses.join('\n')}`)
 
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(
-          contract.grant(userAddresses).send({
-            from: account
-          })
-        )
+        const tx = await txHelper(contract.grant(userAddresses).send(option))
 
         return tx
       } catch (err) {
@@ -192,7 +200,6 @@ const resolvers = {
     async rsvp(_, { address }) {
       let tokenAddress
       const web3 = await getWeb3()
-      const account = await getAccount()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         tokenAddress = await contract.tokenAddress().call()
@@ -205,13 +212,9 @@ const resolvers = {
       } else {
         deposit = await contract.deposit().call()
       }
+      const option = await getOption({ value: deposit })
       try {
-        const tx = await txHelper(
-          contract.register().send({
-            from: account,
-            value: deposit
-          })
-        )
+        const tx = await txHelper(contract.register().send(option))
         return tx
       } catch (err) {
         console.error(err)
@@ -221,13 +224,11 @@ const resolvers = {
     },
     async finalize(_, { address, maps }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.finalize(maps.map(m => toBN(m).toString(10))).send({
-            from: account
-          })
+          contract.finalize(maps.map(m => toBN(m).toString(10))).send(option)
         )
 
         return tx
@@ -239,14 +240,10 @@ const resolvers = {
     },
     async withdrawPayout(_, { address }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(
-          contract.withdraw().send({
-            from: account
-          })
-        )
+        const tx = await txHelper(contract.withdraw().send(option))
 
         return tx
       } catch (err) {
@@ -257,13 +254,13 @@ const resolvers = {
     },
     async sendAndWithdrawPayout(_, { address, addresses, values }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.sendAndWithdraw(addresses, values).send({
-            from: account
-          })
+          contract
+            .sendAndWithdraw(addresses, [toEthVal(values[0]).toFixed(0)])
+            .send(option)
         )
 
         return tx
@@ -275,11 +272,11 @@ const resolvers = {
     },
     async setLimitOfParticipants(_, { address, limit }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
         const tx = await txHelper(
-          contract.setLimitOfParticipants(limit).send({ from: account })
+          contract.setLimitOfParticipants(limit).send(option)
         )
 
         return tx
@@ -290,14 +287,14 @@ const resolvers = {
     },
     async changeDeposit(_, { address, deposit }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       const depositInWei = toEthVal(deposit, 'eth')
         .toWei()
         .toString(16)
       try {
         const tx = await txHelper(
-          contract.changeDeposit(depositInWei).send({ from: account })
+          contract.changeDeposit(depositInWei).send(option)
         )
 
         return tx
@@ -308,10 +305,10 @@ const resolvers = {
     },
     async clear(_, { address }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(contract.clear().send({ from: account }))
+        const tx = await txHelper(contract.clear().send(option))
 
         return tx
       } catch (e) {
@@ -321,12 +318,10 @@ const resolvers = {
     },
     async clearAndSend(_, { address, num }) {
       const web3 = await getWeb3()
-      const account = await getAccount()
+      const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
       try {
-        const tx = await txHelper(
-          contract.clearAndSend(num).send({ from: account })
-        )
+        const tx = await txHelper(contract.clearAndSend(num).send(option))
         return tx
       } catch (e) {
         console.log(e)

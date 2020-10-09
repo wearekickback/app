@@ -28,3 +28,5 @@ tmp/*
 # IDE
 .idea
 .vscode
+
+.vercel
