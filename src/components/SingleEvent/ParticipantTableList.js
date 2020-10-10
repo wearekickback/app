@@ -212,7 +212,7 @@ class SingleEventWrapper extends Component {
   }
 
   render() {
-    const { search, selectedFilter, displayPrivateInfo } = this.state
+    const { search, selectedFilter } = this.state
     const { handleSearch, handleFilterChange } = this
     const { address } = this.props
 

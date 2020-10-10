@@ -152,7 +152,6 @@ class EventCTA extends Component {
         deposit,
         participants,
         tokenAddress,
-        ownerAddress,
         coolingPeriod,
         end,
         finalizedAt,

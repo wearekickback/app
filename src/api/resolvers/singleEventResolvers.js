@@ -15,7 +15,6 @@ export const defaults = {
 }
 
 const getOption = async args => {
-  const web3 = await getWeb3Read()
   const account = await getAccount()
   const option = {
     from: account

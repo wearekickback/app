@@ -27,7 +27,6 @@ const ClearAndSend = ({ address, num }) => {
 
             <Button
               analyticsId="Send Event Pot"
-              onClick={clearAndSend}
               onClick={() => {
                 console.log('***', { address, text })
                 clearAndSend({

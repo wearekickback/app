@@ -84,7 +84,9 @@ function Participant({ participant, party, amAdmin, decimals, contributions }) {
             attended ? (
               contribution ? (
                 <Status type="contributed">
-                  🎁Gave&nbsp;
+                  <span role="img" aria-label="sheep">
+                    🎁&nbsp;
+                  </span>
                   <Currency
                     amount={contribution.amount}
                     tokenAddress={party.tokenAddress}
