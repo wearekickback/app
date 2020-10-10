@@ -5,10 +5,6 @@ import DETAILEDERC20_ABI from '../abi/detailedERC20ABI'
 import DETAILEDERC20BYTES32_ABI from '../abi/detailedERC20bytes32ABI'
 import { txHelper, isEmptyAddress } from '../utils'
 export const defaults = {}
-// This is because some token uses string as symbol while others are bytes32
-// We need some workaround like https://ethereum.stackexchange.com/questions/58945/how-to-handle-both-string-and-bytes32-method-returns when supporting any ERC20
-
-let token
 
 const getTokenContract = (web3, address, abi) => {
   return new web3.eth.Contract(abi, address).methods
@@ -59,13 +55,12 @@ const resolvers = {
         )
       }
     },
-    async getToken(_, { tokenAddress }) {
-      if (token) return token
+    async getClientToken(_, { tokenAddress }) {
       if (isEmptyAddress(tokenAddress)) {
         return {
-          name: 'Ether',
-          symbol: 'ETH',
-          decimals: 18
+          name: null,
+          symbol: null,
+          decimals: null
         }
       } else if (
         tokenAddress === '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
@@ -99,7 +94,6 @@ const resolvers = {
             contract.symbol().call(),
             contract.decimals().call()
           ])
-
           // To fit in a bytes32 on the contract, token name and symbol
           // have been padded to length using null characters.
           // We then strip these characters using the regex `/\u0000/g`

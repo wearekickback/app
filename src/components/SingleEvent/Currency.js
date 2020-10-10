@@ -9,7 +9,7 @@ const Currency = ({ amount, tokenAddress, precision = 2 }) => {
   return (
     <SafeQuery
       query={TOKEN_QUERY}
-      variables={{ tokenAddress }}
+      variables={{ address: tokenAddress }}
       renderError={err => {
         return 'Token not found'
       }}

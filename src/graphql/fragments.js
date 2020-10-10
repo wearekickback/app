@@ -48,16 +48,24 @@ export const PartyFields = gql`
     start
     end
     arriveBy
+    createdAt
     location
     headerImg
     balance
     deposit
     tokenAddress
+    symbol
+    decimals
     coolingPeriod
     participantLimit
     ended
+    finalizedAt
     cancelled
     status
+    clearFee
+    withdrawn
+    ownerAddress
+    optional
     roles {
       role
       user {
@@ -80,6 +88,24 @@ export const ProfileFieldsDetailed = gql`
     }
     eventsHosted {
       ...PartyFields
+    }
+    eventsContributed {
+      amount
+      createdAt
+      recipientUsername
+      name
+      partyAddress
+      decimals
+      symbol
+    }
+    eventsContributionReceived {
+      amount
+      createdAt
+      senderUsername
+      name
+      partyAddress
+      decimals
+      symbol
     }
   }
 `

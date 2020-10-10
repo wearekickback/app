@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "name": "kickback-app-rinkeby",
-  "alias": "rinkeby.kickback.events",
+  "scope": "wearekickback",
   "builds": [
     { "src": "build/**", "use": "@now/static" },
     { "src": "api/**", "use": "@now/node" }

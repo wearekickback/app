@@ -3,10 +3,11 @@ import styled from '@emotion/styled'
 
 import Label from '../../Forms/Label'
 import Clear from './Clear'
+import ClearAndSend from './ClearAndSend'
 import Finalize from './Finalize'
 import SetLimit from './SetLimit'
-import ChangeDeposit from './ChangeDeposit'
 import AddAdmin from './AddAdmin'
+import moment from 'moment'
 
 const Section = styled('section')`
   margin-bottom: 40px;
@@ -19,7 +20,56 @@ const AdminIntro = styled('p')`
   color: #000;
 `
 
-export default function SmartContractFunctions({ party }) {
+const SendAndClear = function({ party }) {
+  const coolingPeriod = parseInt(party.coolingPeriod)
+  const endOfCoolingPeriod = moment(party.end).add(coolingPeriod, 's')
+  const coolingPeriodEnded = endOfCoolingPeriod.isBefore(moment())
+  const clearFee = party.clearFee
+  const notWithdrawn = party.participants.filter(p => p.status === 'SHOWED_UP')
+    .length
+  const balance = parseInt(party.balance || 0) / Math.pow(10, 18)
+  if (party.ended) {
+    if (coolingPeriodEnded) {
+      if (notWithdrawn) {
+        return (
+          <Section>
+            <Label>Resend to the user</Label>
+            <p>
+              Resend all remaining funds ({balance} {party.symbol}) to{' '}
+              {notWithdrawn} participants. <br /> Your gas cost is covered by
+              taking clear fee ({clearFee / 10} % of payout) from each
+              participant.
+            </p>
+            <ClearAndSend address={party.address} num={notWithdrawn} />
+          </Section>
+        )
+      } else if (balance > 0) {
+        return (
+          <Section>
+            <Label>Clear</Label>
+            <p>
+              Clear will return all remaining funds ({balance}) to the host.
+              Participants will no longer be able to withdraw.
+            </p>
+            <Clear address={party.address} />
+          </Section>
+        )
+      } else {
+        return 'No fund left in this contract'
+      }
+    } else {
+      return `Cooling period ends on ${endOfCoolingPeriod}`
+    }
+  } else {
+    return ''
+  }
+}
+
+export default function SmartContractFunctions({ party, isAdmin = true }) {
+  if (!isAdmin) {
+    return <SendAndClear party={party} />
+  }
+
   return (
     <>
       <AdminIntro>
@@ -40,14 +90,7 @@ export default function SmartContractFunctions({ party }) {
           </>
         )}
       </Section>
-      <Section>
-        <Label>Clear</Label>
-        <p>
-          Clear will return all remaining funds to the host. Participants will
-          no longer be able to withdraw.
-        </p>
-        <Clear address={party.address} />
-      </Section>
+      <SendAndClear party={party} />
       <Section>
         <Label>Set Limit</Label>
         <p>
@@ -58,18 +101,6 @@ export default function SmartContractFunctions({ party }) {
         <SetLimit
           address={party.address}
           currentLimit={party.participantLimit}
-        />
-      </Section>
-      <Section>
-        <Label>Change commitment</Label>
-        <p>
-          Change the commitment amount. You can do so until the first person
-          does RSVP (This will take at least 10 min to take effects).
-        </p>
-        <ChangeDeposit
-          address={party.address}
-          currentDeposit={party.deposit}
-          numParticipants={party.participants.length}
         />
       </Section>
       <Label>

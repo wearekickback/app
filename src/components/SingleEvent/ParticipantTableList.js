@@ -86,10 +86,10 @@ const DownloadButton = styled(Button)`
 
 const cells = [
   { label: 'Username', value: 'user.username' },
-  { label: 'Real Name', value: 'user.realName' },
-  { label: 'Address', value: 'user.address' },
-  { label: 'Email' },
-  { label: 'Twitter' }
+  { label: 'Twitter' },
+  { label: 'Real Name', value: 'user.realName', private: true },
+  { label: 'Address', value: 'user.address', private: true },
+  { label: 'Email', private: true }
 ]
 
 function getStatus(ended, attended, withdrawn) {
@@ -126,7 +126,7 @@ function getEmail(email) {
   }
 }
 
-function getTableCell(cell, i, participant) {
+function getTableCell(cell, i, participant, displayPrivateInfo) {
   const cells = {
     Email: <TD key={i}>{getEmail(participant.user.email)}</TD>,
     Twitter: <TD key={i}>{getSocialId(participant.user.social, 'twitter')}</TD>,
@@ -136,7 +136,7 @@ function getTableCell(cell, i, participant) {
       </TD>
     )
   }
-
+  if (cell.private && !displayPrivateInfo) return null
   if (cells[cell.label]) {
     return cells[cell.label]
   } else if (cell.hidden === true) {
@@ -149,7 +149,8 @@ function getTableCell(cell, i, participant) {
 class SingleEventWrapper extends Component {
   state = {
     search: '',
-    selectedFilter: null
+    selectedFilter: null,
+    displayPrivateInfo: false
   }
 
   handleSearch = value => {
@@ -295,7 +296,20 @@ class SingleEventWrapper extends Component {
                           enableQrCodeScanner={amAdmin}
                           ended={ended}
                         />
-
+                        <div>
+                          <label class="container">
+                            Show private info
+                            <input
+                              type="checkbox"
+                              onClick={e => {
+                                this.setState({
+                                  displayPrivateInfo: e.target.checked
+                                })
+                              }}
+                            />
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
                         <Table>
                           <Tbody>
                             <TR>
@@ -304,7 +318,9 @@ class SingleEventWrapper extends Component {
                               <TH>Status</TH>
                               {cells.map(
                                 cell =>
-                                  !cell.hidden && (
+                                  ((cell.private &&
+                                    this.state.displayPrivateInfo) ||
+                                    !cell.private) && (
                                     <TH key={cell.label}>{cell.label}</TH>
                                   )
                               )}
@@ -371,7 +387,12 @@ class SingleEventWrapper extends Component {
                                       {getStatus(ended, attended, withdrawn)}
                                     </TD>
                                     {cells.map((cell, i) =>
-                                      getTableCell(cell, i, participant)
+                                      getTableCell(
+                                        cell,
+                                        i,
+                                        participant,
+                                        this.state.displayPrivateInfo
+                                      )
                                     )}
                                     <TD>
                                       {participant.user.legal &&

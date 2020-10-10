@@ -16,7 +16,7 @@ import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from '../components/SafeQuery'
 import { IS_WHITELISTED } from '../graphql/queries'
 
-// import Banner from './Banner'
+import Banner from './Banner'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -92,7 +92,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
             {({ data: { isWhitelisted } }) => {
               return (
                 <>
-                  {/* <Banner /> */}
+                  <Banner />
                   <HeaderContainer
                     noMargin={noMargin}
                     noBackground={noBackground}
