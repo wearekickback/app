@@ -162,3 +162,11 @@ $ yarn run cypress:open
 ```
 
 Seed script must be re-run to test again.
+
+## Deploying to xdai env manually
+
+```
+vercel login
+vercel switch wearekickback
+vercel -f --local-config .deploy/now.xdai.json --public --prod
+```
