@@ -512,12 +512,18 @@ class PartyForm extends Component {
       variables.address = address
     }
 
-    const contributionOptions = roles.map(r => {
+    let contributionOptions = roles.map(r => {
       return {
         label: r.user.username,
         value: r.user.address
       }
     })
+    if (contributionOptions.length > 0) {
+      contributionOptions.push({
+        label: 'No contribution',
+        value: ''
+      })
+    }
     return (
       <GlobalConsumer>
         {({ networkState }) => (
@@ -611,23 +617,38 @@ class PartyForm extends Component {
                 <Label>Contribution</Label>
                 <p>
                   At the end of the event, you can ask attendees to contribute
-                  part of payout
+                  part of payout.
                 </p>
-                <VisibilityDropdown
-                  options={contributionOptions}
-                  onChange={option => {
-                    this.setState({
-                      optional: { recepients: [{ address: option.value }] }
-                    })
-                  }}
-                  value={contributionOptions.find(option => {
-                    let recepient =
-                      this.state.optional &&
-                      this.state.optional.recepients[0].address
-                    return option.value === recepient
-                  })}
-                  placeholder="Select an option"
-                />
+                {contributionOptions.length === 0 ? (
+                  <p>
+                    You can choose contribution address from the list of admins
+                    once this event is created
+                  </p>
+                ) : (
+                  <VisibilityDropdown
+                    options={contributionOptions}
+                    onChange={option => {
+                      let recepients
+                      if (option.label !== 'No contribution') {
+                        recepients = [{ address: option.value }]
+                      } else {
+                        recepients = null
+                      }
+                      this.setState({
+                        optional: { recepients }
+                      })
+                    }}
+                    value={contributionOptions.find(option => {
+                      let recepient =
+                        this.state.optional &&
+                        this.state.optional.recepients &&
+                        this.state.optional.recepients.length > 0 &&
+                        this.state.optional.recepients[0].address
+                      return option.value === recepient
+                    })}
+                    placeholder="Select an option"
+                  />
+                )}
               </InputWrapper>
 
               {type === 'create' && (
