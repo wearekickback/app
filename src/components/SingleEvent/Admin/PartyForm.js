@@ -617,7 +617,7 @@ class PartyForm extends Component {
                 <Label>Contribution</Label>
                 <p>
                   At the end of the event, you can ask attendees to contribute
-                  part of payout.
+                  part of payout (Kickback will be taking 5% fee).
                 </p>
                 {contributionOptions.length === 0 ? (
                   <p>

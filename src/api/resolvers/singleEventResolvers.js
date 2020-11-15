@@ -255,11 +255,10 @@ const resolvers = {
       const web3 = await getWeb3()
       const option = await getOption()
       const { methods: contract } = new web3.eth.Contract(abi, address)
+      const sendValues = values.map(v => toEthVal(v).toFixed(0))
       try {
         const tx = await txHelper(
-          contract
-            .sendAndWithdraw(addresses, [toEthVal(values[0]).toFixed(0)])
-            .send(option)
+          contract.sendAndWithdraw(addresses, sendValues).send(option)
         )
 
         return tx
