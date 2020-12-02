@@ -40,6 +40,7 @@ import Label from 'components/Forms/Label'
 import { H2 } from 'components/Typography/Basic'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
+import Deployer from './Deployer'
 
 const Warning = styled('div')`
   color: red;
@@ -253,6 +254,7 @@ const TokenSelector = ({
       }) => {
         return (
           <>
+            <Deployer />
             <InputWrapper>
               <Label>Currency</Label>
               <CurrencyPicker
