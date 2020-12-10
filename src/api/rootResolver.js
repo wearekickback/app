@@ -43,6 +43,9 @@ const resolvers = {
         __typename: 'PartyMeta'
       }))
     },
+    async getDeployer() {
+      return await getDeployerAddress()
+    },
     async events() {
       const deployerAddress = await getDeployerAddress()
       const events = await getEvents(deployerAddress, deployerAbi)

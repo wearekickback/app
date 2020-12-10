@@ -98,6 +98,24 @@ export const TOKEN_QUERY = gql`
   }
 `
 
+// export const DEPLOYER_QUERY = gql`
+//   query deployer {
+//     deployer: deployer() @client
+//   }
+// `
+
+// export const DEPLOYER_QUERY = gql`
+//   query deployer {
+//     deployer: getDeployer() @client
+//   }
+// `
+
+export const DEPLOYER_QUERY = gql`
+  query deployer {
+    deployer: getDeployer(symbol: $symbol) @client
+  }
+`
+
 export const TOKEN_CLIENT_QUERY = gql`
   query getClientToken($tokenAddress: String!) {
     token: getClientToken(tokenAddress: $tokenAddress) @client
