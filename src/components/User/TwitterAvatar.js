@@ -11,15 +11,16 @@ const Avatar = styled(DefaultAvatar)`
 `
 
 const TwitterAvatar = ({ className, user, size, scale }) => {
-  const avatarId = getSocialId(user.social, 'twitter')
+  // const avatarId = getSocialId(user.social, 'twitter')
   let avatarUrl
   let blockies
 
-  if (avatarId) {
-    avatarUrl = `https://twitter-avatar-virid.vercel.app/${avatarId}/`
-  } else {
-    blockies = user.address
-  }
+  // Disabled for now until https://github.com/siddharthkp/twitter-avatar/issues/7 fix is in place
+  // if (avatarId) {
+  //   avatarUrl = `https://twitter-avatar-virid.vercel.app/${avatarId}/`
+  // } else {
+  blockies = user.address
+  // }
 
   return (
     <Avatar
