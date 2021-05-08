@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import moment from 'moment'
-import Chat from './Chat'
 import { ReactTinyLink } from 'react-tiny-link'
 import _ from 'lodash'
 import {
@@ -275,13 +274,6 @@ class SingleEventWrapper extends Component {
                               })}
                           </Tbody>
                         </Table>
-                        <Chat
-                          party={party}
-                          web3={web3}
-                          onLoad={() => {
-                            checkProgress()
-                          }}
-                        />
                       </>
                     ) : (
                       <NoParticipants>No one is attending</NoParticipants>
