@@ -14,7 +14,7 @@
     "apollo-link-state": "^0.4.1",
     "apollo-upload-client": "^10.0.0",
     "apollo-utilities": "^1.0.21",
-    "bnc-onboard": "^1.11.0",
+    "bnc-onboard": "^1.25.0",
     "decimal.js": "^10.0.1",
     "es6-promisify": "^6.0.0",
     "ethereum-event-logs": "^1.0.2",
