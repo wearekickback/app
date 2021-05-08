@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
-import RenewalWidget from '@ensdomains/renewal-widget'
-import queryString from 'query-string'
 
 import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
 
@@ -68,22 +66,9 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
-  const { RWdays, RWuserAddress } = queryString.parse(window.location.search)
   return (
     <GlobalConsumer>
       {({ userAddress }) => {
-        if (RWuserAddress || userAddress) {
-          RenewalWidget({
-            userAddress: RWuserAddress || userAddress,
-            queryParams: {
-              utm_source: 'Kickback',
-              utm_medium: 'web',
-              utm_campaign: 'renewal'
-            },
-            days: RWdays ? parseInt(RWdays) : 30
-          })
-        }
-
         return (
           <SafeQuery
             query={IS_WHITELISTED}
