@@ -16,7 +16,7 @@ const TwitterAvatar = ({ className, user, size, scale }) => {
   let blockies
 
   if (avatarId) {
-    avatarUrl = `https://twitter-avatar-virid.vercel.app/${avatarId}/`
+    avatarUrl = `https://res.cloudinary.com/dlxrqqprn/image/twitter_name/w_60,h_60/${avatarId}`
   } else {
     blockies = user.address
   }

@@ -7,7 +7,7 @@ import DefaultEventFilters from './EventFilters'
 
 import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
-import { GET_CONTRIBUTIONS_BY_PARTY } from 'graphql/queries'
+import { GET_CONTRIBUTIONS_BY_PARTY } from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
 
 const EventParticipantsContainer = styled('div')`

@@ -21,23 +21,25 @@ import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
   getLocalTimezoneOffset
-} from 'utils/dates'
-import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from 'api/utils'
+} from '../../../utils/dates'
+import { extractNewPartyAddressFromTx, EMPTY_ADDRESS } from '../../../api/utils'
 
-import { SINGLE_UPLOAD } from 'graphql/mutations'
-import { CREATE_PARTY } from 'graphql/mutations'
+import { SINGLE_UPLOAD } from '../../../graphql/mutations'
+import { CREATE_PARTY } from '../../../graphql/mutations'
 import {
   TOKEN_QUERY,
   TOKEN_CLIENT_QUERY,
   TOKEN_SYMBOL_QUERY
-} from 'graphql/queries'
-import ChainMutation, { ChainMutationButton } from 'components/ChainMutation'
-import SafeMutation from 'components/SafeMutation'
-import Button from 'components/Forms/Button'
-import TextInput from 'components/Forms/TextInput'
-import TextArea from 'components/Forms/TextArea'
-import Label from 'components/Forms/Label'
-import { H2 } from 'components/Typography/Basic'
+} from '../../../graphql/queries'
+import ChainMutation, {
+  ChainMutationButton
+} from '../../../components/ChainMutation'
+import SafeMutation from '../../../components/SafeMutation'
+import Button from '../../../components/Forms/Button'
+import TextInput from '../../../components/Forms/TextInput'
+import TextArea from '../../../components/Forms/TextArea'
+import Label from '../../../components/Forms/Label'
+import { H2 } from '../../../components/Typography/Basic'
 import SafeQuery from '../../SafeQuery'
 import CurrencyPicker from './CurrencyPicker'
 import Deployer from './Deployer'
