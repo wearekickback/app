@@ -70,7 +70,7 @@ const EventParticipants = props => {
               handleFilterChange={setSelectedFilter}
               amAdmin={amAdmin}
               search={search}
-              enableQrCodeScanner={amAdmin}
+              // enableQrCodeScanner={amAdmin}
               ended={ended}
             />
             <EventParticipantsContainer>
