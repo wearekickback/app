@@ -49,6 +49,12 @@ const Approve = ({
                 &nbsp; but you only have{' '}
                 <Currency amount={balance} tokenAddress={tokenAddress} /> in
                 your wallet. Please top up your wallet and come back again.
+                <br />
+                To bridge from Ethereum mainnet, please use{' '}
+                <a href="https://dai-bridge.poa.network">the Mainnet bridge</a>.
+                <br />
+                If you have DAI on BSC or Matic/Polygon, please use{' '}
+                <a href="https://www.xpollinate.io">the Crosschain bridge</a>
               </p>
 
               {wallet && wallet.url && (
