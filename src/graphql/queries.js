@@ -168,9 +168,12 @@ export const GET_CONTRIBUTIONS_BY_PARTY = gql`
   }
 `
 export const GET_MAINNET_TOKEN_BALANCE = gql`
-  query getMainnetTokenBalance($userAddress: String!, $tokenAddress: String!) {
+  query getMainnetTokenBalance(
+    $userAddresses: [String]
+    $tokenAddress: String!
+  ) {
     getMainnetTokenBalance(
-      userAddress: $userAddress
+      userAddresses: $userAddresses
       tokenAddress: $tokenAddress
     ) @client
   }

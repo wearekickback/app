@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery } from 'react-apollo'
 import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
-import {
-  TOKEN_QUERY,
-  TOKEN_ALLOWANCE_QUERY,
-  GET_MAINNET_TOKEN_BALANCE
-} from '../../graphql/queries'
+import { TOKEN_QUERY, TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
 import SafeQuery from '../SafeQuery'
 import Contribute from './Contribute'
+import CheckWhitelist from './CheckWhitelist'
 import moment from 'moment'
 import { toPrettyDate } from '../../utils/dates'
 import { depositValue } from '../Utils/DepositValue'
@@ -90,6 +86,11 @@ const CTAButtonContainer = styled('div')`
   margin-top: 1em;
 `
 
+const GreenBox = styled('div')`
+  color: #5cca94;
+  margin: 5px;
+`
+
 const Choose = ({ changeMode }) => {
   return (
     <div>
@@ -124,17 +125,6 @@ const WithdrawOrBack = ({ changeMode, address, myShare, canGoBack }) => {
       </a>
     </div>
   )
-}
-
-const CheckWhitelist = function({ userAddress, tokenAddress, children }) {
-  const { loading, error, data } = useQuery(GET_MAINNET_TOKEN_BALANCE, {
-    variables: {
-      userAddress,
-      tokenAddress
-    }
-  })
-  if (loading) return 'loading'
-  return children(data)
 }
 
 class EventCTA extends Component {
@@ -301,14 +291,14 @@ class EventCTA extends Component {
       if (participants.length < participantLimit) {
         return (
           <CheckWhitelist
-            userAddress={userAddress}
+            userAddresses={[userAddress]}
             tokenAddress={event_whitelist.address}
           >
             {a => {
               let mainnetTokenBalance, hasMainnetToken
               if (a && a.getMainnetTokenBalance) {
                 mainnetTokenBalance =
-                  a.getMainnetTokenBalance.balance /
+                  a.getMainnetTokenBalance.balances[0] /
                   Math.pow(10, a.getMainnetTokenBalance.decimals)
                 hasMainnetToken =
                   mainnetTokenBalance > parseInt(event_whitelist.amount)
@@ -336,40 +326,54 @@ class EventCTA extends Component {
                 )
               } else {
                 return (
-                  <SafeQuery
-                    query={TOKEN_ALLOWANCE_QUERY}
-                    variables={{
-                      userAddress,
-                      tokenAddress,
-                      partyAddress: address
-                    }}
-                  >
-                    {({
-                      data: {
-                        tokenAllowance: { allowance, balance }
-                      },
-                      loading,
-                      refetch
-                    }) => {
-                      const decodedDeposit = parseInt(toBN(deposit).toString())
-                      const isAllowed = parseInt(allowance) >= decodedDeposit
-                      const hasBalance = parseInt(balance) >= decodedDeposit
-                      return this._renderActiveRsvp({
-                        myParticipantEntry,
-                        tokenAddress,
-                        address,
-                        deposit,
-                        decodedDeposit,
-                        participants,
-                        participantLimit,
-                        balance,
-                        isAllowed,
-                        hasBalance,
+                  <>
+                    {event_whitelist &&
+                      a &&
+                      a.getMainnetTokenBalance &&
+                      hasMainnetToken && (
+                        <GreenBox>
+                          You have {mainnetTokenBalance.toFixed(2)} $
+                          {a.getMainnetTokenBalance.symbol} tokens
+                        </GreenBox>
+                      )}
+
+                    <SafeQuery
+                      query={TOKEN_ALLOWANCE_QUERY}
+                      variables={{
                         userAddress,
+                        tokenAddress,
+                        partyAddress: address
+                      }}
+                    >
+                      {({
+                        data: {
+                          tokenAllowance: { allowance, balance }
+                        },
+                        loading,
                         refetch
-                      })
-                    }}
-                  </SafeQuery>
+                      }) => {
+                        const decodedDeposit = parseInt(
+                          toBN(deposit).toString()
+                        )
+                        const isAllowed = parseInt(allowance) >= decodedDeposit
+                        const hasBalance = parseInt(balance) >= decodedDeposit
+                        return this._renderActiveRsvp({
+                          myParticipantEntry,
+                          tokenAddress,
+                          address,
+                          deposit,
+                          decodedDeposit,
+                          participants,
+                          participantLimit,
+                          balance,
+                          isAllowed,
+                          hasBalance,
+                          userAddress,
+                          refetch
+                        })
+                      }}
+                    </SafeQuery>
+                  </>
                 )
               }
             }}
