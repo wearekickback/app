@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from 'react-apollo'
 import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, calculateNumAttended } from '@wearekickback/shared'
-import { TOKEN_QUERY, TOKEN_ALLOWANCE_QUERY } from '../../graphql/queries'
+import {
+  TOKEN_QUERY,
+  TOKEN_ALLOWANCE_QUERY,
+  GET_MAINNET_TOKEN_BALANCE
+} from '../../graphql/queries'
 import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
@@ -119,6 +124,17 @@ const WithdrawOrBack = ({ changeMode, address, myShare, canGoBack }) => {
       </a>
     </div>
   )
+}
+
+const CheckWhitelist = function({ userAddress, tokenAddress, children }) {
+  const { loading, error, data } = useQuery(GET_MAINNET_TOKEN_BALANCE, {
+    variables: {
+      userAddress,
+      tokenAddress
+    }
+  })
+  if (loading) return 'loading'
+  return children(data)
 }
 
 class EventCTA extends Component {
@@ -270,42 +286,94 @@ class EventCTA extends Component {
   _renderActiveRsvpWrapper() {
     const {
       myParticipantEntry,
-      party: { tokenAddress, address, deposit, participants, participantLimit },
+      party: {
+        tokenAddress,
+        address,
+        deposit,
+        participants,
+        participantLimit,
+        optional
+      },
       userAddress
     } = this.props
+    const event_whitelist = optional && optional.event_whitelist
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
         return (
-          <SafeQuery
-            query={TOKEN_ALLOWANCE_QUERY}
-            variables={{ userAddress, tokenAddress, partyAddress: address }}
+          <CheckWhitelist
+            userAddress={userAddress}
+            tokenAddress={event_whitelist.address}
           >
-            {({
-              data: {
-                tokenAllowance: { allowance, balance }
-              },
-              loading,
-              refetch
-            }) => {
-              const decodedDeposit = parseInt(toBN(deposit).toString())
-              const isAllowed = parseInt(allowance) >= decodedDeposit
-              const hasBalance = parseInt(balance) >= decodedDeposit
-              return this._renderActiveRsvp({
-                myParticipantEntry,
-                tokenAddress,
-                address,
-                deposit,
-                decodedDeposit,
-                participants,
-                participantLimit,
-                balance,
-                isAllowed,
-                hasBalance,
-                userAddress,
-                refetch
-              })
+            {a => {
+              let mainnetTokenBalance, hasMainnetToken
+              if (a && a.getMainnetTokenBalance) {
+                mainnetTokenBalance =
+                  a.getMainnetTokenBalance.balance /
+                  Math.pow(10, a.getMainnetTokenBalance.decimals)
+                hasMainnetToken =
+                  mainnetTokenBalance > parseInt(event_whitelist.amount)
+              }
+              if (
+                event_whitelist &&
+                a &&
+                a.getMainnetTokenBalance &&
+                !hasMainnetToken
+              ) {
+                return (
+                  <div styles={{ width: '100%' }}>
+                    <WarningBox>
+                      This event is for{' '}
+                      <a
+                        href={`https://app.uniswap.org/#/swap?outputCurrency=${event_whitelist.address}&use=V2`}
+                      >
+                        ${a.getMainnetTokenBalance.symbol}
+                      </a>{' '}
+                      token holder only. You need at least{' '}
+                      {event_whitelist.amount} $
+                      {a.getMainnetTokenBalance.symbol} on Ethereum Mainnet.
+                    </WarningBox>
+                  </div>
+                )
+              } else {
+                return (
+                  <SafeQuery
+                    query={TOKEN_ALLOWANCE_QUERY}
+                    variables={{
+                      userAddress,
+                      tokenAddress,
+                      partyAddress: address
+                    }}
+                  >
+                    {({
+                      data: {
+                        tokenAllowance: { allowance, balance }
+                      },
+                      loading,
+                      refetch
+                    }) => {
+                      const decodedDeposit = parseInt(toBN(deposit).toString())
+                      const isAllowed = parseInt(allowance) >= decodedDeposit
+                      const hasBalance = parseInt(balance) >= decodedDeposit
+                      return this._renderActiveRsvp({
+                        myParticipantEntry,
+                        tokenAddress,
+                        address,
+                        deposit,
+                        decodedDeposit,
+                        participants,
+                        participantLimit,
+                        balance,
+                        isAllowed,
+                        hasBalance,
+                        userAddress,
+                        refetch
+                      })
+                    }}
+                  </SafeQuery>
+                )
+              }
             }}
-          </SafeQuery>
+          </CheckWhitelist>
         )
       }
 

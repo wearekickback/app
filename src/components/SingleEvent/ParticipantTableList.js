@@ -293,7 +293,7 @@ class SingleEventWrapper extends Component {
                           handleFilterChange={handleFilterChange}
                           amAdmin={amAdmin}
                           search={search}
-                          enableQrCodeScanner={amAdmin}
+                          // enableQrCodeScanner={amAdmin}
                           ended={ended}
                         />
                         <div>

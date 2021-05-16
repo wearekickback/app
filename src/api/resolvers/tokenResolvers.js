@@ -1,4 +1,9 @@
-import getWeb3, { getAccount, getTokenBySymbol, getWeb3Read } from '../web3'
+import getWeb3, {
+  getAccount,
+  getTokenBySymbol,
+  getWeb3Read,
+  getWeb3ForNetwork
+} from '../web3'
 // import { Token } from '@wearekickback/contracts'
 
 import DETAILEDERC20_ABI from '../abi/detailedERC20ABI'
@@ -15,6 +20,18 @@ const resolvers = {
     async getTokenBySymbol(_, { symbol }) {
       const address = await getTokenBySymbol(symbol)
       return { address }
+    },
+    async getMainnetTokenBalance(_, { userAddress, tokenAddress }) {
+      const web3 = await getWeb3ForNetwork('1')
+      const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
+      const balance = await contract.balanceOf(userAddress).call()
+      const symbol = await contract.symbol().call()
+      const decimals = await contract.decimals().call()
+      return {
+        balance,
+        symbol,
+        decimals
+      }
     },
     async getTokenAllowance(_, { userAddress, tokenAddress, partyAddress }) {
       try {

@@ -16,6 +16,7 @@ import 'react-dropdown/style.css'
 import { isAddress } from 'web3-utils'
 import { getPartyImageLarge } from '../../../utils/parties'
 import { GlobalConsumer } from '../../../GlobalState'
+import _ from 'lodash'
 
 import {
   getDayAndTimeFromDate,
@@ -641,6 +642,9 @@ class PartyForm extends Component {
                       this.setState({
                         optional: { recepients }
                       })
+                      this.setState({
+                        optional: { ...optional, recepients }
+                      })
                     }}
                     value={contributionOptions.find(option => {
                       let recepient =
@@ -654,6 +658,46 @@ class PartyForm extends Component {
                   />
                 )}
               </InputWrapper>
+
+              {type !== 'create' && (
+                <InputWrapper>
+                  <Label>White listing</Label>
+                  <p>
+                    You can only allow certain token holders to be able to RSVP.
+                  </p>
+                  <TextInput
+                    onChangeText={text => {
+                      let newValue
+                      if (this.state.optional.event_whitelist) {
+                        newValue = _.cloneDeep(optional)
+                        newValue.event_whitelist.address = text
+                      } else {
+                        newValue = {
+                          ...optional,
+                          event_whitelist: { networkId: 1, address: text }
+                        }
+                      }
+                      this.setState({
+                        optional: newValue
+                      })
+                    }}
+                    value={this.state.optional.event_whitelist.address}
+                  />
+                  {this.state.optional.event_whitelist.address && (
+                    <TextInput
+                      onChangeText={text => {
+                        let newValue
+                        newValue = _.cloneDeep(optional)
+                        newValue.event_whitelist.amount = text
+                        this.setState({
+                          optional: newValue
+                        })
+                      }}
+                      value={this.state.optional.event_whitelist.amount}
+                    />
+                  )}
+                </InputWrapper>
+              )}
 
               {type === 'create' && (
                 <>
