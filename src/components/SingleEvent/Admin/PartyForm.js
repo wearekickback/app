@@ -529,6 +529,14 @@ class PartyForm extends Component {
         value: ''
       })
     }
+    let eventWhitelist
+    if (
+      this.state.optional &&
+      this.state.optional.event_whitelist &&
+      this.state.optional.event_whitelist
+    ) {
+      eventWhitelist = this.state.optional.event_whitelist
+    }
     return (
       <GlobalConsumer>
         {({ networkState }) => (
@@ -668,7 +676,7 @@ class PartyForm extends Component {
                   <TextInput
                     onChangeText={text => {
                       let newValue
-                      if (this.state.optional.event_whitelist) {
+                      if (eventWhitelist) {
                         newValue = _.cloneDeep(optional)
                         newValue.event_whitelist.address = text
                       } else {
@@ -681,9 +689,9 @@ class PartyForm extends Component {
                         optional: newValue
                       })
                     }}
-                    value={this.state.optional.event_whitelist.address}
+                    value={eventWhitelist && eventWhitelist.address}
                   />
-                  {this.state.optional.event_whitelist.address && (
+                  {eventWhitelist && eventWhitelist.address && (
                     <TextInput
                       onChangeText={text => {
                         let newValue
@@ -693,7 +701,7 @@ class PartyForm extends Component {
                           optional: newValue
                         })
                       }}
-                      value={this.state.optional.event_whitelist.amount}
+                      value={eventWhitelist && eventWhitelist.amount}
                     />
                   )}
                 </InputWrapper>

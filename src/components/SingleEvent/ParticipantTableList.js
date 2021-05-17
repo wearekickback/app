@@ -259,8 +259,13 @@ class SingleEventWrapper extends Component {
                 preCalculatedProps.amAdmin = amAdmin(party, userAddress)
                 const lastParticipant = participants[participants.length - 1]
 
-                if (optional && optional.event_whitelist) {
+                if (
+                  optional &&
+                  optional.event_whitelist &&
+                  !!optional.event_whitelist.address
+                ) {
                   console.log({ optional })
+
                   return (
                     <CheckWhitelist
                       userAddresses={participants.map(p => p.user.address)}

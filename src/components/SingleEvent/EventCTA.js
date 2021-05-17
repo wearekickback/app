@@ -289,96 +289,138 @@ class EventCTA extends Component {
     const event_whitelist = optional && optional.event_whitelist
     if (!myParticipantEntry) {
       if (participants.length < participantLimit) {
-        return (
-          <CheckWhitelist
-            userAddresses={[userAddress]}
-            tokenAddress={event_whitelist.address}
-          >
-            {a => {
-              let mainnetTokenBalance, hasMainnetToken
-              if (a && a.getMainnetTokenBalance) {
-                mainnetTokenBalance =
-                  a.getMainnetTokenBalance.balances[0] /
-                  Math.pow(10, a.getMainnetTokenBalance.decimals)
-                hasMainnetToken =
-                  mainnetTokenBalance > parseInt(event_whitelist.amount)
-              }
-              if (
-                event_whitelist &&
-                a &&
-                a.getMainnetTokenBalance &&
-                !hasMainnetToken
-              ) {
-                return (
-                  <div styles={{ width: '100%' }}>
-                    <WarningBox>
-                      This event is for{' '}
-                      <a
-                        href={`https://app.uniswap.org/#/swap?outputCurrency=${event_whitelist.address}&use=V2`}
-                      >
-                        ${a.getMainnetTokenBalance.symbol}
-                      </a>{' '}
-                      token holder only. You need at least{' '}
-                      {event_whitelist.amount} $
-                      {a.getMainnetTokenBalance.symbol} on Ethereum Mainnet.
-                    </WarningBox>
-                  </div>
-                )
-              } else {
-                return (
-                  <>
-                    {event_whitelist &&
-                      a &&
-                      a.getMainnetTokenBalance &&
-                      hasMainnetToken && (
-                        <GreenBox>
-                          You have {mainnetTokenBalance.toFixed(2)} $
-                          {a.getMainnetTokenBalance.symbol} tokens
-                        </GreenBox>
-                      )}
+        if (event_whitelist) {
+          return (
+            <CheckWhitelist
+              userAddresses={[userAddress]}
+              tokenAddress={event_whitelist.address}
+            >
+              {a => {
+                let mainnetTokenBalance, hasMainnetToken
+                if (a && a.getMainnetTokenBalance) {
+                  mainnetTokenBalance =
+                    a.getMainnetTokenBalance.balances[0] /
+                    Math.pow(10, a.getMainnetTokenBalance.decimals)
+                  hasMainnetToken =
+                    mainnetTokenBalance >= parseInt(event_whitelist.amount)
+                }
+                if (
+                  event_whitelist &&
+                  event_whitelist.address &&
+                  a &&
+                  a.getMainnetTokenBalance &&
+                  !hasMainnetToken
+                ) {
+                  return (
+                    <div styles={{ width: '100%' }}>
+                      <WarningBox>
+                        This event is for{' '}
+                        <a
+                          href={`https://app.uniswap.org/#/swap?outputCurrency=${event_whitelist &&
+                            event_whitelist.address}&use=V2`}
+                        >
+                          ${a.getMainnetTokenBalance.symbol}
+                        </a>{' '}
+                        token holder only. You need at least{' '}
+                        {event_whitelist.amount} $
+                        {a.getMainnetTokenBalance.symbol} on Ethereum Mainnet.
+                      </WarningBox>
+                    </div>
+                  )
+                } else {
+                  return (
+                    <>
+                      {event_whitelist &&
+                        a &&
+                        a.getMainnetTokenBalance &&
+                        hasMainnetToken && (
+                          <GreenBox>
+                            You have {mainnetTokenBalance.toFixed(2)} $
+                            {a.getMainnetTokenBalance.symbol} tokens
+                          </GreenBox>
+                        )}
 
-                    <SafeQuery
-                      query={TOKEN_ALLOWANCE_QUERY}
-                      variables={{
-                        userAddress,
-                        tokenAddress,
-                        partyAddress: address
-                      }}
-                    >
-                      {({
-                        data: {
-                          tokenAllowance: { allowance, balance }
-                        },
-                        loading,
-                        refetch
-                      }) => {
-                        const decodedDeposit = parseInt(
-                          toBN(deposit).toString()
-                        )
-                        const isAllowed = parseInt(allowance) >= decodedDeposit
-                        const hasBalance = parseInt(balance) >= decodedDeposit
-                        return this._renderActiveRsvp({
-                          myParticipantEntry,
-                          tokenAddress,
-                          address,
-                          deposit,
-                          decodedDeposit,
-                          participants,
-                          participantLimit,
-                          balance,
-                          isAllowed,
-                          hasBalance,
+                      <SafeQuery
+                        query={TOKEN_ALLOWANCE_QUERY}
+                        variables={{
                           userAddress,
+                          tokenAddress,
+                          partyAddress: address
+                        }}
+                      >
+                        {({
+                          data: {
+                            tokenAllowance: { allowance, balance }
+                          },
+                          loading,
                           refetch
-                        })
-                      }}
-                    </SafeQuery>
-                  </>
-                )
-              }
-            }}
-          </CheckWhitelist>
-        )
+                        }) => {
+                          const decodedDeposit = parseInt(
+                            toBN(deposit).toString()
+                          )
+                          const isAllowed =
+                            parseInt(allowance) >= decodedDeposit
+                          const hasBalance = parseInt(balance) >= decodedDeposit
+                          return this._renderActiveRsvp({
+                            myParticipantEntry,
+                            tokenAddress,
+                            address,
+                            deposit,
+                            decodedDeposit,
+                            participants,
+                            participantLimit,
+                            balance,
+                            isAllowed,
+                            hasBalance,
+                            userAddress,
+                            refetch
+                          })
+                        }}
+                      </SafeQuery>
+                    </>
+                  )
+                }
+              }}
+            </CheckWhitelist>
+          )
+        } else {
+          return (
+            <SafeQuery
+              query={TOKEN_ALLOWANCE_QUERY}
+              variables={{
+                userAddress,
+                tokenAddress,
+                partyAddress: address
+              }}
+            >
+              {({
+                data: {
+                  tokenAllowance: { allowance, balance }
+                },
+                loading,
+                refetch
+              }) => {
+                const decodedDeposit = parseInt(toBN(deposit).toString())
+                const isAllowed = parseInt(allowance) >= decodedDeposit
+                const hasBalance = parseInt(balance) >= decodedDeposit
+                return this._renderActiveRsvp({
+                  myParticipantEntry,
+                  tokenAddress,
+                  address,
+                  deposit,
+                  decodedDeposit,
+                  participants,
+                  participantLimit,
+                  balance,
+                  isAllowed,
+                  hasBalance,
+                  userAddress,
+                  refetch
+                })
+              }}
+            </SafeQuery>
+          )
+        }
       }
 
       return ''
