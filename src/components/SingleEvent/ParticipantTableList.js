@@ -165,7 +165,6 @@ class SingleEventWrapper extends Component {
   }
 
   handleCheckBox = e => {
-    console.log('***handleCheckBox', { e })
     this.setState({
       displayPrivateInfo: e.target.checked
     })
@@ -214,7 +213,6 @@ class SingleEventWrapper extends Component {
 
       csv.push(row.join(','))
     }
-
     // Download CSV
     this.downloadCSV(csv.join('\n'), filename)
   }
@@ -292,7 +290,7 @@ class SingleEventWrapper extends Component {
                             party={party}
                             refetch={refetch}
                             displayPrivateInfo={this.state.displayPrivateInfo}
-                            exportTableToCSV={this.state.exportTableToCSV}
+                            exportTableToCSV={this.exportTableToCSV.bind(this)}
                           ></TableList>
                         )
                       }}
@@ -312,7 +310,7 @@ class SingleEventWrapper extends Component {
                     party={party}
                     refetch={refetch}
                     displayPrivateInfo={this.state.displayPrivateInfo}
-                    exportTableToCSV={this.state.exportTableToCSV}
+                    exportTableToCSV={this.exportTableToCSV}
                   ></TableList>
                 )
               }}
