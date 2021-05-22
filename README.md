@@ -170,3 +170,11 @@ vercel login
 vercel switch wearekickback
 vercel -f --local-config .deploy/now.xdai.json --public --prod
 ```
+
+## Deploying to Polygon env manually
+
+```
+vercel login
+vercel switch wearekickback
+vercel -f --local-config .deploy/now.polygon.json --public --prod
+```

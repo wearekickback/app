@@ -19,7 +19,7 @@ const getOption = async args => {
   const option = {
     from: account
   }
-  // TODO: Do this only for xDai.
+  // TODO: Do this only for xDai/Polygon.
   if (true) {
     option.gasPrice = 1000000000 // 1gwei
   }

@@ -82,6 +82,17 @@ if (argv.ropsten) {
   appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
   appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
   appConfig.PLATFORM_FEE_ADDRESS = '0xeC34bf8f41BC951071A501502e1E60Af0cC9f9d6'
+} else if (argv.polygon) {
+  appConfig.ENV = 'polygon'
+  appConfig.API_URL = 'https://kickback-polygon.herokuapp.com'
+  appConfig.GIT_COMMIT = getGitCommit()
+  appConfig.ROLLBAR_TOKEN = ''
+  appConfig.BLOCKNATIVE_DAPPID = ''
+  appConfig.INFURA_KEY = 'cd1ba006128543a0a11d23e54efaab93'
+  appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
+  appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
+  appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
+  appConfig.PLATFORM_FEE_ADDRESS = ''
 } else if (argv.live) {
   appConfig.ENV = 'live'
   appConfig.API_URL = 'https://kickback-live.herokuapp.com'
