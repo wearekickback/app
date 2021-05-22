@@ -264,8 +264,6 @@ class SingleEventWrapper extends Component {
                   optional.event_whitelist &&
                   !!optional.event_whitelist.address
                 ) {
-                  console.log({ optional })
-
                   return (
                     <CheckWhitelist
                       userAddresses={participants.map(p => p.user.address)}
