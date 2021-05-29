@@ -10,7 +10,10 @@ import Button from '../Forms/Button'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 import { depositValue } from '../Utils/DepositValue'
 import { Link } from 'react-router-dom'
-import { SNAPSHOT_VOTES_SUBGRAPH_QUERY } from '../../graphql/queries'
+import {
+  SNAPSHOT_VOTES_SUBGRAPH_QUERY,
+  POAP_BADGES_QUERY
+} from '../../graphql/queries'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
@@ -97,19 +100,24 @@ const WalletButton = styled(Button)`
   width: 100%;
 `
 
+const PoapAvatar = styled('span')`
+  margin: 0 5px;
+`
+
 export default function UserProfile({ profile: p }) {
   const twitter = getSocialId(p.social, 'twitter')
   const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
     GlobalContext
   )
   let walletLink
-  const { loading, error, data: snapshotData } = useQuery(
-    SNAPSHOT_VOTES_SUBGRAPH_QUERY,
-    {
-      variables: { userAddress: p.address },
-      client: graphClient
-    }
-  )
+  const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
+    variables: { userAddress: p.address },
+    client: graphClient
+  })
+  const { data: poapData } = useQuery(POAP_BADGES_QUERY, {
+    variables: { userAddress: p.address }
+  })
+
   p.eventsAttended.map(p => (p.isAttended = true))
   p.eventsHosted.map(p => (p.isHosted = true))
 
@@ -122,7 +130,6 @@ export default function UserProfile({ profile: p }) {
       return o.createdAt
     }
   ]).reverse()
-  console.log('***merged', { merged })
   if (wallet) {
     walletLink = wallet.url
   }
@@ -215,6 +222,22 @@ export default function UserProfile({ profile: p }) {
           {snapshotData && snapshotData.votes.length > 0 && (
             <EventType>
               <H3>Other activities</H3>
+              <H4>POAP</H4>
+              {poapData &&
+                poapData.poapBadges &&
+                poapData.poapBadges.slice(0, 10).map(p => {
+                  return (
+                    <PoapAvatar>
+                      <a href={`https://poap.gallery/event/${p.event.id}`}>
+                        <img
+                          width="50px"
+                          src={`${p.event.image_url}`}
+                          alt="DevCon4"
+                        ></img>
+                      </a>
+                    </PoapAvatar>
+                  )
+                })}
               <H4>Snapshot</H4>
               <ContributionList>
                 {snapshotData.votes.map(v => {

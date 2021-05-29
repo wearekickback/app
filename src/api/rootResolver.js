@@ -55,6 +55,12 @@ const resolvers = {
         address: event.args.deployedAddress,
         __typename: event.event
       }))
+    },
+    async poapBadges(_, { userAddress }) {
+      let response = await fetch(
+        `https://api.poap.xyz/actions/scan/${userAddress}`
+      )
+      return response.json()
     }
   },
 

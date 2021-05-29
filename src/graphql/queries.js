@@ -193,3 +193,9 @@ export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
     }
   }
 `
+
+export const POAP_BADGES_QUERY = gql`
+  query poapBadges($userAddress: String!) {
+    poapBadges: poapBadges(userAddress: $userAddress) @client
+  }
+`
