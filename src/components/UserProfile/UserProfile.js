@@ -62,8 +62,8 @@ const AvatarWrapper = styled('div')`
 `
 
 const TwitterAvatar = styled(DefaultTwitterAvatar)`
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
 `
 
 const Events = styled('div')`
@@ -102,6 +102,11 @@ const WalletButton = styled(Button)`
 
 const PoapAvatar = styled('span')`
   margin: 0 5px;
+`
+
+const TinyAvatarImg = styled('img')`
+  margin-right: 5px;
+  width: 15px;
 `
 
 export default function UserProfile({ profile: p }) {
@@ -246,6 +251,11 @@ export default function UserProfile({ profile: p }) {
                       <a
                         href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal}`}
                       >
+                        {v.space.avatar && (
+                          <TinyAvatarImg
+                            src={`${v.space.avatar}`}
+                          ></TinyAvatarImg>
+                        )}
                         Voted {v.choice} on {v.space.id}
                       </a>{' '}
                       at {getDateFromUnix(v.created)}

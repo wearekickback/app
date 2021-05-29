@@ -189,6 +189,7 @@ export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
       choice
       space {
         id
+        avatar
       }
     }
   }
