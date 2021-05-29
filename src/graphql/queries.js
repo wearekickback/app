@@ -178,3 +178,18 @@ export const GET_MAINNET_TOKEN_BALANCE = gql`
     ) @client
   }
 `
+
+export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
+  query Votes($userAddress: String!) {
+    votes(first: 1000, where: { voter: $userAddress }) {
+      id
+      voter
+      created
+      proposal
+      choice
+      space {
+        id
+      }
+    }
+  }
+`
