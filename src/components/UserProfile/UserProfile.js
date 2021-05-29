@@ -10,6 +10,20 @@ import Button from '../Forms/Button'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 import { depositValue } from '../Utils/DepositValue'
 import { Link } from 'react-router-dom'
+import { SNAPSHOT_VOTES_SUBGRAPH_QUERY } from '../../graphql/queries'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+import { useQuery } from 'react-apollo'
+import moment from 'moment'
+import { getDateFromUnix } from '../../utils/dates'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://hub.snapshot.page/graphql'
+})
+const graphClient = new ApolloClient({ cache, link })
+
 const EventLink = styled(Link)``
 
 const ContributionList = styled('ul')`
@@ -88,6 +102,14 @@ export default function UserProfile({ profile: p }) {
     GlobalContext
   )
   let walletLink
+  const { loading, error, data: snapshotData } = useQuery(
+    SNAPSHOT_VOTES_SUBGRAPH_QUERY,
+    {
+      variables: { userAddress: p.address },
+      client: graphClient
+    }
+  )
+  console.log({ snapshotData })
   if (wallet) {
     walletLink = wallet.url
   }
@@ -180,6 +202,25 @@ export default function UserProfile({ profile: p }) {
               })}
             </ContributionList>
           </EventType>
+          {snapshotData && snapshotData.votes.length > 0 && (
+            <EventType>
+              <H3>Snapshot governance participated</H3>
+              <ContributionList>
+                {snapshotData.votes.map(v => {
+                  return (
+                    <li>
+                      <a
+                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal}`}
+                      >
+                        Voted {v.choice} on {v.space.id}
+                      </a>{' '}
+                      at {getDateFromUnix(v.created)}
+                    </li>
+                  )
+                })}
+              </ContributionList>
+            </EventType>
+          )}
         </Events>
       </UserProfileContainer>
     </UserProfileWrapper>
