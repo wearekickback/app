@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { getSocialId } from '@wearekickback/shared'
 import EventList from './EventList'
-import { H2, H3 } from '../Typography/Basic'
+import { H2, H3, H4 } from '../Typography/Basic'
 import mq from '../../mediaQuery'
 import { EDIT_PROFILE } from '../../modals'
 import GlobalContext from '../../GlobalState'
@@ -15,7 +15,7 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { useQuery } from 'react-apollo'
-import moment from 'moment'
+import _ from 'lodash'
 import { getDateFromUnix } from '../../utils/dates'
 
 const cache = new InMemoryCache()
@@ -24,10 +24,14 @@ const link = new HttpLink({
 })
 const graphClient = new ApolloClient({ cache, link })
 
+const EventAttendedContainer = styled('div')`
+  margin-bottom: 10px;
+`
+
 const EventLink = styled(Link)``
 
 const ContributionList = styled('ul')`
-  list-style: none;
+  margin-left: 2em;
 `
 
 const UserProfileWrapper = styled('div')`
@@ -62,9 +66,6 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
 const Events = styled('div')`
   display: flex;
   flex-direction: column;
-  ${mq.medium`
-    flex-direction: row;
-  `}
 `
 
 const EventType = styled('div')`
@@ -109,7 +110,19 @@ export default function UserProfile({ profile: p }) {
       client: graphClient
     }
   )
-  console.log({ snapshotData })
+  p.eventsAttended.map(p => (p.isAttended = true))
+  p.eventsHosted.map(p => (p.isHosted = true))
+
+  const merged = _.merge(
+    _.keyBy(p.eventsAttended, 'name'),
+    _.keyBy(p.eventsHosted, 'name')
+  )
+  let sorted = _.sortBy(Object.values(merged), [
+    function(o) {
+      return o.createdAt
+    }
+  ]).reverse()
+  console.log('***merged', { merged })
   if (wallet) {
     walletLink = wallet.url
   }
@@ -153,58 +166,56 @@ export default function UserProfile({ profile: p }) {
         </ProfileDetails>
         <Events>
           <EventType>
-            <H3>Events Attended ({p.eventsAttended.length})</H3>
-            <EventList events={p.eventsAttended} />
-          </EventType>
-          <EventType>
-            <H3>Events Hosted ({p.eventsHosted.length})</H3>
-            <EventList events={p.eventsHosted} />
-          </EventType>
-          <EventType>
-            <H3>Events Contributed ({p.eventsContributed.length})</H3>
-            <ContributionList>
-              {p.eventsContributed.map(t => {
-                return (
-                  <li>
-                    Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
-                    {t.symbol} to{' '}
-                    <EventLink to={`/user/${t.recipientUsername}`}>
-                      {t.recipientUsername}
-                    </EventLink>{' '}
-                    at{' '}
-                    <EventLink to={`/event/${t.partyAddress}`}>
-                      {t.name}
-                    </EventLink>
-                  </li>
-                )
-              })}
-            </ContributionList>
-          </EventType>
-          <EventType>
-            <H3>
-              Contribution received ({p.eventsContributionReceived.length})
-            </H3>
-            <ContributionList>
-              {p.eventsContributionReceived.map(t => {
-                return (
-                  <li>
-                    Received {depositValue(t.amount, t.decimals, 3)} {t.symbol}{' '}
-                    from{' '}
-                    <EventLink to={`/user/${t.senderUsername}`}>
-                      {t.senderUsername}
-                    </EventLink>{' '}
-                    at{' '}
-                    <EventLink to={`/event/${t.partyAddress}`}>
-                      {t.name}
-                    </EventLink>
-                  </li>
-                )
-              })}
-            </ContributionList>
+            <H3>Kickback Event activites</H3>
+
+            {sorted.map(event => {
+              let contributed = p.eventsContributed.filter(
+                p => p.name === event.name
+              )
+              let contributionReceived = p.eventsContributionReceived.filter(
+                p => p.name === event.name
+              )
+              return (
+                <EventAttendedContainer key={event.address}>
+                  <EventLink to={`/event/${event.address}`}>
+                    {event.name}
+                  </EventLink>
+                  {event.isHosted && '(Host)'}
+                  {(contributed.length > 0 ||
+                    contributionReceived.length > 0) && (
+                    <ContributionList>
+                      {contributed.map(t => {
+                        return (
+                          <li>
+                            Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
+                            {t.symbol} to{' '}
+                            <EventLink to={`/user/${t.recipientUsername}`}>
+                              {t.recipientUsername}
+                            </EventLink>{' '}
+                          </li>
+                        )
+                      })}
+                      {contributionReceived.map(t => {
+                        return (
+                          <li>
+                            Received {depositValue(t.amount, t.decimals, 3)}{' '}
+                            {t.symbol} from{' '}
+                            <EventLink to={`/user/${t.senderUsername}`}>
+                              {t.senderUsername}
+                            </EventLink>{' '}
+                          </li>
+                        )
+                      })}
+                    </ContributionList>
+                  )}
+                </EventAttendedContainer>
+              )
+            })}
           </EventType>
           {snapshotData && snapshotData.votes.length > 0 && (
             <EventType>
-              <H3>Snapshot governance participated</H3>
+              <H3>Other activities</H3>
+              <H4>Snapshot</H4>
               <ContributionList>
                 {snapshotData.votes.map(v => {
                   return (

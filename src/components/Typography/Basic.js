@@ -18,6 +18,12 @@ export const H3 = styled('h3')`
   margin-top: 0;
 `
 
+export const H4 = styled('h4')`
+  font-size: 16px;
+  font-family: Muli;
+  margin-top: 0;
+`
+
 export const P = styled('p')`
   font-family: Muli;
   font-weight: 400;
