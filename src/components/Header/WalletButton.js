@@ -7,6 +7,7 @@ import { GlobalConsumer } from '../../GlobalState'
 import Button from '../Forms/Button'
 import UserProfileButton from './UserProfileButton'
 import EtherScanLink from '../Links/EtherScanLink'
+import AddressLink from '../Links/AddressLink'
 import c from '../../colours'
 
 const WalletWrapper = styled('div')`
@@ -78,9 +79,7 @@ function WalletButton() {
                 <List>
                   {userAddress && (
                     <ListItem>
-                      <EtherScanLink address={userAddress}>
-                        {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
-                      </EtherScanLink>
+                      <AddressLink userAddress={userAddress} />
                     </ListItem>
                   )}
                   {loggedIn && userProfile && (

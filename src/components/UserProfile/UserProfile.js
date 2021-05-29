@@ -20,6 +20,7 @@ import { HttpLink } from 'apollo-link-http'
 import { useQuery } from 'react-apollo'
 import _ from 'lodash'
 import { getDateFromUnix } from '../../utils/dates'
+import AddressLink from '../Links/AddressLink'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -150,6 +151,7 @@ export default function UserProfile({ profile: p }) {
             {twitter && (
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
             )}
+            <AddressLink userAddress={p.address} prefix={'Eth address:'} />
             {loggedIn && userProfile && userProfile.username === p.username && (
               <ButtonContainer>
                 {walletLink && (
