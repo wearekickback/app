@@ -167,3 +167,14 @@ export const GET_CONTRIBUTIONS_BY_PARTY = gql`
     }
   }
 `
+export const GET_MAINNET_TOKEN_BALANCE = gql`
+  query getMainnetTokenBalance(
+    $userAddresses: [String]
+    $tokenAddress: String!
+  ) {
+    getMainnetTokenBalance(
+      userAddresses: $userAddresses
+      tokenAddress: $tokenAddress
+    ) @client
+  }
+`

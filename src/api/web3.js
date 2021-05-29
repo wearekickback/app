@@ -119,6 +119,11 @@ export const pollForBlocks = web3 => {
   }, 10000)
 }
 
+export const getWeb3ForNetwork = async id => {
+  let url = getNetworkProviderUrl(id)
+  return new Web3(new Web3.providers.HttpProvider(url))
+}
+
 const getWeb3 = async () => {
   let web3
 
