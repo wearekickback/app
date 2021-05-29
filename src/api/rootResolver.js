@@ -89,6 +89,14 @@ const resolvers = {
       return {
         name
       }
+    },
+    async getEnsAddress(_, { name }) {
+      const web3 = await getWeb3ForNetwork('1')
+      const address = await web3.eth.ens.getAddress(name)
+
+      return {
+        address
+      }
     }
   },
 

@@ -200,3 +200,15 @@ export const POAP_BADGES_QUERY = gql`
     poapBadges: poapBadges(userAddress: $userAddress) @client
   }
 `
+
+export const ENS_NAME_QUERY = gql`
+  query getEnsName($userAddress: String!) {
+    getEnsName: getEnsName(userAddress: $userAddress) @client
+  }
+`
+
+export const ENS_ADDRESS_QUERY = gql`
+  query getEnsAddress($name: String!) {
+    getEnsAddress: getEnsAddress(name: $name) @client
+  }
+`

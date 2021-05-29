@@ -1571,6 +1571,19 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
+"@ensdomains/buffer@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@ensdomains/buffer/-/buffer-0.0.10.tgz#3b9f8b6a34c6160ae8a8cb8f0f033aa35c1a9970"
+  integrity sha512-EOFqiWnN36EyyBAgHFTsabFcFICUALt41SiDm/4pAw4V36R4lD4wHcnZcqCYki9m1fMaeWGHrdqxmrMa8iiSTQ==
+
+"@ensdomains/ens-contracts@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@ensdomains/ens-contracts/-/ens-contracts-0.0.3.tgz#7023a3ad8e74431fa64c550f63c5730d9cb64303"
+  integrity sha512-da67JjAFjl8gLDDAqYQs5PSvth9usBcD7clXiXpfvJTMJnZnR+c/cG6xrkVgL4qEP7jmI+iEoj0y29qFtupy2w==
+  dependencies:
+    "@ensdomains/buffer" "^0.0.10"
+    "@openzeppelin/contracts" "^4.1.0"
+
 "@ethersproject/abi@5.0.7":
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.0.7.tgz#79e52452bd3ca2956d0e1c964207a58ad1a0ee7b"
@@ -2396,6 +2409,11 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
+
+"@openzeppelin/contracts@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.1.0.tgz#baec89a7f5f73e3d8ea582a78f1980134b605375"
+  integrity sha512-TihZitscnaHNcZgXGj9zDLDyCqjziytB4tMCwXq0XimfWkAjBYyk5/pOsDbbwcavhlc79HhpTEpQcrMnPVa1mw==
 
 "@pedrouid/environment@^1.0.1":
   version "1.0.1"
