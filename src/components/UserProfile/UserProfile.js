@@ -237,7 +237,8 @@ export default function UserProfile({ profile: p }) {
                         <img
                           width="50px"
                           src={`${p.event.image_url}`}
-                          alt="DevCon4"
+                          alt={p.event.name}
+                          title={p.event.name}
                         ></img>
                       </a>
                     </PoapAvatar>

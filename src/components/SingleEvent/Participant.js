@@ -67,7 +67,7 @@ const OrgAvatars = function({ spaces }) {
   return (
     <div>
       {spaces.map(s => (
-        <OrgAvatarImg src={s.avatar}></OrgAvatarImg>
+        <OrgAvatarImg src={s.avatar} alt={s.id} title={s.id}></OrgAvatarImg>
       ))}
     </div>
   )
