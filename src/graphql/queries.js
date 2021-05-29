@@ -180,8 +180,8 @@ export const GET_MAINNET_TOKEN_BALANCE = gql`
 `
 
 export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
-  query Votes($userAddress: String!) {
-    votes(first: 1000, where: { voter: $userAddress }) {
+  query Votes($userAddresses: [String]) {
+    votes(first: 1000, where: { voter_in: $userAddresses }) {
       id
       voter
       created

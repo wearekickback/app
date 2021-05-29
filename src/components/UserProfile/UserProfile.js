@@ -116,7 +116,7 @@ export default function UserProfile({ profile: p }) {
   )
   let walletLink
   const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
-    variables: { userAddress: p.address },
+    variables: { userAddresses: [p.address] },
     client: graphClient
   })
   const { data: poapData } = useQuery(POAP_BADGES_QUERY, {
