@@ -151,7 +151,7 @@ export default function UserProfile({ profile: p }) {
             {twitter && (
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
             )}
-            <AddressLink userAddress={p.address} prefix={'Eth address:'} />
+            <AddressLink userAddress={p.address} prefix={'ETH: '} />
             {loggedIn && userProfile && userProfile.username === p.username && (
               <ButtonContainer>
                 {walletLink && (
