@@ -111,11 +111,12 @@ const TinyAvatarImg = styled('img')`
 `
 
 export default function UserProfile({ profile: p }) {
-  const twitter = getSocialId(p.social, 'twitter')
+  let twitter,
+    walletLink,
+    sorted = []
   const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
     GlobalContext
   )
-  let walletLink
   const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
     variables: { userAddresses: [p.address] },
     client: graphClient
@@ -124,18 +125,20 @@ export default function UserProfile({ profile: p }) {
     variables: { userAddress: p.address }
   })
 
-  p.eventsAttended.map(p => (p.isAttended = true))
-  p.eventsHosted.map(p => (p.isHosted = true))
-
-  const merged = _.merge(
-    _.keyBy(p.eventsAttended, 'name'),
-    _.keyBy(p.eventsHosted, 'name')
-  )
-  let sorted = _.sortBy(Object.values(merged), [
-    function(o) {
-      return o.createdAt
-    }
-  ]).reverse()
+  if (p.username) {
+    twitter = getSocialId(p && p.social, 'twitter')
+    p && p.eventsAttended.map(p => (p.isAttended = true))
+    p && p.eventsHosted.map(p => (p.isHosted = true))
+    const merged = _.merge(
+      _.keyBy(p.eventsAttended, 'name'),
+      _.keyBy(p.eventsHosted, 'name')
+    )
+    sorted = _.sortBy(Object.values(merged), [
+      function(o) {
+        return o.createdAt
+      }
+    ]).reverse()
+  }
   if (wallet) {
     walletLink = wallet.url
   }
@@ -181,7 +184,6 @@ export default function UserProfile({ profile: p }) {
         <Events>
           <EventType>
             <H3>Kickback Event activites</H3>
-
             {sorted.map(event => {
               let contributed = p.eventsContributed.filter(
                 p => p.name === event.name
@@ -248,7 +250,7 @@ export default function UserProfile({ profile: p }) {
                 })}
               <H4>Snapshot</H4>
               <ContributionList>
-                {snapshotData.votes.map(v => {
+                {snapshotData.votes.slice(0, 50).map((v, i) => {
                   return (
                     <li>
                       <a
