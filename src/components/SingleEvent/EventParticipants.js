@@ -7,8 +7,22 @@ import DefaultEventFilters from './EventFilters'
 
 import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
-import { GET_CONTRIBUTIONS_BY_PARTY } from '../../graphql/queries'
+import {
+  GET_CONTRIBUTIONS_BY_PARTY,
+  SNAPSHOT_VOTES_SUBGRAPH_QUERY
+} from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
+import { useQuery } from 'react-apollo'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+import _ from 'lodash'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://hub.snapshot.page/graphql'
+})
+const graphClient = new ApolloClient({ cache, link })
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
@@ -53,6 +67,10 @@ const EventParticipants = props => {
   const handleSearch = search => {
     setSearch((search || '').toLowerCase())
   }
+  const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
+    variables: { userAddresses: participants.map(p => p.user.address) },
+    client: graphClient
+  })
 
   return (
     <SafeQuery
@@ -78,15 +96,47 @@ const EventParticipants = props => {
                 participants
                   .sort(sortParticipants)
                   .filter(filterParticipants(selectedFilter, search))
-                  .map(participant => (
-                    <Participant
-                      amAdmin={amAdmin}
-                      participant={participant}
-                      contributions={data && data.getContributionsByParty}
-                      party={party}
-                      key={`${participant.address}${participant.index}`}
-                    />
-                  ))
+                  .map(participant => {
+                    let votes =
+                      snapshotData &&
+                      snapshotData.votes
+                        .filter(v => {
+                          return (
+                            v.voter.toLowerCase() ==
+                            participant.user.address.toLowerCase()
+                          )
+                        })
+                        .map(v => {
+                          return {
+                            id: v.space.id,
+                            avatar: v.space.avatar,
+                            created: v.created
+                          }
+                        })
+                    let spaces = {}
+                    votes &&
+                      votes.map(v => {
+                        if (!spaces[v.id] || v.created > spaces[v.id].created) {
+                          spaces[v.id] = v
+                        }
+                      })
+                    let filteredSpaces = _.sortBy(Object.values(spaces), [
+                      function(o) {
+                        return o.created
+                      }
+                    ]).reverse()
+
+                    return (
+                      <Participant
+                        amAdmin={amAdmin}
+                        participant={participant}
+                        contributions={data && data.getContributionsByParty}
+                        spaces={filteredSpaces.slice(0, 5)}
+                        party={party}
+                        key={`${participant.address}${participant.index}`}
+                      />
+                    )
+                  })
               ) : (
                 <NoParticipants>No one is attending.</NoParticipants>
               )}

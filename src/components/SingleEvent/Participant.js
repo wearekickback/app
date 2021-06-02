@@ -58,7 +58,29 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
   margin-bottom: 5px;
 `
 
-function Participant({ participant, party, amAdmin, decimals, contributions }) {
+const OrgAvatarImg = styled(`img`)`
+  width: 15px;
+  margin: 2px, 5px;
+`
+
+const OrgAvatars = function({ spaces }) {
+  return (
+    <div>
+      {spaces.map(s => (
+        <OrgAvatarImg src={s.avatar} alt={s.id} title={s.id}></OrgAvatarImg>
+      ))}
+    </div>
+  )
+}
+
+function Participant({
+  participant,
+  party,
+  amAdmin,
+  decimals,
+  contributions,
+  spaces
+}) {
   const { user, status } = participant
   const { deposit, ended } = party
 
@@ -80,6 +102,7 @@ function Participant({ participant, party, amAdmin, decimals, contributions }) {
           <ParticipantId>
             <ParticipantUsername>{user.username}</ParticipantUsername>
           </ParticipantId>
+          <OrgAvatars spaces={spaces} />
           {ended ? (
             attended ? (
               contribution ? (

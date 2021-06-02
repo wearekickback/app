@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { getSocialId } from '@wearekickback/shared'
 import EventList from './EventList'
-import { H2, H3 } from '../Typography/Basic'
+import { H2, H3, H4 } from '../Typography/Basic'
 import mq from '../../mediaQuery'
 import { EDIT_PROFILE } from '../../modals'
 import GlobalContext from '../../GlobalState'
@@ -10,10 +10,32 @@ import Button from '../Forms/Button'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
 import { depositValue } from '../Utils/DepositValue'
 import { Link } from 'react-router-dom'
+import {
+  SNAPSHOT_VOTES_SUBGRAPH_QUERY,
+  POAP_BADGES_QUERY
+} from '../../graphql/queries'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+import { useQuery } from 'react-apollo'
+import _ from 'lodash'
+import { getDateFromUnix } from '../../utils/dates'
+import AddressLink from '../Links/AddressLink'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://hub.snapshot.page/graphql'
+})
+const graphClient = new ApolloClient({ cache, link })
+
+const EventAttendedContainer = styled('div')`
+  margin-bottom: 10px;
+`
+
 const EventLink = styled(Link)``
 
 const ContributionList = styled('ul')`
-  list-style: none;
+  margin-left: 2em;
 `
 
 const UserProfileWrapper = styled('div')`
@@ -41,16 +63,13 @@ const AvatarWrapper = styled('div')`
 `
 
 const TwitterAvatar = styled(DefaultTwitterAvatar)`
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
 `
 
 const Events = styled('div')`
   display: flex;
   flex-direction: column;
-  ${mq.medium`
-    flex-direction: row;
-  `}
 `
 
 const EventType = styled('div')`
@@ -82,12 +101,41 @@ const WalletButton = styled(Button)`
   width: 100%;
 `
 
+const PoapAvatar = styled('span')`
+  margin: 0 5px;
+`
+
+const TinyAvatarImg = styled('img')`
+  margin-right: 5px;
+  width: 15px;
+`
+
 export default function UserProfile({ profile: p }) {
   const twitter = getSocialId(p.social, 'twitter')
   const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
     GlobalContext
   )
   let walletLink
+  const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
+    variables: { userAddresses: [p.address] },
+    client: graphClient
+  })
+  const { data: poapData } = useQuery(POAP_BADGES_QUERY, {
+    variables: { userAddress: p.address }
+  })
+
+  p.eventsAttended.map(p => (p.isAttended = true))
+  p.eventsHosted.map(p => (p.isHosted = true))
+
+  const merged = _.merge(
+    _.keyBy(p.eventsAttended, 'name'),
+    _.keyBy(p.eventsHosted, 'name')
+  )
+  let sorted = _.sortBy(Object.values(merged), [
+    function(o) {
+      return o.createdAt
+    }
+  ]).reverse()
   if (wallet) {
     walletLink = wallet.url
   }
@@ -103,6 +151,7 @@ export default function UserProfile({ profile: p }) {
             {twitter && (
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
             )}
+            <AddressLink userAddress={p.address} prefix={'ETH: '} />
             {loggedIn && userProfile && userProfile.username === p.username && (
               <ButtonContainer>
                 {walletLink && (
@@ -131,55 +180,94 @@ export default function UserProfile({ profile: p }) {
         </ProfileDetails>
         <Events>
           <EventType>
-            <H3>Events Attended ({p.eventsAttended.length})</H3>
-            <EventList events={p.eventsAttended} />
+            <H3>Kickback Event activites</H3>
+
+            {sorted.map(event => {
+              let contributed = p.eventsContributed.filter(
+                p => p.name === event.name
+              )
+              let contributionReceived = p.eventsContributionReceived.filter(
+                p => p.name === event.name
+              )
+              return (
+                <EventAttendedContainer key={event.address}>
+                  <EventLink to={`/event/${event.address}`}>
+                    {event.name}
+                  </EventLink>
+                  {event.isHosted && '(Host)'}
+                  {(contributed.length > 0 ||
+                    contributionReceived.length > 0) && (
+                    <ContributionList>
+                      {contributed.map(t => {
+                        return (
+                          <li>
+                            Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
+                            {t.symbol} to{' '}
+                            <EventLink to={`/user/${t.recipientUsername}`}>
+                              {t.recipientUsername}
+                            </EventLink>{' '}
+                          </li>
+                        )
+                      })}
+                      {contributionReceived.map(t => {
+                        return (
+                          <li>
+                            Received {depositValue(t.amount, t.decimals, 3)}{' '}
+                            {t.symbol} from{' '}
+                            <EventLink to={`/user/${t.senderUsername}`}>
+                              {t.senderUsername}
+                            </EventLink>{' '}
+                          </li>
+                        )
+                      })}
+                    </ContributionList>
+                  )}
+                </EventAttendedContainer>
+              )
+            })}
           </EventType>
-          <EventType>
-            <H3>Events Hosted ({p.eventsHosted.length})</H3>
-            <EventList events={p.eventsHosted} />
-          </EventType>
-          <EventType>
-            <H3>Events Contributed ({p.eventsContributed.length})</H3>
-            <ContributionList>
-              {p.eventsContributed.map(t => {
-                return (
-                  <li>
-                    Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
-                    {t.symbol} to{' '}
-                    <EventLink to={`/user/${t.recipientUsername}`}>
-                      {t.recipientUsername}
-                    </EventLink>{' '}
-                    at{' '}
-                    <EventLink to={`/event/${t.partyAddress}`}>
-                      {t.name}
-                    </EventLink>
-                  </li>
-                )
-              })}
-            </ContributionList>
-          </EventType>
-          <EventType>
-            <H3>
-              Contribution received ({p.eventsContributionReceived.length})
-            </H3>
-            <ContributionList>
-              {p.eventsContributionReceived.map(t => {
-                return (
-                  <li>
-                    Received {depositValue(t.amount, t.decimals, 3)} {t.symbol}{' '}
-                    from{' '}
-                    <EventLink to={`/user/${t.senderUsername}`}>
-                      {t.senderUsername}
-                    </EventLink>{' '}
-                    at{' '}
-                    <EventLink to={`/event/${t.partyAddress}`}>
-                      {t.name}
-                    </EventLink>
-                  </li>
-                )
-              })}
-            </ContributionList>
-          </EventType>
+          {snapshotData && snapshotData.votes.length > 0 && (
+            <EventType>
+              <H3>Other activities</H3>
+              <H4>POAP</H4>
+              {poapData &&
+                poapData.poapBadges &&
+                poapData.poapBadges.slice(0, 10).map(p => {
+                  return (
+                    <PoapAvatar>
+                      <a href={`https://poap.gallery/event/${p.event.id}`}>
+                        <img
+                          width="50px"
+                          src={`${p.event.image_url}`}
+                          alt={p.event.name}
+                          title={p.event.name}
+                        ></img>
+                      </a>
+                    </PoapAvatar>
+                  )
+                })}
+              <H4>Snapshot</H4>
+              <ContributionList>
+                {snapshotData.votes.map(v => {
+                  return (
+                    <li>
+                      <a
+                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal}`}
+                      >
+                        {v.space.avatar && (
+                          <TinyAvatarImg
+                            src={`${v.space.avatar}`}
+                          ></TinyAvatarImg>
+                        )}
+                        Voted {v.choice} on {v.space.id}
+                      </a>{' '}
+                      at {getDateFromUnix(v.created)}
+                    </li>
+                  )
+                })}
+              </ContributionList>
+            </EventType>
+          )}
         </Events>
       </UserProfileContainer>
     </UserProfileWrapper>
