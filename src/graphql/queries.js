@@ -216,3 +216,9 @@ export const ENS_ADDRESS_QUERY = gql`
     getEnsAddress: getEnsAddress(name: $name) @client
   }
 `
+
+export const NFT_QUERY = gql`
+  query getNFTs($userAddress: String!) {
+    getNFTs: getNFTs(userAddress: $userAddress) @client
+  }
+`

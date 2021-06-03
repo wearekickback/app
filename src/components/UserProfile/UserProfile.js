@@ -12,7 +12,8 @@ import { depositValue } from '../Utils/DepositValue'
 import { Link } from 'react-router-dom'
 import {
   SNAPSHOT_VOTES_SUBGRAPH_QUERY,
-  POAP_BADGES_QUERY
+  POAP_BADGES_QUERY,
+  NFT_QUERY
 } from '../../graphql/queries'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -122,6 +123,9 @@ export default function UserProfile({ profile: p }) {
     client: graphClient
   })
   const { data: poapData } = useQuery(POAP_BADGES_QUERY, {
+    variables: { userAddress: p.address }
+  })
+  const { data: nftData } = useQuery(NFT_QUERY, {
     variables: { userAddress: p.address }
   })
 
@@ -271,6 +275,31 @@ export default function UserProfile({ profile: p }) {
                     </li>
                   )
                 })}
+              </ContributionList>
+              <H4>NFT</H4>
+              <ContributionList>
+                {nftData &&
+                  nftData.getNFTs &&
+                  nftData.getNFTs
+                    .filter(f => f.contract_name !== 'POAP')
+                    .slice(0, 50)
+                    .map((v, i) => {
+                      return (
+                        <>
+                          <h5>{v.contract_name}</h5>
+                          {v.nft_data.map(n => {
+                            return (
+                              <img
+                                width="50px"
+                                src={n.external_data && n.external_data.image}
+                                alt={v.external_data && v.external_data.name}
+                                title={v.external_data && v.external_data.name}
+                              ></img>
+                            )
+                          })}
+                        </>
+                      )
+                    })}
               </ContributionList>
             </EventType>
           )}
