@@ -185,7 +185,11 @@ export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
       id
       voter
       created
-      proposal
+      proposal {
+        id
+        title
+        choices
+      }
       choice
       space {
         id

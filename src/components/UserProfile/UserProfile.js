@@ -251,17 +251,21 @@ export default function UserProfile({ profile: p }) {
               <H4>Snapshot</H4>
               <ContributionList>
                 {snapshotData.votes.slice(0, 50).map((v, i) => {
+                  const choice = v.proposal.choices[v.choice - 1]
                   return (
                     <li>
                       <a
-                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal}`}
+                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal.id}`}
                       >
                         {v.space.avatar && (
                           <TinyAvatarImg
                             src={`${v.space.avatar}`}
+                            alt={v.space.id}
+                            title={`${v.space.id}: Voted ${v.choice}(${choice}) on "${v.proposal.title}`}
                           ></TinyAvatarImg>
                         )}
-                        Voted {v.choice} on {v.space.id}
+                        Voted {v.choice}({choice.slice(0, 10)}...) on "
+                        {v.proposal.title.slice(0, 20)}..."
                       </a>{' '}
                       at {getDateFromUnix(v.created)}
                     </li>
