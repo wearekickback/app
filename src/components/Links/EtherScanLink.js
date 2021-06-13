@@ -29,7 +29,7 @@ const EtherScanLink = ({ address, tx, children }) => (
       if (expectedNetworkId === '100') {
         host = `https://blockscout.com/poa/xdai`
       } else if (expectedNetworkId === '137') {
-        host = `https://rpc-mainnet.maticvigil.com`
+        host = `https://polygonscan.com`
       } else {
         host = `https://${prefix}etherscan.io`
       }

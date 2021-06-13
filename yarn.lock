@@ -3852,13 +3852,10 @@
     "@walletconnect/utils" "^1.4.1"
     web3-provider-engine "16.0.1"
 
-"@wearekickback/contracts@npm:@wearekickback/contracts-integration@1.4.5":
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/@wearekickback/contracts-integration/-/contracts-integration-1.4.5.tgz#887fa2231c0ee0b731422d78ae97b460193674f3"
-  integrity sha512-VHCCnKv64TcjD1RJmXvyRNdNlaeZgbsC2genjr7zD3ISxX94jHPVtreMVNSq33irTgLXjm88qK75H5x2C/4lQw==
-  dependencies:
-    "@wearekickback/shared" "^1.14.1"
-    openzeppelin-solidity "^2.3.0"
+"@wearekickback/contracts@1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@wearekickback/contracts/-/contracts-1.4.6.tgz#6f38fb5841893667d32951988efbf0365dfaa32f"
+  integrity sha512-mvRTT4ka4u0yRDPIw+1C2Q+gpa/qvXQU4RhyV4ExUVBWM+d7WwjVuT5DBuAownibzxtfsSnTbekiGIb1yuoyYg==
 
 "@wearekickback/shared@^1.14.1":
   version "1.14.1"
@@ -17075,11 +17072,6 @@ opencollective-postinstall@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
   integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
-
-openzeppelin-solidity@^2.3.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.5.1.tgz#1cdcce30c4c6a7b6625dab62ccd0440a813ab597"
-  integrity sha512-oCGtQPLOou4su76IMr4XXJavy9a8OZmAXeUZ8diOdFznlL/mlkIlYr7wajqCzH4S47nlKPS7m0+a2nilCTpVPQ==
 
 opn@5.2.0:
   version "5.2.0"
