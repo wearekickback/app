@@ -12,7 +12,8 @@ import { depositValue } from '../Utils/DepositValue'
 import { Link } from 'react-router-dom'
 import {
   SNAPSHOT_VOTES_SUBGRAPH_QUERY,
-  POAP_BADGES_QUERY
+  POAP_BADGES_QUERY,
+  NFT_QUERY
 } from '../../graphql/queries'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -111,11 +112,12 @@ const TinyAvatarImg = styled('img')`
 `
 
 export default function UserProfile({ profile: p }) {
-  const twitter = getSocialId(p.social, 'twitter')
+  let twitter,
+    walletLink,
+    sorted = []
   const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
     GlobalContext
   )
-  let walletLink
   const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
     variables: { userAddresses: [p.address] },
     client: graphClient
@@ -123,19 +125,24 @@ export default function UserProfile({ profile: p }) {
   const { data: poapData } = useQuery(POAP_BADGES_QUERY, {
     variables: { userAddress: p.address }
   })
+  const { data: nftData } = useQuery(NFT_QUERY, {
+    variables: { userAddress: p.address }
+  })
 
-  p.eventsAttended.map(p => (p.isAttended = true))
-  p.eventsHosted.map(p => (p.isHosted = true))
-
-  const merged = _.merge(
-    _.keyBy(p.eventsAttended, 'name'),
-    _.keyBy(p.eventsHosted, 'name')
-  )
-  let sorted = _.sortBy(Object.values(merged), [
-    function(o) {
-      return o.createdAt
-    }
-  ]).reverse()
+  if (p.username) {
+    twitter = getSocialId(p && p.social, 'twitter')
+    p && p.eventsAttended.map(p => (p.isAttended = true))
+    p && p.eventsHosted.map(p => (p.isHosted = true))
+    const merged = _.merge(
+      _.keyBy(p.eventsAttended, 'name'),
+      _.keyBy(p.eventsHosted, 'name')
+    )
+    sorted = _.sortBy(Object.values(merged), [
+      function(o) {
+        return o.createdAt
+      }
+    ]).reverse()
+  }
   if (wallet) {
     walletLink = wallet.url
   }
@@ -181,7 +188,6 @@ export default function UserProfile({ profile: p }) {
         <Events>
           <EventType>
             <H3>Kickback Event activites</H3>
-
             {sorted.map(event => {
               let contributed = p.eventsContributed.filter(
                 p => p.name === event.name
@@ -248,23 +254,52 @@ export default function UserProfile({ profile: p }) {
                 })}
               <H4>Snapshot</H4>
               <ContributionList>
-                {snapshotData.votes.map(v => {
+                {snapshotData.votes.slice(0, 50).map((v, i) => {
+                  const choice = v.proposal.choices[v.choice - 1]
                   return (
                     <li>
                       <a
-                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal}`}
+                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal.id}`}
                       >
                         {v.space.avatar && (
                           <TinyAvatarImg
                             src={`${v.space.avatar}`}
+                            alt={v.space.id}
+                            title={`${v.space.id}: Voted ${v.choice}(${choice}) on "${v.proposal.title}`}
                           ></TinyAvatarImg>
                         )}
-                        Voted {v.choice} on {v.space.id}
+                        Voted {v.choice}({choice.slice(0, 10)}...) on "
+                        {v.proposal.title.slice(0, 20)}..."
                       </a>{' '}
                       at {getDateFromUnix(v.created)}
                     </li>
                   )
                 })}
+              </ContributionList>
+              <H4>NFT</H4>
+              <ContributionList>
+                {nftData &&
+                  nftData.getNFTs &&
+                  nftData.getNFTs
+                    .filter(f => f.contract_name !== 'POAP')
+                    .slice(0, 50)
+                    .map((v, i) => {
+                      return (
+                        <>
+                          <h5>{v.contract_name}</h5>
+                          {v.nft_data.map(n => {
+                            return (
+                              <img
+                                width="50px"
+                                src={n.external_data && n.external_data.image}
+                                alt={v.external_data && v.external_data.name}
+                                title={v.external_data && v.external_data.name}
+                              ></img>
+                            )
+                          })}
+                        </>
+                      )
+                    })}
               </ContributionList>
             </EventType>
           )}

@@ -16,6 +16,7 @@ import ensResolvers, { defaults as ensDefaults } from './resolvers/ensResolvers'
 import tokenResolvers, {
   defaults as tokenDefaults
 } from './resolvers/tokenResolvers'
+import { getFragmentDefinitions } from 'apollo-utilities'
 
 let reverseAddress = '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C'
 let reverseAbi = [
@@ -97,6 +98,18 @@ const resolvers = {
       return {
         address
       }
+    },
+    async getNFTs(_, { userAddress }) {
+      let pageNumber = 0
+      // let url = `https://api.covalenthq.com/v1/1/address/${userAddress}/balances_v2/?key=${process.env.C_KEY}&nft=true&page-number=${pageNumber}&page-size=100`
+      let url = `https://api.covalenthq.com/v1/1/address/${userAddress}/balances_v2/?key=ckey_125f8d62ef8b4410a92c2787d6c&nft=true&page-number=${pageNumber}&page-size=100`
+      let data = await fetch(url)
+      let {
+        data: { items: items }
+      } = await data.json()
+      return items.filter(i => {
+        return !!i.nft_data
+      })
     }
   },
 

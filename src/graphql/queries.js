@@ -185,7 +185,11 @@ export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
       id
       voter
       created
-      proposal
+      proposal {
+        id
+        title
+        choices
+      }
       choice
       space {
         id
@@ -210,5 +214,11 @@ export const ENS_NAME_QUERY = gql`
 export const ENS_ADDRESS_QUERY = gql`
   query getEnsAddress($name: String!) {
     getEnsAddress: getEnsAddress(name: $name) @client
+  }
+`
+
+export const NFT_QUERY = gql`
+  query getNFTs($userAddress: String!) {
+    getNFTs: getNFTs(userAddress: $userAddress) @client
   }
 `

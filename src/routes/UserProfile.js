@@ -32,10 +32,25 @@ export default function UserProfileData(props) {
       {({ data, loading, error }) => {
         if (loading) return <Loader />
         if (error) {
-          console.log(error)
-          return <div>Could not find user of the username: {username}</div>
+          if (isAddress) {
+            return <UserProfile profile={{ address: username }} />
+          } else if (
+            isEns &&
+            ensData &&
+            ensData.getEnsAddress &&
+            ensData.getEnsAddress.address
+          ) {
+            return (
+              <UserProfile
+                profile={{ address: ensData.getEnsAddress.address }}
+              />
+            )
+          } else {
+            return <div>Could not find user of the username: {username}</div>
+          }
+        } else {
+          return <UserProfile profile={data && data.profile} />
         }
-        return <UserProfile profile={data.profile} />
       }}
     </Query>
   )
