@@ -167,3 +167,58 @@ export const GET_CONTRIBUTIONS_BY_PARTY = gql`
     }
   }
 `
+export const GET_MAINNET_TOKEN_BALANCE = gql`
+  query getMainnetTokenBalance(
+    $userAddresses: [String]
+    $tokenAddress: String!
+  ) {
+    getMainnetTokenBalance(
+      userAddresses: $userAddresses
+      tokenAddress: $tokenAddress
+    ) @client
+  }
+`
+
+export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
+  query Votes($userAddresses: [String]) {
+    votes(first: 1000, where: { voter_in: $userAddresses }) {
+      id
+      voter
+      created
+      proposal {
+        id
+        title
+        choices
+      }
+      choice
+      space {
+        id
+        avatar
+      }
+    }
+  }
+`
+
+export const POAP_BADGES_QUERY = gql`
+  query poapBadges($userAddress: String!) {
+    poapBadges: poapBadges(userAddress: $userAddress) @client
+  }
+`
+
+export const ENS_NAME_QUERY = gql`
+  query getEnsName($userAddress: String!) {
+    getEnsName: getEnsName(userAddress: $userAddress) @client
+  }
+`
+
+export const ENS_ADDRESS_QUERY = gql`
+  query getEnsAddress($name: String!) {
+    getEnsAddress: getEnsAddress(name: $name) @client
+  }
+`
+
+export const NFT_QUERY = gql`
+  query getNFTs($userAddress: String!) {
+    getNFTs: getNFTs(userAddress: $userAddress) @client
+  }
+`
