@@ -9,8 +9,8 @@ class FAQ extends Component {
 
         <h3>How does Kickback work?</h3>
         <p>
-          Everyone commits a small amount of ETH when they RSVP, which is
-          refunded after the event check-in. Any no-shows lose their ETH, which
+          Everyone commits a small amount of ETH (or MATIC) when they RSVP, which is
+          refunded after the event check-in. Any no-shows lose their ETH (or MATIC), which
           can then be split amongst the attendees. To see the demo, please check
           out our{' '}
           <a href="https://www.youtube.com/channel/UCEpD7t7AbqeKlzMpIRWZILQ">
@@ -19,11 +19,11 @@ class FAQ extends Component {
           .
         </p>
         <h3>Can I cancel my registration?</h3>
-        <p>No</p>
+        <p>No.</p>
         <h3>What happens if the event is canceled?</h3>
         <p>
           In case the event is canceled, all registered people can withdraw
-          their pre-committed ETH. Make sure that you sign up with the correct
+          their pre-committed ETH (or MATIC). Make sure that you sign up with the correct
           email address so that the host can notify you.
         </p>
         <h3 id="cooling">What is the cooling period?</h3>
@@ -39,7 +39,7 @@ class FAQ extends Component {
           address.
         </h3>
         <p>
-          The profile photo is optional. It is associated to your twitter avatar
+          The profile photo is optional. It is associated to your Twitter Avatar
           which you provide during signup.
         </p>
 
@@ -64,7 +64,7 @@ class FAQ extends Component {
         </p>
         <h3>Can I use Kickback to receive payments for tickets yet?</h3>
         <p>Not yet.</p>
-        <h3>My event participants may not have ETH. What should I do?</h3>
+        <h3>My event participants may not have ETH (or MATIC). What should I do?</h3>
         <p>
           If your event is a blockchain related event, Kickback is actually a
           good reason for people who have no ETH to actually try to acquire one.
