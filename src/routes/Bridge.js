@@ -37,6 +37,7 @@ const bridgeCard = styled('Card')`
 const Tab1 = styled('div')`
   cursor: pointer;
   margin: 1rem;
+  fontweight: 100;
 `
 
 const Tab2 = styled('div')`
@@ -522,130 +523,138 @@ class Bridge extends Component {
 
     return (
       <>
-        {this.state.loading && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-              textAlign: 'center'
-            }}
-          >
-            <Loader
-              type="ThreeDots"
-              color={colours.primary500}
-              height="100"
-              width="100"
-            />
-            <h3>
-              {this.state.loading_msg === ''
-                ? 'Please Wait'
-                : this.state.loading_msg}
-            </h3>
-          </div>
-        )}
-        {!this.state.loading && (
-          <Tabs style={{ 'text-align': 'center', flex: 1 }}>
-            <Tab1
-              label="Dai to xDai "
+        <div style={{ margin: '5rem' }}>
+          {this.state.loading && (
+            <div
               style={{
-                text_align: 'center',
-                flex: 1,
-                'align-items': 'center',
-                flexDirection: 'row'
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                textAlign: 'center'
               }}
             >
-              <bridgeCard>
-                {/* <Card.Header></Card.Header> */}
-                <Card.Body
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  {/* <Card.Title></Card.Title> */}
-                  <Card.Text>
-                    {(() => {
-                      if (this.state.unlock)
-                        return (
-                          <div>
-                            <h4>Key Wallet address: {this.wallet_address}</h4>
-                            <h4>Etherspot address: {this.contract_account}</h4>
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignContent: 'center',
-                                flexWrap: 'nowrap',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                              }}
-                            >
-                              <h4>Dai Balance: {this.balance} </h4>
-                              <IoReloadCircle
+              <Loader
+                type="ThreeDots"
+                color={colours.primary500}
+                height="100"
+                width="100"
+              />
+              <h3>
+                {this.state.loading_msg === ''
+                  ? 'Please Wait'
+                  : this.state.loading_msg}
+              </h3>
+            </div>
+          )}
+          {!this.state.loading && (
+            <Tabs style={{ 'text-align': 'center', flex: 1, margin: '5rem' }}>
+              <Tab1
+                label="Dai to xDai "
+                style={{
+                  text_align: 'center',
+                  flex: 1,
+                  'align-items': 'center',
+                  flexDirection: 'row'
+                }}
+              >
+                <bridgeCard>
+                  {/* <Card.Header></Card.Header> */}
+                  <Card.Body
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignContent: 'center',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    {/* <Card.Title></Card.Title> */}
+                    <Card.Text>
+                      {(() => {
+                        if (this.state.unlock)
+                          return (
+                            <div>
+                              <h4>Key Wallet address: {this.wallet_address}</h4>
+                              <h4>
+                                Etherspot address: {this.contract_account}
+                              </h4>
+                              <div
                                 style={{
-                                  color: 'red',
-                                  fontSize: 'xx-large',
-                                  margin: '1rem'
+                                  display: 'flex',
+                                  alignContent: 'center',
+                                  flexWrap: 'nowrap',
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center'
                                 }}
-                                onClick={this.getBalance}
-                              />
+                              >
+                                <h4>Dai Balance: {this.balance} </h4>
+                                <IoReloadCircle
+                                  style={{
+                                    color: 'red',
+                                    fontSize: 'xx-large',
+                                    margin: '1rem'
+                                  }}
+                                  onClick={this.getBalance}
+                                />
+                              </div>
                             </div>
-                          </div>
-                        )
-                    })()}
-                  </Card.Text>
-                  {TransferTab()}
-                </Card.Body>
-                {/* <Card.Footer className="text-muted">2 days ago</Card.Footer> */}
-              </bridgeCard>
-            </Tab1>
-            <Tab2 label="xDai_Dai">
-              <bridgeCard>
-                {/* <Card.Header></Card.Header> */}
-                <Card.Body
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  }}
-                >
-                  {/* <Card.Title></Card.Title> */}
-                  <Card.Text>
-                    <div>
-                      <h4>Key Wallet address: {this.wallet_address}</h4>
-                      <h4>Etherspot address: {this.contract_account}</h4>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignContent: 'center',
-                          flexWrap: 'nowrap',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <h4>xDai Balance: {this.sokol_bal}</h4>
-                        <IoReloadCircle
-                          style={{ fontSize: 'xx-large', margin: '1rem' }}
-                          onClick={this.getBalance}
-                        />
+                          )
+                      })()}
+                    </Card.Text>
+                    {TransferTab()}
+                  </Card.Body>
+                  {/* <Card.Footer className="text-muted">2 days ago</Card.Footer> */}
+                </bridgeCard>
+              </Tab1>
+              <Tab2 label="xDai to Dai">
+                <bridgeCard>
+                  {/* <Card.Header></Card.Header> */}
+                  <Card.Body
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignContent: 'center',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    {/* <Card.Title></Card.Title> */}
+                    <Card.Text>
+                      <div>
+                        <h4>Key Wallet address: {this.wallet_address}</h4>
+                        <h4>Etherspot address: {this.contract_account}</h4>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignContent: 'center',
+                            flexWrap: 'nowrap',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <h4>xDai Balance: {this.sokol_bal}</h4>
+                          <IoReloadCircle
+                            style={{
+                              fontSize: 'xx-large',
+                              margin: '1rem',
+                              color: 'red'
+                            }}
+                            onClick={this.getBalance}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </Card.Text>
-                  {TransferTab2()}
-                </Card.Body>
-                {/* <Card.Footer className="text-muted">2 days ago</Card.Footer> */}
-              </bridgeCard>
-            </Tab2>
-          </Tabs>
-        )}
+                    </Card.Text>
+                    {TransferTab2()}
+                  </Card.Body>
+                  {/* <Card.Footer className="text-muted">2 days ago</Card.Footer> */}
+                </bridgeCard>
+              </Tab2>
+            </Tabs>
+          )}
+        </div>
       </>
     )
   }
