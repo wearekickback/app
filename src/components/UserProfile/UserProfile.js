@@ -22,6 +22,7 @@ import { useQuery } from 'react-apollo'
 import _ from 'lodash'
 import { getDateFromUnix } from '../../utils/dates'
 import AddressLink from '../Links/AddressLink'
+import { parseAvatar } from '../../api/utils'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -263,7 +264,7 @@ export default function UserProfile({ profile: p }) {
                       >
                         {v.space.avatar && (
                           <TinyAvatarImg
-                            src={`${v.space.avatar}`}
+                            src={`${parseAvatar(v.space.avatar)}`}
                             alt={v.space.id}
                             title={`${v.space.id}: Voted ${v.choice}(${choice}) on "${v.proposal.title}`}
                           ></TinyAvatarImg>

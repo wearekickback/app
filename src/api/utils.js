@@ -43,3 +43,13 @@ export function lazyAsync(getter) {
     return promise
   }
 }
+
+export const parseAvatar = url => {
+  const ipfs = url.match(/^ipfs:\/\/(.*)/)
+  if (ipfs) {
+    const cid = ipfs[1]
+    return `https://ipfs.io/ipfs/${cid}`
+  } else {
+    return url
+  }
+}
