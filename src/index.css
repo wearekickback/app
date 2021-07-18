@@ -6,4 +6,5 @@ body {
 
 .bn-onboard-custom.bn-onboard-modal {
   font-family: Muli;
+  z-index: 99;
 }
