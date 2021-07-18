@@ -205,6 +205,12 @@ export const POAP_BADGES_QUERY = gql`
   }
 `
 
+export const POAP_EVENT_NAME_QUERY = gql`
+  query poapEventName($eventId: String!) {
+    poapEventName: poapEventName(eventId: $eventId) @client
+  }
+`
+
 export const ENS_NAME_QUERY = gql`
   query getEnsName($userAddress: String!) {
     getEnsName: getEnsName(userAddress: $userAddress) @client
