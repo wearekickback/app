@@ -259,6 +259,12 @@ export default function UserProfile({ profile: p }) {
               <ContributionList>
                 {snapshotData.votes.slice(0, 50).map((v, i) => {
                   const choice = v.proposal.choices[v.choice - 1]
+                  let choiceText
+                  if (typeof v.choice === 'number') {
+                    choiceText = `${v.choice}(${choice})`
+                  } else {
+                    choiceText = 'multiple choices'
+                  }
                   return (
                     <li>
                       <a
@@ -268,14 +274,14 @@ export default function UserProfile({ profile: p }) {
                           <TinyAvatarImg
                             src={`${parseAvatar(v.space.avatar)}`}
                             alt={v.space.id}
-                            title={`${v.space.id}: Voted ${v.choice}(${choice}) on "${v.proposal.title}`}
+                            title={`${v.space.id}: Voted ${choiceText} on "${v.proposal.title}`}
                             onError={e => {
                               e.target.src = snapshotLogoUrl
                             }}
                           ></TinyAvatarImg>
                         )}
-                        Voted {v.choice}({choice.slice(0, 10)}...) on "
-                        {v.proposal.title.slice(0, 20)}..."
+                        Voted {choiceText} on "{v.proposal.title.slice(0, 20)}
+                        ..."
                       </a>{' '}
                       at {getDateFromUnix(v.created)}
                     </li>
