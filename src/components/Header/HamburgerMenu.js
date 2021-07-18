@@ -22,6 +22,7 @@ const HamburgerMenuContainer = styled('div')`
     color: white;
     padding: 10px 0;
   }
+  z-index: 2;
 `
 
 function HamburgerMenu({ isMenuOpen }) {
