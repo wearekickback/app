@@ -28,6 +28,8 @@ const cache = new InMemoryCache()
 const link = new HttpLink({
   uri: 'https://hub.snapshot.page/graphql'
 })
+const snapshotLogoUrl =
+  'https://gblobscdn.gitbook.com/spaces%2F-MG4Ulnnabb2Xz3Lei9_%2Favatar-1602311890000.png?alt=media'
 const graphClient = new ApolloClient({ cache, link })
 
 const EventAttendedContainer = styled('div')`
@@ -267,6 +269,9 @@ export default function UserProfile({ profile: p }) {
                             src={`${parseAvatar(v.space.avatar)}`}
                             alt={v.space.id}
                             title={`${v.space.id}: Voted ${v.choice}(${choice}) on "${v.proposal.title}`}
+                            onError={e => {
+                              e.target.src = snapshotLogoUrl
+                            }}
                           ></TinyAvatarImg>
                         )}
                         Voted {v.choice}({choice.slice(0, 10)}...) on "
