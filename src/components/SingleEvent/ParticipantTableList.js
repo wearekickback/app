@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
+import { useQuery } from 'react-apollo'
 import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, getSocialId } from '@wearekickback/shared'
 import CheckWhitelist from './CheckWhitelist'
@@ -225,100 +226,114 @@ class SingleEventWrapper extends Component {
     return (
       <SingleEventContainer>
         <GlobalConsumer>
-          {({ userAddress }) => (
-            <SafeQuery
-              query={PARTY_ADMIN_VIEW_QUERY}
-              variables={{ address }}
-              fetchPolicy="cache-and-network"
-            >
-              {({
-                data: { partyAdminView: party },
-                loading,
-                error,
-                refetch
-              }) => {
-                // no party?
-                if (!party) {
-                  if (loading) {
-                    return 'Loading ...'
-                  } else {
-                    return (
-                      <WarningBox>
-                        We could not find an event at the address {address}!
-                      </WarningBox>
-                    )
-                  }
-                }
-                const { participants, ended, optional } = party
-                // pre-calculate some stuff up here
-                const preCalculatedProps = {
-                  amAdmin: amAdmin(party, userAddress),
-                  myParticipantEntry: getMyParticipantEntry(party, userAddress)
-                }
-
-                preCalculatedProps.amAdmin = amAdmin(party, userAddress)
-                const lastParticipant = participants[participants.length - 1]
-
-                if (
-                  optional &&
-                  optional.event_whitelist &&
-                  !!optional.event_whitelist.address
-                ) {
-                  return (
-                    <CheckWhitelist
-                      userAddresses={participants.map(p => p.user.address)}
-                      tokenAddress={optional.event_whitelist.address}
-                    >
-                      {a => {
-                        for (let i = 0; i < participants.length; i++) {
-                          const participant = participants[i]
-                          const balance =
-                            a.getMainnetTokenBalance.balances[i] /
-                            Math.pow(10, a.getMainnetTokenBalance.decimals)
-                          participant.user.whiteList = {
-                            balance,
-                            symbol: a.getMainnetTokenBalance.symbol
-                          }
-                        }
+          {({ userAddress, loggedIn }) => {
+            if (loggedIn) {
+              return (
+                <SafeQuery
+                  query={PARTY_ADMIN_VIEW_QUERY}
+                  variables={{ address }}
+                  fetchPolicy="cache-and-network"
+                >
+                  {({
+                    data: { partyAdminView: party },
+                    loading,
+                    error,
+                    refetch
+                  }) => {
+                    // no party?
+                    if (!party) {
+                      if (loading) {
+                        return 'Loading ...'
+                      } else {
                         return (
-                          <TableList
-                            participants={participants}
-                            lastParticipant={lastParticipant}
-                            handleCheckBox={this.handleCheckBox}
-                            handleSearch={handleSearch}
-                            handleFilterChange={handleFilterChange}
-                            search={search}
-                            ended={ended}
-                            selectedFilter={selectedFilter}
-                            party={party}
-                            refetch={refetch}
-                            displayPrivateInfo={this.state.displayPrivateInfo}
-                            exportTableToCSV={this.exportTableToCSV.bind(this)}
-                          ></TableList>
+                          <WarningBox>
+                            We could not find an event at the address {address}!
+                          </WarningBox>
                         )
-                      }}
-                    </CheckWhitelist>
-                  )
-                }
-                return (
-                  <TableList
-                    participants={participants}
-                    handleCheckBox={this.handleCheckBox}
-                    lastParticipant={lastParticipant}
-                    handleSearch={handleSearch}
-                    handleFilterChange={handleFilterChange}
-                    search={search}
-                    ended={ended}
-                    selectedFilter={selectedFilter}
-                    party={party}
-                    refetch={refetch}
-                    displayPrivateInfo={this.state.displayPrivateInfo}
-                    exportTableToCSV={this.exportTableToCSV}
-                  ></TableList>
-                )
-              }}
-            </SafeQuery>
-          )}
+                      }
+                    }
+                    const { participants, ended, optional } = party
+                    // pre-calculate some stuff up here
+                    const preCalculatedProps = {
+                      amAdmin: amAdmin(party, userAddress),
+                      myParticipantEntry: getMyParticipantEntry(
+                        party,
+                        userAddress
+                      )
+                    }
+
+                    preCalculatedProps.amAdmin = amAdmin(party, userAddress)
+                    const lastParticipant =
+                      participants[participants.length - 1]
+
+                    if (
+                      optional &&
+                      optional.event_whitelist &&
+                      !!optional.event_whitelist.address
+                    ) {
+                      return (
+                        <CheckWhitelist
+                          userAddresses={participants.map(p => p.user.address)}
+                          tokenAddress={optional.event_whitelist.address}
+                        >
+                          {a => {
+                            for (let i = 0; i < participants.length; i++) {
+                              const participant = participants[i]
+                              const balance =
+                                a.getMainnetTokenBalance.balances[i] /
+                                Math.pow(10, a.getMainnetTokenBalance.decimals)
+                              participant.user.whiteList = {
+                                balance,
+                                symbol: a.getMainnetTokenBalance.symbol
+                              }
+                            }
+                            return (
+                              <TableList
+                                participants={participants}
+                                lastParticipant={lastParticipant}
+                                handleCheckBox={this.handleCheckBox}
+                                handleSearch={handleSearch}
+                                handleFilterChange={handleFilterChange}
+                                search={search}
+                                ended={ended}
+                                selectedFilter={selectedFilter}
+                                party={party}
+                                refetch={refetch}
+                                displayPrivateInfo={
+                                  this.state.displayPrivateInfo
+                                }
+                                exportTableToCSV={this.exportTableToCSV.bind(
+                                  this
+                                )}
+                              ></TableList>
+                            )
+                          }}
+                        </CheckWhitelist>
+                      )
+                    }
+                    return (
+                      <TableList
+                        participants={participants}
+                        handleCheckBox={this.handleCheckBox}
+                        lastParticipant={lastParticipant}
+                        handleSearch={handleSearch}
+                        handleFilterChange={handleFilterChange}
+                        search={search}
+                        ended={ended}
+                        selectedFilter={selectedFilter}
+                        party={party}
+                        refetch={refetch}
+                        displayPrivateInfo={this.state.displayPrivateInfo}
+                        exportTableToCSV={this.exportTableToCSV}
+                      ></TableList>
+                    )
+                  }}
+                </SafeQuery>
+              )
+            } else {
+              return <>Not logged in</>
+            }
+          }}
         </GlobalConsumer>
       </SingleEventContainer>
     )
