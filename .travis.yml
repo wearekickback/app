@@ -3,10 +3,10 @@ node_js: 14
 cache: yarn
 branches:
   only:
-    - dev
+    - etherspot
     - master
 script:
   - yarn deploy
 notifications:
   email:
-    - dev-notifications@noblockno.party
+    - vignesh.a@tradala.in

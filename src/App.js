@@ -13,6 +13,7 @@ import DefaultLayout, {
 } from './layout/Layouts'
 
 import AllEvents from './routes/AllEvents'
+import Bridge from './routes/Bridge'
 import CreateEvent from './routes/CreateEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventChallenge from './routes/SingleEventChallenge'
@@ -71,6 +72,7 @@ class App extends Component {
                 layout={HomePageLayout}
               />
               <Route exact path="/events" component={AllEvents} />
+              <Route exact path="/bridge" component={Bridge} />
               <Route exact path="/event/:address" component={SingleEvent} />
               <Route
                 path="/event/:address/admin"
