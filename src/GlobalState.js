@@ -10,7 +10,8 @@ import {
   BLOCKNATIVE_DAPPID,
   INFURA_KEY,
   FORTMATIC_KEY,
-  PORTIS_KEY
+  PORTIS_KEY,
+  NETWORK_NAME
   // SQUARELINK_KEY
 } from './config'
 import { identify as logRocketIdentify } from './api/logRocket'
@@ -44,9 +45,7 @@ const TOKEN_SECRET = 'kickback'
 const TOKEN_ALGORITHM = 'HS256'
 
 const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
-
 const wallets = [
-  { walletName: 'authereum', preferred: true },
   { walletName: 'coinbase', preferred: true },
   {
     walletName: 'fortmatic',
@@ -69,10 +68,13 @@ const wallets = [
     preferred: true
   },
   { walletName: 'trust', preferred: true },
-  { walletName: 'unilogin', preferred: true },
   {
     walletName: 'walletConnect',
-    infuraKey: INFURA_KEY,
+    rpc: {
+      '1': `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+      '137': `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
+      '100': 'https://dai.poa.network'
+    },
     preferred: true
   }
   // Disabled as it throws an error message
@@ -114,18 +116,21 @@ class Provider extends Component {
     }
 
     let { onboard } = this.state
+    console.log({ networkId, NETWORK_NAME })
+
     if (!onboard) {
       // dappid is mandatory so will have throw away id for local usage.
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
         dappId: BLOCKNATIVE_DAPPID || testid,
         networkId: parseInt(networkId),
+        networkName: NETWORK_NAME,
         walletCheck: walletChecks,
         walletSelect: {
           heading: 'Select a wallet to connect to Kickback',
           description:
             'To use Kickback you need an Ethereum wallet. Please select one from below:',
-          wallets: wallets
+          wallets
         }
       })
       this.setState({ onboard })
