@@ -17,7 +17,7 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import _ from 'lodash'
-
+import { parseAvatar } from '../../api/utils'
 const cache = new InMemoryCache()
 const link = new HttpLink({
   uri: 'https://hub.snapshot.page/graphql'
@@ -109,7 +109,7 @@ const EventParticipants = props => {
                         .map(v => {
                           return {
                             id: v.space.id,
-                            avatar: v.space.avatar,
+                            avatar: parseAvatar(v.space.avatar),
                             created: v.created
                           }
                         })

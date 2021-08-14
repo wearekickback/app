@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useQuery } from 'react-apollo'
 import styled from '@emotion/styled'
 import useInterval from 'use-interval'
+import { throttle } from 'lodash'
 
 import Button from '../../Forms/Button'
 import TextInput from '../../Forms/TextInput'
 import Label from '../../Forms/Label'
 
 import { withApollo } from 'react-apollo'
-import { POAP_USERS_SUBGRAPH_QUERY } from '../../../graphql/queries'
+import {
+  POAP_USERS_SUBGRAPH_QUERY,
+  POAP_EVENT_NAME_QUERY
+} from '../../../graphql/queries'
 import { PARTICIPANT_STATUS } from '@wearekickback/shared'
 import { MARK_USER_ATTENDED } from '../../../graphql/mutations'
 import { ApolloClient } from 'apollo-client'
@@ -16,7 +21,7 @@ import { HttpLink } from 'apollo-link-http'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: 'https://api.thegraph.com/subgraphs/name/amxx/poap'
+  uri: 'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
 })
 const POAP_ADDRESS = '0x22c1f6050e56d2876009903609a2cc3fef83b415'
 const graphClient = new ApolloClient({ cache, link })
@@ -41,9 +46,14 @@ const POAPList = styled('ul')`
 
 export default withApollo(function CheckIn({ party, client }) {
   const [poapId, setPoapId] = useState('')
+  const [eventId, setEventId] = useState('')
   const [newAttendees, setNewAttendees] = useState([])
   const [isRunning, setIsRunning] = useState(false)
 
+  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
+    variables: { eventId },
+    skip: !eventId
+  })
   useInterval(
     () => {
       const [attendee, ...rest] = newAttendees
@@ -72,11 +82,11 @@ export default withApollo(function CheckIn({ party, client }) {
       query: POAP_USERS_SUBGRAPH_QUERY,
       variables: { eventId: poapId }
     })
-    const addresses = event.tokens.map(t => t.owner.id)
-
+    const addresses = (event && event.tokens.map(t => t.owner.id)) || []
+    const tokens = (event && event.tokens) || []
     const _newAttendees = party.participants
       .map(participant => {
-        let token = event.tokens.filter(
+        let token = tokens.filter(
           t => t.owner.id === participant.user.address
         )[0]
         if (token) {
@@ -89,9 +99,10 @@ export default withApollo(function CheckIn({ party, client }) {
           addresses.includes(participant.user.address) &&
           participant.status === PARTICIPANT_STATUS.REGISTERED
       )
+    setIsRunning(false)
     setNewAttendees(_newAttendees)
+    setEventId(poapId)
   }
-
   return (
     <>
       <Section>
@@ -122,12 +133,25 @@ export default withApollo(function CheckIn({ party, client }) {
             onChangeText={value => setPoapId(value)}
             placeholder="POAP Event ID"
             type="number"
+            value={poapId}
           />
         </EventIdInputContainer>
-        <Button
-          disabled={newAttendees.length !== 0}
-          onClick={() => loadPOAPUser()}
-        >
+        {poapEventName && (
+          <div>
+            <img
+              width="50px"
+              src={
+                poapEventName.poapEventName &&
+                poapEventName.poapEventName.image_url
+              }
+            ></img>
+            <a href={`https://poap.gallery/event/${poapId}`} target="_blank">
+              {eventId}:
+              {poapEventName.poapEventName && poapEventName.poapEventName.name}
+            </a>
+          </div>
+        )}
+        <Button disabled={isRunning} onClick={() => loadPOAPUser()}>
           Load POAP users
         </Button>
         <Button
@@ -135,6 +159,17 @@ export default withApollo(function CheckIn({ party, client }) {
           onClick={() => setIsRunning(true)}
         >
           Mark Check In
+        </Button>
+        <Button
+          disabled={!poapId}
+          onClick={() => {
+            setPoapId('')
+            setEventId('')
+            setNewAttendees([])
+            setIsRunning(false)
+          }}
+        >
+          Clear
         </Button>
       </Section>
       <Section>

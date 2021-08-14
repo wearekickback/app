@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "scope": "wearekickback",
+  "builds": [
+    { "src": "build/**", "use": "@now/static" },
+    { "src": "api/**", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "build/index.html" },
+    { "src": "/gettingstarted", "dest": "build/index.html" },
+    { "src": "/faq", "dest": "build/index.html" },
+    { "src": "/team", "dest": "build/index.html" },
+    { "src": "/terms", "dest": "build/index.html" },
+    { "src": "/privacy", "dest": "build/index.html" },
+    { "src": "/pricing", "dest": "build/index.html" },
+    { "src": "/create/?", "dest": "build/index.html" },
+    { "src": "/deploy/?", "dest": "build/index.html" },
+    { "src": "/events/?", "dest": "build/index.html" },
+    { "src": "/event/.+", "dest": "api/event.js" },
+    { "src": "/user/.+", "dest": "build/index.html" },
+    {
+      "src": "/service-worker.js",
+      "dest": "build/service-worker.js",
+      "headers": { "cache-control": "no-cache" }
+    },
+    { "src": "/(.+)", "dest": "build/$1" }
+  ]
+}

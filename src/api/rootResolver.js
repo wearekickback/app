@@ -76,6 +76,10 @@ const resolvers = {
         __typename: event.event
       }))
     },
+    async poapEventName(_, { eventId }) {
+      let response = await fetch(`https://api.poap.xyz/events/id/${eventId}`)
+      return response.json()
+    },
     async poapBadges(_, { userAddress }) {
       let response = await fetch(
         `https://api.poap.xyz/actions/scan/${userAddress}`

@@ -10,7 +10,8 @@ import { calculateWinningShare } from '../../utils/parties'
 import tick from '../svg/tick.svg'
 import Currency from './Currency'
 import { GlobalConsumer } from '../../GlobalState'
-
+const snapshotLogoUrl =
+  'https://gblobscdn.gitbook.com/spaces%2F-MG4Ulnnabb2Xz3Lei9_%2Favatar-1602311890000.png?alt=media'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
 // const ParticipantName = styled('div')`
@@ -67,7 +68,14 @@ const OrgAvatars = function({ spaces }) {
   return (
     <div>
       {spaces.map(s => (
-        <OrgAvatarImg src={s.avatar} alt={s.id} title={s.id}></OrgAvatarImg>
+        <OrgAvatarImg
+          src={s.avatar}
+          alt={s.id}
+          title={s.id}
+          onError={e => {
+            e.target.src = snapshotLogoUrl
+          }}
+        ></OrgAvatarImg>
       ))}
     </div>
   )

@@ -762,10 +762,11 @@ class PartyForm extends Component {
                                   decimals={currentTokenDecimals}
                                   price={this.state.price}
                                 />
-                                {currentTokenSymbol === 'DAI' ||
-                                currentTokenSymbol === 'XDAI' ? (
+                                {['ETH', 'MATIC', 'DAI', 'XDAI'].includes(
+                                  currentTokenSymbol
+                                ) ? (
                                   <Warning>
-                                    Please do not set more than 10{' '}
+                                    Please do not set more than $10 worth of{' '}
                                     {currentTokenSymbol} as this is in alpha and
                                     could have some bugs.
                                   </Warning>
