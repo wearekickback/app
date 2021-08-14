@@ -45,6 +45,17 @@ const TOKEN_SECRET = 'kickback'
 const TOKEN_ALGORITHM = 'HS256'
 
 const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
+
+const getNetworkId = networkId => {
+  if (networkId === '35') {
+    // Default chainId for ganache
+    // return 1337
+    return 1337
+  } else {
+    return parseInt(networkId)
+  }
+}
+
 const wallets = [
   { walletName: 'coinbase', preferred: true },
   {
@@ -73,17 +84,12 @@ const wallets = [
     rpc: {
       '1': `https://mainnet.infura.io/v3/${INFURA_KEY}`,
       '137': `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
-      '100': 'https://dai.poa.network'
+      '100': 'https://dai.poa.network',
+      '1337': `https://localhost:8545`, // for ganache localhost default chainId/port
+      '31337': `https://localhost:9545` // for hardhat localhost default chainId/port
     },
     preferred: true
   }
-  // Disabled as it throws an error message
-  // {
-  //   walletName: 'squarelink',
-  //   apiKey: SQUARELINK_KEY
-  // }
-  // Disabled as it throws an error message
-  // { walletName: 'dapper' }
 ]
 
 class Provider extends Component {
@@ -107,7 +113,9 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action, networkId, dontForceSetUp }) => {
+  setUpWallet = async args => {
+    const { action, networkId, dontForceSetUp } = args
+    console.log({ action, networkId, dontForceSetUp })
     // Check if user has chosen a wallet before, if so just use that.
     // If not, the user will have to select a wallet so only proceed if required.
     const lastUsedWallet = LocalStorage.getItem(WALLET)
@@ -116,15 +124,14 @@ class Provider extends Component {
     }
 
     let { onboard } = this.state
-    console.log({ networkId, NETWORK_NAME })
 
     if (!onboard) {
       // dappid is mandatory so will have throw away id for local usage.
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
         dappId: BLOCKNATIVE_DAPPID || testid,
-        networkId: parseInt(networkId),
-        networkName: NETWORK_NAME,
+        networkId: getNetworkId(networkId),
+        networkName: NETWORK_NAME || 'local',
         walletCheck: walletChecks,
         walletSelect: {
           heading: 'Select a wallet to connect to Kickback',
@@ -353,7 +360,7 @@ class Provider extends Component {
     // Try and open wallet
     await this.setUpWallet({
       action: 'Sign In',
-      networkId: networkState.expectedNetworkId,
+      networkId: parseInt(networkState.expectedNetworkId),
       dontForceSetUp: true
     })
 
