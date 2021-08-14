@@ -19,7 +19,7 @@ class FAQ extends Component {
           .
         </p>
         <h3>Can I cancel my registration?</h3>
-        <p>No</p>
+        <p>No. The purpose of Kickback is to create an incentive for attendees to commit to plans, whilst simultaneously taking the risk off of event organisers and venues.</p>
         <h3>What happens if the event is canceled?</h3>
         <p>
           In case the event is canceled, all registered people can withdraw
@@ -39,7 +39,7 @@ class FAQ extends Component {
           address.
         </h3>
         <p>
-          The profile photo is optional. It is associated to your twitter avatar
+          The profile photo is optional. It is associated to your Twitter Avatar
           which you provide during signup.
         </p>
 
