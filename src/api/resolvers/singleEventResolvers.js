@@ -144,7 +144,7 @@ const resolvers = {
       let tokenAddress = args.tokenAddress
 
       const web3 = await getWeb3()
-      const option = await getOption({ gas: 15000000 })
+      const option = await getOption({ gas: 5000000 })
       if (tokenAddress === '') {
         tokenAddress = EMPTY_ADDRESS
       }
