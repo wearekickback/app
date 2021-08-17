@@ -20,7 +20,7 @@ import _ from 'lodash'
 import { parseAvatar } from '../../api/utils'
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: 'https://hub.snapshot.page/graphql'
+  uri: 'https://hub.snapshot.org/graphql'
 })
 const graphClient = new ApolloClient({ cache, link })
 
