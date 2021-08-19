@@ -1,5 +1,6 @@
 import { events } from '@wearekickback/contracts'
 import { parseLog } from 'ethereum-event-logs'
+import { getProvider } from '../GlobalState'
 
 export const extractNewPartyAddressFromTx = tx => {
   // coerce events into logs if available
@@ -15,9 +16,14 @@ export const extractNewPartyAddressFromTx = tx => {
 }
 
 export function txHelper(web3TxObj) {
-  return new Promise(resolve => {
-    web3TxObj.on('transactionHash', hash => {
-      resolve(hash)
+  getProvider().then(provider => {
+    return new Promise(resolve => {
+      web3TxObj.on('transactionHash', hash => {
+        if (provider.state.notify) {
+          provider.state.notify.hash(hash)
+        }
+        resolve(hash)
+      })
     })
   })
 }
