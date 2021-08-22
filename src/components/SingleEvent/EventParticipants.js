@@ -67,8 +67,10 @@ const EventParticipants = props => {
   const handleSearch = search => {
     setSearch((search || '').toLowerCase())
   }
+  const userAddresses = participants.map(p => p.user.address)
   const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
-    variables: { userAddresses: participants.map(p => p.user.address) },
+    variables: { userAddresses },
+    skip: userAddresses.length === 0,
     client: graphClient
   })
   console.log({ snapshotData })
@@ -169,7 +171,7 @@ const EventParticipants = props => {
                     {stats.slice(0, 10).map(([k, v]) => {
                       return (
                         <li>
-                          {k} has {v} participants
+                          {k} has {v} participant{parseInt(v) > 1 && 's'}
                         </li>
                       )
                     })}
