@@ -85,13 +85,21 @@ const wallets = [
     rpc: {
       '1': `https://mainnet.infura.io/v3/${INFURA_KEY}`,
       '137': `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
-      '100': 'https://dai.poa.network',
-      '1337': `https://localhost:8545`, // for ganache localhost default chainId/port
-      '31337': `https://localhost:9545` // for hardhat localhost default chainId/port
+      '100': 'https://dai.poa.network'
     },
     preferred: true
   }
 ]
+
+const getWallets = networkId => {
+  console.log({ networkId })
+  if ([1, 100, 137].includes(networkId)) {
+    return wallets
+  } else {
+    // only return metamask for localhost
+    return [{ walletName: 'metamask', preferred: true }]
+  }
+}
 
 class Provider extends Component {
   state = {
@@ -138,7 +146,7 @@ class Provider extends Component {
           heading: 'Select a wallet to connect to Kickback',
           description:
             'To use Kickback you need an Ethereum wallet. Please select one from below:',
-          wallets
+          wallets: getWallets(getNetworkId(networkId))
         }
       })
       this.setState({ onboard })
