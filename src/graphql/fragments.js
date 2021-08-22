@@ -66,6 +66,7 @@ export const PartyFields = gql`
     withdrawn
     ownerAddress
     optional
+    isNft
     roles {
       role
       user {
