@@ -88,7 +88,39 @@ export const ProfileFieldsDetailed = gql`
       ...PartyFields
     }
     eventsHosted {
-      ...PartyFields
+      id
+      address
+      name
+      description
+      timezone
+      start
+      end
+      arriveBy
+      createdAt
+      location
+      headerImg
+      balance
+      deposit
+      tokenAddress
+      symbol
+      decimals
+      coolingPeriod
+      participantLimit
+      ended
+      finalizedAt
+      cancelled
+      status
+      clearFee
+      withdrawn
+      ownerAddress
+      optional
+      isNft
+      roles {
+        role
+        user {
+          ...ProfileFields
+        }
+      }
     }
     eventsContributed {
       amount
