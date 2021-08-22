@@ -4,6 +4,7 @@ import { withApollo } from 'react-apollo'
 import jwt from 'jsonwebtoken'
 import Web3 from 'web3'
 import Onboard from 'bnc-onboard'
+import Notify from 'bnc-notify'
 
 import { track } from './api/analytics'
 import {
@@ -141,6 +142,12 @@ class Provider extends Component {
         }
       })
       this.setState({ onboard })
+
+      var notify = Notify({
+        dappId: BLOCKNATIVE_DAPPID || testid,
+        networkId: parseInt(networkId) // [Integer] The Ethereum network ID your Dapp uses.
+      })
+      this.setState({ notify })
     }
 
     let result = {

@@ -26,7 +26,7 @@ import { parseAvatar } from '../../api/utils'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: 'https://hub.snapshot.page/graphql'
+  uri: 'https://hub.snapshot.org/graphql'
 })
 const snapshotLogoUrl =
   'https://gblobscdn.gitbook.com/spaces%2F-MG4Ulnnabb2Xz3Lei9_%2Favatar-1602311890000.png?alt=media'

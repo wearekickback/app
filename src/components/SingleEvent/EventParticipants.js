@@ -20,7 +20,7 @@ import _ from 'lodash'
 import { parseAvatar } from '../../api/utils'
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: 'https://hub.snapshot.page/graphql'
+  uri: 'https://hub.snapshot.org/graphql'
 })
 const graphClient = new ApolloClient({ cache, link })
 
@@ -67,11 +67,33 @@ const EventParticipants = props => {
   const handleSearch = search => {
     setSearch((search || '').toLowerCase())
   }
+  const userAddresses = participants.map(p => p.user.address)
   const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
-    variables: { userAddresses: participants.map(p => p.user.address) },
+    variables: { userAddresses },
+    skip: userAddresses.length === 0,
     client: graphClient
   })
-
+  console.log({ snapshotData })
+  const spaces = {}
+  snapshotData &&
+    snapshotData.votes.map(s => {
+      if (spaces[s.space.id]) {
+        spaces[s.space.id].voters.push(s.voter)
+      } else {
+        spaces[s.space.id] = {
+          voters: [s.voter],
+          avatar: s.space.avatar
+        }
+      }
+    })
+  console.log({ spaces })
+  const stats = Object.keys(spaces)
+    .map(k => {
+      return [k, _.uniq(spaces[k].voters).length]
+    })
+    .sort((a, b) => {
+      return b[1] - a[1]
+    })
   return (
     <SafeQuery
       query={GET_CONTRIBUTIONS_BY_PARTY}
@@ -141,6 +163,22 @@ const EventParticipants = props => {
                 <NoParticipants>No one is attending.</NoParticipants>
               )}
             </EventParticipantsContainer>
+            <div>
+              {stats.length > 0 && (
+                <div>
+                  <h3>Top Governance participations</h3>
+                  <ul>
+                    {stats.slice(0, 10).map(([k, v]) => {
+                      return (
+                        <li>
+                          {k} has {v} participant{parseInt(v) > 1 && 's'}
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
           </Fragment>
         )
       }}
