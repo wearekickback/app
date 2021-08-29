@@ -324,7 +324,7 @@ class SingleEventWrapper extends Component {
                         party={party}
                         refetch={refetch}
                         displayPrivateInfo={this.state.displayPrivateInfo}
-                        exportTableToCSV={this.exportTableToCSV}
+                        exportTableToCSV={this.exportTableToCSV.bind(this)}
                       ></TableList>
                     )
                   }}
