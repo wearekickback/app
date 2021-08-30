@@ -204,10 +204,13 @@ export default function UserProfile({ profile: p }) {
               )
               let tokenUrl
 
-              if (event.isNft && event.participants.length > 0) {
+              if (
+                event.isNft &&
+                event.participants &&
+                event.participants.length > 0
+              ) {
                 tokenUrl = `https://opensea.io/assets/matic/${event.address}/${event.participants[0].index}`
               }
-
               return (
                 <EventAttendedContainer key={event.address}>
                   <EventLink to={`/event/${event.address}`}>
