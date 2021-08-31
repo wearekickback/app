@@ -6,7 +6,7 @@
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
     "@ensdomains/ens-contracts": "^0.0.3",
-    "@wearekickback/contracts": "1.4.6",
+    "@wearekickback/contracts": "1.5.0",
     "@wearekickback/shared": "^1.14.1",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",

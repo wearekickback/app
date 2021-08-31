@@ -114,6 +114,10 @@ const TinyAvatarImg = styled('img')`
   width: 15px;
 `
 
+const OpenSeaLink = styled('a')`
+  margin 1em;
+`
+
 export default function UserProfile({ profile: p }) {
   let twitter,
     walletLink,
@@ -137,8 +141,8 @@ export default function UserProfile({ profile: p }) {
     p && p.eventsAttended.map(p => (p.isAttended = true))
     p && p.eventsHosted.map(p => (p.isHosted = true))
     const merged = _.merge(
-      _.keyBy(p.eventsAttended, 'name'),
-      _.keyBy(p.eventsHosted, 'name')
+      _.keyBy(p.eventsHosted, 'name'),
+      _.keyBy(p.eventsAttended, 'name')
     )
     sorted = _.sortBy(Object.values(merged), [
       function(o) {
@@ -198,12 +202,29 @@ export default function UserProfile({ profile: p }) {
               let contributionReceived = p.eventsContributionReceived.filter(
                 p => p.name === event.name
               )
+              let tokenUrl
+
+              if (
+                event.isNft &&
+                event.participants &&
+                event.participants.length > 0
+              ) {
+                tokenUrl = `https://opensea.io/assets/matic/${event.address}/${event.participants[0].index}`
+              }
               return (
                 <EventAttendedContainer key={event.address}>
                   <EventLink to={`/event/${event.address}`}>
                     {event.name}
                   </EventLink>
                   {event.isHosted && '(Host)'}
+                  {tokenUrl && (
+                    <OpenSeaLink href={tokenUrl}>
+                      <img
+                        target="_blank"
+                        src="https://opensea.io/favicon.ico"
+                      />
+                    </OpenSeaLink>
+                  )}
                   {(contributed.length > 0 ||
                     contributionReceived.length > 0) && (
                     <ContributionList>

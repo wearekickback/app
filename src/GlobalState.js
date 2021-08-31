@@ -46,6 +46,17 @@ const TOKEN_SECRET = 'kickback'
 const TOKEN_ALGORITHM = 'HS256'
 
 const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
+
+const getNetworkId = networkId => {
+  if (networkId === '35') {
+    // Default chainId for ganache
+    // return 1337
+    return 1337
+  } else {
+    return parseInt(networkId)
+  }
+}
+
 const wallets = [
   { walletName: 'coinbase', preferred: true },
   {
@@ -78,14 +89,17 @@ const wallets = [
     },
     preferred: true
   }
-  // Disabled as it throws an error message
-  // {
-  //   walletName: 'squarelink',
-  //   apiKey: SQUARELINK_KEY
-  // }
-  // Disabled as it throws an error message
-  // { walletName: 'dapper' }
 ]
+
+const getWallets = networkId => {
+  console.log({ networkId })
+  if ([1, 100, 137].includes(networkId)) {
+    return wallets
+  } else {
+    // only return metamask for localhost
+    return [{ walletName: 'metamask', preferred: true }]
+  }
+}
 
 class Provider extends Component {
   state = {
@@ -108,7 +122,9 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action, networkId, dontForceSetUp }) => {
+  setUpWallet = async args => {
+    const { action, networkId, dontForceSetUp } = args
+    console.log({ action, networkId, dontForceSetUp })
     // Check if user has chosen a wallet before, if so just use that.
     // If not, the user will have to select a wallet so only proceed if required.
     const lastUsedWallet = LocalStorage.getItem(WALLET)
@@ -117,21 +133,20 @@ class Provider extends Component {
     }
 
     let { onboard } = this.state
-    console.log({ networkId, NETWORK_NAME })
 
     if (!onboard) {
       // dappid is mandatory so will have throw away id for local usage.
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
         dappId: BLOCKNATIVE_DAPPID || testid,
-        networkId: parseInt(networkId),
-        networkName: NETWORK_NAME,
+        networkId: getNetworkId(networkId),
+        networkName: NETWORK_NAME || 'local',
         walletCheck: walletChecks,
         walletSelect: {
           heading: 'Select a wallet to connect to Kickback',
           description:
             'To use Kickback you need an Ethereum wallet. Please select one from below:',
-          wallets
+          wallets: getWallets(getNetworkId(networkId))
         }
       })
       this.setState({ onboard })
@@ -360,7 +375,7 @@ class Provider extends Component {
     // Try and open wallet
     await this.setUpWallet({
       action: 'Sign In',
-      networkId: networkState.expectedNetworkId,
+      networkId: parseInt(networkState.expectedNetworkId),
       dontForceSetUp: true
     })
 
