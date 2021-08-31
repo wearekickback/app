@@ -51,7 +51,7 @@
     "react-timezone": "^2.3.0",
     "react-tiny-link": "^3.4.0",
     "react-tooltip": "^3.9.0",
-    "sanitize-html": "^1.20.1",
+    "sanitize-html": "^2.3.2",
     "truffle": "^5.1.30",
     "use-interval": "^1.2.1",
     "uuid": "^3.3.2",
