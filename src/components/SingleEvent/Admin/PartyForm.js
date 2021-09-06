@@ -191,7 +191,7 @@ const VisibilityDropdown = styled(Dropdown)`
 
 const commitmentInUsd = ({ currencyType, symbol, price, deposit }) => {
   if (symbol !== 'ETH' || !price) return symbol
-  const totalPrice = (deposit * price).toFixed(2)
+  const totalPrice = (deposit * price).toFixed(3)
   return `${symbol} ($${totalPrice})`
 }
 
@@ -448,7 +448,7 @@ class PartyForm extends Component {
           const price = parseFloat(r.result.ethusd)
           this.setState({ price: price })
           if (!this.state.deposit) {
-            const ethCommitment = (unit / price).toFixed(2)
+            const ethCommitment = (unit / price).toFixed(3)
             this.setState({ deposit: ethCommitment })
           }
         }

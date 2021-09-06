@@ -335,7 +335,7 @@ class EventCTA extends Component {
                         a.getMainnetTokenBalance &&
                         hasMainnetToken && (
                           <GreenBox>
-                            You have {mainnetTokenBalance.toFixed(2)} $
+                            You have {mainnetTokenBalance.toFixed(3)} $
                             {a.getMainnetTokenBalance.symbol} tokens
                           </GreenBox>
                         )}

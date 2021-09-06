@@ -20,7 +20,7 @@ const TextInput = styled(DefaultTextInput)`
 const ChangeDeposit = ({ address, currentDeposit, numParticipants }) => {
   const depositToDisplay = toEthVal(currentDeposit)
     .toEth()
-    .toFixed(2)
+    .toFixed(3)
 
   const [text, setText] = useState('')
   return (

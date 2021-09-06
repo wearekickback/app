@@ -4,10 +4,10 @@ import { toEthVal } from '../../utils/units'
 const DepositValue = ({ className, value, prefix, decimals = 18 }) => (
   <span className={className}>{`${prefix || ''}${toEthVal(value)
     .scaleUp(decimals)
-    .toFixed(2)}`}</span>
+    .toFixed(3)}`}</span>
 )
 
-export function depositValue(value, decimals = 18, precision = 2) {
+export function depositValue(value, decimals = 18, precision = 3) {
   return toEthVal(value)
     .scaleUp(decimals)
     .toFixed(precision)
