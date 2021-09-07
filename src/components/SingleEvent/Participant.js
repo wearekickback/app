@@ -87,11 +87,12 @@ function Participant({
   amAdmin,
   decimals,
   contributions,
-  spaces
+  spaces,
+  hasPOAP
 }) {
   const { user, status } = participant
   const { deposit, ended } = party
-
+  console.log({ hasPOAP })
   const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
   const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
@@ -106,7 +107,7 @@ function Participant({
     <GlobalConsumer>
       {({ userAddress, loggedIn }) => (
         <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
-          <TwitterAvatar user={user} size={10} scale={6} />
+          <TwitterAvatar hasPOAP={hasPOAP} user={user} size={10} scale={6} />
           <ParticipantId>
             <ParticipantUsername>{user.username}</ParticipantUsername>
           </ParticipantId>

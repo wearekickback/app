@@ -1,5 +1,7 @@
-import _ from 'lodash'
-import React from 'react'
+import _, { set } from 'lodash'
+import React, { useState, useEffect } from 'react'
+import { useQuery } from 'react-apollo'
+
 import styled from '@emotion/styled'
 import { PARTICIPANT_STATUS, getSocialId } from '@wearekickback/shared'
 import {
@@ -15,6 +17,19 @@ import EventFilters from './EventFilters'
 import MarkedAttended from './MarkedAttendedRP'
 import tick from '../svg/tick.svg'
 import Number from '../Icons/Number'
+import {
+  POAP_USERS_SUBGRAPH_QUERY,
+  POAP_EVENT_NAME_QUERY
+} from '../../graphql/queries'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
+})
+const graphClient = new ApolloClient({ cache, link })
 
 const Mismatched = styled('span')`
   color: orange;
@@ -141,6 +156,37 @@ const TableList = ({
   displayPrivateInfo,
   exportTableToCSV
 }) => {
+  const [poapAddresses, setPoapAddresses] = useState('')
+  const poapId = party.optional && party.optional.poapId
+
+  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
+    variables: { eventId: parseInt(poapId) },
+    skip: !poapId
+  })
+  console.log({ poapId, poapEventName })
+  const poapImage =
+    poapEventName &&
+    poapEventName.poapEventName &&
+    poapEventName.poapEventName.image_url
+
+  useEffect(() => {
+    graphClient
+      .query({
+        query: POAP_USERS_SUBGRAPH_QUERY,
+        variables: { eventId: poapId },
+        skip: !poapId
+      })
+      .then(({ data }) => {
+        const event = data && data.event
+        const addresses = {}
+        event &&
+          event.tokens.map(t => {
+            addresses[t.owner.id] = t.id
+          })
+        setPoapAddresses(addresses)
+      })
+  }, [])
+
   return (
     <TableListContainer>
       <MarkedAttendedInfo>
@@ -196,6 +242,7 @@ const TableList = ({
                 {participants[0].user.whiteList && (
                   <TH>${participants[0].user.whiteList.symbol}</TH>
                 )}
+                {poapId && poapAddresses && <TH>POAP {poapId}</TH>}
                 <TH>Action</TH>
                 <TH>Status</TH>
                 {cells.map(
@@ -223,6 +270,22 @@ const TableList = ({
                       {participant.user.whiteList && (
                         <TD>{participant.user.whiteList.balance}</TD>
                       )}
+                      {poapId && poapAddresses && (
+                        <TD>
+                          {poapAddresses[participant.user.address] && (
+                            <>
+                              <a
+                                href={`https://app.poap.xyz/token/${
+                                  poapAddresses[participant.user.address]
+                                }`}
+                              >
+                                {poapAddresses[participant.user.address]}{' '}
+                              </a>
+                            </>
+                          )}
+                        </TD>
+                      )}
+
                       <TD data-csv="no">
                         {' '}
                         {ended ? (

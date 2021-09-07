@@ -18,6 +18,7 @@ import { MARK_USER_ATTENDED } from '../../../graphql/mutations'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
+import { Link } from 'react-router-dom'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -54,6 +55,14 @@ export default withApollo(function CheckIn({ party, client }) {
     variables: { eventId },
     skip: !eventId
   })
+
+  useEffect(() => {
+    if (party && party.optional.poapId) {
+      setEventId(party.optional.poapId)
+      setPoapId(party.optional.poapId)
+    }
+  }, [])
+
   useInterval(
     () => {
       const [attendee, ...rest] = newAttendees
@@ -108,35 +117,13 @@ export default withApollo(function CheckIn({ party, client }) {
       <Section>
         <Label>Automatic POAP check in (experimental)</Label>
         <p>
-          If you are distributing NFTs using{' '}
-          <a href={'https://poap.xyz'}>POAP</a>, then you can check in your
-          attendees automatically.
-        </p>
-
-        <p>
-          Just enter your POAP event ID here so that it matches what is shown{' '}
-          <a href={'https://app.poap.xyz/admin/events'}>here</a> and Kickback
-          will mark users who received a POAP badge as attendees.
-        </p>
-
-        <p>
           You should only use this after users have had enough time to claim
           their NFTs!
         </p>
       </Section>
       <Section>
         <Label>Check in</Label>
-        <p>Enter your event ID and click below to check in your attendees.</p>
-
-        <EventIdInputContainer>
-          <EventIdInput
-            onChangeText={value => setPoapId(value)}
-            placeholder="POAP Event ID"
-            type="number"
-            value={poapId}
-          />
-        </EventIdInputContainer>
-        {poapEventName && (
+        {poapEventName ? (
           <div>
             <img
               width="50px"
@@ -149,45 +136,41 @@ export default withApollo(function CheckIn({ party, client }) {
               {eventId}:
               {poapEventName.poapEventName && poapEventName.poapEventName.name}
             </a>
+            <Button disabled={isRunning} onClick={() => loadPOAPUser()}>
+              Load POAP users
+            </Button>
+            <Button
+              disabled={isRunning || newAttendees.length === 0}
+              onClick={() => setIsRunning(true)}
+            >
+              Mark Check In
+            </Button>
+
+            <p>
+              {isRunning ? <span>Auto checking in....</span> : ''}
+              {newAttendees.length} POAP tokens to claim.
+              <POAPList>
+                {newAttendees.map(a => {
+                  const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
+                  return (
+                    <li>
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        {a.poapTokenId}
+                      </a>{' '}
+                      {a.user.username} {a.user.address.slice(0, 4)}...
+                    </li>
+                  )
+                })}
+              </POAPList>
+            </p>
           </div>
+        ) : (
+          <p>
+            POAP ID is not set. Please set it at "
+            <Link to={`/event/${party.address}/admin/edit`}>Event Detail</Link>"
+            tab
+          </p>
         )}
-        <Button disabled={isRunning} onClick={() => loadPOAPUser()}>
-          Load POAP users
-        </Button>
-        <Button
-          disabled={isRunning || newAttendees.length === 0}
-          onClick={() => setIsRunning(true)}
-        >
-          Mark Check In
-        </Button>
-        <Button
-          disabled={!poapId}
-          onClick={() => {
-            setPoapId('')
-            setEventId('')
-            setNewAttendees([])
-            setIsRunning(false)
-          }}
-        >
-          Clear
-        </Button>
-      </Section>
-      <Section>
-        {isRunning ? <span>Auto checking in....</span> : ''}
-        {newAttendees.length} POAP tokens to claim.
-        <POAPList>
-          {newAttendees.map(a => {
-            const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
-            return (
-              <li>
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  {a.poapTokenId}
-                </a>{' '}
-                {a.user.username} {a.user.address.slice(0, 4)}...
-              </li>
-            )
-          })}
-        </POAPList>
       </Section>
     </>
   )

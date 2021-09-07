@@ -10,7 +10,7 @@ const Avatar = styled(DefaultAvatar)`
   flex-shrink: 0;
 `
 
-const TwitterAvatar = ({ className, user, size, scale }) => {
+const TwitterAvatar = ({ hasPOAP, className, user, size, scale }) => {
   const avatarId = getSocialId(user.social, 'twitter')
   let avatarUrl
   let blockies
@@ -23,6 +23,7 @@ const TwitterAvatar = ({ className, user, size, scale }) => {
 
   return (
     <Avatar
+      hasPOAP={hasPOAP}
       className={className}
       src={avatarUrl}
       blockies={blockies}
