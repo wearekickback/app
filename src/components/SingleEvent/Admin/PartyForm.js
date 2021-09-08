@@ -17,7 +17,7 @@ import { isAddress } from 'web3-utils'
 import { getPartyImageLarge } from '../../../utils/parties'
 import { GlobalConsumer } from '../../../GlobalState'
 import _ from 'lodash'
-
+import { useQuery } from 'react-apollo'
 import {
   getDayAndTimeFromDate,
   getDateFromDayAndTime,
@@ -30,8 +30,10 @@ import { CREATE_PARTY } from '../../../graphql/mutations'
 import {
   TOKEN_QUERY,
   TOKEN_CLIENT_QUERY,
-  TOKEN_SYMBOL_QUERY
+  TOKEN_SYMBOL_QUERY,
+  POAP_EVENT_NAME_QUERY
 } from '../../../graphql/queries'
+
 import ChainMutation, {
   ChainMutationButton
 } from '../../../components/ChainMutation'
@@ -147,6 +149,14 @@ const ImageWrapper = styled('div')`
 
 const DropZoneWrapper = styled('div')`
   margin-bottom: 20px;
+`
+
+const PoapImage = styled('img')`
+  width: 35px;
+`
+
+const SmallTextInput = styled(TextInput)`
+  width: 100px;
 `
 
 const UploadedImage = ({ src, text }) => (
@@ -383,6 +393,29 @@ const DateTimeInput = ({
   )
 }
 
+const PoapEvent = props => {
+  const { poapId } = props
+  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
+    variables: { eventId: parseInt(poapId) },
+    skip: !poapId
+  })
+  console.log({ poapId, poapEventName })
+  const poapImage =
+    poapEventName &&
+    poapEventName.poapEventName &&
+    poapEventName.poapEventName.image_url
+  const eventName =
+    poapEventName &&
+    poapEventName.poapEventName &&
+    poapEventName.poapEventName.name
+  return (
+    <div>
+      <PoapImage src={poapImage} />
+      {eventName}
+    </div>
+  )
+}
+
 class PartyForm extends Component {
   constructor(props) {
     super(props)
@@ -537,6 +570,16 @@ class PartyForm extends Component {
     ) {
       eventWhitelist = this.state.optional.event_whitelist
     }
+    let poapId
+    if (
+      this.state.optional &&
+      this.state.optional.poapId &&
+      this.state.optional.poapId
+    ) {
+      poapId = this.state.optional.poapId
+    }
+
+    console.log({ optional })
     return (
       <GlobalConsumer>
         {({ networkState }) => (
@@ -626,6 +669,7 @@ class PartyForm extends Component {
                   placeholder="Select an option"
                 />
               </InputWrapper>
+              <h3>Optional fields</h3>
               <InputWrapper>
                 <Label>Contribution</Label>
                 <p>
@@ -674,6 +718,7 @@ class PartyForm extends Component {
                     You can only allow certain token holders to be able to RSVP.
                   </p>
                   <TextInput
+                    placeholder="Mainnet token address"
                     onChangeText={text => {
                       let newValue
                       if (eventWhitelist) {
@@ -691,22 +736,40 @@ class PartyForm extends Component {
                     }}
                     value={eventWhitelist && eventWhitelist.address}
                   />
-                  {eventWhitelist && eventWhitelist.address && (
-                    <TextInput
-                      onChangeText={text => {
-                        let newValue
-                        newValue = _.cloneDeep(optional)
-                        newValue.event_whitelist.amount = text
-                        this.setState({
-                          optional: newValue
-                        })
-                      }}
-                      value={eventWhitelist && eventWhitelist.amount}
-                    />
-                  )}
                 </InputWrapper>
               )}
 
+              <InputWrapper>
+                <Label>POAP ID</Label>
+                <p>
+                  If you are distributing NFTs using{' '}
+                  <a href={'https://poap.xyz'}>POAP</a>, then you can check in
+                  your attendees in one click at "POAP Check in" page (You can
+                  search your POAP event ID{' '}
+                  <a href={'https://app.poap.xyz/admin/events'}>here</a>).
+                </p>
+                {poapId && <PoapEvent poapId={poapId} />}
+                <SmallTextInput
+                  placeholder="enter POAP event ID"
+                  onChangeText={text => {
+                    let newValue
+                    if (poapId) {
+                      newValue = _.cloneDeep(optional)
+                      newValue.poapId = text
+                    } else {
+                      newValue = {
+                        ...optional,
+                        poapId: text
+                      }
+                    }
+                    console.log(1, { text, newValue, poapId })
+                    this.setState({
+                      optional: newValue
+                    })
+                  }}
+                  value={poapId}
+                />
+              </InputWrapper>
               {type === 'create' && (
                 <>
                   <SafeQuery

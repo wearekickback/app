@@ -2,6 +2,10 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
 import Blockies from 'react-blockies'
+const POAPImg = styled(`img`)`
+  width: 20px;
+  position: absolute;
+`
 
 const AvatarContainer = styled('div')`
   border-radius: 50%;
@@ -11,6 +15,7 @@ const AvatarContainer = styled('div')`
 `
 
 const Avatar = ({
+  hasPOAP,
   href,
   username,
   src,
@@ -29,6 +34,7 @@ const Avatar = ({
   if (href) {
     container = (
       <AvatarContainer className={className}>
+        {hasPOAP && <POAPImg src="https://poap.gallery/favicon.ico" />}
         <a href={href} target="_blank" rel="noopener noreferrer">
           {Img}
         </a>
@@ -37,6 +43,7 @@ const Avatar = ({
   } else if (username) {
     container = (
       <AvatarContainer className={className}>
+        {hasPOAP && <POAPImg src="https://poap.gallery/favicon.ico" />}
         <Link to={`/user/${username}`}>{Img}</Link>
       </AvatarContainer>
     )

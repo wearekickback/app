@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 
 import { pluralize } from '@wearekickback/shared'
@@ -9,7 +9,9 @@ import { H3 } from '../Typography/Basic'
 import { sortParticipants, filterParticipants } from '../../utils/parties'
 import {
   GET_CONTRIBUTIONS_BY_PARTY,
-  SNAPSHOT_VOTES_SUBGRAPH_QUERY
+  SNAPSHOT_VOTES_SUBGRAPH_QUERY,
+  POAP_USERS_SUBGRAPH_QUERY,
+  POAP_EVENT_NAME_QUERY
 } from '../../graphql/queries'
 import SafeQuery from '../SafeQuery'
 import { useQuery } from 'react-apollo'
@@ -18,11 +20,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import _ from 'lodash'
 import { parseAvatar } from '../../api/utils'
-const cache = new InMemoryCache()
-const link = new HttpLink({
-  uri: 'https://hub.snapshot.org/graphql'
+const graphClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({ uri: 'https://hub.snapshot.org/graphql' })
 })
-const graphClient = new ApolloClient({ cache, link })
+
+const poapGraphClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
+  })
+})
 
 const EventParticipantsContainer = styled('div')`
   display: grid;
@@ -63,7 +71,39 @@ const EventParticipants = props => {
   const [search, setSearch] = useState('')
   const [selectedFilter, setSelectedFilter] = useState(null)
   const spots = spotsLeft(party)
+  const [poapAddresses, setPoapAddresses] = useState('')
+  const poapId = party.optional && party.optional.poapId
 
+  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
+    variables: { eventId: parseInt(poapId) },
+    skip: !poapId
+  })
+  const poapImage =
+    poapEventName &&
+    poapEventName.poapEventName &&
+    poapEventName.poapEventName.image_url
+  console.log({ poapId, poapImage, poapEventName })
+
+  useEffect(() => {
+    poapGraphClient
+      .query({
+        query: POAP_USERS_SUBGRAPH_QUERY,
+        variables: { eventId: poapId },
+        skip: !poapId
+      })
+      .then(({ data }) => {
+        console.log({ data })
+        const event = data && data.event
+        const addresses = {}
+        event &&
+          event.tokens.map(t => {
+            addresses[t.owner.id] = t.id
+          })
+        setPoapAddresses(addresses)
+      })
+  }, [])
+
+  console.log({ poapAddresses })
   const handleSearch = search => {
     setSearch((search || '').toLowerCase())
   }
@@ -86,7 +126,7 @@ const EventParticipants = props => {
         }
       }
     })
-  console.log({ spaces })
+  console.log({ party, spaces })
   const stats = Object.keys(spaces)
     .map(k => {
       return [k, _.uniq(spaces[k].voters).length]
@@ -147,10 +187,10 @@ const EventParticipants = props => {
                         return o.created
                       }
                     ]).reverse()
-
                     return (
                       <Participant
                         amAdmin={amAdmin}
+                        hasPOAP={!!poapAddresses[participant.user.address]}
                         participant={participant}
                         contributions={data && data.getContributionsByParty}
                         spaces={filteredSpaces.slice(0, 5)}
