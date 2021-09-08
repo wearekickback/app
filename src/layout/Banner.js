@@ -9,8 +9,9 @@ const BannerContainer = styled('div')`
 `
 
 export default function Banner() {
-  const startDate = '2020-09-07' // YYYY-MM-DD
-  const endDate = '2020-09-23' // YYYY-MM-DD
+  const startDate = '2021-09-07' // YYYY-MM-DD
+  const endDate = '2021-09-22' // YYYY-MM-DD
+
   if (!moment().isBetween(startDate, endDate)) return false
   return (
     <BannerContainer>
