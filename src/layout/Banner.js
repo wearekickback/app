@@ -17,7 +17,7 @@ export default function Banner() {
     <BannerContainer>
       <a href="https://gitcoin.co/grants/775/kickback">
         {' '}
-        "Support Kickback at Gitcoin CLR Round 10 (ends on{' '}
+        "Support Kickback at Gitcoin CLR Round 11 (ends on{' '}
         {moment(endDate).format('dddd, MMMM Do YYYY')})"
       </a>
     </BannerContainer>
