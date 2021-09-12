@@ -12,7 +12,7 @@ const Link = styled(DefaultLink)`
 `
 
 const EventCardContainer = styled('li')`
-  background: #f8f9fb;
+  background: ${props => (props.private ? '#e9e9e9' : '#f8f9fb')};
   box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   overflow: hidden;
@@ -49,14 +49,20 @@ const Deposit = styled('span')`
   font-style: italic;
 `
 
+const Private = styled(`span`)`
+  margin-left: 5px;
+  font-weight: bold;
+`
+
 class EventCard extends Component {
   render() {
     const { party } = this.props
-    const { address, headerImg, deposit, name, tokenAddress } = party
-
+    const { address, headerImg, deposit, name, tokenAddress, status } = party
     return (
-      <EventCardContainer>
+      <EventCardContainer private={party.status === 'private'}>
         <Link to={`/event/${address}`}>
+          {party.status === 'private' && <Private>Private</Private>}
+
           <LazyLoad height={300}>
             <EventImage
               src={headerImg || 'https://placeimg.com/640/480/tech'}

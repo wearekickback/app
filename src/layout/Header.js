@@ -88,7 +88,10 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
                       {isMinMedium && (
                         <RightBar>
                           {isWhitelisted ? (
-                            <NavLink to="/create">Create Event</NavLink>
+                            <>
+                              <NavLink to="/create">Create Event</NavLink>
+                              <NavLink to="/admin">Admin</NavLink>
+                            </>
                           ) : (
                             ''
                           )}

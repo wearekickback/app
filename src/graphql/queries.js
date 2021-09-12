@@ -69,6 +69,16 @@ export const PARTY_ADMIN_VIEW_QUERY = gql`
   }
 `
 
+export const ADMIN_PARTIES_QUERY = gql`
+  ${PartyFields}
+
+  query adminParties {
+    parties: allParties(includePrivate: true) {
+      ...PartyFields
+    }
+  }
+`
+
 export const ALL_PARTIES_QUERY = gql`
   ${PartyFields}
 
