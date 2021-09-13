@@ -211,46 +211,59 @@ export default function UserProfile({ profile: p }) {
               ) {
                 tokenUrl = `https://opensea.io/assets/matic/${event.address}/${event.participants[0].index}`
               }
+              let eventTypes = []
+              if (event.isHosted) eventTypes.push('Host')
+              if (event.status === 'private') eventTypes.push('Private')
               return (
                 <EventAttendedContainer key={event.address}>
-                  <EventLink to={`/event/${event.address}`}>
-                    {event.name}
-                  </EventLink>
-                  {event.isHosted && '(Host)'}
-                  {tokenUrl && (
-                    <OpenSeaLink href={tokenUrl}>
-                      <img
-                        target="_blank"
-                        src="https://opensea.io/favicon.ico"
-                      />
-                    </OpenSeaLink>
-                  )}
-                  {(contributed.length > 0 ||
-                    contributionReceived.length > 0) && (
-                    <ContributionList>
-                      {contributed.map(t => {
-                        return (
-                          <li>
-                            Contributed {depositValue(t.amount, t.decimals, 3)}{' '}
-                            {t.symbol} to{' '}
-                            <EventLink to={`/user/${t.recipientUsername}`}>
-                              {t.recipientUsername}
-                            </EventLink>{' '}
-                          </li>
-                        )
-                      })}
-                      {contributionReceived.map(t => {
-                        return (
-                          <li>
-                            Received {depositValue(t.amount, t.decimals, 3)}{' '}
-                            {t.symbol} from{' '}
-                            <EventLink to={`/user/${t.senderUsername}`}>
-                              {t.senderUsername}
-                            </EventLink>{' '}
-                          </li>
-                        )
-                      })}
-                    </ContributionList>
+                  {event.status === 'private' &&
+                  (!userProfile || p.address !== userProfile.address) ? (
+                    'Private event'
+                  ) : (
+                    <>
+                      <EventLink to={`/event/${event.address}`}>
+                        {event.name}
+                      </EventLink>
+                      {eventTypes.length > 0 && (
+                        <span>({eventTypes.join(', ')})</span>
+                      )}
+                      {tokenUrl && (
+                        <OpenSeaLink href={tokenUrl}>
+                          <img
+                            target="_blank"
+                            src="https://opensea.io/favicon.ico"
+                          />
+                        </OpenSeaLink>
+                      )}
+                      {(contributed.length > 0 ||
+                        contributionReceived.length > 0) && (
+                        <ContributionList>
+                          {contributed.map(t => {
+                            return (
+                              <li>
+                                Contributed{' '}
+                                {depositValue(t.amount, t.decimals, 3)}{' '}
+                                {t.symbol} to{' '}
+                                <EventLink to={`/user/${t.recipientUsername}`}>
+                                  {t.recipientUsername}
+                                </EventLink>{' '}
+                              </li>
+                            )
+                          })}
+                          {contributionReceived.map(t => {
+                            return (
+                              <li>
+                                Received {depositValue(t.amount, t.decimals, 3)}{' '}
+                                {t.symbol} from{' '}
+                                <EventLink to={`/user/${t.senderUsername}`}>
+                                  {t.senderUsername}
+                                </EventLink>{' '}
+                              </li>
+                            )
+                          })}
+                        </ContributionList>
+                      )}
+                    </>
                   )}
                 </EventAttendedContainer>
               )

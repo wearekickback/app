@@ -13,6 +13,7 @@ import DefaultLayout, {
 } from './layout/Layouts'
 
 import AllEvents from './routes/AllEvents'
+import AdminEvents from './routes/AdminEvents'
 import CreateEvent from './routes/CreateEvent'
 import SingleEvent from './routes/SingleEvent'
 import SingleEventChallenge from './routes/SingleEventChallenge'
@@ -86,6 +87,7 @@ class App extends Component {
                 layout={NoWeb3CheckLayout}
               />
               <Route path="/create" component={CreateEvent} />
+              <Route path="/admin" component={AdminEvents} />
               <Route path="/faq" component={Faq} layout={NoWeb3CheckLayout} />
               <Route
                 path="/terms"
