@@ -19,7 +19,7 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import _ from 'lodash'
-import { parseAvatar } from '../../api/utils'
+import { parseAvatar, participantsLength } from '../../api/utils'
 const graphClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({ uri: 'https://hub.snapshot.org/graphql' })
@@ -53,8 +53,9 @@ const spotsLeft = ({ ended, participants, participantLimit }) => {
   if (ended) {
     return null
   } else {
-    const spotsLeft = participantLimit - participants.length
-    return `- ${participants.length} going, ${spotsLeft} ${pluralize(
+    const totalReg = participantsLength(participants)
+    const spotsLeft = participantLimit - totalReg
+    return `- ${totalReg} going, ${spotsLeft} ${pluralize(
       'spot',
       spotsLeft
     )} left`

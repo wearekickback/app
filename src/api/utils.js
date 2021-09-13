@@ -1,7 +1,7 @@
 import { events } from '@wearekickback/contracts'
 import { parseLog } from 'ethereum-event-logs'
 import { getProvider } from '../GlobalState'
-
+import _ from 'lodash'
 export const extractNewPartyAddressFromTx = tx => {
   // coerce events into logs if available
   if (tx.events) {
@@ -58,4 +58,8 @@ export const parseAvatar = url => {
   } else {
     return url
   }
+}
+
+export const participantsLength = participants => {
+  return _.maxBy(participants, a => a.index).index
 }
