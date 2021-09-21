@@ -155,7 +155,6 @@ const TableList = ({
   const [poapAddresses, setPoapAddresses] = useState({})
   const poapIds =
     party.optional && party.optional.poapId.split(',').map(p => p.trim())
-  console.log('***', { poapIds, poapAddresses })
   // const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
   //   variables: { eventId: parseInt(poapId) },
   //   skip: !poapId

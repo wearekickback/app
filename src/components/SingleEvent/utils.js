@@ -21,7 +21,6 @@ export function fetchAndSetPoapAddresses(setter, poapIds) {
         skip: !poapId
       })
       .then(({ data }) => {
-        console.log('**data', setter)
         const event = data && data.event
         setter(prevState => {
           let addresses = { ...prevState }
