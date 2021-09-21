@@ -13,6 +13,7 @@ const graphClient = new ApolloClient({
 })
 
 export function fetchAndSetPoapAddresses(setter, poapIds) {
+  if (!poapIds) return false
   poapIds.forEach(poapId => {
     graphClient
       .query({
