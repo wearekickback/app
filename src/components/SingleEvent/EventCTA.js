@@ -12,6 +12,7 @@ import CheckWhitelist from './CheckWhitelist'
 import moment from 'moment'
 import { toPrettyDate } from '../../utils/dates'
 import { depositValue } from '../Utils/DepositValue'
+import { participantsLength } from '../../api/utils'
 
 import { toBN } from 'web3-utils'
 
@@ -172,7 +173,7 @@ class EventCTA extends Component {
       return ''
     }
 
-    const totalReg = participants.length
+    const totalReg = participantsLength(participants)
     const numWent = calculateNumAttended(participants)
     const delimiters = Math.pow(10, decimals)
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
@@ -287,8 +288,9 @@ class EventCTA extends Component {
       userAddress
     } = this.props
     const event_whitelist = optional && optional.event_whitelist
+    const totalReg = participantsLength(participants)
     if (!myParticipantEntry) {
-      if (participants.length < participantLimit) {
+      if (totalReg < participantLimit) {
         if (event_whitelist) {
           return (
             <CheckWhitelist
@@ -560,7 +562,7 @@ class EventCTA extends Component {
       party: { participants }
     } = this.props
 
-    const totalReg = participants.length
+    const totalReg = participantsLength(participants)
     const numWent = calculateNumAttended(participants)
 
     return (
@@ -579,6 +581,7 @@ class EventCTA extends Component {
       party: { ended, cancelled, participants, balance, tokenAddress }
     } = this.props
     const cleared = ended && parseInt(balance) === 0
+    const totalReg = participantsLength(participants)
     return (
       <SafeQuery
         query={TOKEN_QUERY}
@@ -609,9 +612,9 @@ class EventCTA extends Component {
                 : this._renderAdminCTA()}
 
               <MarkAttended>
-                {`${getParticipantsMarkedAttended(participants)}/${
-                  participants.length
-                } have been marked attended`}{' '}
+                {`${getParticipantsMarkedAttended(
+                  participants
+                )}/${totalReg} have been marked attended`}{' '}
               </MarkAttended>
             </EventCTAContainer>
           )
