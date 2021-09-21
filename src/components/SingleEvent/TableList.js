@@ -17,19 +17,15 @@ import EventFilters from './EventFilters'
 import MarkedAttended from './MarkedAttendedRP'
 import tick from '../svg/tick.svg'
 import Number from '../Icons/Number'
-import {
-  POAP_USERS_SUBGRAPH_QUERY,
-  POAP_EVENT_NAME_QUERY
-} from '../../graphql/queries'
+import { POAP_EVENT_NAME_QUERY } from '../../graphql/queries'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
-
+import { fetchAndSetPoapAddresses } from './utils'
 const cache = new InMemoryCache()
 const link = new HttpLink({
   uri: 'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
 })
-const graphClient = new ApolloClient({ cache, link })
 
 const Mismatched = styled('span')`
   color: orange;
@@ -171,30 +167,7 @@ const TableList = ({
   //   poapEventName.poapEventName.image_url
 
   useEffect(() => {
-    poapIds.forEach(poapId => {
-      graphClient
-        .query({
-          query: POAP_USERS_SUBGRAPH_QUERY,
-          variables: { eventId: poapId },
-          skip: !poapId
-        })
-        .then(({ data }) => {
-          const event = data && data.event
-          setPoapAddresses(prevState => {
-            let addresses = { ...prevState }
-            event &&
-              event.tokens.forEach(t => {
-                const obj = {}
-                obj[poapId] = t.id
-                const newObj = { ...prevState[t.owner.id], ...obj }
-                const newState = {}
-                newState[t.owner.id] = newObj
-                addresses = { ...addresses, ...newState }
-              })
-            return addresses
-          })
-        })
-    })
+    fetchAndSetPoapAddresses(setPoapAddresses, poapIds)
   }, [])
 
   return (
