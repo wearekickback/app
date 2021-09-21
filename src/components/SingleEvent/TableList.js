@@ -156,35 +156,45 @@ const TableList = ({
   displayPrivateInfo,
   exportTableToCSV
 }) => {
-  const [poapAddresses, setPoapAddresses] = useState('')
-  const poapId = party.optional && party.optional.poapId
-
-  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
-    variables: { eventId: parseInt(poapId) },
-    skip: !poapId
-  })
-  console.log({ poapId, poapEventName })
-  const poapImage =
-    poapEventName &&
-    poapEventName.poapEventName &&
-    poapEventName.poapEventName.image_url
+  const [poapAddresses, setPoapAddresses] = useState({})
+  const poapIds =
+    party.optional && party.optional.poapId.split(',').map(p => p.trim())
+  console.log('***', { poapIds, poapAddresses })
+  // const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
+  //   variables: { eventId: parseInt(poapId) },
+  //   skip: !poapId
+  // })
+  // console.log('***', { poapId, poapEventName })
+  // const poapImage =
+  //   poapEventName &&
+  //   poapEventName.poapEventName &&
+  //   poapEventName.poapEventName.image_url
 
   useEffect(() => {
-    graphClient
-      .query({
-        query: POAP_USERS_SUBGRAPH_QUERY,
-        variables: { eventId: poapId },
-        skip: !poapId
-      })
-      .then(({ data }) => {
-        const event = data && data.event
-        const addresses = {}
-        event &&
-          event.tokens.map(t => {
-            addresses[t.owner.id] = t.id
+    poapIds.forEach(poapId => {
+      graphClient
+        .query({
+          query: POAP_USERS_SUBGRAPH_QUERY,
+          variables: { eventId: poapId },
+          skip: !poapId
+        })
+        .then(({ data }) => {
+          const event = data && data.event
+          setPoapAddresses(prevState => {
+            let addresses = { ...prevState }
+            event &&
+              event.tokens.forEach(t => {
+                const obj = {}
+                obj[poapId] = t.id
+                const newObj = { ...prevState[t.owner.id], ...obj }
+                const newState = {}
+                newState[t.owner.id] = newObj
+                addresses = { ...addresses, ...newState }
+              })
+            return addresses
           })
-        setPoapAddresses(addresses)
-      })
+        })
+    })
   }, [])
 
   return (
@@ -242,7 +252,9 @@ const TableList = ({
                 {participants[0].user.whiteList && (
                   <TH>${participants[0].user.whiteList.symbol}</TH>
                 )}
-                {poapId && poapAddresses && <TH>POAP {poapId}</TH>}
+                {poapIds && poapAddresses && (
+                  <TH>POAP({Object.keys(poapAddresses).length})</TH>
+                )}
                 <TH>Action</TH>
                 <TH>Status</TH>
                 {cells.map(
@@ -270,19 +282,24 @@ const TableList = ({
                       {participant.user.whiteList && (
                         <TD>{participant.user.whiteList.balance}</TD>
                       )}
-                      {poapId && poapAddresses && (
+                      {poapIds && Object.keys(poapAddresses).length > 0 && (
                         <TD>
-                          {poapAddresses[participant.user.address] && (
-                            <>
-                              <a
-                                href={`https://app.poap.xyz/token/${
-                                  poapAddresses[participant.user.address]
-                                }`}
-                              >
-                                {poapAddresses[participant.user.address]}{' '}
-                              </a>
-                            </>
-                          )}
+                          {poapAddresses[participant.user.address] &&
+                            Object.entries(
+                              poapAddresses[participant.user.address]
+                            ).map(row => {
+                              const [poapId, tokenId] = row
+                              return (
+                                <>
+                                  {poapId}:
+                                  <a
+                                    href={`https://app.poap.xyz/token/${tokenId}`}
+                                  >
+                                    {tokenId}{' '}
+                                  </a>
+                                </>
+                              )
+                            })}
                         </TD>
                       )}
 
