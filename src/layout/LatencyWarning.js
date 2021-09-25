@@ -36,8 +36,13 @@ export default function LatencyWarning() {
     skip: !graphBlockNumber
   })
   const currentTime =
-    currentBlock && moment(currentBlock.getBlock.timestamp * 1000)
-  const graphTime = graphBlock && moment(graphBlock.getBlock.timestamp * 1000)
+    currentBlock &&
+    currentBlock.getBlock &&
+    moment(currentBlock.getBlock.timestamp * 1000)
+  const graphTime =
+    graphBlock &&
+    graphBlock.getBlock &&
+    moment(graphBlock.getBlock.timestamp * 1000)
   if (!(currentTime && graphTime)) return ''
   const diff = currentTime.diff(graphTime, 'minutes')
   const currentTimeToDisplay = currentTime.format('DD/MM/YYYY HH:mm:ss')
