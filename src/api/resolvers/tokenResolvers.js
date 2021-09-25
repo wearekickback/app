@@ -19,6 +19,10 @@ const getTokenContract = (web3, address, abi) => {
 
 const resolvers = {
   Query: {
+    async getBlock(_, { number = 'latest' }) {
+      const web3 = await getWeb3Read()
+      return await web3.eth.getBlock(number)
+    },
     async getTokenBySymbol(_, { symbol }) {
       const address = await getTokenBySymbol(symbol)
       return { address }
