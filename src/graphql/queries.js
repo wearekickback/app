@@ -238,3 +238,19 @@ export const NFT_QUERY = gql`
     getNFTs: getNFTs(userAddress: $userAddress) @client
   }
 `
+
+export const GET_GRAPH_BLOCK = gql`
+  query block {
+    block: _meta {
+      block {
+        number
+      }
+    }
+  }
+`
+
+export const GET_BLOCK = gql`
+  query getBlock($numbeer: String) {
+    getBlock: getBlock(number: $number) @client
+  }
+`

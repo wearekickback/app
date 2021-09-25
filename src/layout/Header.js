@@ -15,6 +15,7 @@ import SafeQuery from '../components/SafeQuery'
 import { IS_WHITELISTED } from '../graphql/queries'
 
 import Banner from './Banner'
+import LatencyWarning from './LatencyWarning'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -68,7 +69,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
   const isMaxMedium = useMediaMax('medium')
   return (
     <GlobalConsumer>
-      {({ userAddress }) => {
+      {({ userAddress, networkState: { expectedNetworkId } }) => {
         return (
           <SafeQuery
             query={IS_WHITELISTED}
@@ -78,6 +79,7 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
               return (
                 <>
                   <Banner />
+                  {expectedNetworkId === '137' && <LatencyWarning />}
                   <HeaderContainer
                     noMargin={noMargin}
                     noBackground={noBackground}
