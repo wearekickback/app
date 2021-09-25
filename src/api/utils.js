@@ -61,5 +61,9 @@ export const parseAvatar = url => {
 }
 
 export const participantsLength = participants => {
-  return _.maxBy(participants, a => a.index).index
+  if (participants.length > 0) {
+    return _.maxBy(participants, a => a.index).index
+  } else {
+    return 0
+  }
 }

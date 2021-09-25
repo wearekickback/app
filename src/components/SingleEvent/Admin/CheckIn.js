@@ -55,7 +55,8 @@ export default withApollo(function CheckIn({ party, client }) {
     variables: { eventId },
     skip: !eventId
   })
-
+  const multiplePoap =
+    eventId && eventId.split(',').map(p => p.trim()).length > 0
   useEffect(() => {
     if (party && party.optional.poapId) {
       setEventId(party.optional.poapId)
@@ -136,33 +137,45 @@ export default withApollo(function CheckIn({ party, client }) {
               {eventId}:
               {poapEventName.poapEventName && poapEventName.poapEventName.name}
             </a>
-            <Button disabled={isRunning} onClick={() => loadPOAPUser()}>
-              Load POAP users
-            </Button>
-            <Button
-              disabled={isRunning || newAttendees.length === 0}
-              onClick={() => setIsRunning(true)}
-            >
-              Mark Check In
-            </Button>
-
-            <p>
-              {isRunning ? <span>Auto checking in....</span> : ''}
-              {newAttendees.length} POAP tokens to claim.
-              <POAPList>
-                {newAttendees.map(a => {
-                  const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
-                  return (
-                    <li>
-                      <a href={url} target="_blank" rel="noopener noreferrer">
-                        {a.poapTokenId}
-                      </a>{' '}
-                      {a.user.username} {a.user.address.slice(0, 4)}...
-                    </li>
-                  )
-                })}
-              </POAPList>
-            </p>
+            {multiplePoap ? (
+              <div>
+                One click check in is disabled for multiple POAP badges. Please
+                check in manually from participants page
+              </div>
+            ) : (
+              <>
+                <Button
+                  disabled={isRunning || newAttendees.length === 0}
+                  onClick={() => setIsRunning(true)}
+                >
+                  Mark Check In
+                </Button>
+                <Button disabled={isRunning} onClick={() => loadPOAPUser()}>
+                  Load POAP users
+                </Button>
+                <p>
+                  {isRunning ? <span>Auto checking in....</span> : ''}
+                  {newAttendees.length} POAP tokens to claim.
+                  <POAPList>
+                    {newAttendees.map(a => {
+                      const url = `https://opensea.io/assets/${POAP_ADDRESS}/${a.poapTokenId}`
+                      return (
+                        <li>
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {a.poapTokenId}
+                          </a>{' '}
+                          {a.user.username} {a.user.address.slice(0, 4)}...
+                        </li>
+                      )
+                    })}
+                  </POAPList>
+                </p>
+              </>
+            )}
           </div>
         ) : (
           <p>

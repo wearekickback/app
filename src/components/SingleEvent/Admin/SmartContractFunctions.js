@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
-
+import { calculateNumAttended } from '@wearekickback/shared'
 import Label from '../../Forms/Label'
 import Clear from './Clear'
 import ClearAndSend from './ClearAndSend'
@@ -69,7 +69,7 @@ export default function SmartContractFunctions({ party, isAdmin = true }) {
   if (!isAdmin) {
     return <SendAndClear party={party} />
   }
-
+  const numWent = calculateNumAttended(party.participants)
   return (
     <>
       <AdminIntro>
@@ -80,6 +80,8 @@ export default function SmartContractFunctions({ party, isAdmin = true }) {
         <Label>Finalize</Label>
         {party.ended ? (
           'This party has been finalized'
+        ) : numWent === 0 ? (
+          'No one is checked in yet'
         ) : (
           <>
             <p>

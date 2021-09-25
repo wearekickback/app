@@ -94,7 +94,7 @@ if (argv.polygon) {
   appConfig.FORTMATIC_KEY = 'pk_test_D3CAA2AEFE6A022E'
   appConfig.PORTIS_KEY = '0ae69aa0-2a4e-41b2-a312-4aa2de69626e'
   appConfig.SQUARELINK_KEY = '7918e26f77908d911fac'
-  appConfig.PLATFORM_FEE_ADDRESS = ''
+  appConfig.PLATFORM_FEE_ADDRESS = '0x24362A8b91baded7Aa4F5FCaAA5B0032864B9f25'
   appConfig.NETWORK_NAME = 'polygon-mainnet'
   // } else if (argv.live) {
   //   appConfig.ENV = 'live'

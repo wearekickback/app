@@ -17,19 +17,15 @@ import EventFilters from './EventFilters'
 import MarkedAttended from './MarkedAttendedRP'
 import tick from '../svg/tick.svg'
 import Number from '../Icons/Number'
-import {
-  POAP_USERS_SUBGRAPH_QUERY,
-  POAP_EVENT_NAME_QUERY
-} from '../../graphql/queries'
+import { POAP_EVENT_NAME_QUERY } from '../../graphql/queries'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
-
+import { fetchAndSetPoapAddresses } from './utils'
 const cache = new InMemoryCache()
 const link = new HttpLink({
   uri: 'https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai'
 })
-const graphClient = new ApolloClient({ cache, link })
 
 const Mismatched = styled('span')`
   color: orange;
@@ -156,36 +152,33 @@ const TableList = ({
   displayPrivateInfo,
   exportTableToCSV
 }) => {
-  const [poapAddresses, setPoapAddresses] = useState('')
-  const poapId = party.optional && party.optional.poapId
-
-  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
-    variables: { eventId: parseInt(poapId) },
-    skip: !poapId
-  })
-  console.log({ poapId, poapEventName })
-  const poapImage =
-    poapEventName &&
-    poapEventName.poapEventName &&
-    poapEventName.poapEventName.image_url
+  const [poapAddresses, setPoapAddresses] = useState({})
+  const poapHolderAddresses = {}
+  const poapIds =
+    party.optional && party.optional.poapId.split(',').map(p => p.trim())
+  // const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
+  //   variables: { eventId: parseInt(poapId) },
+  //   skip: !poapId
+  // })
+  // console.log('***', { poapId, poapEventName })
+  // const poapImage =
+  //   poapEventName &&
+  //   poapEventName.poapEventName &&
+  //   poapEventName.poapEventName.image_url
 
   useEffect(() => {
-    graphClient
-      .query({
-        query: POAP_USERS_SUBGRAPH_QUERY,
-        variables: { eventId: poapId },
-        skip: !poapId
-      })
-      .then(({ data }) => {
-        const event = data && data.event
-        const addresses = {}
-        event &&
-          event.tokens.map(t => {
-            addresses[t.owner.id] = t.id
-          })
-        setPoapAddresses(addresses)
-      })
+    fetchAndSetPoapAddresses(setPoapAddresses, poapIds)
   }, [])
+
+  const filtered = participants
+    .sort(sortParticipants)
+    .filter(filterParticipants(selectedFilter, search))
+
+  filtered.map(participant => {
+    if (poapAddresses[participant.user.address]) {
+      poapHolderAddresses[participant.user.address] = true
+    }
+  })
 
   return (
     <TableListContainer>
@@ -242,7 +235,12 @@ const TableList = ({
                 {participants[0].user.whiteList && (
                   <TH>${participants[0].user.whiteList.symbol}</TH>
                 )}
-                {poapId && poapAddresses && <TH>POAP {poapId}</TH>}
+                {poapIds && poapAddresses && (
+                  <TH>
+                    POAP({Object.keys(poapHolderAddresses).length}/{' '}
+                    {Object.keys(poapAddresses).length})
+                  </TH>
+                )}
                 <TH>Action</TH>
                 <TH>Status</TH>
                 {cells.map(
@@ -253,88 +251,88 @@ const TableList = ({
                 )}
                 <TH>Marketing</TH>
               </TR>
+              {filtered.map(participant => {
+                const { status } = participant
+                const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
+                const attended =
+                  status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
-              {participants
-                .sort(sortParticipants)
-                .filter(filterParticipants(selectedFilter, search))
-                .map(participant => {
-                  const { status } = participant
-                  const withdrawn =
-                    status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
-                  const attended =
-                    status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
-
-                  return (
-                    <TR key={participant.user.id}>
-                      <TD>{participant.index}</TD>
-                      {participant.user.whiteList && (
-                        <TD>{participant.user.whiteList.balance}</TD>
-                      )}
-                      {poapId && poapAddresses && (
-                        <TD>
-                          {poapAddresses[participant.user.address] && (
-                            <>
-                              <a
-                                href={`https://app.poap.xyz/token/${
-                                  poapAddresses[participant.user.address]
-                                }`}
-                              >
-                                {poapAddresses[participant.user.address]}{' '}
-                              </a>
-                            </>
-                          )}
-                        </TD>
-                      )}
-
-                      <TD data-csv="no">
-                        {' '}
-                        {ended ? (
-                          ''
-                        ) : (
-                          <>
-                            <MarkedAttended
-                              party={party}
-                              participant={participant}
-                              refetch={refetch}
-                            >
-                              {({ markAttended, unmarkAttended }) =>
-                                attended ? (
-                                  <Button
-                                    wide
-                                    onClick={() => unmarkAttended()}
-                                    analyticsId="Unmark Attendee"
-                                  >
-                                    Unmark attended
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    wide
-                                    type="hollow"
-                                    onClick={() => markAttended()}
-                                    analyticsId="Mark Attendee"
-                                  >
-                                    Mark attended <Tick />
-                                  </Button>
-                                )
-                              }
-                            </MarkedAttended>
-                          </>
-                        )}
-                      </TD>
-                      <TD>{getStatus(ended, attended, withdrawn)}</TD>
-                      {cells.map((cell, i) =>
-                        getTableCell(cell, i, participant, displayPrivateInfo)
-                      )}
+                return (
+                  <TR key={participant.user.id}>
+                    <TD>{participant.index}</TD>
+                    {participant.user.whiteList && (
+                      <TD>{participant.user.whiteList.balance}</TD>
+                    )}
+                    {poapIds && Object.keys(poapAddresses).length > 0 && (
                       <TD>
-                        {participant.user.legal &&
-                        participant.user.legal[2] &&
-                        participant.user.legal[2].accepted
-                          ? 'accepted'
-                          : 'denied'}
+                        {poapAddresses[participant.user.address] &&
+                          Object.entries(
+                            poapAddresses[participant.user.address]
+                          ).map(row => {
+                            const [poapId, tokenId] = row
+                            return (
+                              <>
+                                {poapId}:
+                                <a
+                                  href={`https://app.poap.xyz/token/${tokenId}`}
+                                >
+                                  {tokenId}{' '}
+                                </a>
+                              </>
+                            )
+                          })}
                       </TD>
-                    </TR>
-                  )
-                })}
+                    )}
+
+                    <TD data-csv="no">
+                      {' '}
+                      {ended ? (
+                        ''
+                      ) : (
+                        <>
+                          <MarkedAttended
+                            party={party}
+                            participant={participant}
+                            refetch={refetch}
+                          >
+                            {({ markAttended, unmarkAttended }) =>
+                              attended ? (
+                                <Button
+                                  wide
+                                  onClick={() => unmarkAttended()}
+                                  analyticsId="Unmark Attendee"
+                                >
+                                  Unmark attended
+                                </Button>
+                              ) : (
+                                <Button
+                                  wide
+                                  type="hollow"
+                                  onClick={() => markAttended()}
+                                  analyticsId="Mark Attendee"
+                                >
+                                  Mark attended <Tick />
+                                </Button>
+                              )
+                            }
+                          </MarkedAttended>
+                        </>
+                      )}
+                    </TD>
+                    <TD>{getStatus(ended, attended, withdrawn)}</TD>
+                    {cells.map((cell, i) =>
+                      getTableCell(cell, i, participant, displayPrivateInfo)
+                    )}
+                    <TD>
+                      {participant.user.legal &&
+                      participant.user.legal[2] &&
+                      participant.user.legal[2].accepted
+                        ? 'accepted'
+                        : 'denied'}
+                    </TD>
+                  </TR>
+                )
+              })}
             </Tbody>
           </Table>
         </>
