@@ -20,6 +20,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import _ from 'lodash'
 import { parseAvatar, participantsLength } from '../../api/utils'
+import { fetchAndSetPoapAddresses } from './utils'
+
 const graphClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({ uri: 'https://hub.snapshot.org/graphql' })
@@ -73,35 +75,11 @@ const EventParticipants = props => {
   const [selectedFilter, setSelectedFilter] = useState(null)
   const spots = spotsLeft(party)
   const [poapAddresses, setPoapAddresses] = useState('')
-  const poapId = party.optional && party.optional.poapId
-
-  const { data: poapEventName } = useQuery(POAP_EVENT_NAME_QUERY, {
-    variables: { eventId: parseInt(poapId) },
-    skip: !poapId
-  })
-  const poapImage =
-    poapEventName &&
-    poapEventName.poapEventName &&
-    poapEventName.poapEventName.image_url
-  console.log({ poapId, poapImage, poapEventName })
+  const poapIds =
+    party.optional && party.optional.poapId.split(',').map(p => p.trim())
 
   useEffect(() => {
-    poapGraphClient
-      .query({
-        query: POAP_USERS_SUBGRAPH_QUERY,
-        variables: { eventId: poapId },
-        skip: !poapId
-      })
-      .then(({ data }) => {
-        console.log({ data })
-        const event = data && data.event
-        const addresses = {}
-        event &&
-          event.tokens.map(t => {
-            addresses[t.owner.id] = t.id
-          })
-        setPoapAddresses(addresses)
-      })
+    fetchAndSetPoapAddresses(setPoapAddresses, poapIds)
   }, [])
 
   console.log({ poapAddresses })
