@@ -21,7 +21,6 @@ import { HttpLink } from 'apollo-link-http'
 import _ from 'lodash'
 import { parseAvatar, participantsLength } from '../../api/utils'
 import { fetchAndSetPoapAddresses } from './utils'
-
 const graphClient = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({ uri: 'https://hub.snapshot.org/graphql' })
