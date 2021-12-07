@@ -76,13 +76,14 @@ const EventParticipants = props => {
   const spots = spotsLeft(party)
   const [poapAddresses, setPoapAddresses] = useState('')
   const poapIds =
-    party.optional && party.optional.poapId.split(',').map(p => p.trim())
+    party.optional &&
+    party.optional.poapId &&
+    party.optional.poapId.split(',').map(p => p.trim())
 
   useEffect(() => {
     fetchAndSetPoapAddresses(setPoapAddresses, poapIds)
   }, [])
 
-  console.log({ poapAddresses })
   const handleSearch = search => {
     setSearch((search || '').toLowerCase())
   }

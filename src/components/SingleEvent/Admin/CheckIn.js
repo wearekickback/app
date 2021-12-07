@@ -58,7 +58,7 @@ export default withApollo(function CheckIn({ party, client }) {
   const multiplePoap =
     eventId && eventId.split(',').map(p => p.trim()).length > 0
   useEffect(() => {
-    if (party && party.optional.poapId) {
+    if (party && party.optional && party.optional.poapId) {
       setEventId(party.optional.poapId)
       setPoapId(party.optional.poapId)
     }

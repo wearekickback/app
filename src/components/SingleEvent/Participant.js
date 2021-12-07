@@ -92,7 +92,6 @@ function Participant({
 }) {
   const { user, status } = participant
   const { deposit, ended } = party
-  console.log({ hasPOAP })
   const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
   const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
