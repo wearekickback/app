@@ -1,6 +1,7 @@
 import { events } from '@wearekickback/contracts'
 import { parseLog } from 'ethereum-event-logs'
-
+import { getProvider } from '../GlobalState'
+import _ from 'lodash'
 export const extractNewPartyAddressFromTx = tx => {
   // coerce events into logs if available
   if (tx.events) {
@@ -15,9 +16,14 @@ export const extractNewPartyAddressFromTx = tx => {
 }
 
 export function txHelper(web3TxObj) {
-  return new Promise(resolve => {
-    web3TxObj.on('transactionHash', hash => {
-      resolve(hash)
+  getProvider().then(provider => {
+    return new Promise(resolve => {
+      web3TxObj.on('transactionHash', hash => {
+        if (provider.state.notify) {
+          provider.state.notify.hash(hash)
+        }
+        resolve(hash)
+      })
     })
   })
 }
@@ -41,5 +47,23 @@ export function lazyAsync(getter) {
       })
     }
     return promise
+  }
+}
+
+export const parseAvatar = url => {
+  const ipfs = url.match(/^ipfs:\/\/(.*)/)
+  if (ipfs) {
+    const cid = ipfs[1]
+    return `https://ipfs.io/ipfs/${cid}`
+  } else {
+    return url
+  }
+}
+
+export const participantsLength = participants => {
+  if (participants.length > 0) {
+    return _.maxBy(participants, a => a.index).index
+  } else {
+    return 0
   }
 }

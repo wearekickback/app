@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
-import RenewalWidget from '@ensdomains/renewal-widget'
-import queryString from 'query-string'
 
 import mq, { useMediaMin, useMediaMax } from '../mediaQuery'
 
@@ -16,7 +14,8 @@ import { GlobalConsumer } from '../GlobalState'
 import SafeQuery from '../components/SafeQuery'
 import { IS_WHITELISTED } from '../graphql/queries'
 
-// import Banner from './Banner'
+import Banner from './Banner'
+import LatencyWarning from './LatencyWarning'
 
 const HeaderContainer = styled('header')`
   width: 100%;
@@ -68,22 +67,9 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
   const [open, setOpen] = useState(false)
   const isMinMedium = useMediaMin('medium')
   const isMaxMedium = useMediaMax('medium')
-  const { RWdays, RWuserAddress } = queryString.parse(window.location.search)
   return (
     <GlobalConsumer>
-      {({ userAddress }) => {
-        if (RWuserAddress || userAddress) {
-          RenewalWidget({
-            userAddress: RWuserAddress || userAddress,
-            queryParams: {
-              utm_source: 'Kickback',
-              utm_medium: 'web',
-              utm_campaign: 'renewal'
-            },
-            days: RWdays ? parseInt(RWdays) : 30
-          })
-        }
-
+      {({ userAddress, networkState: { expectedNetworkId } }) => {
         return (
           <SafeQuery
             query={IS_WHITELISTED}
@@ -92,7 +78,8 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
             {({ data: { isWhitelisted } }) => {
               return (
                 <>
-                  {/* <Banner /> */}
+                  <Banner />
+                  {expectedNetworkId === '137' && <LatencyWarning />}
                   <HeaderContainer
                     noMargin={noMargin}
                     noBackground={noBackground}
@@ -103,7 +90,10 @@ function Header({ noMargin, noBackground, positionAbsolute }) {
                       {isMinMedium && (
                         <RightBar>
                           {isWhitelisted ? (
-                            <NavLink to="/create">Create Event</NavLink>
+                            <>
+                              <NavLink to="/create">Create Event</NavLink>
+                              <NavLink to="/admin">Admin</NavLink>
+                            </>
                           ) : (
                             ''
                           )}

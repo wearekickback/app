@@ -121,12 +121,17 @@ class SingleEvent extends Component {
               >
                 {({ data: { party } }) => {
                   const isAdmin = amAdmin(party, userAddress)
-
                   if (!isAdmin) {
                     return (
-                      <WarningBox>
-                        You need to be an admin to view this page
-                      </WarningBox>
+                      <>
+                        <WarningBox>
+                          You need to be an admin to view this page
+                        </WarningBox>
+                        <SmartContractFunctions
+                          party={party}
+                          isAdmin={isAdmin}
+                        />
+                      </>
                     )
                   }
                   return (

@@ -4,13 +4,15 @@ import { withApollo } from 'react-apollo'
 import jwt from 'jsonwebtoken'
 import Web3 from 'web3'
 import Onboard from 'bnc-onboard'
+import Notify from 'bnc-notify'
 
 import { track } from './api/analytics'
 import {
   BLOCKNATIVE_DAPPID,
   INFURA_KEY,
   FORTMATIC_KEY,
-  PORTIS_KEY
+  PORTIS_KEY,
+  NETWORK_NAME
   // SQUARELINK_KEY
 } from './config'
 import { identify as logRocketIdentify } from './api/logRocket'
@@ -45,8 +47,17 @@ const TOKEN_ALGORITHM = 'HS256'
 
 const walletChecks = [{ checkName: 'connect' }, { checkName: 'network' }]
 
+const getNetworkId = networkId => {
+  if (networkId === '35') {
+    // Default chainId for ganache
+    // return 1337
+    return 1337
+  } else {
+    return parseInt(networkId)
+  }
+}
+
 const wallets = [
-  { walletName: 'authereum', preferred: true },
   { walletName: 'coinbase', preferred: true },
   {
     walletName: 'fortmatic',
@@ -69,20 +80,26 @@ const wallets = [
     preferred: true
   },
   { walletName: 'trust', preferred: true },
-  { walletName: 'unilogin', preferred: true },
   {
     walletName: 'walletConnect',
-    infuraKey: INFURA_KEY,
+    rpc: {
+      '1': `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+      '137': `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
+      '100': 'https://dai.poa.network'
+    },
     preferred: true
   }
-  // Disabled as it throws an error message
-  // {
-  //   walletName: 'squarelink',
-  //   apiKey: SQUARELINK_KEY
-  // }
-  // Disabled as it throws an error message
-  // { walletName: 'dapper' }
 ]
+
+const getWallets = networkId => {
+  console.log({ networkId })
+  if ([1, 100, 137].includes(networkId)) {
+    return wallets
+  } else {
+    // only return metamask for localhost
+    return [{ walletName: 'metamask', preferred: true }]
+  }
+}
 
 class Provider extends Component {
   state = {
@@ -105,7 +122,9 @@ class Provider extends Component {
     return this.state.auth.loggedIn
   }
 
-  setUpWallet = async ({ action, networkId, dontForceSetUp }) => {
+  setUpWallet = async args => {
+    const { action, networkId, dontForceSetUp } = args
+    console.log({ action, networkId, dontForceSetUp })
     // Check if user has chosen a wallet before, if so just use that.
     // If not, the user will have to select a wallet so only proceed if required.
     const lastUsedWallet = LocalStorage.getItem(WALLET)
@@ -120,16 +139,23 @@ class Provider extends Component {
       let testid = 'c212885d-e81d-416f-ac37-06d9ad2cf5af'
       onboard = Onboard({
         dappId: BLOCKNATIVE_DAPPID || testid,
-        networkId: parseInt(networkId),
+        networkId: getNetworkId(networkId),
+        networkName: NETWORK_NAME || 'local',
         walletCheck: walletChecks,
         walletSelect: {
           heading: 'Select a wallet to connect to Kickback',
           description:
             'To use Kickback you need an Ethereum wallet. Please select one from below:',
-          wallets: wallets
+          wallets: getWallets(getNetworkId(networkId))
         }
       })
       this.setState({ onboard })
+
+      var notify = Notify({
+        dappId: BLOCKNATIVE_DAPPID || testid,
+        networkId: parseInt(networkId) // [Integer] The Ethereum network ID your Dapp uses.
+      })
+      this.setState({ notify })
     }
 
     let result = {
@@ -349,7 +375,7 @@ class Provider extends Component {
     // Try and open wallet
     await this.setUpWallet({
       action: 'Sign In',
-      networkId: networkState.expectedNetworkId,
+      networkId: parseInt(networkState.expectedNetworkId),
       dontForceSetUp: true
     })
 

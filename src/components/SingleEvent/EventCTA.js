@@ -7,6 +7,13 @@ import DefaultRSVP from './RSVP'
 import DefaultApprove from './Approve'
 import WithdrawPayout from './WithdrawPayout'
 import SafeQuery from '../SafeQuery'
+import Contribute from './Contribute'
+import CheckWhitelist from './CheckWhitelist'
+import moment from 'moment'
+import { toPrettyDate } from '../../utils/dates'
+import { depositValue } from '../Utils/DepositValue'
+import { participantsLength } from '../../api/utils'
+
 import { toBN } from 'web3-utils'
 
 import {
@@ -76,35 +83,153 @@ const Approve = styled(DefaultApprove)`
 
 const MarkAttended = styled('div')``
 
+const CTAButtonContainer = styled('div')`
+  margin-top: 1em;
+`
+
+const GreenBox = styled('div')`
+  color: #5cca94;
+  margin: 5px;
+`
+
+const Choose = ({ changeMode }) => {
+  return (
+    <div>
+      <Button onClick={() => changeMode('contribute')}>Contribute some</Button>
+      <a
+        href="#/"
+        onClick={e => {
+          e.preventDefault()
+          changeMode('withdraw')
+        }}
+      >
+        {' '}
+        Or Withdraw All
+      </a>
+    </div>
+  )
+}
+
+const WithdrawOrBack = ({ changeMode, address, myShare, canGoBack }) => {
+  return (
+    <div>
+      <WithdrawPayout address={address} amount={myShare} />
+      <a
+        href="#/"
+        onClick={e => {
+          e.preventDefault()
+          changeMode('initial')
+        }}
+      >
+        {' '}
+        {canGoBack ? 'Or Go back' : ''}
+      </a>
+    </div>
+  )
+}
+
 class EventCTA extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { mode: 'initial', percentage: 10 }
+  }
+
+  changeMode = mode => {
+    this.setState({
+      mode: mode
+    })
+  }
+
+  changeValue = event => {
+    this.setState({
+      percentage: event.target.value
+    })
+  }
+
   _renderCleared() {
     return (
       <Status>This event is over and all the funds have been cleared</Status>
     )
   }
-  _renderEndedRsvp() {
+  _renderEndedRsvp({ symbol, decimals }) {
     const {
       myParticipantEntry,
-      party: { address, deposit, participants }
+      party: {
+        address,
+        deposit,
+        participants,
+        tokenAddress,
+        coolingPeriod,
+        end,
+        finalizedAt,
+        timezone,
+        clearFee,
+        optional,
+        roles
+      }
     } = this.props
 
     if (!myParticipantEntry) {
       return ''
     }
 
-    const totalReg = participants.length
+    const totalReg = participantsLength(participants)
     const numWent = calculateNumAttended(participants)
-
+    const delimiters = Math.pow(10, decimals)
     const myShare = calculateWinningShare(deposit, totalReg, numWent)
+    const recipientAddresses = optional && optional.recepients
     let CTAButton
     let won = false
     let CTAMessage = ''
+    const endOfCoolingPeriod = end
+      ? moment(finalizedAt).add(parseInt(coolingPeriod), 's')
+      : null
+    const coolingPeriodEnded = endOfCoolingPeriod
+      ? endOfCoolingPeriod.isBefore(moment())
+      : false
     switch (myParticipantEntry.status) {
       case PARTICIPANT_STATUS.REGISTERED:
         CTAButton = <Status>You didn't show up :/</Status>
         break
       case PARTICIPANT_STATUS.SHOWED_UP:
-        CTAButton = <WithdrawPayout address={address} amount={myShare} />
+        if (
+          !recipientAddresses ||
+          recipientAddresses.length === 0 ||
+          this.state.mode === 'withdraw'
+        ) {
+          CTAButton = (
+            <WithdrawOrBack
+              changeMode={this.changeMode}
+              address={address}
+              myShare={myShare}
+              canGoBack={recipientAddresses && recipientAddresses.length > 0}
+            />
+          )
+        } else if (this.state.mode === 'contribute') {
+          CTAButton = (
+            <Contribute
+              address={address}
+              addresses={recipientAddresses}
+              roles={roles}
+              percentage={this.state.percentage}
+              myShare={myShare}
+              tokenAddress={tokenAddress}
+              changeMode={this.changeMode}
+              changeValue={this.changeValue}
+              currencySymbol={symbol}
+              delimiters={delimiters}
+            />
+          )
+        } else {
+          CTAButton = (
+            <Choose
+              myShare={myShare}
+              delimiters={delimiters}
+              currencySymbol={symbol}
+              changeMode={this.changeMode}
+            ></Choose>
+          )
+        }
         CTAMessage = 'Please withdraw your payout now.'
         won = true
         break
@@ -121,27 +246,30 @@ class EventCTA extends Component {
       <>
         {won ? (
           <CTAInfo>
-            <h3>Congratulations!</h3>
+            <h3>
+              You have payout of {depositValue(myShare, delimiters.length, 3)}{' '}
+              {symbol} !
+            </h3>
             <p>
-              You made it! Are you feeling good? If you think you gained
-              something from this experience, please give a few DAIs to{' '}
-              <strong>
-                <a
-                  target="_blank"
-                  href="https://etherscan.io/address/give.wearekickback.eth"
-                  rel="noopener noreferrer"
-                >
-                  give.wearekickback.eth
-                </a>
-              </strong>{' '}
-              to push us to improve our platform.
+              You have a choice of either withdrawing all amount or contributing
+              some of your payout to the organiser who made it all work.
+            </p>
+            <p>
+              {coolingPeriodEnded
+                ? `Now that cooling period is over, `
+                : `If you do not withdraw by the end of cooling period (${toPrettyDate(
+                    endOfCoolingPeriod.unix() * 1000,
+                    timezone
+                  )}), `}
+              admins may automatically send back to you after substracting{' '}
+              {clearFee / 10} % as clearing fee from your payout.
             </p>
             <p>{CTAMessage}</p>
           </CTAInfo>
         ) : (
           ''
         )}
-        {CTAButton}
+        <CTAButtonContainer>{CTAButton}</CTAButtonContainer>
       </>
     )
   }
@@ -149,43 +277,152 @@ class EventCTA extends Component {
   _renderActiveRsvpWrapper() {
     const {
       myParticipantEntry,
-      party: { tokenAddress, address, deposit, participants, participantLimit },
+      party: {
+        tokenAddress,
+        address,
+        deposit,
+        participants,
+        participantLimit,
+        optional
+      },
       userAddress
     } = this.props
+    const event_whitelist = optional && optional.event_whitelist
+    const totalReg = participantsLength(participants)
     if (!myParticipantEntry) {
-      if (participants.length < participantLimit) {
-        return (
-          <SafeQuery
-            query={TOKEN_ALLOWANCE_QUERY}
-            variables={{ userAddress, tokenAddress, partyAddress: address }}
-          >
-            {({
-              data: {
-                tokenAllowance: { allowance, balance }
-              },
-              loading,
-              refetch
-            }) => {
-              const decodedDeposit = parseInt(toBN(deposit).toString())
-              const isAllowed = parseInt(allowance) >= decodedDeposit
-              const hasBalance = parseInt(balance) >= decodedDeposit
-              return this._renderActiveRsvp({
-                myParticipantEntry,
-                tokenAddress,
-                address,
-                deposit,
-                decodedDeposit,
-                participants,
-                participantLimit,
-                balance,
-                isAllowed,
-                hasBalance,
+      if (totalReg < participantLimit) {
+        if (event_whitelist) {
+          return (
+            <CheckWhitelist
+              userAddresses={[userAddress]}
+              tokenAddress={event_whitelist.address}
+            >
+              {a => {
+                let mainnetTokenBalance, hasMainnetToken
+                if (a && a.getMainnetTokenBalance) {
+                  mainnetTokenBalance =
+                    a.getMainnetTokenBalance.balances[0] /
+                    Math.pow(10, a.getMainnetTokenBalance.decimals)
+                  hasMainnetToken =
+                    mainnetTokenBalance >= parseInt(event_whitelist.amount)
+                }
+                if (
+                  event_whitelist &&
+                  event_whitelist.address &&
+                  a &&
+                  a.getMainnetTokenBalance &&
+                  !hasMainnetToken
+                ) {
+                  return (
+                    <div styles={{ width: '100%' }}>
+                      <WarningBox>
+                        This event is for{' '}
+                        <a
+                          href={`https://app.uniswap.org/#/swap?outputCurrency=${event_whitelist &&
+                            event_whitelist.address}&use=V2`}
+                        >
+                          ${a.getMainnetTokenBalance.symbol}
+                        </a>{' '}
+                        token holder only. You need at least{' '}
+                        {event_whitelist.amount} $
+                        {a.getMainnetTokenBalance.symbol} on Ethereum Mainnet.
+                      </WarningBox>
+                    </div>
+                  )
+                } else {
+                  return (
+                    <>
+                      {event_whitelist &&
+                        a &&
+                        a.getMainnetTokenBalance &&
+                        hasMainnetToken && (
+                          <GreenBox>
+                            You have {mainnetTokenBalance.toFixed(3)} $
+                            {a.getMainnetTokenBalance.symbol} tokens
+                          </GreenBox>
+                        )}
+
+                      <SafeQuery
+                        query={TOKEN_ALLOWANCE_QUERY}
+                        variables={{
+                          userAddress,
+                          tokenAddress,
+                          partyAddress: address
+                        }}
+                      >
+                        {({
+                          data: {
+                            tokenAllowance: { allowance, balance }
+                          },
+                          loading,
+                          refetch
+                        }) => {
+                          const decodedDeposit = parseInt(
+                            toBN(deposit).toString()
+                          )
+                          const isAllowed =
+                            parseInt(allowance) >= decodedDeposit
+                          const hasBalance = parseInt(balance) >= decodedDeposit
+                          return this._renderActiveRsvp({
+                            myParticipantEntry,
+                            tokenAddress,
+                            address,
+                            deposit,
+                            decodedDeposit,
+                            participants,
+                            participantLimit,
+                            balance,
+                            isAllowed,
+                            hasBalance,
+                            userAddress,
+                            refetch
+                          })
+                        }}
+                      </SafeQuery>
+                    </>
+                  )
+                }
+              }}
+            </CheckWhitelist>
+          )
+        } else {
+          return (
+            <SafeQuery
+              query={TOKEN_ALLOWANCE_QUERY}
+              variables={{
                 userAddress,
+                tokenAddress,
+                partyAddress: address
+              }}
+            >
+              {({
+                data: {
+                  tokenAllowance: { allowance, balance }
+                },
+                loading,
                 refetch
-              })
-            }}
-          </SafeQuery>
-        )
+              }) => {
+                const decodedDeposit = parseInt(toBN(deposit).toString())
+                const isAllowed = parseInt(allowance) >= decodedDeposit
+                const hasBalance = parseInt(balance) >= decodedDeposit
+                return this._renderActiveRsvp({
+                  myParticipantEntry,
+                  tokenAddress,
+                  address,
+                  deposit,
+                  decodedDeposit,
+                  participants,
+                  participantLimit,
+                  balance,
+                  isAllowed,
+                  hasBalance,
+                  userAddress,
+                  refetch
+                })
+              }}
+            </SafeQuery>
+          )
+        }
       }
 
       return ''
@@ -216,7 +453,7 @@ class EventCTA extends Component {
       <>
         <SafeQuery
           query={TOKEN_QUERY}
-          variables={{ tokenAddress }}
+          variables={{ address: tokenAddress }}
           renderError={err => {
             return (
               <WarningBox>
@@ -325,7 +562,7 @@ class EventCTA extends Component {
       party: { participants }
     } = this.props
 
-    const totalReg = participants.length
+    const totalReg = participantsLength(participants)
     const numWent = calculateNumAttended(participants)
 
     return (
@@ -341,39 +578,48 @@ class EventCTA extends Component {
 
   render() {
     let {
-      // party: { ended, cancelled, participants, balance }
-      party: { ended, cancelled, participants }
+      party: { ended, cancelled, participants, balance, tokenAddress }
     } = this.props
-    // const cleared =
-    //   balance &&
-    //   toEthVal(balance)
-    //     .toEth()
-    //     .toNumber() === 0 &&
-    //   ended
-    // ERC20 has no balance hence always 0
-    // TODO: Refactor balance function
-    const cleared = false
+    const cleared = ended && parseInt(balance) === 0
+    const totalReg = participantsLength(participants)
     return (
-      <EventCTAContainer>
-        <RSVPContainer>
-          {!cleared
-            ? ended
-              ? this._renderEndedRsvp()
-              : this._renderActiveRsvpWrapper()
-            : this._renderCleared()}
-        </RSVPContainer>
-        {ended
-          ? cancelled
-            ? this._renderCanceled()
-            : this._renderEnded()
-          : this._renderAdminCTA()}
+      <SafeQuery
+        query={TOKEN_QUERY}
+        variables={{ address: tokenAddress }}
+        // renderError={err => {
+        //   return (
+        //     <WarningBox>
+        //       {' '}
+        //       Can't find a token at address: {tokenAddress}
+        //     </WarningBox>
+        //   )
+        // }}
+      >
+        {({ data: { token }, loading }) => {
+          return (
+            <EventCTAContainer>
+              <RSVPContainer>
+                {!cleared
+                  ? ended
+                    ? this._renderEndedRsvp(token)
+                    : this._renderActiveRsvpWrapper(token)
+                  : this._renderCleared()}
+              </RSVPContainer>
+              {ended
+                ? cancelled
+                  ? this._renderCanceled()
+                  : this._renderEnded()
+                : this._renderAdminCTA()}
 
-        <MarkAttended>
-          {`${getParticipantsMarkedAttended(participants)}/${
-            participants.length
-          } have been marked attended`}{' '}
-        </MarkAttended>
-      </EventCTAContainer>
+              <MarkAttended>
+                {`${getParticipantsMarkedAttended(
+                  participants
+                )}/${totalReg} have been marked attended`}{' '}
+              </MarkAttended>
+            </EventCTAContainer>
+          )
+        }}
+      </SafeQuery>
     )
   }
 }

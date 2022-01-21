@@ -44,3 +44,7 @@ export const getUtcDateFromTimezone = (dateString, timezone = '') => {
       .format('Z')
   return moment.utc(timezoneDateString).format('YYYYMMDDTHHmmssZ')
 }
+
+export const getDateFromUnix = unixtimesamp => {
+  return moment(new Date(unixtimesamp * 1000)).format('MMM Do, YYYY')
+}

@@ -162,3 +162,23 @@ $ yarn run cypress:open
 ```
 
 Seed script must be re-run to test again.
+
+## Deploying to xdai env manually
+
+```
+vercel login
+vercel switch wearekickback
+vercel -f --local-config .deploy/now.xdai.json --public --prod
+```
+
+## Deploying to Polygon env manually
+
+
+
+```
+vercel login
+vercel switch wearekickback
+// 1. Make sure .vercel/project.json points to Polygon project
+yarn build:release:polygon
+vercel -f --local-config .deploy/now.polygon.json --public --prod
+```

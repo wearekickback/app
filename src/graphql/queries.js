@@ -69,6 +69,16 @@ export const PARTY_ADMIN_VIEW_QUERY = gql`
   }
 `
 
+export const ADMIN_PARTIES_QUERY = gql`
+  ${PartyFields}
+
+  query adminParties {
+    parties: allParties(includePrivate: true) {
+      ...PartyFields
+    }
+  }
+`
+
 export const ALL_PARTIES_QUERY = gql`
   ${PartyFields}
 
@@ -89,8 +99,36 @@ export const REVERSE_RECORD_QUERY = gql`
 `
 
 export const TOKEN_QUERY = gql`
-  query getToken($tokenAddress: String!) {
-    token: getToken(tokenAddress: $tokenAddress) @client
+  query getToken($address: String!) {
+    token: getToken(address: $address) {
+      address
+      symbol
+      decimals
+    }
+  }
+`
+
+// export const DEPLOYER_QUERY = gql`
+//   query deployer {
+//     deployer: deployer() @client
+//   }
+// `
+
+// export const DEPLOYER_QUERY = gql`
+//   query deployer {
+//     deployer: getDeployer() @client
+//   }
+// `
+
+export const DEPLOYER_QUERY = gql`
+  query deployer {
+    deployer: getDeployer(symbol: $symbol) @client
+  }
+`
+
+export const TOKEN_CLIENT_QUERY = gql`
+  query getClientToken($tokenAddress: String!) {
+    token: getClientToken(tokenAddress: $tokenAddress) @client
   }
 `
 
@@ -105,11 +143,6 @@ export const TOKEN_ALLOWANCE_QUERY = gql`
       tokenAddress: $tokenAddress
       partyAddress: $partyAddress
     ) @client
-  }
-`
-export const TOKEN_DECIMALS_QUERY = gql`
-  query getTokenDecimals($tokenAddress: String!) {
-    token: getTokenDecimals(tokenAddress: $tokenAddress) @client
   }
 `
 
@@ -130,5 +163,94 @@ export const POAP_USERS_SUBGRAPH_QUERY = gql`
         }
       }
     }
+  }
+`
+
+export const GET_CONTRIBUTIONS_BY_PARTY = gql`
+  query getContributionsByParty($address: String!) {
+    getContributionsByParty(address: $address) {
+      senderAddress
+      recipientAddress
+      amount
+      createdAt
+      decimals
+    }
+  }
+`
+export const GET_MAINNET_TOKEN_BALANCE = gql`
+  query getMainnetTokenBalance(
+    $userAddresses: [String]
+    $tokenAddress: String!
+  ) {
+    getMainnetTokenBalance(
+      userAddresses: $userAddresses
+      tokenAddress: $tokenAddress
+    ) @client
+  }
+`
+
+export const SNAPSHOT_VOTES_SUBGRAPH_QUERY = gql`
+  query Votes($userAddresses: [String]) {
+    votes(first: 1000, where: { voter_in: $userAddresses }) {
+      id
+      voter
+      created
+      proposal {
+        id
+        title
+        choices
+      }
+      choice
+      space {
+        id
+        avatar
+      }
+    }
+  }
+`
+
+export const POAP_BADGES_QUERY = gql`
+  query poapBadges($userAddress: String!) {
+    poapBadges: poapBadges(userAddress: $userAddress) @client
+  }
+`
+
+export const POAP_EVENT_NAME_QUERY = gql`
+  query poapEventName($eventId: String!) {
+    poapEventName: poapEventName(eventId: $eventId) @client
+  }
+`
+
+export const ENS_NAME_QUERY = gql`
+  query getEnsName($userAddress: String!) {
+    getEnsName: getEnsName(userAddress: $userAddress) @client
+  }
+`
+
+export const ENS_ADDRESS_QUERY = gql`
+  query getEnsAddress($name: String!) {
+    getEnsAddress: getEnsAddress(name: $name) @client
+  }
+`
+
+export const NFT_QUERY = gql`
+  query getNFTs($userAddress: String!) {
+    getNFTs: getNFTs(userAddress: $userAddress) @client
+  }
+`
+
+export const GET_GRAPH_BLOCK = gql`
+  query block {
+    block: _meta {
+      block {
+        number
+      }
+    }
+  }
+`
+
+export const GET_BLOCK = gql`
+  query getBlock($numbeer: String) {
+    getBlock: getBlock(number: $number) @client
   }
 `

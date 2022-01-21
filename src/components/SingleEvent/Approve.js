@@ -40,7 +40,14 @@ const Approve = ({
   } else if (!hasBalance) {
     return (
       <GlobalConsumer>
-        {({ wallet }) => {
+        {({ wallet, networkState }) => {
+          const networkId = networkState && networkState.networkId
+          let bridgeurl
+          if (networkId === '137') {
+            bridgeurl = 'https://wallet.matic.network/bridge'
+          } else if (networkId === '100') {
+            bridgeurl = 'https://dai-bridge.poa.network'
+          }
           return (
             <WarningBox>
               <p>
@@ -49,6 +56,12 @@ const Approve = ({
                 &nbsp; but you only have{' '}
                 <Currency amount={balance} tokenAddress={tokenAddress} /> in
                 your wallet. Please top up your wallet and come back again.
+                <br />
+                To bridge from Ethereum mainnet, please use{' '}
+                <a href={bridgeurl}>the Mainnet bridge</a>.
+                <br />
+                If you have assets on other sidechains, please use{' '}
+                <a href="https://li.finance/swap">the Crosschain bridge</a>
               </p>
 
               {wallet && wallet.url && (

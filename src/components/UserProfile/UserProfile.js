@@ -2,12 +2,45 @@ import React, { useContext } from 'react'
 import styled from '@emotion/styled'
 import { getSocialId } from '@wearekickback/shared'
 import EventList from './EventList'
-import { H2, H3 } from '../Typography/Basic'
-import mq from 'mediaQuery'
+import { H2, H3, H4 } from '../Typography/Basic'
+import mq from '../../mediaQuery'
 import { EDIT_PROFILE } from '../../modals'
 import GlobalContext from '../../GlobalState'
 import Button from '../Forms/Button'
 import DefaultTwitterAvatar from '../User/TwitterAvatar'
+import { depositValue } from '../Utils/DepositValue'
+import { Link } from 'react-router-dom'
+import {
+  SNAPSHOT_VOTES_SUBGRAPH_QUERY,
+  POAP_BADGES_QUERY,
+  NFT_QUERY
+} from '../../graphql/queries'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+import { useQuery } from 'react-apollo'
+import _ from 'lodash'
+import { getDateFromUnix } from '../../utils/dates'
+import AddressLink from '../Links/AddressLink'
+import { parseAvatar } from '../../api/utils'
+
+const cache = new InMemoryCache()
+const link = new HttpLink({
+  uri: 'https://hub.snapshot.org/graphql'
+})
+const snapshotLogoUrl =
+  'https://gblobscdn.gitbook.com/spaces%2F-MG4Ulnnabb2Xz3Lei9_%2Favatar-1602311890000.png?alt=media'
+const graphClient = new ApolloClient({ cache, link })
+
+const EventAttendedContainer = styled('div')`
+  margin-bottom: 10px;
+`
+
+const EventLink = styled(Link)``
+
+const ContributionList = styled('ul')`
+  margin-left: 2em;
+`
 
 const UserProfileWrapper = styled('div')`
   display: flex;
@@ -34,16 +67,13 @@ const AvatarWrapper = styled('div')`
 `
 
 const TwitterAvatar = styled(DefaultTwitterAvatar)`
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
 `
 
 const Events = styled('div')`
   display: flex;
   flex-direction: column;
-  ${mq.medium`
-    flex-direction: row;
-  `}
 `
 
 const EventType = styled('div')`
@@ -75,12 +105,51 @@ const WalletButton = styled(Button)`
   width: 100%;
 `
 
+const PoapAvatar = styled('span')`
+  margin: 0 5px;
+`
+
+const TinyAvatarImg = styled('img')`
+  margin-right: 5px;
+  width: 15px;
+`
+
+const OpenSeaLink = styled('a')`
+  margin 1em;
+`
+
 export default function UserProfile({ profile: p }) {
-  const twitter = getSocialId(p.social, 'twitter')
+  let twitter,
+    walletLink,
+    sorted = []
   const { showModal, loggedIn, userProfile, signOut, wallet } = useContext(
     GlobalContext
   )
-  let walletLink
+  const { data: snapshotData } = useQuery(SNAPSHOT_VOTES_SUBGRAPH_QUERY, {
+    variables: { userAddresses: [p.address] },
+    client: graphClient
+  })
+  const { data: poapData } = useQuery(POAP_BADGES_QUERY, {
+    variables: { userAddress: p.address }
+  })
+  const { data: nftData } = useQuery(NFT_QUERY, {
+    variables: { userAddress: p.address }
+  })
+
+  if (p.username) {
+    twitter = getSocialId(p && p.social, 'twitter')
+    p && p.eventsAttended.map(p => (p.isAttended = true))
+    p && p.eventsHosted.map(p => (p.isHosted = true))
+    const merged = _.merge(
+      _.keyBy(p.eventsHosted, 'name'),
+      _.keyBy(p.eventsAttended, 'name')
+    )
+    sorted = _.sortBy(Object.values(merged), [
+      function(o) {
+        return o.createdAt
+      }
+    ]).reverse()
+  }
   if (wallet) {
     walletLink = wallet.url
   }
@@ -96,6 +165,7 @@ export default function UserProfile({ profile: p }) {
             {twitter && (
               <a href={`https://twitter.com/${twitter}`}>Twitter: {twitter}</a>
             )}
+            <AddressLink userAddress={p.address} prefix={'ETH: '} />
             {loggedIn && userProfile && userProfile.username === p.username && (
               <ButtonContainer>
                 {walletLink && (
@@ -124,13 +194,161 @@ export default function UserProfile({ profile: p }) {
         </ProfileDetails>
         <Events>
           <EventType>
-            <H3>Events Attended ({p.eventsAttended.length})</H3>
-            <EventList events={p.eventsAttended} />
+            <H3>Kickback Event activites</H3>
+            {sorted.map(event => {
+              let contributed = p.eventsContributed.filter(
+                p => p.name === event.name
+              )
+              let contributionReceived = p.eventsContributionReceived.filter(
+                p => p.name === event.name
+              )
+              let tokenUrl
+
+              if (
+                event.isNft &&
+                event.participants &&
+                event.participants.length > 0
+              ) {
+                tokenUrl = `https://opensea.io/assets/matic/${event.address}/${event.participants[0].index}`
+              }
+              let eventTypes = []
+              if (event.isHosted) eventTypes.push('Host')
+              if (event.status === 'private') eventTypes.push('Private')
+              return (
+                <EventAttendedContainer key={event.address}>
+                  {event.status === 'private' &&
+                  (!userProfile || p.address !== userProfile.address) ? (
+                    'Private event'
+                  ) : (
+                    <>
+                      <EventLink to={`/event/${event.address}`}>
+                        {event.name}
+                      </EventLink>
+                      {eventTypes.length > 0 && (
+                        <span>({eventTypes.join(', ')})</span>
+                      )}
+                      {tokenUrl && (
+                        <OpenSeaLink href={tokenUrl}>
+                          <img
+                            target="_blank"
+                            src="https://opensea.io/favicon.ico"
+                          />
+                        </OpenSeaLink>
+                      )}
+                      {(contributed.length > 0 ||
+                        contributionReceived.length > 0) && (
+                        <ContributionList>
+                          {contributed.map(t => {
+                            return (
+                              <li>
+                                Contributed{' '}
+                                {depositValue(t.amount, t.decimals, 3)}{' '}
+                                {t.symbol} to{' '}
+                                <EventLink to={`/user/${t.recipientUsername}`}>
+                                  {t.recipientUsername}
+                                </EventLink>{' '}
+                              </li>
+                            )
+                          })}
+                          {contributionReceived.map(t => {
+                            return (
+                              <li>
+                                Received {depositValue(t.amount, t.decimals, 3)}{' '}
+                                {t.symbol} from{' '}
+                                <EventLink to={`/user/${t.senderUsername}`}>
+                                  {t.senderUsername}
+                                </EventLink>{' '}
+                              </li>
+                            )
+                          })}
+                        </ContributionList>
+                      )}
+                    </>
+                  )}
+                </EventAttendedContainer>
+              )
+            })}
           </EventType>
-          <EventType>
-            <H3>Events Hosted ({p.eventsHosted.length})</H3>
-            <EventList events={p.eventsHosted} />
-          </EventType>
+          {snapshotData && snapshotData.votes.length > 0 && (
+            <EventType>
+              <H3>Other activities</H3>
+              <H4>POAP</H4>
+              {poapData &&
+                poapData.poapBadges &&
+                poapData.poapBadges.slice(0, 10).map(p => {
+                  return (
+                    <PoapAvatar>
+                      <a href={`https://poap.gallery/event/${p.event.id}`}>
+                        <img
+                          width="50px"
+                          src={`${p.event.image_url}`}
+                          alt={p.event.name}
+                          title={p.event.name}
+                        ></img>
+                      </a>
+                    </PoapAvatar>
+                  )
+                })}
+              <H4>Snapshot</H4>
+              <ContributionList>
+                {snapshotData.votes.slice(0, 50).map((v, i) => {
+                  const choice = v.proposal.choices[v.choice - 1]
+                  let choiceText
+                  if (typeof v.choice === 'number') {
+                    choiceText = `${v.choice}(${choice})`
+                  } else {
+                    choiceText = 'multiple choices'
+                  }
+                  return (
+                    <li>
+                      <a
+                        href={`https://snapshot.org/#/${v.space.id}/proposal/${v.proposal.id}`}
+                      >
+                        {v.space.avatar && (
+                          <TinyAvatarImg
+                            src={`${parseAvatar(v.space.avatar)}`}
+                            alt={v.space.id}
+                            title={`${v.space.id}: Voted ${choiceText} on "${v.proposal.title}`}
+                            onError={e => {
+                              e.target.src = snapshotLogoUrl
+                            }}
+                          ></TinyAvatarImg>
+                        )}
+                        Voted {choiceText} on "{v.proposal.title.slice(0, 20)}
+                        ..."
+                      </a>{' '}
+                      at {getDateFromUnix(v.created)}
+                    </li>
+                  )
+                })}
+              </ContributionList>
+              <H4>NFT</H4>
+              <ContributionList>
+                {nftData &&
+                  nftData.getNFTs &&
+                  nftData.getNFTs
+                    .filter(f => f.contract_name !== 'POAP')
+                    .slice(0, 50)
+                    .map((v, i) => {
+                      return (
+                        <>
+                          <h5>{v.contract_name}</h5>
+                          {v.nft_data.map(n => {
+                            return (
+                              <img
+                                width="50px"
+                                src={n.external_data && n.external_data.image}
+                                alt={v.external_data && v.external_data.name}
+                                title={v.external_data && v.external_data.name}
+                              ></img>
+                            )
+                          })}
+                        </>
+                      )
+                    })}
+              </ContributionList>
+            </EventType>
+          )}
         </Events>
       </UserProfileContainer>
     </UserProfileWrapper>

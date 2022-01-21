@@ -1,24 +1,50 @@
-import getWeb3, { getAccount, getTokenBySymbol, getWeb3Read } from '../web3'
+import getWeb3, {
+  getAccount,
+  getTokenBySymbol,
+  getWeb3Read,
+  getWeb3ForNetwork
+} from '../web3'
 // import { Token } from '@wearekickback/contracts'
 
 import DETAILEDERC20_ABI from '../abi/detailedERC20ABI'
 import DETAILEDERC20BYTES32_ABI from '../abi/detailedERC20bytes32ABI'
+import BALANCE_CHECKER_ABI from '../abi/balanceCheckerABI'
+
 import { txHelper, isEmptyAddress } from '../utils'
 export const defaults = {}
-// This is because some token uses string as symbol while others are bytes32
-// We need some workaround like https://ethereum.stackexchange.com/questions/58945/how-to-handle-both-string-and-bytes32-method-returns when supporting any ERC20
-
-let token
-
+const BALANCE_CHECKER_ADDRESS = '0xb1f8e55c7f64d203c1400b9d8555d050f94adf39'
 const getTokenContract = (web3, address, abi) => {
   return new web3.eth.Contract(abi, address).methods
 }
 
 const resolvers = {
   Query: {
+    async getBlock(_, { number = 'latest' }) {
+      const web3 = await getWeb3Read()
+      return await web3.eth.getBlock(number)
+    },
     async getTokenBySymbol(_, { symbol }) {
       const address = await getTokenBySymbol(symbol)
       return { address }
+    },
+    async getMainnetTokenBalance(_, { userAddresses, tokenAddress }) {
+      const web3 = await getWeb3ForNetwork('1')
+      const contract = getTokenContract(web3, tokenAddress, DETAILEDERC20_ABI)
+      const symbol = await contract.symbol().call()
+      const decimals = await contract.decimals().call()
+      const balanceChecker = new web3.eth.Contract(
+        BALANCE_CHECKER_ABI,
+        BALANCE_CHECKER_ADDRESS
+      ).methods
+      let balances = await balanceChecker
+        .balances(userAddresses, [tokenAddress])
+        .call()
+
+      return {
+        balances,
+        symbol,
+        decimals
+      }
     },
     async getTokenAllowance(_, { userAddress, tokenAddress, partyAddress }) {
       try {
@@ -59,13 +85,12 @@ const resolvers = {
         )
       }
     },
-    async getToken(_, { tokenAddress }) {
-      if (token) return token
+    async getClientToken(_, { tokenAddress }) {
       if (isEmptyAddress(tokenAddress)) {
         return {
-          name: 'Ether',
-          symbol: 'ETH',
-          decimals: 18
+          name: null,
+          symbol: null,
+          decimals: null
         }
       } else if (
         tokenAddress === '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
@@ -99,7 +124,6 @@ const resolvers = {
             contract.symbol().call(),
             contract.decimals().call()
           ])
-
           // To fit in a bytes32 on the contract, token name and symbol
           // have been padded to length using null characters.
           // We then strip these characters using the regex `/\u0000/g`

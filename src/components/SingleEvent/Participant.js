@@ -10,7 +10,8 @@ import { calculateWinningShare } from '../../utils/parties'
 import tick from '../svg/tick.svg'
 import Currency from './Currency'
 import { GlobalConsumer } from '../../GlobalState'
-
+const snapshotLogoUrl =
+  'https://gblobscdn.gitbook.com/spaces%2F-MG4Ulnnabb2Xz3Lei9_%2Favatar-1602311890000.png?alt=media'
 // import EtherScanLink from '../ExternalLinks/EtherScanLink'
 
 // const ParticipantName = styled('div')`
@@ -58,10 +59,39 @@ const TwitterAvatar = styled(DefaultTwitterAvatar)`
   margin-bottom: 5px;
 `
 
-function Participant({ participant, party, amAdmin, decimals }) {
+const OrgAvatarImg = styled(`img`)`
+  width: 15px;
+  margin: 2px, 5px;
+`
+
+const OrgAvatars = function({ spaces }) {
+  return (
+    <div>
+      {spaces.map(s => (
+        <OrgAvatarImg
+          src={s.avatar}
+          alt={s.id}
+          title={s.id}
+          onError={e => {
+            e.target.src = snapshotLogoUrl
+          }}
+        ></OrgAvatarImg>
+      ))}
+    </div>
+  )
+}
+
+function Participant({
+  participant,
+  party,
+  amAdmin,
+  decimals,
+  contributions,
+  spaces,
+  hasPOAP
+}) {
   const { user, status } = participant
   const { deposit, ended } = party
-
   const withdrawn = status === PARTICIPANT_STATUS.WITHDRAWN_PAYOUT
   const attended = status === PARTICIPANT_STATUS.SHOWED_UP || withdrawn
 
@@ -69,25 +99,41 @@ function Participant({ participant, party, amAdmin, decimals }) {
   const numShowedUp = calculateNumAttended(party.participants)
 
   const payout = calculateWinningShare(deposit, numRegistered, numShowedUp)
-
+  const contribution = contributions.filter(
+    c => c.senderAddress === participant.user.address
+  )[0]
   return (
     <GlobalConsumer>
       {({ userAddress, loggedIn }) => (
         <ParticipantWrapper to={`/user/${user.username}`} amAdmin={amAdmin}>
-          <TwitterAvatar user={user} size={10} scale={6} />
+          <TwitterAvatar hasPOAP={hasPOAP} user={user} size={10} scale={6} />
           <ParticipantId>
             <ParticipantUsername>{user.username}</ParticipantUsername>
           </ParticipantId>
+          <OrgAvatars spaces={spaces} />
           {ended ? (
             attended ? (
-              <Status type="won">
-                {`${withdrawn ? ' Withdrew' : 'Won'} `}
-                <Currency
-                  amount={payout}
-                  tokenAddress={party.tokenAddress}
-                  precision={3}
-                />
-              </Status>
+              contribution ? (
+                <Status type="contributed">
+                  <span role="img" aria-label="sheep">
+                    🎁&nbsp;
+                  </span>
+                  <Currency
+                    amount={contribution.amount}
+                    tokenAddress={party.tokenAddress}
+                    precision={3}
+                  />
+                </Status>
+              ) : (
+                <Status type="won">
+                  {`${withdrawn ? ' Withdrew' : 'Won'} `}
+                  <Currency
+                    amount={payout}
+                    tokenAddress={party.tokenAddress}
+                    precision={3}
+                  />
+                </Status>
+              )
             ) : (
               <Status type="lost">
                 Lost{' '}

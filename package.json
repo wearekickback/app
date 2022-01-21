@@ -1,12 +1,12 @@
 {
   "name": "app",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
-    "@ensdomains/renewal-widget": "^0.1.9",
-    "@wearekickback/contracts": "^1.2.9",
+    "@ensdomains/ens-contracts": "^0.0.3",
+    "@wearekickback/contracts": "1.5.0",
     "@wearekickback/shared": "^1.14.1",
     "apollo-cache-inmemory": "^1.2.8",
     "apollo-client": "^2.4.0",
@@ -15,7 +15,8 @@
     "apollo-link-state": "^0.4.1",
     "apollo-upload-client": "^10.0.0",
     "apollo-utilities": "^1.0.21",
-    "bnc-onboard": "^1.7.1",
+    "bnc-notify": "^1.9.1",
+    "bnc-onboard": "^1.34.1",
     "decimal.js": "^10.0.1",
     "es6-promisify": "^6.0.0",
     "ethereum-event-logs": "^1.0.2",
@@ -33,7 +34,7 @@
     "query-string": "^6.2.0",
     "rc-time-picker": "^3.6.2",
     "react": "^16.13.1",
-    "react-apollo": "^2.2.4",
+    "react-apollo": "^3.1.5",
     "react-blockies": "^1.4.1",
     "react-day-picker": "^7.3.0",
     "react-dom": "^16.8.1",
@@ -51,12 +52,12 @@
     "react-tiny-link": "^3.4.0",
     "react-tooltip": "^3.9.0",
     "sanitize-html": "^1.20.1",
-    "smart-chat-react": "^0.1.15",
-    "truffle": "^5.0.0-beta.0",
+    "truffle": "^5.1.30",
     "use-interval": "^1.2.1",
     "uuid": "^3.3.2",
-    "web3": "1.0.0-beta.36",
-    "web3-utils": "^1.0.0-beta.36",
+    "vercel": "^20.1.0",
+    "web3": "^1.3.5",
+    "web3-utils": "^1.3.5",
     "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
@@ -69,13 +70,17 @@
     "build:release:rinkeby": "yarn setup --rinkeby && yarn build",
     "build:release:alpha": "yarn setup --alpha && yarn build",
     "build:release:live": "yarn setup --live && yarn build",
+    "build:release:xdai": "yarn setup --xdai && yarn build",
+    "build:release:polygon": "yarn setup --polygon && yarn build",
     "deploy:ropsten": "yarn build:release:ropsten && yarn now -f --local-config .deploy/now.ropsten.json --public && yarn now alias --local-config .deploy/now.ropsten.json && yarn now rm kickback-app-ropsten --safe --yes",
     "deploy:rinkeby": "yarn build:release:rinkeby && yarn now -f --local-config .deploy/now.rinkeby.json --public && yarn now alias --local-config .deploy/now.rinkeby.json && yarn now rm kickback-app-rinkeby --safe --yes",
     "deploy:kovan": "yarn build:release:kovan && yarn now -f --local-config .deploy/now.kovan.json --public && yarn now alias --local-config .deploy/now.kovan.json && yarn now rm kickback-app-kovan --safe --yes",
     "deploy:alpha": "yarn build:release:alpha && yarn now -f --local-config .deploy/now.alpha.json --public && yarn now alias --local-config .deploy/now.alpha.json && yarn now rm kickback-app-alpha --safe --yes",
     "deploy:live": "yarn build:release:live && yarn now -f --local-config .deploy/now.live.json --public && yarn now alias --local-config .deploy/now.live.json && yarn now rm kickback-app-live --safe --yes",
+    "deploy:xdai": "yarn build:release:xdai && yarn now -f --local-config .deploy/now.xdai.json --public && yarn now alias --local-config .deploy/now.xdai.json && yarn now rm kickback-app-xdai --safe --yes",
+    "deploy:polygon": "yarn build:release:polygon && vercel -f --local-config .deploy/now.xdai.json --public --prod",
     "deploy:dev": "yarn deploy:rinkeby",
-    "deploy:branch": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn deploy:live; elif [ \"$TRAVIS_BRANCH\" = \"dev\" ]; then yarn deploy:dev; fi'",
+    "deploy:branch": "/bin/sh -c 'if [ \"$TRAVIS_BRANCH\" = \"master\" ]; then yarn deploy:polygon; elif [ \"$TRAVIS_BRANCH\" = \"dev\" ]; then yarn deploy:dev; fi'",
     "deploy:pr": "yarn build:release:rinkeby && scripts/deployTravisBuildToSurge.sh",
     "deploy": "/bin/sh -c 'if [ \"$TRAVIS_PULL_REQUEST\" = \"false\" ]; then yarn deploy:branch; else yarn deploy:pr; fi'",
     "precommit": "lint-staged",
@@ -85,7 +90,7 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "now": "now --team wearekickback --token $NOW_TOKEN"
+    "now": "vercel --scope wearekickback -t $NOW_TOKEN"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.11",
@@ -102,6 +107,12 @@
     "prettier": "^1.15.2",
     "surge": "^0.20.1",
     "yargs": "^12.0.2"
+  },
+  "optionalDependencies":{
+    "fsevents": "2.3.2"
+  },
+  "resolutions": {
+    "fsevents": "2.3.2"
   },
   "lint-staged": {
     "*.js": [
@@ -122,6 +133,6 @@
     ]
   },
   "engines": {
-    "node": "10.x"
+    "node": "14.x"
   }
 }

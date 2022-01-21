@@ -63,13 +63,15 @@ const Bio = styled('p')`
   text-align: center;
   line-height: 22px;
 `
+const avatarUrl =
+  'https://res.cloudinary.com/dlxrqqprn/image/twitter_name/w_60,h_60/'
 
 const TeamMembers = () => (
   <Team>
     <h1>The Kickback team</h1>
     <TeamInner>
       <Member>
-        <Avatar src="https://twitter-avatar.now.sh/makoto_inoue" />
+        <Avatar src={`${avatarUrl}makoto_inoue`} />
         <MemberName href="https://twitter.com/makoto_inoue">
           Makoto Inoue
         </MemberName>
@@ -83,7 +85,7 @@ const TeamMembers = () => (
         </Bio>
       </Member>
       <Member>
-        <Avatar src="https://twitter-avatar.now.sh/_jefflau" />
+        <Avatar src={`${avatarUrl}_jefflau`} />
         <MemberName href="https://twitter.com/_jefflau">Jeff Lau</MemberName>
         <Bio>
           Javascripter. Climber. Developer at{' '}
@@ -92,7 +94,7 @@ const TeamMembers = () => (
         </Bio>
       </Member>
       <Member>
-        <Avatar src="https://twitter-avatar.now.sh/hiddentao" />
+        <Avatar src={`${avatarUrl}hiddentao`} />
         <MemberName href="https://twitter.com/hiddentao">
           Ramesh Nair
         </MemberName>
