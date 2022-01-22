@@ -30,7 +30,7 @@
     "logrocket": "^0.6.19",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "query-string": "^6.2.0",
     "rc-time-picker": "^3.6.2",
     "react": "^16.13.1",
